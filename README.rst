@@ -25,11 +25,6 @@ The Muffin -- A web framework based on Asyncio stack. (early alpha)
     :target: https://www.gratipay.com/klen/
     :alt: Donate
 
-.. _documentation:
-
-**Docs are available at https://muffin.readthedocs.org/. Pull requests
-with documentation enhancements and/or fixes are awesome and most welcome.**
-
 .. _contents:
 
 .. contents::

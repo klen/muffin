@@ -1,23 +1,18 @@
 language: python
 
-python: 2.7
-
-env:
-    - TOXENV=py27
-    - TOXENV=py34
-    - TOXENV=cov
+python: 3.4
 
 branches:
     only:
         - master
         - develop
 
-install: pip install --quiet --use-mirrors tox
+install: pip install -r requirements.txt
 
-script: tox
+script: py.test
 
 after_script:
-    - if [ $TOXENV == "cov" ]; then
-        pip install --quiet --use-mirrors coveralls;
-        coveralls;
-      fi
+    pip install --quiet --use-mirrors coveralls coverage;
+    coverage run -m py.test
+    coverage report
+    coveralls;
