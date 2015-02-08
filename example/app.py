@@ -1,7 +1,7 @@
 import muffin
 
 
-app = muffin.Application()
+app = muffin.Application(CONFIG='config.debug')
 
 from models import Test
 
@@ -16,12 +16,6 @@ def db_sync(request):
     return [t.data for t in Test.select()]
 
 
-@app.view('/db-async')
-def db_async(request):
-    results = yield from app.peewee.query(Test.select())
-    return [t.data for t in results]
-
-
 @app.view('/json')
 def json(request):
     return {'json': 'here'}
@@ -30,3 +24,9 @@ def json(request):
 @app.view('/404')
 def raise404(request):
     raise muffin.HTTPNotFound
+
+
+@app.view('/db-async')
+def db_async(request):
+    results = yield from app.peewee.query(Test.select())
+    return [t.data for t in results]

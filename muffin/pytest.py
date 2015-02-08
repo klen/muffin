@@ -76,6 +76,22 @@ class TestApp(webtest.TestApp):
 def app():
     """ Provide an example application. """
     from app import app
+
+    try:
+        import peewee
+        import models
+
+        for name in dir(models):
+            cls = getattr(models, name)
+            if isinstance(cls, type) and issubclass(cls, peewee.Model):
+                try:
+                    cls.create_table()
+                except peewee.OperationalError:
+                    pass
+
+    except ImportError:
+        pass
+
     return app
 
 
@@ -89,6 +105,22 @@ def loop(request):
 
 @pytest.fixture(scope='function')
 def client(app, loop):
+    """ Prepare a tests' client. """
     client = TestApp(app, lint=False)
     client.exception = webtest.AppError
     return client
+
+
+@pytest.fixture(scope='function')
+def db(app, request):
+    """ Run tests in transaction. """
+    app.peewee.database.set_autocommit(False)
+    app.peewee.database.begin()
+    request.addfinalizer(lambda: app.peewee.database.rollback())
+    return app.peewee.database
+
+
+@pytest.fixture(scope='session')
+def mixer(app):
+    from mixer.backend.peewee import Mixer
+    return Mixer(commit=True)

@@ -4,3 +4,4 @@
 pytest
 pytest-pythonpath
 webtest
+mixer

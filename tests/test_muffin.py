@@ -1,5 +1,7 @@
 """ Tests for `muffin` module. """
 
+import pytest
+
 
 def test_app(client):
     response = client.get('/')
@@ -13,8 +15,28 @@ def test_app(client):
     assert response.json
     assert response.json['json'] == 'here'
 
+
+def test_peewee(client, mixer):
+    mixer.blend('models.Test')
+
     response = client.get('/db-sync')
     assert response.json
 
-    response = client.get('/db-async')
-    assert response
+    # response = client.get('/db-async')
+    # assert response.json
+
+
+def test_manage(app, capsys):
+    @app.manage.command
+    def hello(name='Mike'):
+        print("hello " + name)
+
+    with pytest.raises(SystemExit):
+        app.manage(['hello'])
+    out, err = capsys.readouterr()
+    assert "hello Mike\n" == out
+
+    with pytest.raises(SystemExit):
+        app.manage(['hello', '--name=Sam'])
+    out, err = capsys.readouterr()
+    assert "hello Sam\n" == out

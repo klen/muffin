@@ -4,6 +4,7 @@ from app import app
 
 
 class Test(Model):
+
     data = CharField()
 
     class Meta(object):

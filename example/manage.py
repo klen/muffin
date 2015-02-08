@@ -1,8 +1,8 @@
 from app import app
 
 
-@app.manage.command('db')
-def hello_world_command():
+@app.manage.command
+def hello_world():
     print('Hello world!')
 
 

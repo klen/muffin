@@ -1,3 +1,4 @@
+""" Implement Muffin Application. """
 import asyncio
 import json
 import signal
@@ -10,6 +11,13 @@ from cached_property import cached_property
 
 
 CONFIGURATION_ENVIRON_VARIABLE = 'MUFFIN_CONFIG'
+
+
+class MuffinException(Exception):
+
+    """ Implement a Muffin's exception. """
+
+    pass
 
 
 class Application(web.Application):
@@ -26,23 +34,36 @@ class Application(web.Application):
             'muffin.plugins.peewee:PeeweePlugin',
         ),
 
+        # Configuration module
+        'CONFIG': 'config',
+
         # Enable debug mode
         'DEBUG': False
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
+                 handler_factory=web.RequestHandlerFactory, **OPTIONS):
+        """ Initialize the application. """
+        super().__init__(loop=loop, router=router, middlewares=middlewares, logger=logger,
+                         handler_factory=handler_factory)
+
+        self.defaults = dict(self.__defaults)
+        self.defaults.update(OPTIONS)
+
         self.loop.set_debug(self.config['DEBUG'])
         self._middlewares = list(self._middlewares)
         self.plugins = []
         for plugin in self.config['PLUGINS']:
-            self.install(plugin)
+            try:
+                self.install(plugin)
+            except Exception as exc:
+                self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
 
     @cached_property
     def config(self):
         """ Load the application configuration. """
-        config = dict(self.__defaults)
-        module = os.environ.get(CONFIGURATION_ENVIRON_VARIABLE, 'config')
+        config = dict(self.defaults)
+        module = os.environ.get(CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
         try:
             module = import_module(module)
             config.update({
@@ -56,7 +77,6 @@ class Application(web.Application):
 
     def install(self, plugin):
         """ Install plugin to the application. """
-
         if isinstance(plugin, str):
             module, attr = plugin.split(':')
             module = import_module(module)
@@ -69,14 +89,13 @@ class Application(web.Application):
             plugin.setup(self)
 
         if hasattr(plugin, 'middleware_factory'):
-            self.middlewares.append(getattr(plugin.middleware))
+            self.middlewares.append(plugin.middleware_factory)
 
         self.plugins.append(plugin.name)
         setattr(self, plugin.name, plugin)
 
     def run(self, host='127.0.0.1', port=8080):
         """ Run the application. """
-
         ch = logging.StreamHandler()
         ch.setFormatter(logging.Formatter('%(asctime)-15s - %(message)s'))
         self.logger.addHandler(ch)
@@ -95,6 +114,7 @@ class Application(web.Application):
             self.loop.close()
 
     def stop(self):
+        """ Stop the application. """
         self.logger.info('The server is stopping.')
         self.loop.stop()
 

@@ -74,7 +74,7 @@ $(VIRTUALENV)/bin/py.test: $(VIRTUALENV) requirements-tests.txt
 .PHONY: test
 # target: test - Runs tests
 test: $(VIRTUALENV)/bin/py.test
-	@$(VIRTUALENV)/bin/py.test -xs
+	@$(VIRTUALENV)/bin/py.test tests
 
 .PHONY: t
 t: test

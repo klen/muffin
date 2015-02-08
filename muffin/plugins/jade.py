@@ -1,3 +1,5 @@
+""" Support Jade Template Engine. """
+
 import asyncio
 from os import path as op
 
@@ -18,11 +20,13 @@ class JadePlugin(object):
     )
 
     def __init__(self):
+        """ Initialize the plugin. """
         self.app = None
         self.env = Environment()
         self.providers = []
 
     def setup(self, app):
+        """ Setup the plugin from an application. """
         app.config.setdefault('JADE_CACHE_SIZE', self.defaults['cache_size'])
         app.config.setdefault('JADE_PRETTY', self.defaults['pretty'])
         app.config.setdefault('JADE_TEMPLATE_FOLDER', self.defaults['template_folder'])
@@ -35,7 +39,7 @@ class JadePlugin(object):
             debug=app.config.get('DEBUG', False),
             pretty=app.config['JADE_PRETTY'],
             encoding=app.config['JADE_ENCODING'],
-            template_folder=app.config['JADE_TEMPLATE_FOLDER'],
+            template_folder=op.abspath(app.config['JADE_TEMPLATE_FOLDER']),
         )
 
     def ctx_provider(self, func):
@@ -53,6 +57,7 @@ class JadePlugin(object):
 
     @asyncio.coroutine
     def render(self, path, **context):
+        """ Render a template with context. """
         ctx = dict()
         for provider in self.providers:
             _ctx = yield from provider()
@@ -62,6 +67,7 @@ class JadePlugin(object):
         return self.env.render(template, **ctx)
 
     def view(self, template):
+        """ Render a view' handler. """
         def decorator(callback):
             def wrapper(*args, **kwargs):
                 context = callback(*args, **kwargs)
@@ -75,7 +81,10 @@ class JadePlugin(object):
 
 class ExtendCompiler(Compiler):
 
+    """ Jade Compiler which supports include and extend tags. """
+
     def __init__(self, node, env, **options):
+        """ Initialize the compiler. """
         super(ExtendCompiler, self).__init__(node, **options)
         self.env = env
         self.blocks = {node.name: node for node in self.node.nodes if isinstance(node, CodeBlock)}
@@ -93,11 +102,13 @@ class ExtendCompiler(Compiler):
                     self.blocks[cblock.name] = cblock
 
     def visitCodeBlock(self, block):
+        """ Support block interihance. """
         block = self.blocks.get(block.name, block)
         for node in block.nodes:
             self.visitNode(node)
 
     def visitInclude(self, node):
+        """ Support inclusion. """
         compiler = self.env.get_template(node.path)
         self.visit(compiler.node)
 
@@ -110,14 +121,17 @@ class Environment(object):
     cache_index = []
 
     def __init__(self, **options):
+        """ Prepare an environment. """
         self.options = options
 
     @classmethod
     def clean(cls):
+        """ Clean self templates' cache. """
         cls.cache = {}
         cls.cache_index = []
 
     def load_template(self, path):
+        """ Load and compile a template. """
         if not path.startswith('/'):
             path = op.join(self.options['template_folder'], path)
 
@@ -130,6 +144,7 @@ class Environment(object):
         )
 
     def cache_template(self, path):
+        """ Cache a compiled template. """
         compiler = self.load_template(path)
         if path not in self.cache_index:
             self.cache_index.append(path)
@@ -140,8 +155,7 @@ class Environment(object):
 
     @asyncio.coroutine
     def get_template(self, path):
-        """ Load and compile template. """
-
+        """ Load template from cache. """
         if not self.options['debug'] and self.options['cache_size']:
             return self.cache.get(path, self.cache_template(path))
 

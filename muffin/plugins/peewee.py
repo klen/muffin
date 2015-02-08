@@ -45,16 +45,34 @@ class PeeweePlugin(object):
         self.database = peewee.Proxy()
         self.connection = connection or self.default_connection
         self.serializer = Serializer()
-        self.threadpool = concurrent.futures.ThreadPoolExecutor(max_workers=self.max_connections)
 
     def setup(self, app):
         """ Initialize the application. """
 
         self.app = app
         app.config.setdefault('PEEWEE_CONNECTION', self.connection)
+        app.config.setdefault('PEEWEE_MAX_CONNECTIONS', self.max_connections)
 
-        self.connection = app.config.get('PEEWEE_CONNECTION')
+        self.connection = app.config['PEEWEE_CONNECTION']
+        self.max_connections = app.config['PEEWEE_MAX_CONNECTIONS']
         self.database.initialize(connect(self.connection))
+        self.threadpool = concurrent.futures.ThreadPoolExecutor(max_workers=self.max_connections)
+
+    @asyncio.coroutine
+    def middleware_factory(self, app, handler):
+
+        @asyncio.coroutine
+        def middleware(request):
+            if self.connection.startswith('sqlite'):
+                return (yield from handler(request))
+
+            self.database.connect()
+            response = yield from handler(request)
+            if not self.database.is_closed():
+                self.database.close()
+            return response
+
+        return middleware
 
     def query(self, query):
         if isinstance(query, peewee.SelectQuery):
@@ -78,12 +96,9 @@ class PeeweePlugin(object):
                 raise
             finally:
                 database.commit()
-                if not database.is_closed():
-                    database.close()
 
-        result = yield from self.app.loop.run_in_executor(
-            self.threadpool, iteration, self.database,  *args)
-        return result
+        return (yield from self.app.loop.run_in_executor(self.threadpool, iteration,
+                                                         self.database,  *args))
 
     def to_dict(self, obj, **kwargs):
         return self.serializer.serialize_object(obj, **kwargs)

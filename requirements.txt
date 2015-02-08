@@ -1,6 +1,5 @@
 aiohttp
 cached_property
-click
 peewee
 pyjade
 werkzeug
