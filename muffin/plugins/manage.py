@@ -8,7 +8,7 @@ class ManagePlugin(object):
     name = 'manage'
 
     def __init__(self):
-        self.parser = argparse.ArgumentParser(description="Manage Muffin Application")
+        self.parser = argparse.ArgumentParser(description="Manage Application")
         self.parsers = self.parser.add_subparsers(dest='subparser')
         self.handlers = dict()
 
@@ -17,6 +17,7 @@ class ManagePlugin(object):
         self.app = app
 
         app.config.setdefault('MANAGE_SHELL', {'app': app})
+        self.parser.description = "Manage %s" % app.name.capitalize()
 
         @self.command
         def shell():

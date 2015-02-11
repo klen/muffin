@@ -42,12 +42,13 @@ class Application(web.Application):
         'DEBUG': False
     }
 
-    def __init__(self, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
+    def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
                  handler_factory=web.RequestHandlerFactory, **OPTIONS):
         """ Initialize the application. """
         super().__init__(loop=loop, router=router, middlewares=middlewares, logger=logger,
                          handler_factory=handler_factory)
 
+        self.name = name
         self.defaults = dict(self.__defaults)
         self.defaults.update(OPTIONS)
 
@@ -111,10 +112,11 @@ class Application(web.Application):
         self.loop.add_signal_handler(signal.SIGTERM, self.stop)
         self.loop.add_signal_handler(signal.SIGINT, self.stop)
 
-        setproctitle.setproctitle('muffin %s:%s' % (host, port))
+        setproctitle.setproctitle('%s %s:%s' % (self.name, host, port))
 
         try:
-            self.logger.info('Server started at http://%s:%s' % (host, port))
+            self.logger.info('%s server started at http://%s:%s',
+                             self.name.capitalize(), host, port)
             self.loop.run_forever()
             asyncio.sleep
         finally:

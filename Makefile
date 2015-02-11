@@ -86,12 +86,15 @@ doc: docs $(VIRTUALENV)
 	@$(VIRTUALENV)/bin/python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
 	@$(VIRTUALENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
+
+MANAGER=$(VIRTUALENV)/bin/python example/app.py 
+CMD = --help
+
+manage: $(VIRTUALENV)
+	@$(MANAGER) $(CMD)
+
 run: $(VIRTUALENV)
-	@$(VIRTUALENV)/bin/python example/manage.py runserver
+	@make manage CMD=runserver
 
 shell: $(VIRTUALENV)
-	@$(VIRTUALENV)/bin/python example/manage.py shell
-
-CMD = --help
-manage: $(VIRTUALENV)
-	@$(VIRTUALENV)/bin/python example/manage.py $(CMD)
+	@make manage CMD=shell

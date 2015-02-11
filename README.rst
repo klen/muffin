@@ -34,7 +34,7 @@ The Muffin -- A web framework based on Asyncio stack. (early alpha)
 Requirements
 =============
 
-- python >= 2.6
+- python >= 3.3
 
 .. _installation:
 
@@ -49,6 +49,12 @@ Installation
 
 Usage
 =====
+
+See sources of example application.
+
+Run example server: ::
+
+    $ make run
 
 .. _bugtracker:
 
