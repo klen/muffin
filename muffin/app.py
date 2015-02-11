@@ -2,6 +2,7 @@
 import asyncio
 import logging
 import os
+import setproctitle
 import signal
 from importlib import import_module
 
@@ -96,15 +97,21 @@ class Application(web.Application):
 
     def run(self, host='127.0.0.1', port=8080):
         """ Run the application. """
+
+        # Setup logging
         ch = logging.StreamHandler()
         ch.setFormatter(logging.Formatter('%(asctime)-15s - %(message)s'))
         self.logger.addHandler(ch)
         self.logger.setLevel('DEBUG') if self.config['DEBUG'] else self.logger.setLevel('WARNING')
-        self.loop.run_until_complete(
-            self.loop.create_server(self.make_handler(), host, port))
 
+        # Initialize server
+        self.loop.run_until_complete(self.loop.create_server(self.make_handler(), host, port))
+
+        # Bind to signals
         self.loop.add_signal_handler(signal.SIGTERM, self.stop)
         self.loop.add_signal_handler(signal.SIGINT, self.stop)
+
+        setproctitle.setproctitle('muffin %s:%s' % (host, port))
 
         try:
             self.logger.info('Server started at http://%s:%s' % (host, port))

@@ -2,5 +2,6 @@ aiohttp
 cached_property
 peewee
 pyjade
+setproctitle
 ujson
 werkzeug
