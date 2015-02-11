@@ -1,11 +1,11 @@
 """ Implement Muffin Application. """
 import asyncio
-import json
-import signal
 import logging
 import os
+import signal
 from importlib import import_module
 
+import ujson as json
 from aiohttp import web
 from cached_property import cached_property
 
