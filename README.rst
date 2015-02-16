@@ -3,7 +3,7 @@ The Muffin
 
 .. _description:
 
-The Muffin -- A web framework based on Asyncio stack. (early alpha)
+The Muffin -- A web framework based on Asyncio stack. **(early alpha)**
 
 .. _badges:
 
@@ -55,6 +55,38 @@ See sources of example application.
 Run example server: ::
 
     $ make run
+
+Configuration
+-------------
+
+Muffin gets configuration options from python files. By default the package
+tries to load a configuration from `config` module (config.py).
+
+There are few ways to redifine configuration module:
+
+* Set configuration module in your app initialization: ::
+
+    app = muffin.Application('myapp', CONFIG='config.debug')
+
+* Set environment variable `MUFFIN_CONFIG`: ::
+
+    $ MUFFIN_CONFIG=settings_local ./app.py runserver
+
+Also you can define any options while initializing your application: ::
+
+    app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
+
+Sessions
+--------
+
+Templates (Jade)
+----------------
+
+SQL (Peewee)
+------------
+
+CLI integration
+---------------
 
 .. _bugtracker:
 
