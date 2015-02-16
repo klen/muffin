@@ -2,19 +2,23 @@ import argparse
 import inspect
 import sys
 
+from . import BasePlugin
 
-class ManagePlugin(object):
+
+class ManagePlugin(BasePlugin):
 
     name = 'manage'
 
-    def __init__(self):
+    def __init__(self, **options):
+        super().__init__(**options)
+
         self.parser = argparse.ArgumentParser(description="Manage Application")
         self.parsers = self.parser.add_subparsers(dest='subparser')
         self.handlers = dict()
 
     def setup(self, app):
 
-        self.app = app
+        super().setup(app)
 
         app.config.setdefault('MANAGE_SHELL', {'app': app})
         self.parser.description = "Manage %s" % app.name.capitalize()
@@ -33,7 +37,9 @@ class ManagePlugin(object):
         @self.command
         def runserver(port=5000):
             """ Run the application. """
-            app.run(port=port)
+            from muffin.worker import GunicornApp
+            gapp = GunicornApp(app, {'bind': '127.0.0.1:%d' % port})
+            gapp.run()
 
     def command(self, func):
         parser = self.parsers.add_parser(func.__name__, description=func.__doc__)

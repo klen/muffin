@@ -2,8 +2,6 @@
 import asyncio
 import logging
 import os
-import setproctitle
-import signal
 from importlib import import_module
 
 import ujson as json
@@ -21,6 +19,15 @@ class MuffinException(Exception):
     pass
 
 
+class Plugins(dict):
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+
 class Application(web.Application):
 
     """ Do some stuff. """
@@ -33,6 +40,7 @@ class Application(web.Application):
             'muffin.plugins.manage:ManagePlugin',
             'muffin.plugins.jade:JadePlugin',
             'muffin.plugins.peewee:PeeweePlugin',
+            'muffin.plugins.session:SessionPlugin',
         ),
 
         # Configuration module
@@ -52,9 +60,17 @@ class Application(web.Application):
         self.defaults = dict(self.__defaults)
         self.defaults.update(OPTIONS)
 
-        self.loop.set_debug(self.config['DEBUG'])
         self._middlewares = list(self._middlewares)
-        self.plugins = []
+
+        # Setup logging
+        ch = logging.StreamHandler()
+        ch.setFormatter(logging.Formatter(
+            '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',
+            '[%Y-%m-%d %H:%M:%S %z]'))
+        self.logger.addHandler(ch)
+        self.logger.setLevel('DEBUG') if self.config['DEBUG'] else self.logger.setLevel('WARNING')
+
+        self.plugins = Plugins()
         for plugin in self.config['PLUGINS']:
             try:
                 self.install(plugin)
@@ -79,6 +95,7 @@ class Application(web.Application):
 
     def install(self, plugin):
         """ Install plugin to the application. """
+
         if isinstance(plugin, str):
             module, attr = plugin.split(':')
             module = import_module(module)
@@ -93,39 +110,7 @@ class Application(web.Application):
         if hasattr(plugin, 'middleware_factory'):
             self.middlewares.append(plugin.middleware_factory)
 
-        self.plugins.append(plugin.name)
-        setattr(self, plugin.name, plugin)
-
-    def run(self, host='127.0.0.1', port=8080):
-        """ Run the application. """
-
-        # Setup logging
-        ch = logging.StreamHandler()
-        ch.setFormatter(logging.Formatter('%(asctime)-15s - %(message)s'))
-        self.logger.addHandler(ch)
-        self.logger.setLevel('DEBUG') if self.config['DEBUG'] else self.logger.setLevel('WARNING')
-
-        # Initialize server
-        self.loop.run_until_complete(self.loop.create_server(self.make_handler(), host, port))
-
-        # Bind to signals
-        self.loop.add_signal_handler(signal.SIGTERM, self.stop)
-        self.loop.add_signal_handler(signal.SIGINT, self.stop)
-
-        setproctitle.setproctitle('%s %s:%s' % (self.name, host, port))
-
-        try:
-            self.logger.info('%s server started at http://%s:%s',
-                             self.name.capitalize(), host, port)
-            self.loop.run_forever()
-            asyncio.sleep
-        finally:
-            self.loop.close()
-
-    def stop(self):
-        """ Stop the application. """
-        self.logger.info('The server is stopping.')
-        self.loop.stop()
+        self.plugins[plugin.name] = plugin
 
     def view(self, path, method='GET', name=None):
         """ Convert a view to couroutine and bind a route. """
