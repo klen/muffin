@@ -6,7 +6,14 @@ app = muffin.Application('example', CONFIG='config.debug')
 
 @app.view('/')
 def hello(request):
-    return (yield from app.jade.render('index.jade'))
+    return (yield from app.plugins.jade.render(
+        'index.jade', user=request.session.get('user', 'anonimous')))
+
+
+@app.view('/login')
+def login(request):
+    request.session['user'] = request.GET.get('user', 'anonimous')
+    return "Logged as %s" % request.session['user']
 
 
 @app.view('/db-sync')
@@ -25,6 +32,12 @@ def raise404(request):
     raise muffin.HTTPNotFound
 
 
+# @app.view('/oauth')
+# @app.oauth.handle
+# def oauth(request):
+    # return 'OAuth Here'
+
+
 @app.view('/db-async')
 def db_async(request):
     from models import Test
@@ -32,10 +45,10 @@ def db_async(request):
     return [t.data for t in results]
 
 
-@app.manage.command
+@app.plugins.manage.command
 def hello_world():
     print('Hello world!')
 
 
 if __name__ == '__main__':
-    app.manage()
+    app.plugins.manage()

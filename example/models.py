@@ -8,7 +8,7 @@ class Test(Model):
     data = CharField()
 
     class Meta(object):
-        database = app.peewee.database
+        database = app.plugins.peewee.database
 
 
 class Lama(Model):
@@ -16,4 +16,4 @@ class Lama(Model):
     data = CharField()
 
     class Meta(object):
-        database = app.peewee.database
+        database = app.plugins.peewee.database
