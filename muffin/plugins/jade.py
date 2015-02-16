@@ -5,9 +5,10 @@ from os import path as op
 
 from pyjade.ext.html import pyjade, Compiler, local_context_manager
 from pyjade.nodes import Extends, CodeBlock
+from . import BasePlugin
 
 
-class JadePlugin(object):
+class JadePlugin(BasePlugin):
 
     """ The class is used to control the pyjade integration to Muffin application. """
 
@@ -19,28 +20,19 @@ class JadePlugin(object):
         template_folder='templates',
     )
 
-    def __init__(self):
+    def __init__(self, **options):
         """ Initialize the plugin. """
-        self.app = None
+        super().__init__(**options)
+
         self.env = Environment()
         self.providers = []
 
     def setup(self, app):
         """ Setup the plugin from an application. """
-        app.config.setdefault('JADE_CACHE_SIZE', self.defaults['cache_size'])
-        app.config.setdefault('JADE_PRETTY', self.defaults['pretty'])
-        app.config.setdefault('JADE_TEMPLATE_FOLDER', self.defaults['template_folder'])
-        app.config.setdefault('JADE_ENCODING', self.defaults['encoding'])
+        super().setup(app)
 
         self.ctx_provider(lambda: {'app': self.app})
-
-        self.env = Environment(
-            cache_size=app.config['JADE_CACHE_SIZE'],
-            debug=app.config.get('DEBUG', False),
-            pretty=app.config['JADE_PRETTY'],
-            encoding=app.config['JADE_ENCODING'],
-            template_folder=op.abspath(app.config['JADE_TEMPLATE_FOLDER']),
-        )
+        self.env = Environment(debug=app.config.get('DEBUG', False), **self.options)
 
     def ctx_provider(self, func):
         """ Decorator for adding a context provider.

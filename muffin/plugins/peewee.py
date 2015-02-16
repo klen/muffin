@@ -9,6 +9,7 @@ import threading
 import peewee
 from playhouse.shortcuts import model_to_dict, dict_to_model
 from playhouse.db_url import connect
+from . import BasePlugin
 
 
 class AsyncDatabaseMixin:
@@ -32,38 +33,36 @@ class AsyncDatabaseMixin:
         self.connections[tid] = value
 
 
-class PeeweePlugin(object):
+class PeeweePlugin(BasePlugin):
 
     """ Integrate peewee to bottle. """
 
     name = 'peewee'
-    default_connection = 'sqlite:///db.sqlite'
-    max_connections = 2
+    defaults = {
+        'connection': 'sqlite:///db.sqlite',
+        'max_connections': 2,
+    }
 
-    def __init__(self, connection=None):
-        self.app = None
+    def __init__(self, **options):
+        super().__init__(**options)
+
         self.database = peewee.Proxy()
-        self.connection = connection or self.default_connection
         self.serializer = Serializer()
 
     def setup(self, app):
         """ Initialize the application. """
 
-        self.app = app
-        app.config.setdefault('PEEWEE_CONNECTION', self.connection)
-        app.config.setdefault('PEEWEE_MAX_CONNECTIONS', self.max_connections)
-
-        self.connection = app.config['PEEWEE_CONNECTION']
-        self.max_connections = app.config['PEEWEE_MAX_CONNECTIONS']
-        self.database.initialize(connect(self.connection))
-        self.threadpool = concurrent.futures.ThreadPoolExecutor(max_workers=self.max_connections)
+        super().setup(app)
+        self.database.initialize(connect(self.options['connection']))
+        self.threadpool = concurrent.futures.ThreadPoolExecutor(
+            max_workers=self.options['max_connections'])
 
     @asyncio.coroutine
     def middleware_factory(self, app, handler):
 
         @asyncio.coroutine
         def middleware(request):
-            if self.connection.startswith('sqlite'):
+            if self.options['connection'].startswith('sqlite'):
                 return (yield from handler(request))
 
             self.database.connect()
