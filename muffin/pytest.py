@@ -56,7 +56,7 @@ class TestRequest(webtest.TestRequest):
 
         http_version = HttpVersion10 if self.http_version == 'HTTP/1.0' else HttpVersion11
         message = RawRequestMessage(
-            self.method, self.path, http_version, CIMultiDict(self.headers), False, False)
+            self.method, self.path_qs, http_version, CIMultiDict(self.headers), False, False)
         payload = self.body_file_raw
 
         loop = asyncio.get_event_loop()
@@ -64,7 +64,11 @@ class TestRequest(webtest.TestRequest):
             application, application.router, handler=TestRequestHandler, loop=loop)()
         response = loop.run_until_complete(handler.handle_request(message, payload))
 
-        return response.status, response.headers.items(), [response.body], None
+        headers = dict(response.headers)
+        for cookie in response.cookies.values():
+            headers['SET-COOKIE'] = cookie.OutputString()
+
+        return response.status, headers.items(), [response.body], None
 
 
 class TestApp(webtest.TestApp):
