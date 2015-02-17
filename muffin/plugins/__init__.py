@@ -1,4 +1,16 @@
-class BasePlugin:
+class PluginMeta(type):
+
+    """ Ensure that each plugin is singleton. """
+
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(PluginMeta, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class BasePlugin(metaclass=PluginMeta):
 
     """ Implement base plugin functionality. """
 

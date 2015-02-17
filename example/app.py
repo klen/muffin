@@ -1,7 +1,13 @@
 import muffin
 
 
+from models import Test, db
+
+
 app = muffin.Application('example', CONFIG='config.debug')
+
+# Manual installation of plugin
+app.install(db)
 
 
 @app.view('/')
@@ -18,7 +24,6 @@ def login(request):
 
 @app.view('/db-sync')
 def db_sync(request):
-    from models import Test
     return [t.data for t in Test.select()]
 
 
@@ -40,7 +45,6 @@ def raise404(request):
 
 @app.view('/db-async')
 def db_async(request):
-    from models import Test
     results = yield from app.peewee.query(Test.select())
     return [t.data for t in results]
 

@@ -48,3 +48,4 @@ docs/_build
 /probe.py
 /settings
 /todo.txt
+/peewee.db

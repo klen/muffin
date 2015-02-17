@@ -1,6 +1,8 @@
 from peewee import * # noqa
 
-from app import app
+from muffin.plugins.peewee import PeeweePlugin
+
+db = PeeweePlugin()
 
 
 class Test(Model):
@@ -8,7 +10,7 @@ class Test(Model):
     data = CharField()
 
     class Meta(object):
-        database = app.plugins.peewee.database
+        database = db.database
 
 
 class Lama(Model):
@@ -16,4 +18,4 @@ class Lama(Model):
     data = CharField()
 
     class Meta(object):
-        database = app.plugins.peewee.database
+        database = db.database

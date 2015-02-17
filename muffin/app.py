@@ -107,7 +107,8 @@ class Application(web.Application):
         if hasattr(plugin, 'setup'):
             plugin.setup(self)
 
-        if hasattr(plugin, 'middleware_factory'):
+        if hasattr(plugin, 'middleware_factory') \
+                and plugin.middleware_factory not in self.middlewares:
             self.middlewares.append(plugin.middleware_factory)
 
         self.plugins[plugin.name] = plugin
