@@ -20,7 +20,12 @@ class TestRequestHandler(RequestHandler):
     @asyncio.coroutine
     def handle_request(self, message, payload):
         app = self._app
+
         request = Request(app, message, payload, self.transport, self.reader, self.writer)
+
+        request._writer = lambda: None # noqa
+        request._writer.write = lambda b: None # noqa
+
         try:
             match_info = yield from self._router.resolve(request)
 
@@ -68,7 +73,7 @@ class TestRequest(webtest.TestRequest):
         for cookie in response.cookies.values():
             headers['SET-COOKIE'] = cookie.OutputString()
 
-        return response.status, headers.items(), [response.body], None
+        return response.status, headers.items(), [response._body], None
 
 
 class TestApp(webtest.TestApp):

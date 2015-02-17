@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 from gunicorn.app.base import Application as VanillaGunicornApp
 from gunicorn.workers.base import Worker as VanillaGunicornWorker
@@ -52,4 +53,8 @@ class GunicornWorker(VanillaGunicornWorker):
 
     def notify(self):
         super(GunicornWorker, self).notify()
-        self.loop.call_later(self.timeout, self.notify)
+        if self.alive and os.getppid() == self.ppid:
+            self.loop.call_later(self.timeout, self.notify)
+        else:
+            self.alive = False
+            self.log.info("Parent changed, shutting down: %s", self)

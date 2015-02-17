@@ -3,15 +3,6 @@
 import pytest
 
 
-def test_session(client, mixer):
-    response = client.get('/')
-    assert "Hello anonimous" in response.text
-
-    response = client.get('/login?user=Mike')
-    response = client.get('/')
-    assert "Hello Mike" in response.text
-
-
 def test_app(client):
     response = client.get('/')
     assert response.status_code == 200
@@ -23,6 +14,24 @@ def test_app(client):
     response = client.get('/json')
     assert response.json
     assert response.json['json'] == 'here'
+
+
+def test_static(client):
+    response = client.get('/static/media.txt')
+    assert response.status_code == 200
+    assert response.content_type == 'text/plain'
+
+    response = client.get('/static/unknow', status=404)
+    assert '404' in response.text
+
+
+def test_session(client, mixer):
+    response = client.get('/')
+    assert "Hello anonimous" in response.text
+
+    response = client.get('/login?user=Mike')
+    response = client.get('/')
+    assert "Hello Mike" in response.text
 
 
 def test_peewee(client, mixer):

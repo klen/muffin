@@ -8,6 +8,8 @@ PLUGINS = (
     'invalid.plugin',
 )
 
+STATIC_ROOT = 'example/static'
+
 # Plugin options
 # ==============
 

@@ -35,6 +35,12 @@ class Application(web.Application):
     # Default application settings
     __defaults = {
 
+        # Configuration module
+        'CONFIG': 'config',
+
+        # Enable debug mode
+        'DEBUG': False,
+
         # Install the plugins
         'PLUGINS': (
             'muffin.plugins.manage:ManagePlugin',
@@ -43,11 +49,9 @@ class Application(web.Application):
             'muffin.plugins.session:SessionPlugin',
         ),
 
-        # Configuration module
-        'CONFIG': 'config',
-
-        # Enable debug mode
-        'DEBUG': False
+        # Setup static files in development
+        'STATIC_PREFIX': '/static',
+        'STATIC_ROOT': 'static',
     }
 
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
@@ -70,12 +74,16 @@ class Application(web.Application):
         self.logger.addHandler(ch)
         self.logger.setLevel('DEBUG') if self.config['DEBUG'] else self.logger.setLevel('WARNING')
 
+        # Setup plugins
         self.plugins = Plugins()
         for plugin in self.config['PLUGINS']:
             try:
                 self.install(plugin)
             except Exception as exc:
                 self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
+
+        # Setup static files (development)
+        self.router.add_static(self.config['STATIC_PREFIX'], self.config['STATIC_ROOT'])
 
     @cached_property
     def config(self):
