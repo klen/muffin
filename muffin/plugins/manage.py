@@ -88,6 +88,7 @@ class ManagePlugin(BasePlugin):
         if args is None:
             args = sys.argv[1:]
         options = self.parser.parse_args(args)
+        sys.argv = sys.argv[:2]
         kwargs = dict(options._get_kwargs())
         handler = self.handlers.get(kwargs.pop('subparser'))
         if not handler:
