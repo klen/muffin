@@ -4,7 +4,6 @@ gunicorn            == 19.2.1
 peewee              == 2.4.6
 pyjade              == 3.0.0
 ujson               == 1.33
-werkzeug            == 0.9.6
 
 # pycrypto
 # oauthlib
