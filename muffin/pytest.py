@@ -1,5 +1,6 @@
 # Configure your tests here
 import asyncio
+import os
 
 import pytest
 import webtest
@@ -13,6 +14,7 @@ from aiohttp.web import (
     RequestHandlerFactory,
     StreamResponse,
 )
+from gunicorn import util
 
 
 class TestRequestHandler(RequestHandler):
@@ -81,25 +83,49 @@ class TestApp(webtest.TestApp):
     RequestClass = TestRequest
 
 
+def pytest_addoption(parser):
+    """ Add MUFFIN testing options. """
+
+    parser.addini('muffin_app', 'Set path to muffin application')
+    parser.addoption('--muffin-app', dest='muffin_app', help='Set to muffin application')
+
+    parser.addini('muffin_config', 'Set module path to muffin configuration')
+    parser.addoption('--muffin-config', dest='muffin_config',
+                     help='Set module path to muffin configuration')
+
+
+def pytest_load_initial_conftests(early_config, parser, args):
+    from muffin import CONFIGURATION_ENVIRON_VARIABLE
+    options = parser.parse_known_args(args)
+
+    # Initialize configuration
+    config = options.muffin_config or early_config.getini('muffin_config')
+    if config:
+        os.environ[CONFIGURATION_ENVIRON_VARIABLE] = config
+
+    # Initialize application
+    app = options.muffin_app or early_config.getini('muffin_app')
+    if not app:
+        raise SystemExit('Improperly configured. '
+                         'Please set ``muffin_app`` in your pytest config. '
+                         'Or use ``--muffin-app`` command option.')
+    early_config.app = app
+
+
 @pytest.fixture(scope='session')
-def app():
+def app(pytestconfig):
     """ Provide an example application. """
-    from app import app
+    app = pytestconfig.app
+    app = util.import_app(app)
 
-    try:
+    if 'peewee' in app.plugins:
         import peewee
-        import models
 
-        for name in dir(models):
-            cls = getattr(models, name)
-            if isinstance(cls, type) and issubclass(cls, peewee.Model):
-                try:
-                    cls.create_table()
-                except peewee.OperationalError:
-                    pass
-
-    except ImportError:
-        pass
+        for model in app.plugins.peewee.models.values():
+            try:
+                model.create_table()
+            except peewee.OperationalError:
+                pass
 
     return app
 
