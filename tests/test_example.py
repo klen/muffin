@@ -35,7 +35,7 @@ def test_session(client, mixer):
 
 
 def test_peewee(client, mixer):
-    mixer.blend('models.Test')
+    mixer.blend('example.models.Test')
 
     response = client.get('/db-sync')
     assert response.json
