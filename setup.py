@@ -52,8 +52,7 @@ setup(
     include_package_data=True,
     install_requires=install_requires,
     entry_points = {
-        'pytest11': [
-            'muffin_pytest = muffin.pytest',
-        ]
+        'pytest11': ['muffin_pytest = muffin.pytest'],
+        'console_scripts': ['gmuffin = muffin.app:run'],
     },
 )
