@@ -83,13 +83,20 @@ class Application(web.Application):
                 self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
 
         # Setup static files (development)
-        self.router.add_static(self.config['STATIC_PREFIX'], self.config['STATIC_ROOT'])
+        if os.path.isdir(self.config['STATIC_ROOT']):
+            self.router.add_static(self.config['STATIC_PREFIX'], self.config['STATIC_ROOT'])
+        else:
+            self.logger.warn('Disable STATIC_ROOT (hasnt found): %s' % self.config['STATIC_ROOT'])
+
+    def __call__(self, *args, **kwargs):
+        return self
 
     @cached_property
     def config(self):
         """ Load the application configuration. """
         config = dict(self.defaults)
-        module = os.environ.get(CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
+        module = config['CONFIG'] = os.environ.get(
+            CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
         try:
             module = import_module(module)
             config.update({
@@ -143,3 +150,13 @@ class Application(web.Application):
             self.router.add_route(method, path, wrap_response, name=name)
 
         return wrapper
+
+
+def run():
+    """ Run the Gunicorn Application. """
+    from .worker import GunicornApp
+
+    GunicornApp("%(prog)s [OPTIONS] [APP]").run()
+
+if __name__ == '__main__':
+    run()
