@@ -87,7 +87,7 @@ doc: docs $(VIRTUALENV)
 	@$(VIRTUALENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
 
-MANAGER=$(VIRTUALENV)/bin/python example/app.py 
+MANAGER=$(VIRTUALENV)/bin/python -m example.app
 CMD = --help
 
 manage: $(VIRTUALENV)
