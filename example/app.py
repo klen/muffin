@@ -1,10 +1,10 @@
 import muffin
 
 
-from models import Test, db
+from .models import Test, db
 
 
-app = muffin.Application('example', CONFIG='config.debug')
+app = muffin.Application('example', CONFIG='example.config.debug')
 
 # Manual installation of plugin
 app.install(db)

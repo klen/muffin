@@ -1,4 +1,6 @@
 # Import the project's settings
-from config.production import *
+from .production import *
+
+reload = True
 
 DEBUG = True
