@@ -142,9 +142,8 @@ Contributors
 License
 =======
 
-Licensed under a `BSD license`_.
+Licensed under a MIT license (See LICENSE)
 
 .. _links:
 
-.. _BSD license: http://www.linfo.org/bsdlicense.html
 .. _klen: https://github.com/klen
