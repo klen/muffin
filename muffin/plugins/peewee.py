@@ -48,6 +48,7 @@ class PeeweePlugin(BasePlugin):
 
         self.database = peewee.Proxy()
         self.serializer = Serializer()
+        self.models = dict()
 
     def setup(self, app):
         """ Initialize the application. """
@@ -101,6 +102,12 @@ class PeeweePlugin(BasePlugin):
 
     def to_dict(self, obj, **kwargs):
         return self.serializer.serialize_object(obj, **kwargs)
+
+    def register(self, model):
+        """ Register a model in self. """
+        self.models[model._meta.db_table] = model
+        model._meta.database = self.database
+        return model
 
 
 class Serializer(object):
