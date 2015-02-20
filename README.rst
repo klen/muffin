@@ -70,11 +70,15 @@ There are few ways to redifine configuration module:
 
 * Set environment variable `MUFFIN_CONFIG`: ::
 
-    $ MUFFIN_CONFIG=settings_local ./app.py runserver
+    $ MUFFIN_CONFIG=settings_local python -m example.app runserver
 
 Also you can define any options while initializing your application: ::
 
     app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
+
+When using ``gmuffin`` (see bellow): ::
+
+    $ gmuffin -c example.config.debug example.app:app
 
 Sessions
 --------
@@ -87,6 +91,29 @@ SQL (Peewee)
 
 CLI integration
 ---------------
+
+.. _testing:
+
+Testing
+========
+
+Set module path to your Muffin Application in pytest configuration file or use
+command line option ``--muffin-app``.
+
+Example: ::
+
+    $ py.test -xs --muffin-app example.app:app
+
+.. _deployment:
+
+Deployment
+==========
+
+Use ``gmuffin`` command. By example: ::
+
+    $ gmuffin --reload -w 4 example.app:app
+
+See ``gmuffin --help`` for more info.
 
 .. _bugtracker:
 
