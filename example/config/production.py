@@ -28,3 +28,4 @@ OAUTH2_CLIENTS = {
         'secret': '21ff23d9f1cad775daee6a38d230e1ee05b04f7c',
     }
 }
+PEEWEE_MIGRATIONS_PATH = 'example/migrations'
