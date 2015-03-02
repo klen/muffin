@@ -80,17 +80,91 @@ When using ``gmuffin`` (see bellow): ::
 
     $ gmuffin -c example.config.debug example.app:app
 
-Sessions
---------
+Base application options
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Base Muffin options and default values: ::
+
+        # Configuration module
+        'CONFIG': 'config',
+
+        # Enable debug mode
+        'DEBUG': False,
+
+        # List of enabled plugins
+        'PLUGINS': (
+            'muffin.plugins.manage:ManagePlugin',
+            'muffin.plugins.jade:JadePlugin',
+            'muffin.plugins.peewee:PeeweePlugin',
+            'muffin.plugins.session:SessionPlugin',
+        ),
+
+        # Setup static files in development
+        'STATIC_PREFIX': '/static',
+        'STATIC_ROOT': 'static',
+
+
+CLI integration
+---------------
+
+Add the next lines to end of your application file: ::
+
+    if __name__ == '__main__':
+        app.plugins.manage()
+
+Run in your shell: ::
+
+    $ python -m path.to.your.app.module --help
+
+Write a custom command
+^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    @app.plugins.manage.command
+    def hello_world(option=None, boolean_options=False):
+        print('Hello world!')
+
 
 Templates (Jade)
 ----------------
 
+Use ``jade.render`` in your handlers: ::
+
+    @app.view('/')
+    def hello(request):
+        return (yield from app.plugins.jade.render(
+            'index.jade', user=request.session.get('user', 'anonimous')))
+
+The syntax is: ::
+
+    jade.render(TEMPLATE_NAME, **CUSTOM_CONTEXT)
+
+
+Add default context provider: ::
+
+    @jade.ctx_provider
+    def my_context():
+        """ Could be a coroutine. """
+        return { ... }
+
+
+Sessions
+--------
+
 SQL (Peewee)
 ------------
 
-CLI integration
----------------
+Migrations
+^^^^^^^^^^
+
+* Create migrations: ::
+
+    $ python -m path.to.your.app create [NAME]
+
+* Run migrations: ::
+
+    $ python -m path.to.your.app migrate [NAME]
 
 .. _testing:
 
