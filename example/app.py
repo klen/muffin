@@ -10,6 +10,12 @@ app = muffin.Application('example', CONFIG='example.config.debug')
 app.install(db)
 
 
+# Add to context providers
+@app.plugins.jade.ctx_provider
+def add_constant():
+    return {'MUFFIN': 'ROCKS'}
+
+
 @app.view('/')
 def hello(request):
     return (yield from app.plugins.jade.render(
