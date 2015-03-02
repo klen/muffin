@@ -1,3 +1,8 @@
+class PluginException(Exception):
+
+    """ Implement any exception in plugins. """
+
+
 class PluginMeta(type):
 
     """ Ensure that each plugin is singleton. """
