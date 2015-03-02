@@ -129,17 +129,15 @@ class Migrator(object):
         self.db = db
         self.migrator = SchemaMigrator.from_database(self.db)
 
-    def create_table(self, model):
+    def create_table(self, table, fields):
+        model = type(table, (pw.Model,), fields)
         self.db.create_table(model)
 
-    def create_tables(self, *models):
-        self.db.create_tables(models)
-
-    def drop_table(self, model):
-        self.db.drop_table(model)
-
-    def drop_tables(self, *models):
-        self.db.drop_tables(models)
+    def drop_table(self, table, cascade=True):
+        class model(pw.Model):
+            class Meta:
+                db_table = table
+        return self.db.drop_table(model, cascade=cascade)
 
     def add_column(self, table, name, field):
         operation = self.migrator.add_column(table, name, field)

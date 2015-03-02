@@ -55,7 +55,7 @@ class JadePlugin(BasePlugin):
             _ctx = yield from provider()
             ctx.update(_ctx)
         ctx.update(context)
-        template = yield from self.env.get_template(path)
+        template = self.env.get_template(path)
         return self.env.render(template, **ctx)
 
 
@@ -133,7 +133,6 @@ class Environment(object):
             self.cache.pop(self.cache_index.pop(0))
         return compiler
 
-    @asyncio.coroutine
     def get_template(self, path):
         """ Load template from cache. """
         if not self.options['debug'] and self.options['cache_size']:

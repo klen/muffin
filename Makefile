@@ -93,8 +93,11 @@ CMD = --help
 manage: $(VIRTUALENV)
 	@$(MANAGER) $(CMD)
 
-run: $(VIRTUALENV)
+run: $(VIRTUALENV) db.sqlite
 	@make manage CMD=runserver
 
 shell: $(VIRTUALENV)
 	@make manage CMD=shell
+
+db.sqlite: $(VIRTUALENV)
+	@$(VIRTUALENV)/bin/python -m example.app migrate

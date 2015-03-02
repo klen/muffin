@@ -16,6 +16,10 @@ def add_constant():
     return {'MUFFIN': 'ROCKS'}
 
 
+# Views
+# =====
+
+
 @app.view('/')
 def hello(request):
     return (yield from app.plugins.jade.render(
@@ -54,6 +58,9 @@ def db_async(request):
     results = yield from app.peewee.query(Test.select())
     return [t.data for t in results]
 
+
+# Commands
+# ========
 
 @app.plugins.manage.command
 def hello_world():
