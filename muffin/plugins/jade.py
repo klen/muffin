@@ -58,18 +58,6 @@ class JadePlugin(BasePlugin):
         template = yield from self.env.get_template(path)
         return self.env.render(template, **ctx)
 
-    def view(self, template):
-        """ Render a view' handler. """
-        def decorator(callback):
-            def wrapper(*args, **kwargs):
-                context = callback(*args, **kwargs)
-                tmpl = template
-                if callable(template):
-                    tmpl = template()
-                return self.render(tmpl, **context)
-            return wrapper
-        return decorator
-
 
 class ExtendCompiler(Compiler):
 

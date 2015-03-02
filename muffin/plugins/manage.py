@@ -63,7 +63,7 @@ class ManagePlugin(BasePlugin):
     def command(self, func):
         parser = self.parsers.add_parser(func.__name__, description=func.__doc__)
         args, varargs, keywords, defaults = inspect.getargspec(func)
-        if args:
+        if args and defaults:
             for name, value in zip(args, defaults):
                 argname = "--%s" % name.lower()
                 if isinstance(value, bool):

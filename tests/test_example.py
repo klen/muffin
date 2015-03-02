@@ -34,16 +34,6 @@ def test_session(client, mixer):
     assert "Hello Mike" in response.text
 
 
-def test_peewee(client, mixer):
-    mixer.blend('example.models.Test')
-
-    response = client.get('/db-sync')
-    assert response.json
-
-    # response = client.get('/db-async')
-    # assert response.json
-
-
 def test_manage(app, capsys):
     @app.plugins.manage.command
     def hello(name='Mike'):

@@ -1,36 +1,13 @@
-# Package information
-# ===================
 import asyncio
 import concurrent
-import datetime
 from functools import partial
-import threading
 
 import peewee
-from playhouse.shortcuts import model_to_dict, dict_to_model
 from playhouse.db_url import connect
-from . import BasePlugin
 
-
-class AsyncDatabaseMixin:
-
-    max_connections = 4
-
-    def __init__(self, database, loop=None, **kwargs):
-        self.connections = {}
-        super().__init__(database, **kwargs)
-        self.loop = loop or asyncio.get_event_loop()
-        self.threadpool = concurrent.futures.ThreadPoolExecutor(max_workers=self.max_connections)
-
-    @property
-    def _Database__local(self):
-        tid = threading.get_ident()
-        return self.connections.get(tid, peewee._ConnectionLocal())
-
-    @_Database__local.setter
-    def _Database__local(self, value):
-        tid = threading.get_ident()
-        self.connections[tid] = value
+from .serialize import Serializer
+from .migrate import Router
+from muffin.plugins import BasePlugin, PluginException
 
 
 class PeeweePlugin(BasePlugin):
@@ -41,6 +18,7 @@ class PeeweePlugin(BasePlugin):
     defaults = {
         'connection': 'sqlite:///db.sqlite',
         'max_connections': 2,
+        'migrations_path': 'migrations',
     }
 
     def __init__(self, **options):
@@ -52,15 +30,35 @@ class PeeweePlugin(BasePlugin):
 
     def setup(self, app):
         """ Initialize the application. """
-
         super().setup(app)
+        if 'manage' not in app.plugins:
+            raise PluginException('Peewee plugin requires Manage plugin initialized before.')
+
+        # Setup Database
         self.database.initialize(connect(self.options['connection']))
         self.threadpool = concurrent.futures.ThreadPoolExecutor(
             max_workers=self.options['max_connections'])
 
+        # Setup migration engine
+        self.router = Router(self)
+
+        # Register migration commands
+        @self.app.plugins.manage.command
+        def migrate(name=None):
+            """ Run migrations: `%(prog)s [NAME]`
+
+            Start everything or choose a migration by NAME.
+            """
+            self.router.run(name)
+
+        @self.app.plugins.manage.command
+        def create(name=None):
+            """ Create migration with NAME. """
+            self.router.create(name)
+
     @asyncio.coroutine
     def middleware_factory(self, app, handler):
-
+        """ Control connection to database. """
         @asyncio.coroutine
         def middleware(request):
             if self.options['connection'].startswith('sqlite'):
@@ -82,7 +80,6 @@ class PeeweePlugin(BasePlugin):
     @asyncio.coroutine
     def run(self, function, *args, **kwargs):
         """ Run sync code asyncronously. """
-
         if kwargs:
             function = partial(function, **kwargs)
 
@@ -97,8 +94,9 @@ class PeeweePlugin(BasePlugin):
             finally:
                 database.commit()
 
-        return (yield from self.app.loop.run_in_executor(self.threadpool, iteration,
-                                                         self.database,  *args))
+        return (
+            yield from self.app.loop.run_in_executor(
+                self.threadpool, iteration, self.database,  *args))
 
     def to_dict(self, obj, **kwargs):
         return self.serializer.serialize_object(obj, **kwargs)
@@ -108,45 +106,3 @@ class PeeweePlugin(BasePlugin):
         self.models[model._meta.db_table] = model
         model._meta.database = self.database
         return model
-
-
-class Serializer(object):
-    date_format = '%Y-%m-%d'
-    time_format = '%H:%M:%S'
-    datetime_format = ' '.join([date_format, time_format])
-
-    def convert_value(self, value):
-        if isinstance(value, datetime.datetime):
-            return value.strftime(self.datetime_format)
-
-        if isinstance(value, datetime.date):
-            return value.strftime(self.date_format)
-
-        if isinstance(value, datetime.time):
-            return value.strftime(self.time_format)
-
-        if isinstance(value, peewee.Model):
-            return value.get_id()
-
-        return value
-
-    def clean_data(self, data):
-        for key, value in data.items():
-            if isinstance(value, dict):
-                self.clean_data(value)
-            elif isinstance(value, (list, tuple)):
-                data[key] = map(self.clean_data, value)
-            else:
-                data[key] = self.convert_value(value)
-        return data
-
-    def serialize_object(self, obj, **kwargs):
-        data = model_to_dict(obj, **kwargs)
-        return self.clean_data(data)
-
-
-class Deserializer(object):
-
-    @staticmethod
-    def deserialize_object(model, data):
-        return dict_to_model(model, data)
