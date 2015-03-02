@@ -62,7 +62,7 @@ class Router(object):
         db = set(self.db_migrations)
         return [name for name in self.fs_migrations if name not in db]
 
-    def create(self, name):
+    def create(self, name='auto'):
         """ Create a migration. """
 
         self.app.logger.info('Create a migration "%s"', name)

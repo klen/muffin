@@ -29,3 +29,6 @@ def test_migrations(app, tmpdir):
     router.run()
     assert router.db_migrations
     assert not router.diff
+
+    path = router.create()
+    assert '001_auto.py' in path
