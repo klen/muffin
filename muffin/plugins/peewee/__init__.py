@@ -52,7 +52,7 @@ class PeeweePlugin(BasePlugin):
             self.router.run(name)
 
         @self.app.plugins.manage.command
-        def create(name=None):
+        def create(name='auto'):
             """ Create migration with NAME. """
             self.router.create(name)
 
