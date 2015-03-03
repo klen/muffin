@@ -90,14 +90,20 @@ doc: docs $(VIRTUALENV)
 MANAGER=$(VIRTUALENV)/bin/python -m example.app
 CMD = --help
 
+.PHONY: manage
 manage: $(VIRTUALENV)
 	@$(MANAGER) $(CMD)
 
+.PHONY: run
 run: $(VIRTUALENV) db.sqlite
 	@make manage CMD=runserver
 
+.PHONY: shell
 shell: $(VIRTUALENV)
 	@make manage CMD=shell
+
+.PHONY: db
+db: db.sqlite
 
 db.sqlite: $(VIRTUALENV)
 	@$(VIRTUALENV)/bin/python -m example.app migrate

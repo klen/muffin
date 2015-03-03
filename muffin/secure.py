@@ -1,0 +1,42 @@
+import hmac
+import hashlib
+import random
+
+
+SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
+
+def create_signature(secret, value, digestmod='sha1', encoding='utf-8'):
+    """ Create HMAC Signature from secret for value. """
+    if isinstance(secret, str):
+        secret = secret.encode(encoding)
+
+    if isinstance(value, str):
+        value = value.encode(encoding)
+
+    if isinstance(digestmod, str):
+        digestmod = getattr(hashlib, digestmod, hashlib.sha1)
+
+    hm = hmac.new(secret, digestmod=hashlib.sha1)
+    hm.update(value)
+    return hm.hexdigest()
+
+
+def check_signature(signature, *args, **kwargs):
+    """ Check for the signature is correct. """
+    return hmac.compare_digest(signature, create_signature(*args, **kwargs))
+
+
+def generate_password_hash(password, digestmod='sha1', salt_length=8):
+    """ Hash a password with given method and salt length. """
+
+    salt = ''.join(random.sample(SALT_CHARS, salt_length))
+    signature = create_signature(salt, password, digestmod=digestmod)
+    return '$'.join((digestmod, salt, signature))
+
+
+def check_password_hash(password, pwhash):
+    if pwhash.count('$') < 2:
+        return False
+    digestmod, salt, signature = pwhash.split('$', 2)
+    return check_signature(signature, salt, password, digestmod=digestmod)

@@ -73,6 +73,7 @@ class Application(web.Application):
             '[%Y-%m-%d %H:%M:%S %z]'))
         self.logger.addHandler(ch)
         self.logger.setLevel('DEBUG') if self.config['DEBUG'] else self.logger.setLevel('WARNING')
+        self.logger.name = 'muffin'
 
         # Setup plugins
         self.plugins = Plugins()

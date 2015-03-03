@@ -1,12 +1,11 @@
-import base64
-import hashlib
-import hmac
-import time
 import asyncio
+import base64
+import time
 
 import ujson as json
 
-from . import BasePlugin
+from muffin.plugins import BasePlugin
+from muffin.secure import create_signature, check_signature
 
 
 class SessionPlugin(BasePlugin):
@@ -42,10 +41,10 @@ class SessionPlugin(BasePlugin):
 
 class Session(dict):
 
-    encoding = 'UTF-8'
+    encoding = 'utf-8'
 
     def __init__(self, secret, key='session.id', **params):
-        self.secret = secret
+        self.secret = secret.encode(self.encoding)
         self.key = key
         self.params = params
         self.store = {}
@@ -69,21 +68,14 @@ class Session(dict):
         self.store = data
         self.update(self.store)
 
-    def create_signature(self, value, timestamp):
-        h = hmac.new(self.secret.encode(), digestmod=hashlib.sha1)
-        h.update(timestamp)
-        h.update(value)
-        return h.hexdigest()
-
     def encrypt(self, value):
-        timestamp = str(int(time.time())).encode()
+        timestamp = str(int(time.time()))
         value = base64.b64encode(value.encode(self.encoding))
-        signature = self.create_signature(value, timestamp)
-        return "|".join([value.decode(self.encoding), timestamp.decode(self.encoding), signature])
+        signature = create_signature(self.secret, value + timestamp.encode(),
+                                     encoding=self.encoding)
+        return "|".join([value.decode(self.encoding), timestamp, signature])
 
     def decrypt(self, value):
         value, timestamp, signature = value.split("|")
-        check = self.create_signature(value.encode(self.encoding), timestamp.encode())
-        if check != signature:
-            return None
-        return base64.b64decode(value).decode(self.encoding)
+        if check_signature(signature, self.secret, value + timestamp, encoding=self.encoding):
+            return base64.b64decode(value).decode(self.encoding)

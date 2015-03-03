@@ -1,5 +1,4 @@
 import datetime as dt
-import logging
 from cached_property import cached_property
 from os import path as op, listdir as ls, makedirs as md
 from re import compile as re
@@ -103,10 +102,10 @@ class Router(object):
                     scope = {}
                     exec_in(code, scope)
                     migrate = scope.get('migrate', lambda m: None)
-                    logging.info('Start migration %s', name)
-                    migrate(migrator, self.database)
+                    self.app.logger.info('Start migration %s', name)
+                    migrate(migrator, self.app, self.database)
                     self.model.create(name=name)
-                    logging.info('Migrated %s', name)
+                    self.app.logger.info('Migrated %s', name)
 
         except Exception as exc:
             self.database.rollback()
@@ -127,6 +126,7 @@ class Migrator(object):
 
     def __init__(self, db):
         self.db = db
+        self.orm = dict()
         self.migrator = SchemaMigrator.from_database(self.db)
 
     def create_table(self, table, fields):

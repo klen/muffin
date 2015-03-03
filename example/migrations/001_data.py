@@ -19,3 +19,7 @@ def migrate(migrator, app, database):
     > migrator.drop_not_null(table_name, column_name)
 
     """
+    from mixer.backend.peewee import Mixer
+
+    mixer = Mixer(commit=True)
+    mixer.blend('example.models.User', name='user')

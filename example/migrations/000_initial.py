@@ -4,9 +4,8 @@ import datetime as dt
 import peewee as pw
 
 
-def migrate(migrator, database):
-    """
-    Write your migrations here.
+def migrate(migrator, app, database):
+    """ Write your migrations here.
 
     > migrator.create_table(table, field_dict)
     > migrator.drop_table(table, cascade=True)
