@@ -20,8 +20,12 @@ def migrate(migrator, database, **kwargs):
 
     """
 
-    @migrator.create_table
-    class User(pw.Model):
-        username = pw.CharField()
-        email = pw.CharField()
-        password = pw.CharField()
+    migrator.add_columns('user',
+                         created=pw.DateTimeField(default=dt.datetime.now),
+                         drop_me=pw.CharField(default=''))
+
+    migrator.rename_column('user', 'drop_me', 'new_drop_me')
+
+    migrator.add_index('user', 'new_drop_me')
+
+    migrator.drop_columns('user', 'new_drop_me')

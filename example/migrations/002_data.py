@@ -19,9 +19,8 @@ def migrate(migrator, database, **kwargs):
     > migrator.drop_not_null(model, name)
 
     """
+    from mixer.backend.peewee import Mixer
 
-    @migrator.create_table
-    class User(pw.Model):
-        username = pw.CharField()
-        email = pw.CharField()
-        password = pw.CharField()
+    mixer = Mixer(commit=True)
+    model = migrator.orm['user']
+    mixer.blend(model, name='user')

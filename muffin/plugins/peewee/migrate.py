@@ -2,6 +2,7 @@ import datetime as dt
 from cached_property import cached_property
 from os import path as op, listdir as ls, makedirs as md
 from re import compile as re
+from contextlib import contextmanager
 from shutil import copy
 
 import peewee as pw
@@ -80,36 +81,44 @@ class Router(object):
         self.app.logger.info('Start migrations')
 
         migrator = Migrator(self.database)
-        if name:
-            return self.run_one(name, migrator)
-
         diff = self.diff
-        for name in diff:
-            self.run_one(name, migrator)
 
         if not diff:
             self.app.logger.info('Nothing to migrate')
+            return None
 
-    def run_one(self, name, migrator):
+        for mname in self.fs_migrations:
+            self.run_one(mname, migrator, mname not in diff)
+            if name and name == mname:
+                break
+
+    def run_one(self, name, migrator, fake=True):
         """ Run a migration. """
 
-        self.app.logger.info('Run "%s"', name)
+        if not fake:
+            self.app.logger.info('Run "%s"', name)
 
         try:
             with open(op.join(self.migrate_dir, name + '.py')) as f:
+                code = f.read()
+                scope = {}
+                exec_in(code, scope)
+                migrate = scope.get('migrate', lambda m: None)
+
+                if fake:
+                    with migrator.ctx(fake=fake) as migrator:
+                        return migrate(migrator, self.database, app=self.app)
+
+                self.app.logger.info('Start migration %s', name)
                 with self.database.transaction():
-                    code = f.read()
-                    scope = {}
-                    exec_in(code, scope)
-                    migrate = scope.get('migrate', lambda m: None)
-                    self.app.logger.info('Start migration %s', name)
-                    migrate(migrator, self.app, self.database)
+                    migrate(migrator, self.database, app=self.app)
                     self.model.create(name=name)
                     self.app.logger.info('Migrated %s', name)
 
         except Exception as exc:
             self.database.rollback()
             self.app.logger.error(exc)
+            raise
 
 
 class MigrateHistory(pw.Model):
@@ -120,6 +129,14 @@ class MigrateHistory(pw.Model):
     migrated_at = pw.DateTimeField(default=dt.datetime.utcnow)
 
 
+def get_model(method):
+    def wrapper(migrator, model, *args, **kwargs):
+        if isinstance(model, str):
+            return method(migrator, migrator.orm[model], *args, **kwargs)
+        return method(migrator, model, *args, **kwargs)
+    return wrapper
+
+
 class Migrator(object):
 
     """ Provide migrations. """
@@ -127,46 +144,108 @@ class Migrator(object):
     def __init__(self, db):
         self.db = db
         self.orm = dict()
+        self.fake = False
         self.migrator = SchemaMigrator.from_database(self.db)
 
-    def create_table(self, table, fields):
-        model = type(table, (pw.Model,), fields)
-        self.db.create_table(model)
+    @contextmanager
+    def ctx(self, fake=False):
+        _fake, self.fake = self.fake, fake
+        try:
+            yield self
+        except:
+            self.fake = _fake
 
-    def drop_table(self, table, cascade=True):
-        class model(pw.Model):
-            class Meta:
-                db_table = table
-        return self.db.drop_table(model, cascade=cascade)
+    def create_table(self, model):
+        """ >> migrator.create_table(model) """
+        self.orm[model._meta.db_table] = model
+        model._meta.database = self.db
+        if not self.fake:
+            self.db.create_table(model)
+        return model
 
-    def add_column(self, table, name, field):
-        operation = self.migrator.add_column(table, name, field)
-        return operation.run()
+    @get_model
+    def drop_table(self, model, cascade=True):
+        """ >> migrator.drop_table(model, cascade=True) """
+        del self.orm[model._meta.db_table]
+        if not self.fake:
+            self.db.drop_table(model, cascade=cascade)
 
-    def drop_column(self, table, name, field, cascade=True):
-        operation = self.migrator.drop_column(table, name, field, cascade=cascade)
-        return operation.run()
+    @get_model
+    def add_columns(self, model, **fields):
+        operations = []
+        for name, field in fields.items():
+            operations.append(self.migrator.add_column(model._meta.db_table, name, field))
+        model = type(model._meta.db_table, (pw.Model,), dict(model._meta.fields, **fields))
+        model._meta.database = self.db
+        self.orm[model._meta.db_table] = model
 
-    def rename_column(self, table, old_name, new_name):
-        operation = self.migrator.rename_column(table, old_name, new_name)
-        return operation.run()
+        if not self.fake:
+            for operation in operations:
+                operation.run()
 
-    def rename_table(self, old_name, new_name):
-        operation = self.migrator.rename_table(old_name, new_name)
-        return operation.run()
+    @get_model
+    def drop_columns(self, model, *names, cascade=True):
+        operations = []
+        for name in names:
+            operations.append(
+                self.migrator.drop_column(model._meta.db_table, name, cascade=cascade))
 
-    def add_index(self, table, columns, unique=False):
-        operation = self.migrator.add_index(table, columns, unique=unique)
-        return operation.run()
+        fields = model._meta.fields
+        model = type(model._meta.db_table, (pw.Model,), {
+            name: fields[name] for name in fields if name not in names})
+        model._meta.database = self.db
+        self.orm[model._meta.db_table] = model
 
-    def drop_index(self, table, index_name):
-        operation = self.migrator.drop_index(table, index_name)
-        return operation.run()
+        if not self.fake:
+            for operation in operations:
+                operation.run()
 
-    def add_not_null(self, table, column):
-        operation = self.migrator.add_not_null(table, column)
-        return operation.run()
+    @get_model
+    def rename_column(self, model, old_name, new_name):
+        operation = self.migrator.rename_column(model._meta.db_table, old_name, new_name)
+        fields = model._meta.fields
+        field = fields[old_name]
+        field.db_column = new_name
+        del fields[old_name]
+        model = type(model._meta.db_table, (pw.Model,), fields)
+        field.add_to_class(model, new_name)
+        model._meta.database = self.db
+        self.orm[model._meta.db_table] = model
 
-    def drop_not_null(self, table, column):
-        operation = self.migrator.drop_not_null(table, column)
-        return operation.run()
+        if not self.fake:
+            operation.run()
+
+    @get_model
+    def rename_table(self, model, new_name):
+        operation = self.migrator.rename_table(model._meta.db_table, new_name)
+        del self.orm[model._meta.db_table]
+        model._meta.db_table = new_name
+        self.orm[model._meta.db_table] = model
+
+        if not self.fake:
+            operation.run()
+
+    @get_model
+    def add_index(self, model, *columns, unique=False):
+        model._meta.indexes.append((columns, unique))
+        operation = self.migrator.add_index(model._meta.db_table, columns, unique=unique)
+        if not self.fake:
+            operation.run()
+
+    @get_model
+    def drop_index(self, model, index_name):
+        operation = self.migrator.drop_index(model._meta.db_table, index_name)
+        if not self.fake:
+            operation.run()
+
+    @get_model
+    def add_not_null(self, model, name):
+        operation = self.migrator.add_not_null(model._meta.db_table, name)
+        if not self.fake:
+            operation.run()
+
+    @get_model
+    def drop_not_null(self, model, name):
+        operation = self.migrator.drop_not_null(model._meta.db_table, name)
+        if not self.fake:
+            operation.run()
