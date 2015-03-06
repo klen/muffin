@@ -6,6 +6,7 @@ from importlib import import_module
 import ujson as json
 from aiohttp import web
 from cached_property import cached_property
+import asyncio
 
 from .utils import to_coroutine
 
@@ -137,6 +138,9 @@ class Application(web.Application):
 
             def wrap_response(request, **kwargs):
                 response = yield from view(request, **kwargs)
+
+                if asyncio.iscoroutine(response):
+                    response = yield from response
 
                 if isinstance(response, (list, dict)):
                     response = web.Response(text=json.dumps(response),

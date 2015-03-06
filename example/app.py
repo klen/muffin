@@ -29,7 +29,7 @@ def get_user(user_id):
 @app.view('/')
 def hello(request):
     user = yield from app.plugins.session.load_user(request)
-    return (yield from app.plugins.jade.render('index.jade', user=user))
+    return app.plugins.jade.render('index.jade', user=user)
 
 
 @app.view('/login', method='POST')
