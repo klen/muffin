@@ -131,8 +131,12 @@ class Application(web.Application):
 
         self.plugins[plugin.name] = plugin
 
-    def view(self, path, method='GET', name=None):
+    def view(self, path, method=['GET'], name=None):
         """ Convert a view to couroutine and bind a route. """
+
+        if isinstance(method, str):
+            method = [method]
+
         def wrapper(view):
             view = to_coroutine(view)
 
@@ -152,7 +156,8 @@ class Application(web.Application):
                 self.logger.info('%s %d %s', request.method, response.status, request.path)
                 return response
 
-            self.router.add_route(method, path, wrap_response, name=name)
+            for m in method:
+                self.router.add_route(m, path, wrap_response, name=name)
 
         return wrapper
 
