@@ -35,8 +35,14 @@ def test_login_logout(client, mixer):
     response = client.get('/')
     assert "Hello %s" % user.username in response.text
 
+    response = client.get('/profile')
+    assert "User profile here" in response.text
+
     response = client.get('/logout')
     assert response.status_code == 302
 
     response = client.get('/')
     assert "Hello anonimous" in response.text
+
+    response = client.get('/profile')
+    assert response.status_code == 302

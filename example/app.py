@@ -48,6 +48,12 @@ def logout(request):
     return muffin.HTTPFound('/')
 
 
+@app.view('/profile')
+@app.plugins.session.user_pass(lambda u: u, '/')
+def profile(request):
+    return app.plugins.jade.render('profile.jade')
+
+
 @app.view('/db-sync')
 def db_sync(request):
     return [t.data for t in Test.select()]

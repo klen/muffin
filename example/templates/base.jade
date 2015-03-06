@@ -1,0 +1,31 @@
+!!!5
+html
+  head
+
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+
+    title Muffin Application
+
+    block base-css
+      link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+      link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css')
+      link(rel='stylesheet', href='#{app.config["STATIC_PREFIX"]}/app.css')
+
+  body
+
+    include navbar.jade
+
+    .container
+
+      block base-content
+
+        h1 Hello #{user and user.username or 'anonimous'}!
+
+        b The application #{ MUFFIN }
+
+    block base-js
+      script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js')
+

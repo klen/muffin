@@ -1,5 +1,4 @@
 """ Implement Muffin Application. """
-import asyncio
 import logging
 import os
 from importlib import import_module
@@ -7,6 +6,8 @@ from importlib import import_module
 import ujson as json
 from aiohttp import web
 from cached_property import cached_property
+
+from .utils import to_coroutine
 
 
 CONFIGURATION_ENVIRON_VARIABLE = 'MUFFIN_CONFIG'
@@ -132,8 +133,7 @@ class Application(web.Application):
     def view(self, path, method='GET', name=None):
         """ Convert a view to couroutine and bind a route. """
         def wrapper(view):
-            if not asyncio.iscoroutinefunction(view):
-                view = asyncio.coroutine(view)
+            view = to_coroutine(view)
 
             def wrap_response(request, **kwargs):
                 response = yield from view(request, **kwargs)
