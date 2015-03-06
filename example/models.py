@@ -2,7 +2,7 @@ import peewee as pw
 import datetime as dt
 
 from muffin.plugins.peewee import PeeweePlugin
-from muffin.secure import generate_password_hash, check_password_hash
+from muffin.utils import generate_password_hash, check_password_hash
 
 db = PeeweePlugin()
 
@@ -26,6 +26,10 @@ class User(pw.Model):
     username = pw.CharField()
     email = pw.CharField()
     password = pw.CharField()
+
+    @property
+    def pk(self):
+        return self.id
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

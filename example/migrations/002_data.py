@@ -20,7 +20,9 @@ def migrate(migrator, database, **kwargs):
 
     """
     from mixer.backend.peewee import Mixer
+    from muffin.utils import generate_password_hash
 
     mixer = Mixer(commit=True)
     model = migrator.orm['user']
-    mixer.blend(model, name='user')
+    mixer.blend(model, username='user', email='user@muffin.io',
+                password=generate_password_hash('pass'))

@@ -1,7 +1,7 @@
 import muffin
 
 
-from .models import Test, db
+from .models import Test, db, User
 
 
 app = muffin.Application('example', CONFIG='example.config.debug')
@@ -16,20 +16,36 @@ def add_constant():
     return {'MUFFIN': 'ROCKS'}
 
 
+# Setup an user loader
+@app.plugins.session.user_loader
+def get_user(user_id):
+    return User.select().where(User.id == user_id).get()
+
+
 # Views
 # =====
 
 
 @app.view('/')
 def hello(request):
-    return (yield from app.plugins.jade.render(
-        'index.jade', user=request.session.get('user', 'anonimous')))
+    user = yield from app.plugins.session.load_user(request)
+    return (yield from app.plugins.jade.render('index.jade', user=user))
 
 
-@app.view('/login')
+@app.view('/login', method='POST')
 def login(request):
-    request.session['user'] = request.GET.get('user', 'anonimous')
-    return "Logged as %s" % request.session['user']
+    data = yield from request.post()
+    user = User.select().where(User.email == data.get('email')).get()
+    if user.check_password(data.get('password')):
+        app.plugins.session.login_user(request, user.pk)
+
+    return muffin.HTTPFound('/')
+
+
+@app.view('/logout')
+def logout(request):
+    app.plugins.session.logout_user(request)
+    return muffin.HTTPFound('/')
 
 
 @app.view('/db-sync')

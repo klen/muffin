@@ -16,9 +16,11 @@ html
 
     include navbar.jade
 
-    h1 Hello #{user}!
+    .container
 
-    b The application #{ MUFFIN }
+      h1 Hello #{user and user.username or 'anonimous'}!
+
+      b The application #{ MUFFIN }
 
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js')

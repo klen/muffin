@@ -6,3 +6,14 @@ nav.navbar.navbar-inverse.navbar-fixed-top
       ul.nav.navbar-nav
         li.active: a(href='#') Home
         li: a(href='#about') About
+
+      if user
+        ul.nav.navbar-nav.navbar-right
+          li: a(href="/logout") Logout
+      else
+        form.navbar-form.navbar-right(role="search", action="/login", method="POST")
+          .form-group
+            input.form-control(type="text", name="email", placeholder="Email")
+          .form-group
+            input.form-control(type="password", name="password", placeholder="Password")
+          button.btn.btn-default(type="submit") Login

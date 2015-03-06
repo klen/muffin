@@ -1,7 +1,5 @@
 """ Tests for `muffin` module. """
 
-import pytest
-
 
 def test_app(client):
     response = client.get('/')
@@ -17,41 +15,28 @@ def test_app(client):
 
 
 def test_static(client):
-    response = client.get('/static/media.txt')
+    response = client.get('/static/app.css')
     assert response.status_code == 200
-    assert response.content_type == 'text/plain'
+    assert response.content_type == 'text/css'
 
     response = client.get('/static/unknow', status=404)
     assert '404' in response.text
 
 
-def test_session(client, mixer):
+def test_login_logout(client, mixer):
     response = client.get('/')
     assert "Hello anonimous" in response.text
 
-    response = client.get('/login?user=Mike')
+    from muffin.utils import generate_password_hash
+    user = mixer.blend('example.models.User', password=generate_password_hash('pass'))
+    response = client.post('/login', params={'email': user.email, 'password': 'pass'})
+    assert response.status_code == 302
+
     response = client.get('/')
-    assert "Hello Mike" in response.text
+    assert "Hello %s" % user.username in response.text
 
+    response = client.get('/logout')
+    assert response.status_code == 302
 
-def test_manage(app, capsys):
-    @app.plugins.manage.command
-    def hello(name='Mike'):
-        print("hello " + name)
-
-    with pytest.raises(SystemExit):
-        app.plugins.manage(['hello'])
-    out, err = capsys.readouterr()
-    assert "hello Mike\n" == out
-
-    with pytest.raises(SystemExit):
-        app.plugins.manage(['hello', '--name=Sam'])
-    out, err = capsys.readouterr()
-    assert "hello Sam\n" == out
-
-
-def test_user(mixer):
-    user = mixer.blend('example.models.User')
-    user.set_password('pass')
-    assert not user.check_password('wrong')
-    assert user.check_password('pass')
+    response = client.get('/')
+    assert "Hello anonimous" in response.text
