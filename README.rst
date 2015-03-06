@@ -1,5 +1,10 @@
-|logo| The Muffin
-#################
+.. image:: https://raw.github.com/klen/muffin/develop/logo.png
+   :height: 100px
+   :width: 100px
+    
+
+The Muffin
+##########
 
 .. _description:
 
@@ -219,7 +224,5 @@ License
 Licensed under a MIT license (See LICENSE)
 
 .. _links:
-.. |logo| image:: https://raw.github.com/klen/muffin/develop/logo.png
-                :width: 100
 
 .. _klen: https://github.com/klen
