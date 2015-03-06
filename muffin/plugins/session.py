@@ -5,7 +5,7 @@ import time
 import ujson as json
 
 from muffin.plugins import BasePlugin
-from muffin.secure import create_signature, check_signature
+from muffin.utils import create_signature, check_signature, to_coroutine
 
 
 class SessionPlugin(BasePlugin):
@@ -24,11 +24,14 @@ class SessionPlugin(BasePlugin):
         if self.options['secret'] == 'InsecureSecret':
             app.logger.warn('Use insecure secret key. Change AUTH_SECRET option in configuration.')
 
+        self._user_loader = asyncio.coroutine(lambda r: r.session['user_id'])
+
     @asyncio.coroutine
     def middleware_factory(self, app, handler):
-
+        """ Provide session middleware. """
         @asyncio.coroutine
         def middleware(request):
+            """ Load a session from users cookies. """
             request.session = Session(self.options['secret'])
             request.session.load(request.cookies)
             app.logger.debug('Started: %s', request.session)
@@ -37,6 +40,29 @@ class SessionPlugin(BasePlugin):
             request.session.save(response.set_cookie)
             return response
         return middleware
+
+    def user_loader(self, func):
+        """ Register a function as user loader. """
+        self._user_loader = to_coroutine(func)
+        return self._user_loader
+
+    @asyncio.coroutine
+    def load_user(self, request):
+        """ Load user from request. """
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return None
+        return (yield from self._user_loader(user_id))
+
+    @staticmethod
+    def login_user(request, user_id):
+        """ Login an user by ID. """
+        request.session['user_id'] = user_id
+
+    @staticmethod
+    def logout_user(request):
+        """ Logout an user. """
+        del request.session['user_id']
 
 
 class Session(dict):
@@ -62,9 +88,14 @@ class Session(dict):
         value = cookies.get(self.key, None)
         if value is None:
             return False
-        data = json.loads(self.decrypt(value))
+        value = self.decrypt(value)
+        if not value:
+            return False
+
+        data = json.loads(value)
         if not isinstance(data, dict):
             return False
+
         self.store = data
         self.update(self.store)
 
@@ -79,3 +110,4 @@ class Session(dict):
         value, timestamp, signature = value.split("|")
         if check_signature(signature, self.secret, value + timestamp, encoding=self.encoding):
             return base64.b64decode(value).decode(self.encoding)
+        return 'null'

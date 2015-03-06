@@ -1,11 +1,12 @@
 """ Support Jade Template Engine. """
-
 import asyncio
 from os import path as op
 
 from pyjade.ext.html import pyjade, Compiler, local_context_manager
 from pyjade.nodes import Extends, CodeBlock
-from . import BasePlugin
+
+from muffin.plugins import BasePlugin
+from muffin.utils import to_coroutine
 
 
 class JadePlugin(BasePlugin):
@@ -42,8 +43,7 @@ class JadePlugin(BasePlugin):
             def my_context():
                 return {...}
         """
-        if not asyncio.iscoroutinefunction(func):
-            func = asyncio.coroutine(func)
+        func = to_coroutine(func)
         self.providers.append(func)
         return func
 
