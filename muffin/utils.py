@@ -1,9 +1,17 @@
 import hmac
 import hashlib
 import random
+import asyncio
 
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
+
+def to_coroutine(func):
+    """ Ensure that the function is coroutine. """
+    if not asyncio.iscoroutinefunction(func):
+        func = asyncio.coroutine(func)
+    return func
 
 
 def create_signature(secret, value, digestmod='sha1', encoding='utf-8'):
