@@ -4,8 +4,9 @@ import os
 
 import pytest
 import webtest
-from aiohttp.protocol import HttpVersion11, HttpVersion10, RawRequestMessage
 from aiohttp.multidict import CIMultiDict
+from aiohttp.protocol import HttpVersion11, HttpVersion10, RawRequestMessage
+from aiohttp.streams import StreamReader
 from aiohttp.web import (
     AbstractMatchInfo,
     HTTPException,
@@ -64,7 +65,9 @@ class TestRequest(webtest.TestRequest):
         http_version = HttpVersion10 if self.http_version == 'HTTP/1.0' else HttpVersion11
         message = RawRequestMessage(
             self.method, self.path_qs, http_version, CIMultiDict(self.headers), False, False)
-        payload = self.body_file_raw
+        payload = StreamReader(loop=application.loop)
+        payload.feed_data(self.body_file_raw.read())
+        payload.feed_eof()
 
         loop = asyncio.get_event_loop()
         handler = RequestHandlerFactory(
