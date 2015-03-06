@@ -53,7 +53,8 @@ class SessionPlugin(BasePlugin):
         user_id = request.session.get('user_id')
         if not user_id:
             return None
-        return (yield from self._user_loader(user_id))
+        request.user = yield from self._user_loader(user_id)
+        return request.user
 
     def user_pass(self, func, *margs, **mkwargs):
         def wrapper(view):

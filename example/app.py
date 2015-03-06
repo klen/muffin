@@ -51,7 +51,7 @@ def logout(request):
 @app.view('/profile')
 @app.plugins.session.user_pass(lambda u: u, '/')
 def profile(request):
-    return app.plugins.jade.render('profile.jade')
+    return app.plugins.jade.render('profile.jade', user=request.user)
 
 
 @app.view('/db-sync')
