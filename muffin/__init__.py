@@ -16,3 +16,5 @@ from asyncio import *           # noqa
 from aiohttp.web import *       # noqa
 
 from .app import Application, CONFIGURATION_ENVIRON_VARIABLE  # noqa
+from .handler import Handler    # noqa
+from .utils import to_coroutine # noqa

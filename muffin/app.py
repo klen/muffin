@@ -2,13 +2,12 @@
 import logging
 import os
 from importlib import import_module
+from types import FunctionType
 
-import ujson as json
 from aiohttp import web
 from cached_property import cached_property
-import asyncio
 
-from .utils import to_coroutine
+from .handler import Handler
 
 
 CONFIGURATION_ENVIRON_VARIABLE = 'MUFFIN_CONFIG'
@@ -131,33 +130,21 @@ class Application(web.Application):
 
         self.plugins[plugin.name] = plugin
 
-    def view(self, path, method=['GET'], name=None):
-        """ Convert a view to couroutine and bind a route. """
+    def register(self, *paths, methods=['GET'], name=None):
+        """ Register function (coroutine) or muffin.Handler to application and bind to route. """
 
-        if isinstance(method, str):
-            method = [method]
+        if isinstance(methods, str):
+            methods = [methods]
 
         def wrapper(view):
-            view = to_coroutine(view)
+            handler = view
 
-            def wrap_response(request, **kwargs):
-                response = yield from view(request, **kwargs)
+            if isinstance(handler, FunctionType):
+                handler = Handler.from_view(handler, *methods, name=name)
 
-                if asyncio.iscoroutine(response):
-                    response = yield from response
+            handler.connect(self, *paths, name=name)
 
-                if isinstance(response, (list, dict)):
-                    response = web.Response(text=json.dumps(response),
-                                            content_type='application/json')
-
-                elif not isinstance(response, web.Response):
-                    response = web.Response(text=str(response), content_type='text/html')
-
-                self.logger.info('%s %d %s', request.method, response.status, request.path)
-                return response
-
-            for m in method:
-                self.router.add_route(m, path, wrap_response, name=name)
+            return view
 
         return wrapper
 
@@ -167,6 +154,7 @@ def run():
     from .worker import GunicornApp
 
     GunicornApp("%(prog)s [OPTIONS] [APP]").run()
+
 
 if __name__ == '__main__':
     run()

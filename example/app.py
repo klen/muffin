@@ -26,13 +26,13 @@ def get_user(user_id):
 # =====
 
 
-@app.view('/')
+@app.register('/')
 def hello(request):
     user = yield from app.plugins.session.load_user(request)
     return app.plugins.jade.render('index.jade', user=user)
 
 
-@app.view('/login', method='POST')
+@app.register('/login', methods='POST')
 def login(request):
     data = yield from request.post()
     user = User.select().where(User.email == data.get('email')).get()
@@ -42,29 +42,29 @@ def login(request):
     return muffin.HTTPFound('/')
 
 
-@app.view('/logout')
+@app.register('/logout')
 def logout(request):
     app.plugins.session.logout_user(request)
     return muffin.HTTPFound('/')
 
 
-@app.view('/profile')
+@app.register('/profile')
 @app.plugins.session.user_pass(lambda u: u, '/')
 def profile(request):
     return app.plugins.jade.render('profile.jade', user=request.user)
 
 
-@app.view('/db-sync')
+@app.register('/db-sync')
 def db_sync(request):
     return [t.data for t in Test.select()]
 
 
-@app.view('/json')
+@app.register('/json')
 def json(request):
     return {'json': 'here'}
 
 
-@app.view('/404')
+@app.register('/404')
 def raise404(request):
     raise muffin.HTTPNotFound
 
@@ -75,10 +75,20 @@ def raise404(request):
     # return 'OAuth Here'
 
 
-@app.view('/db-async')
+@app.register('/db-async')
 def db_async(request):
     results = yield from app.peewee.query(Test.select())
     return [t.data for t in results]
+
+
+@app.register('/api/example', '/api/example/{example}')
+class Example(muffin.Handler):
+
+    def get(self, request):
+        return {'simple': 'rest', 'example': request.match_info.get('example')}
+
+    def post(self, request):
+        return [1, 2, 3]
 
 
 # Commands
