@@ -32,6 +32,12 @@ class Plugins(dict):
             raise AttributeError(name)
 
 
+class RawRoute(web.DynamicRoute):
+
+    def url(self, *, parts, query=None):
+        return None
+
+
 # FIXME: See https://github.com/KeepSafe/aiohttp/pull/291
 class Router(web.UrlDispatcher):
 
@@ -45,7 +51,7 @@ class Router(web.UrlDispatcher):
         assert method in self.METHODS, method
 
         if isinstance(path, RETYPE):
-            route = web.DynamicRoute(method, handler, name, path, path.pattern)
+            route = RawRoute(method, handler, name, path, path.pattern)
             self._register_endpoint(route)
             return route
 
