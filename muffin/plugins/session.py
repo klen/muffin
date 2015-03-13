@@ -7,6 +7,7 @@ import ujson as json
 from muffin import HTTPFound
 from muffin.plugins import BasePlugin
 from muffin.utils import create_signature, check_signature, to_coroutine
+import functools
 
 
 class SessionPlugin(BasePlugin):
@@ -61,6 +62,7 @@ class SessionPlugin(BasePlugin):
             view = to_coroutine(view)
 
             @asyncio.coroutine
+            @functools.wraps(func)
             def handler(request, *args, **kwargs):
                 user = yield from self.load_user(request)
                 if not func(user):
@@ -68,6 +70,7 @@ class SessionPlugin(BasePlugin):
                 response = yield from view(request, *args, **kwargs)
                 return response
             return handler
+
         return wrapper
 
     @staticmethod
