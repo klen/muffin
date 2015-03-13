@@ -1,17 +1,19 @@
 """ Implement Muffin Application. """
+import asyncio
 import logging
+import re
 import os
 from importlib import import_module
 from types import FunctionType
 
 from aiohttp import web
-import asyncio
 from cached_property import cached_property
 
 from .handler import Handler
 
 
 CONFIGURATION_ENVIRON_VARIABLE = 'MUFFIN_CONFIG'
+RETYPE = type(re.compile('@'))
 
 
 class MuffinException(Exception):
@@ -30,9 +32,29 @@ class Plugins(dict):
             raise AttributeError(name)
 
 
+# FIXME: See https://github.com/KeepSafe/aiohttp/pull/291
+class Router(web.UrlDispatcher):
+
+    """ Support raw regexps in path. """
+
+    def add_route(self, method, path, handler, *, name=None):
+        assert callable(handler), handler
+        if not asyncio.iscoroutinefunction(handler):
+            handler = asyncio.coroutine(handler)
+        method = method.upper()
+        assert method in self.METHODS, method
+
+        if isinstance(path, RETYPE):
+            route = web.DynamicRoute(method, handler, name, path, path.pattern)
+            self._register_endpoint(route)
+            return route
+
+        return super(Router, self).add_route(method, path, handler, name=name)
+
+
 class Application(web.Application):
 
-    """ Do some stuff. """
+    """ Improve aiohttp Application. """
 
     # Default application settings
     __defaults = {
@@ -59,8 +81,10 @@ class Application(web.Application):
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
                  handler_factory=web.RequestHandlerFactory, **OPTIONS):
         """ Initialize the application. """
-        super().__init__(loop=loop, router=router, middlewares=middlewares, logger=logger,
-                         handler_factory=handler_factory)
+        router = router or Router()
+
+        super(Application, self).__init__(loop=loop, router=router, middlewares=middlewares,
+                                          logger=logger, handler_factory=handler_factory)
 
         self.name = name
         self.defaults = dict(self.__defaults)

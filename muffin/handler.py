@@ -60,6 +60,7 @@ class Handler(object, metaclass=HandlerMeta):
             lname = name
             for num, path in enumerate(paths, 1):
                 app.router.add_route(method, path, view, name=lname)
+
                 lname = "%s-%s" % (name, num)
 
     @asyncio.coroutine
