@@ -62,7 +62,7 @@ class SessionPlugin(BasePlugin):
             view = to_coroutine(view)
 
             @asyncio.coroutine
-            @functools.wraps(func)
+            @functools.wraps(view)
             def handler(request, *args, **kwargs):
                 user = yield from self.load_user(request)
                 if not func(user):
