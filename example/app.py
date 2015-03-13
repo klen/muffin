@@ -11,13 +11,13 @@ app.install(db)
 
 
 # Add to context providers
-@app.plugins.jade.ctx_provider
+@app.ps.jade.ctx_provider
 def add_constant():
     return {'MUFFIN': 'ROCKS'}
 
 
 # Setup an user loader
-@app.plugins.session.user_loader
+@app.ps.session.user_loader
 def get_user(user_id):
     return User.select().where(User.id == user_id).get()
 
@@ -28,8 +28,8 @@ def get_user(user_id):
 
 @app.register('/')
 def hello(request):
-    user = yield from app.plugins.session.load_user(request)
-    return app.plugins.jade.render('index.jade', user=user)
+    user = yield from app.ps.session.load_user(request)
+    return app.ps.jade.render('index.jade', user=user)
 
 
 @app.register('/login', methods='POST')
@@ -37,21 +37,21 @@ def login(request):
     data = yield from request.post()
     user = User.select().where(User.email == data.get('email')).get()
     if user.check_password(data.get('password')):
-        app.plugins.session.login_user(request, user.pk)
+        app.ps.session.login_user(request, user.pk)
 
     return muffin.HTTPFound('/')
 
 
 @app.register('/logout')
 def logout(request):
-    app.plugins.session.logout_user(request)
+    app.ps.session.logout_user(request)
     return muffin.HTTPFound('/')
 
 
 @app.register('/profile')
-@app.plugins.session.user_pass(lambda u: u, '/')
+@app.ps.session.user_pass(lambda u: u, '/')
 def profile(request):
-    return app.plugins.jade.render('profile.jade', user=request.user)
+    return app.ps.jade.render('profile.jade', user=request.user)
 
 
 @app.register('/db-sync')
@@ -94,10 +94,10 @@ class Example(muffin.Handler):
 # Commands
 # ========
 
-@app.plugins.manage.command
+@app.ps.manage.command
 def hello_world():
     print('Hello world!')
 
 
 if __name__ == '__main__':
-    app.plugins.manage()
+    app.ps.manage()

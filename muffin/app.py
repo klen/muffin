@@ -5,6 +5,7 @@ from importlib import import_module
 from types import FunctionType
 
 from aiohttp import web
+import asyncio
 from cached_property import cached_property
 
 from .handler import Handler
@@ -66,6 +67,7 @@ class Application(web.Application):
         self.defaults.update(OPTIONS)
 
         self._middlewares = list(self._middlewares)
+        self._start_callbacks = []
 
         # Setup logging
         ch = logging.StreamHandler()
@@ -77,7 +79,7 @@ class Application(web.Application):
         self.logger.name = 'muffin'
 
         # Setup plugins
-        self.plugins = Plugins()
+        self.plugins = self.ps = Plugins()
         for plugin in self.config['PLUGINS']:
             try:
                 self.install(plugin)
@@ -128,7 +130,28 @@ class Application(web.Application):
                 and plugin.middleware_factory not in self.middlewares:
             self.middlewares.append(plugin.middleware_factory)
 
+        if hasattr(plugin, 'start'):
+            self.register_on_start(plugin.start)
+
         self.plugins[plugin.name] = plugin
+
+    @asyncio.coroutine
+    def start(self):
+        """ Start application. """
+        for (cb, args, kwargs) in self._start_callbacks:
+            try:
+                res = cb(self, *args, **kwargs)
+                if (asyncio.iscoroutine(res) or isinstance(res, asyncio.Future)):
+                    yield from res
+            except Exception as exc:
+                self._loop.call_exception_handler({
+                    'message': "Error in start callback",
+                    'exception': exc,
+                    'application': self,
+                })
+
+    def register_on_start(self, func, *args, **kwargs):
+        self._start_callbacks.append((func, args, kwargs))
 
     def register(self, *paths, methods=['GET'], name=None):
         """ Register function (coroutine) or muffin.Handler to application and bind to route. """
