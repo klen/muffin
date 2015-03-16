@@ -44,10 +44,11 @@ class PeeweePlugin(BasePlugin):
 
         # Register migration commands
         @self.app.plugins.manage.command
-        def migrate(name=None):
-            """ Run migrations: `%(prog)s [NAME]`
+        def migrate(name:str=None):
+            """ Run application's migrations.
 
-            Start everything or choose a migration by NAME.
+            :param name: Choose a migration' name
+
             """
             self.router.run(name)
 

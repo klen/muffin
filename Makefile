@@ -87,7 +87,7 @@ doc: docs $(VIRTUALENV)
 	@$(VIRTUALENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
 
-MANAGER=$(VIRTUALENV)/bin/python -m example.app
+MANAGER=$(VIRTUALENV)/bin/muffin example.app:app
 CMD = --help
 
 .PHONY: manage
@@ -96,7 +96,7 @@ manage: $(VIRTUALENV)
 
 .PHONY: run
 run: $(VIRTUALENV) db.sqlite
-	@make manage CMD=runserver
+	@make manage CMD=run
 
 .PHONY: shell
 shell: $(VIRTUALENV)
@@ -106,4 +106,4 @@ shell: $(VIRTUALENV)
 db: db.sqlite
 
 db.sqlite: $(VIRTUALENV)
-	@$(VIRTUALENV)/bin/python -m example.app migrate
+	@$(VIRTUALENV)/bin/muffin example.app:app migrate

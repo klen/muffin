@@ -28,7 +28,7 @@ setup(
     description='web framework based on Asyncio stack',
     long_description=_read('README.rst'),
     platforms=('Any'),
-    keywords = "django flask sqlalchemy testing mock stub mongoengine data".split(), # noqa
+    keywords = "asyncio aiohttp web".split(), # noqa
 
     author='Kirill Klenov',
     author_email='horneds@gmail.com',
@@ -53,6 +53,6 @@ setup(
     install_requires=install_requires,
     entry_points = {
         'pytest11': ['muffin_pytest = muffin.pytest'],
-        'console_scripts': ['gmuffin = muffin.app:run'],
+        'console_scripts': ['muffin = muffin.plugins.manage:manage'],
     },
 )

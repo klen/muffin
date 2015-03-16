@@ -75,15 +75,12 @@ There are few ways to redifine configuration module:
 
 * Set environment variable `MUFFIN_CONFIG`: ::
 
-    $ MUFFIN_CONFIG=settings_local python -m example.app runserver
+    $ MUFFIN_CONFIG=settings_local muffin example.app:app run
 
 Also you can define any options while initializing your application: ::
 
     app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
 
-When using ``gmuffin`` (see bellow): ::
-
-    $ gmuffin -c example.config.debug example.app:app
 
 Base application options
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -119,7 +116,7 @@ Add the next lines to end of your application file: ::
 
 Run in your shell: ::
 
-    $ python -m path.to.your.app.module --help
+    $ muffin path.to.your.module:app_object_name --help
 
 Write a custom command
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -127,7 +124,12 @@ Write a custom command
 ::
 
     @app.plugins.manage.command
-    def hello_world(option=None, boolean_options=False):
+    def hello_world(option=None, boolean_option=False):
+        """ Command help here.
+        
+        :param option: Option help here
+
+        """
         print('Hello world!')
 
 
@@ -165,11 +167,11 @@ Migrations
 
 * Create migrations: ::
 
-    $ python -m path.to.your.app create [NAME]
+    $ muffin example.app:app create [NAME]
 
 * Run migrations: ::
 
-    $ python -m path.to.your.app migrate [NAME]
+    $ python example.app:app migrate [NAME]
 
 .. _testing:
 
@@ -188,11 +190,11 @@ Example: ::
 Deployment
 ==========
 
-Use ``gmuffin`` command. By example: ::
+Use ``muffin`` command. By example: ::
 
-    $ gmuffin --reload -w 4 example.app:app
+    $ muffin example.app:app run --workers=4
 
-See ``gmuffin --help`` for more info.
+See ``muffin {APP} run --help`` for more info.
 
 .. _bugtracker:
 

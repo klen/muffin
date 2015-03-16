@@ -23,7 +23,7 @@ class MuffinException(Exception):
     pass
 
 
-class Plugins(dict):
+class Structure(dict):
 
     def __getattr__(self, name):
         try:
@@ -105,30 +105,30 @@ class Application(web.Application):
             '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',
             '[%Y-%m-%d %H:%M:%S %z]'))
         self.logger.addHandler(ch)
-        self.logger.setLevel('DEBUG') if self.config['DEBUG'] else self.logger.setLevel('WARNING')
+        self.logger.setLevel('DEBUG') if self.cfg.DEBUG else self.logger.setLevel('WARNING')
         self.logger.name = 'muffin'
 
         # Setup plugins
-        self.plugins = self.ps = Plugins()
-        for plugin in self.config['PLUGINS']:
+        self.plugins = self.ps = Structure()
+        for plugin in self.cfg.PLUGINS:
             try:
                 self.install(plugin)
             except Exception as exc:
                 self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
 
         # Setup static files (development)
-        if os.path.isdir(self.config['STATIC_ROOT']):
-            self.router.add_static(self.config['STATIC_PREFIX'], self.config['STATIC_ROOT'])
+        if os.path.isdir(self.cfg.STATIC_ROOT):
+            self.router.add_static(self.cfg.STATIC_PREFIX, self.cfg.STATIC_ROOT)
         else:
-            self.logger.warn('Disable STATIC_ROOT (hasnt found): %s' % self.config['STATIC_ROOT'])
+            self.logger.warn('Disable STATIC_ROOT (hasnt found): %s' % self.cfg.STATIC_ROOT)
 
     def __call__(self, *args, **kwargs):
         return self
 
     @cached_property
-    def config(self):
+    def cfg(self):
         """ Load the application configuration. """
-        config = dict(self.defaults)
+        config = Structure(self.defaults)
         module = config['CONFIG'] = os.environ.get(
             CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
         try:

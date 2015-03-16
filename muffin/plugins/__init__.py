@@ -31,5 +31,5 @@ class BasePlugin(metaclass=PluginMeta):
         self.app = app
         for key in self.defaults:
             name = ('%s_%s' % (self.name, key)).upper()
-            app.config.setdefault(name, self.defaults[key])
-            self.options.setdefault(key, app.config[name])
+            app.cfg.setdefault(name, self.defaults[key])
+            self.options.setdefault(key, app.cfg[name])

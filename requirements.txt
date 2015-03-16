@@ -1,6 +1,6 @@
-aiohttp             == 0.14.1
+aiohttp             == 0.14.4
 cached_property     == 0.1.5
-gunicorn            == 19.2.1
+gunicorn            == 19.3.0
 peewee              == 2.4.6
 pyjade              == 3.0.0
 ujson               == 1.33

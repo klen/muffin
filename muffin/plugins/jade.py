@@ -33,7 +33,7 @@ class JadePlugin(BasePlugin):
         super().setup(app)
 
         self.ctx_provider(lambda: {'app': self.app})
-        self.env = Environment(debug=app.config.get('DEBUG', False), **self.options)
+        self.env = Environment(debug=app.cfg.DEBUG, **self.options)
 
     def ctx_provider(self, func):
         """ Decorator for adding a context provider.

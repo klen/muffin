@@ -111,7 +111,3 @@ class Example(muffin.Handler):
 @app.ps.manage.command
 def hello_world():
     print('Hello world!')
-
-
-if __name__ == '__main__':
-    app.ps.manage()

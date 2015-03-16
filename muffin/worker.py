@@ -1,12 +1,12 @@
-import asyncio
 import logging
 import os
 import sys
 
+from aiohttp.web import Application
+from aiohttp.worker import GunicornWebWorker
 from gunicorn.app.base import Application as VanillaGunicornApp
 from gunicorn.config import Config as VanillaGunicornConfig
 from gunicorn.util import import_app
-from gunicorn.workers.base import Worker as VanillaGunicornWorker
 
 from . import CONFIGURATION_ENVIRON_VARIABLE
 
@@ -51,51 +51,26 @@ class GunicornApp(VanillaGunicornApp):
         os.chdir(self.cfg.chdir)
         sys.path.insert(0, self.cfg.chdir)
 
-        if isinstance(self.app_uri, dict):
-            return self.app_uri
+        app = self.app_uri
+        if not isinstance(app, Application):
+            app = import_app(app)
 
-        return import_app(self.app_uri)
+        return app
 
 
-class GunicornWorker(VanillaGunicornWorker):
+class GunicornWorker(GunicornWebWorker):
 
     """ Work with Asyncio applications. """
 
-    def __init__(self, *args, **kwargs):
-        super(GunicornWorker, self).__init__(*args, **kwargs)
-        self.servers = {}
-
-    def init_process(self):
-        """ Create new event_loop after fork. """
-        asyncio.get_event_loop().close()
-
-        self.loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(self.loop)
-
-        super().init_process()
-
     def run(self):
         """ Create asyncio server and start the loop. """
-        container = self.app.callable
-        container._loop = self.loop
-        container.loop.set_debug(container.config['DEBUG'])
-        handler = container.make_handler()
-        for i, sock in enumerate(self.sockets):
-            srv = self.loop.run_until_complete(self.loop.create_server(handler, sock=sock.sock))
-            self.servers[srv] = handler
+        app = self.app.callable
+        self.loop.set_debug(app.cfg.DEBUG)
+        app._loop = self.loop
+        super(GunicornWorker, self).run()
 
-        self.notify()
-        self.loop.run_forever()
-
-    def notify(self):
-        """ Call Gunicorn notify every ``self.timeout`` seconds.
-
-        Prevent the master process from murder the worker.
-
-        """
-        super(GunicornWorker, self).notify()
-        if self.alive and os.getppid() == self.ppid:
-            self.loop.call_later(self.timeout, self.notify)
-        else:
-            self.alive = False
-            self.log.info("Parent changed, shutting down: %s", self)
+    def make_handler(self, app, host, port):
+        return app.make_handler(
+            host=host, port=port, logger=self.log,
+            debug=app.cfg.DEBUG, keep_alive=self.cfg.keepalive,
+            access_log=self.log.access_log, access_log_format=self.cfg.access_log_format)
