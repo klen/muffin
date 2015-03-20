@@ -1,9 +1,11 @@
 import argparse
 import inspect
 import sys
+import os
 import re
 
-from . import BasePlugin
+from muffin import CONFIGURATION_ENVIRON_VARIABLE
+from muffin.plugins import BasePlugin
 
 
 PARAM_RE = re.compile('^\s+:param (\w+): (.+)$', re.M)
@@ -12,11 +14,12 @@ PARAM_RE = re.compile('^\s+:param (\w+): (.+)$', re.M)
 class ManagePlugin(BasePlugin):
 
     name = 'manage'
+    parser = argparse.ArgumentParser(description="Manage Application")
+    parser.add_argument('app', metavar='app', type=str, help='Path to application.')
+    parser.add_argument('--config', type=str, help='Path to configuration.')
 
     def __init__(self, **options):
         super().__init__(**options)
-
-        self.parser = argparse.ArgumentParser(description="Manage Application")
         self.parsers = self.parser.add_subparsers(dest='subparser')
         self.handlers = dict()
 
@@ -121,11 +124,11 @@ class ManagePlugin(BasePlugin):
         self.app.cfg.MANAGE_SHELL = func
 
     def __call__(self, args=None):
-        if args is None:
-            args = sys.argv[1:]
-        options = self.parser.parse_args(args)
-        sys.argv = sys.argv[:2]
-        kwargs = dict(options._get_kwargs())
+        args_ = self.parser.parse_args(args)
+        kwargs = dict(args_._get_kwargs())
+        kwargs.pop('app')
+        kwargs.pop('config')
+
         handler = self.handlers.get(kwargs.pop('subparser'))
         if not handler:
             self.parser.print_help()
@@ -139,23 +142,19 @@ class ManagePlugin(BasePlugin):
 
 
 def manage():
+    args_ = [_ for _ in sys.argv[1:] if _ not in ["--help", "-h"]]
+    args_, unknown = ManagePlugin.parser.parse_known_args(args_)
+    if args_.config:
+        os.environ[CONFIGURATION_ENVIRON_VARIABLE] = args_.config
+
     from gunicorn.util import import_app
 
-    if len(sys.argv) < 2:
-        print('Usage: muffin APPLICATION [-h] [COMMAND] [OPTIONS]')
-        raise sys.exit(1)
-
-    app_uri, *args = sys.argv[1:]
     try:
-        app = import_app(app_uri)
+        app = import_app(args_.app)
     except Exception as e:
         print(e)
         raise sys.exit(1)
 
-    prog = 'muffin ' + app_uri
-    app.ps.manage.parser.prog = prog
-    for parser in app.ps.manage.parsers.choices.values():
-        parser.prog = prog + ' ' + parser.prog.split()[-1]
-    app.ps.manage(args)
+    app.ps.manage()
 
 # pylama:ignore=E1103,W0612,E231

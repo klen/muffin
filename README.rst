@@ -109,11 +109,6 @@ Base Muffin options and default values: ::
 CLI integration
 ---------------
 
-Add the next lines to end of your application file: ::
-
-    if __name__ == '__main__':
-        app.plugins.manage()
-
 Run in your shell: ::
 
     $ muffin path.to.your.module:app_object_name --help

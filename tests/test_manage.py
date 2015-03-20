@@ -7,11 +7,11 @@ def test_manage(app, capsys):
         print("hello " + name)
 
     with pytest.raises(SystemExit):
-        app.plugins.manage(['hello'])
+        app.plugins.manage(['example.app:app', 'hello'])
     out, err = capsys.readouterr()
     assert "hello Mike\n" == out
 
     with pytest.raises(SystemExit):
-        app.plugins.manage(['hello', '--name=Sam'])
+        app.plugins.manage(['example.app:app', 'hello', '--name=Sam'])
     out, err = capsys.readouterr()
     assert "hello Sam\n" == out
