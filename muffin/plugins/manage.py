@@ -165,7 +165,10 @@ def manage():
     from gunicorn.util import import_app
 
     try:
-        app = import_app(args_.app)
+        app = args_.app
+        if ':' not in app:
+            app += ':app'
+        app = import_app(app)
     except Exception as e:
         print(e)
         raise sys.exit(1)

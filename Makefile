@@ -57,6 +57,7 @@ upload: clean
 	@$(VIRTUALENV)/bin/pip install twine wheel
 	@$(VIRTUALENV)/bin/python setup.py sdist bdist_wheel
 	@$(VIRTUALENV)/bin/twine upload dist/*
+	@$(VIRTUALENV)/bin/pip install -e $(CURDIR)
 
 # =============
 #  Development
@@ -87,7 +88,7 @@ doc: docs $(VIRTUALENV)
 	@$(VIRTUALENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
 
-MANAGER=$(VIRTUALENV)/bin/muffin example.app:app
+MANAGER=$(VIRTUALENV)/bin/muffin example.app
 CMD = --help
 
 .PHONY: manage
@@ -106,4 +107,4 @@ shell: $(VIRTUALENV)
 db: db.sqlite
 
 db.sqlite: $(VIRTUALENV)
-	@$(VIRTUALENV)/bin/muffin example.app:app migrate
+	@make manage CMD=migrate
