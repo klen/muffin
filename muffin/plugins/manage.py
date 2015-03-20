@@ -60,7 +60,7 @@ class ManagePlugin(BasePlugin):
         @self.command
         def run(timeout:int=30, reload:bool=self.app.cfg.DEBUG, config:str=self.app.cfg.CONFIG,
                 name:str=self.app.name, pid:str=None, workers:int=1, bind:str='127.0.0.1:5000',
-                log_file:str=None):
+                log_file:str=None, worker_class:str='muffin.worker.GunicornWorker'):
             """ Run the application.
 
             :param bind: The socket to bind
@@ -70,6 +70,7 @@ class ManagePlugin(BasePlugin):
             :param pid: A filename to use for the PID file
             :param reload: Restart workers when code changes
             :param timeout: Workers silent for more than this many seconds are killed and restarted
+            :param worker_class: The type of workers to use.
             :param workers: The number of worker processes for handling requests
 
             """
@@ -81,6 +82,7 @@ class ManagePlugin(BasePlugin):
             gapp.cfg.set('proc_name', name)
             gapp.cfg.set('reload', reload)
             gapp.cfg.set('timeout', timeout)
+            gapp.cfg.set('worker_class', worker_class)
             if log_file:
                 gapp.cfg.set('errorlog', log_file)
             gapp.run()
@@ -94,24 +96,24 @@ class ManagePlugin(BasePlugin):
 
         if args and defs:
             for name, value in zip(args, defs):
-                argname = "--%s" % name.replace('_', '-').lower()
-                _type = type(value)
-                _help = docs.get(name, '')
-                if anns:
-                    _type = anns.get(name, _type)
+                argname = name.replace('_', '-').lower()
+                arghelp = docs.get(name, '')
+
                 if isinstance(value, bool):
-                    if not value:
-                        parser.add_argument(argname, dest=name, action="store_true",
-                                            help="Enable %s" % _help or name)
-                    else:
-                        argname = "--no-%s" % name.lower()
-                        parser.add_argument(argname, dest=name, action="store_false",
-                                            help="Disable %s" % _help or name)
-                elif isinstance(value, list):
-                    parser.add_argument(argname, action="append", default=value, help=_help)
-                else:
-                    parser.add_argument(argname, default=value, type=_type,
-                                        help=_help + ' [%s]' % value)
+                    parser.add_argument("--" + argname, dest=name, action="store_true",
+                                        help="Enable %s" % (arghelp or name).lower())
+                    parser.add_argument("--no-" + argname, dest=name, action="store_false",
+                                        help="Disable %s" % (arghelp or name).lower())
+                    continue
+
+                if isinstance(value, list):
+                    parser.add_argument("--" + argname, action="append",
+                                        default=value, help=arghelp)
+                    continue
+
+                parser.add_argument("--" + argname, type=anns.get(name, type(value)),
+                                    default=value, help=arghelp + ' [%s]' % value)
+
         self.handlers[func.__name__] = func
         return func
 
