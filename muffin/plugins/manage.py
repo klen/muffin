@@ -37,7 +37,7 @@ class ManagePlugin(BasePlugin):
         self.parser.description = "Manage %s" % app.name.capitalize()
 
         @self.command
-        def shell(test, ipython:bool=True):
+        def shell(ipython:bool=True):
             """ Run the application shell.
 
             :param ipython: Use IPython as shell
