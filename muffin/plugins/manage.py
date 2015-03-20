@@ -78,7 +78,11 @@ class ManagePlugin(BasePlugin):
 
             """
             from muffin.worker import GunicornApp
-            gapp = GunicornApp(usage="%(prog)s [OPTIONS] [APP_MODULE]", config=config)
+
+            # Clean argv
+            sys.argv = sys.argv[1:]
+
+            gapp = GunicornApp(usage="%(prog)s APP_MODULE run [OPTIONS]", config=config)
             gapp.app_uri = app
             gapp.cfg.set('bind', bind)
             gapp.cfg.set('pidfile', pid)
@@ -118,6 +122,7 @@ class ManagePlugin(BasePlugin):
                                     default=value, help=arghelp + ' [%s]' % value)
 
         self.handlers[func.__name__] = func
+        func.parser = parser
         return func
 
     def shell(self, func):
@@ -126,13 +131,16 @@ class ManagePlugin(BasePlugin):
     def __call__(self, args=None):
         args_ = self.parser.parse_args(args)
         kwargs = dict(args_._get_kwargs())
-        kwargs.pop('app')
-        kwargs.pop('config')
 
         handler = self.handlers.get(kwargs.pop('subparser'))
         if not handler:
             self.parser.print_help()
             sys.exit(1)
+
+        actions = [a.dest for a in handler.parser._actions]
+        for name in ('app', 'config'):
+            if name not in actions:
+                kwargs.pop(name, None)
 
         try:
             handler(**kwargs)
