@@ -3,7 +3,7 @@
 import re
 from os import path as op
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 def _read(fname):
@@ -48,7 +48,7 @@ setup(
         'Topic :: Utilities',
     ],
 
-    packages=find_packages(),
+    packages=['muffin'],
     include_package_data=True,
     install_requires=install_requires,
     entry_points = {
