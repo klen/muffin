@@ -37,7 +37,7 @@ class ManagePlugin(BasePlugin):
         self.parser.description = "Manage %s" % app.name.capitalize()
 
         @self.command
-        def shell(ipython:bool=True):
+        def shell(test, ipython:bool=True):
             """ Run the application shell.
 
             :param ipython: Use IPython as shell
@@ -99,27 +99,34 @@ class ManagePlugin(BasePlugin):
                             if not s.strip().startswith(':')])
         parser = self.parsers.add_parser(func.__name__, description=header)
         args, vargs, kw, defs, kwargs, kwdefs, anns = inspect.getfullargspec(func)
+        defs = defs or []
+        kwargs_ = dict(zip(args[-len(defs):], defs))
         docs = dict(PARAM_RE.findall(func.__doc__ or ""))
 
-        if args and defs:
-            for name, value in zip(args, defs):
-                argname = name.replace('_', '-').lower()
-                arghelp = docs.get(name, '')
+        for name in args:
+            argname = name.replace('_', '-').lower()
+            arghelp = docs.get(name, '')
 
-                if isinstance(value, bool):
-                    parser.add_argument("--" + argname, dest=name, action="store_true",
-                                        help="Enable %s" % (arghelp or name).lower())
-                    parser.add_argument("--no-" + argname, dest=name, action="store_false",
-                                        help="Disable %s" % (arghelp or name).lower())
-                    continue
+            if name not in kwargs_:
+                parser.add_argument(argname, help=arghelp)
+                continue
 
-                if isinstance(value, list):
-                    parser.add_argument("--" + argname, action="append",
-                                        default=value, help=arghelp)
-                    continue
+            value = kwargs_[name]
 
-                parser.add_argument("--" + argname, type=anns.get(name, type(value)),
-                                    default=value, help=arghelp + ' [%s]' % value)
+            if isinstance(value, bool):
+                parser.add_argument("--" + argname, dest=name, action="store_true",
+                                    help="Enable %s" % (arghelp or name).lower())
+                parser.add_argument("--no-" + argname, dest=name, action="store_false",
+                                    help="Disable %s" % (arghelp or name).lower())
+                continue
+
+            if isinstance(value, list):
+                parser.add_argument("--" + argname, action="append",
+                                    default=value, help=arghelp)
+                continue
+
+            parser.add_argument("--" + argname, type=anns.get(name, type(value)),
+                                default=value, help=arghelp + ' [%s]' % value)
 
         self.handlers[func.__name__] = func
         func.parser = parser
