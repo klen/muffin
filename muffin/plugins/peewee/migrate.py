@@ -34,9 +34,6 @@ class Router(object):
         self.app = plugin.app
         self.database = plugin.database
         self.migrate_dir = plugin.options['migrations_path']
-        if not op.exists(self.migrate_dir):
-            self.app.logger.warn('Migration directory: %s does not exists.', self.migrate_dir)
-            md(self.migrate_dir)
 
     @cached_property
     def model(self):
@@ -51,6 +48,9 @@ class Router(object):
 
     @property
     def fs_migrations(self):
+        if not op.exists(self.migrate_dir):
+            self.app.logger.warn('Migration directory: %s does not exists.', self.migrate_dir)
+            md(self.migrate_dir)
         return sorted(''.join(f[:-3]) for f in ls(self.migrate_dir) if self.filemask.match(f))
 
     @property
