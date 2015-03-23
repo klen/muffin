@@ -1,3 +1,6 @@
+from muffin.utils import Structure
+
+
 class PluginException(Exception):
 
     """ Implement any exception in plugins. """
@@ -24,7 +27,7 @@ class BasePlugin(metaclass=PluginMeta):
 
     def __init__(self, **options):
         self.app = None
-        self.options = options
+        self.options = Structure(options)
 
     def setup(self, app):
         """ Initialize the application. """

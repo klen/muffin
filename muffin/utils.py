@@ -48,3 +48,14 @@ def check_password_hash(password, pwhash):
         return False
     digestmod, salt, signature = pwhash.split('$', 2)
     return check_signature(signature, salt, password, digestmod=digestmod)
+
+
+class Structure(dict):
+
+    """ `Attribute` dictionary. """
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)

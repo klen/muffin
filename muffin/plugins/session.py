@@ -19,6 +19,8 @@ class SessionPlugin(BasePlugin):
 
     name = 'session'
     defaults = {
+        'default_user_checker': lambda x: x,
+        'login_url': '/login',
         'secret': 'InsecureSecret',
     }
 
@@ -61,21 +63,22 @@ class SessionPlugin(BasePlugin):
         return request.user
 
     @asyncio.coroutine
-    def check_user(self, request, func=FUNC, *args, **kwargs):
+    def check_user(self, request, func=FUNC, location=None, **kwargs):
         """ Check for user is logged and pass func. """
         user = yield from self.load_user(request)
+        func = func or self.options.default_user_checker
         if not func(user):
-            raise HTTPFound(*args, **kwargs)
+            raise HTTPFound(location or self.options.login_url, **kwargs)
         return user
 
-    def user_pass(self, func=FUNC, *rargs, **rkwargs):
+    def user_pass(self, func=None, location=None, **rkwargs):
         def wrapper(view):
             view = to_coroutine(view)
 
             @asyncio.coroutine
             @functools.wraps(view)
             def handler(request, *args, **kwargs):
-                yield from self.check_user(request, func, *rargs, **rkwargs)
+                yield from self.check_user(request, func, location, **rkwargs)
                 return (yield from view(request, *args, **kwargs))
             return handler
 

@@ -10,6 +10,7 @@ from aiohttp import web
 from cached_property import cached_property
 
 from .handler import Handler
+from .utils import Structure
 
 
 CONFIGURATION_ENVIRON_VARIABLE = 'MUFFIN_CONFIG'
@@ -21,15 +22,6 @@ class MuffinException(Exception):
     """ Implement a Muffin's exception. """
 
     pass
-
-
-class Structure(dict):
-
-    def __getattr__(self, name):
-        try:
-            return self[name]
-        except KeyError:
-            raise AttributeError(name)
 
 
 class RawRoute(web.DynamicRoute):
