@@ -20,6 +20,9 @@ class HandlerMeta(type):
         for method in params['methods']:
             params[method] = to_coroutine(params.get(method, _handler))
 
+        if 'dispatch' in params:
+            params['dispatch'] = to_coroutine(params['dispatch'])
+
         params['name'] = params.get('name') or name.lower()
 
         return super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
