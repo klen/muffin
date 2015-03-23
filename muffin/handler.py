@@ -69,10 +69,13 @@ class Handler(object, metaclass=HandlerMeta):
     @asyncio.coroutine
     def dispatch(self, request):
         """ Dispatch request. """
-        method = request.method.lower()
-        method = getattr(self, method)
-
+        method = getattr(self, request.method.lower())
         response = yield from method(request)
+        return (yield from self.make_response(response))
+
+    @asyncio.coroutine
+    def make_response(self, response):
+        """ Ensure that response is web.Response or convert it. """
 
         while asyncio.iscoroutine(response):
             response = yield from response
