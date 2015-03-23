@@ -1,5 +1,6 @@
 import asyncio
 import base64
+import functools
 import time
 
 import ujson as json
@@ -7,7 +8,9 @@ import ujson as json
 from muffin import HTTPFound
 from muffin.plugins import BasePlugin
 from muffin.utils import create_signature, check_signature, to_coroutine
-import functools
+
+
+FUNC = lambda x: x
 
 
 class SessionPlugin(BasePlugin):
@@ -57,18 +60,23 @@ class SessionPlugin(BasePlugin):
         request.user = yield from self._user_loader(user_id)
         return request.user
 
-    def user_pass(self, func, *margs, **mkwargs):
+    @asyncio.coroutine
+    def check_user(self, request, func=FUNC, *args, **kwargs):
+        """ Check for user is logged and pass func. """
+        user = yield from self.load_user(request)
+        if not func(user):
+            raise HTTPFound(*args, **kwargs)
+        return user
+
+    def user_pass(self, func=FUNC, *rargs, **rkwargs):
         def wrapper(view):
             view = to_coroutine(view)
 
             @asyncio.coroutine
             @functools.wraps(view)
             def handler(request, *args, **kwargs):
-                user = yield from self.load_user(request)
-                if not func(user):
-                    return HTTPFound(*margs, **mkwargs)
-                response = yield from view(request, *args, **kwargs)
-                return response
+                yield from self.check_user(request, func, *rargs, **rkwargs)
+                return (yield from view(request, *args, **kwargs))
             return handler
 
         return wrapper
