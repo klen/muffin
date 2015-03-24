@@ -13,7 +13,9 @@ class HandlerMeta(type):
 
     def __new__(mcs, name, bases, params):
 
-        methods = set(sum([list(getattr(o, 'methods', [])) for o in bases], []))
+        methods = set(params.get(
+            'methods', sum([list(getattr(o, 'methods', [])) for o in bases], [])))
+
         for method in HTTP_METHODS:
             if method not in params:
                 continue
