@@ -32,3 +32,31 @@ def test_migrations(app, tmpdir):
 
     path = router.create()
     assert '001_auto.py' in path
+
+    import peewee as pw
+    from muffin.plugins.peewee.migrate import Migrator
+
+    migrator = Migrator(router.database)
+
+    @migrator.create_table
+    class Customer(pw.Model):
+        name = pw.CharField()
+
+    assert Customer == migrator.orm['customer']
+
+    @migrator.create_table
+    class Order(pw.Model):
+        number = pw.CharField()
+
+        customer = pw.ForeignKeyField(Customer)
+
+    assert Order == migrator.orm['order']
+
+    migrator.add_columns(Order, finished=pw.BooleanField(default=False))
+    assert 'finished' in Order._meta.fields
+
+    migrator.drop_columns('order', 'finished', 'customer')
+    assert 'finished' not in Order._meta.fields
+
+    migrator.add_columns(Order, customer=pw.ForeignKeyField(Customer, null=True))
+    assert 'customer' in Order._meta.fields

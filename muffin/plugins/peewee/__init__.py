@@ -43,7 +43,7 @@ class PeeweePlugin(BasePlugin):
         self.router = Router(self)
 
         # Register migration commands
-        @self.app.plugins.manage.command
+        @self.app.ps.manage.command
         def migrate(name:str=None):
             """ Run application's migrations.
 
@@ -52,9 +52,13 @@ class PeeweePlugin(BasePlugin):
             """
             self.router.run(name)
 
-        @self.app.plugins.manage.command
-        def create(name='auto'):
-            """ Create migration with NAME. """
+        @self.app.ps.manage.command
+        def create(name:str):
+            """ Create a migration.
+
+            :param name: Set name of migration [auto]
+
+            """
             self.router.create(name)
 
     @asyncio.coroutine

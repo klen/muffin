@@ -175,30 +175,31 @@ class Migrator(object):
         operations = []
         for name, field in fields.items():
             operations.append(self.migrator.add_column(model._meta.db_table, name, field))
-        model = type(model._meta.db_table, (pw.Model,), dict(model._meta.fields, **fields))
-        model._meta.database = self.db
-        self.orm[model._meta.db_table] = model
+            field.add_to_class(model, name)
 
-        if not self.fake:
-            for operation in operations:
-                operation.run()
+        if self.fake:
+            return model
+
+        for operation in operations:
+            operation.run()
 
     @get_model
     def drop_columns(self, model, *names, cascade=True):
-        operations = []
-        for name in names:
-            operations.append(
-                self.migrator.drop_column(model._meta.db_table, name, cascade=cascade))
 
-        fields = model._meta.fields
-        model = type(model._meta.db_table, (pw.Model,), {
-            name: fields[name] for name in fields if name not in names})
-        model._meta.database = self.db
-        self.orm[model._meta.db_table] = model
+        fields = [field for field in model._meta.fields.values() if field.name in names]
+        for field in fields:
+            del model._meta.fields[field.name]
+            del model._meta.columns[field.db_column]
+            delattr(model, field.name)
+            if isinstance(field, pw.ForeignKeyField):
+                delattr(field.rel_model, field.related_name)
+                del field.rel_model._meta.reverse_rel[field.related_name]
 
-        if not self.fake:
-            for operation in operations:
-                operation.run()
+        if self.fake:
+            return model
+
+        for field in fields:
+            self.migrator.drop_column(model._meta.db_table, field.db_column, cascade=cascade).run()
 
     @get_model
     def rename_column(self, model, old_name, new_name):

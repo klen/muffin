@@ -10,7 +10,7 @@ def migrate(migrator, database, **kwargs):
     > migrator.create_table(model)
     > migrator.drop_table(model, cascade=True)
     > migrator.add_columns(model, **fields)
-    > migrator.drop_columns(models, *names, cascade=True)
+    > migrator.drop_columns(model, *names, cascade=True)
     > migrator.rename_column(model, old_name, new_name)
     > migrator.rename_table(model, new_name)
     > migrator.add_index(model, *columns, unique=False)
