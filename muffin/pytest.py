@@ -152,10 +152,11 @@ def client(app, loop):
 @pytest.fixture(scope='function')
 def db(app, request):
     """ Run tests in transaction. """
-    app.peewee.database.set_autocommit(False)
-    app.peewee.database.begin()
-    request.addfinalizer(lambda: app.peewee.database.rollback())
-    return app.peewee.database
+    if 'peewee' in app.plugins:
+        app.ps.peewee.database.set_autocommit(False)
+        app.ps.peewee.database.begin()
+        request.addfinalizer(lambda: app.ps.peewee.database.rollback())
+        return app.ps.peewee.database
 
 
 @pytest.fixture(scope='session')
