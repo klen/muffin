@@ -8,3 +8,6 @@ def test_handler(client):
 
     response = client.post('/api/example')
     assert response.json == [1, 2, 3]
+
+    response = client.delete('/api/example', status=405)
+    assert response.status_code == 405

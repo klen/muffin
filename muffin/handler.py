@@ -6,23 +6,24 @@ from aiohttp import web
 from muffin.utils import to_coroutine
 
 
-class HandlerMeta(type):
+HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
-    methods = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
+
+class HandlerMeta(type):
 
     def __new__(mcs, name, bases, params):
 
-        def _handler(self, request):
-            raise web.HTTPMethodNotAllowed
-
-        params.setdefault('methods', mcs.methods)
-
-        for method in params['methods']:
-            params[method] = to_coroutine(params.get(method, _handler))
+        methods = set(sum([list(getattr(o, 'methods', [])) for o in bases], []))
+        for method in HTTP_METHODS:
+            if method not in params:
+                continue
+            methods.add(method)
+            params[method] = to_coroutine(params[method])
 
         if 'dispatch' in params:
             params['dispatch'] = to_coroutine(params['dispatch'])
 
+        params['methods'] = methods
         params['name'] = params.get('name') or name.lower()
 
         return super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
@@ -63,7 +64,6 @@ class Handler(object, metaclass=HandlerMeta):
             lname = name
             for num, path in enumerate(paths, 1):
                 app.router.add_route(method, path, view, name=lname)
-
                 lname = "%s-%s" % (name, num)
 
     @asyncio.coroutine
