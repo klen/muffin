@@ -97,7 +97,7 @@ manage: $(VIRTUALENV)
 
 .PHONY: run
 run: $(VIRTUALENV) db.sqlite
-	@make manage CMD=run
+	@make manage CMD="run --reload"
 
 .PHONY: shell
 shell: $(VIRTUALENV)
