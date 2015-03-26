@@ -8,6 +8,7 @@ from playhouse.db_url import connect
 from .migrate import Router, MigrateHistory
 from .serialize import Serializer
 from muffin.plugins import BasePlugin, PluginException
+from muffin.utils import Structure
 
 
 class PeeweePlugin(BasePlugin):
@@ -27,7 +28,7 @@ class PeeweePlugin(BasePlugin):
 
         self.database = peewee.Proxy()
         self.serializer = Serializer()
-        self.models = dict()
+        self.models = Structure()
 
     def setup(self, app):
         """ Initialize the application. """
