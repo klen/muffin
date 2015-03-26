@@ -128,6 +128,9 @@ class MigrateHistory(pw.Model):
     name = pw.CharField()
     migrated_at = pw.DateTimeField(default=dt.datetime.utcnow)
 
+    def __unicode__(self):
+        return self.name
+
 
 def get_model(method):
     def wrapper(migrator, model, *args, **kwargs):
