@@ -5,8 +5,8 @@ from functools import partial
 import peewee
 from playhouse.db_url import connect
 
+from .migrate import Router, MigrateHistory
 from .serialize import Serializer
-from .migrate import Router
 from muffin.plugins import BasePlugin, PluginException
 
 
@@ -18,6 +18,7 @@ class PeeweePlugin(BasePlugin):
     defaults = {
         'connection': 'sqlite:///db.sqlite',
         'max_connections': 2,
+        'migrations_enabled': True,
         'migrations_path': 'migrations',
     }
 
@@ -39,8 +40,12 @@ class PeeweePlugin(BasePlugin):
         self.threadpool = concurrent.futures.ThreadPoolExecutor(
             max_workers=self.options['max_connections'])
 
+        if not self.options.migrations_enabled:
+            return
+
         # Setup migration engine
         self.router = Router(self)
+        self.register(MigrateHistory)
 
         # Register migration commands
         @self.app.ps.manage.command
