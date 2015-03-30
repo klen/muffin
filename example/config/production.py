@@ -7,10 +7,9 @@ bind = '127.0.0.1:5000'
 
 PLUGINS = (
     'muffin.plugins.jade:JadePlugin',
-    'muffin.plugins.session:SessionPlugin',
-    # 'muffin.plugins.oauth:OAuth2Plugin',
 
     'muffin_peewee',
+    'muffin_session',
 
     'invalid.plugin',
 )

@@ -42,7 +42,7 @@ def login(request):
     data = yield from request.post()
     user = User.select().where(User.email == data.get('email')).get()
     if user.check_password(data.get('password')):
-        app.ps.session.login_user(request, user.pk)
+        yield from app.ps.session.login(request, user.pk)
 
     return muffin.HTTPFound('/')
 
@@ -50,7 +50,7 @@ def login(request):
 @app.register('/logout')
 def logout(request):
     """ Implement user's logout. """
-    app.ps.session.logout_user(request)
+    yield from app.ps.session.logout(request)
     return muffin.HTTPFound('/')
 
 

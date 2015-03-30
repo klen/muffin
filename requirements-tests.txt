@@ -7,3 +7,4 @@ pytest-pythonpath
 webtest
 
 muffin_peewee
+muffin_session
