@@ -1,19 +1,20 @@
 """ Implement Muffin Application. """
 import asyncio
 import logging
-import re
 import os
+import re
 from importlib import import_module
 from types import FunctionType
 
 from aiohttp import web
 from cached_property import cached_property
 
-from .handler import Handler
-from .utils import Structure
+from muffin import CONFIGURATION_ENVIRON_VARIABLE
+from muffin.handler import Handler
+from muffin.utils import Structure
+from muffin.manage import Manager
 
 
-CONFIGURATION_ENVIRON_VARIABLE = 'MUFFIN_CONFIG'
 RETYPE = type(re.compile('@'))
 
 
@@ -99,6 +100,8 @@ class Application(web.Application):
         self.logger.addHandler(ch)
         self.logger.setLevel('DEBUG') if self.cfg.DEBUG else self.logger.setLevel('WARNING')
         self.logger.name = 'muffin'
+
+        self.manage = Manager(self)
 
         # Setup plugins
         self.plugins = self.ps = Structure()

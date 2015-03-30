@@ -53,6 +53,6 @@ setup(
     install_requires=install_requires,
     entry_points={
         'pytest11': ['muffin_pytest = muffin.pytest'],
-        'console_scripts': ['muffin = muffin.plugins.manage:manage'],
+        'console_scripts': ['muffin = muffin.manage:run'],
     },
 )

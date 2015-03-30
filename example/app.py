@@ -30,7 +30,7 @@ def get_user(user_id):
 
 
 @app.register('/')
-def hello(request):
+def index(request):
     """ Get a current logged user and render a template. """
     user = yield from app.ps.session.load_user(request)
     return app.ps.jade.render('index.jade', user=user)
@@ -108,6 +108,15 @@ class Example(muffin.Handler):
 # Commands
 # ========
 
-@app.ps.manage.command
-def hello_world():
-    print('Hello world!')
+@app.manage.command
+def hello(name, upper=False):
+    """ Write command help text here.
+
+    :param name:  Write your name
+    :param upper: Use uppercase
+
+    """
+    greetings = 'Hello %s!' % name
+    if upper:
+        greetings = greetings.upper()
+    print(greetings)

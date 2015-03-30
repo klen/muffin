@@ -1,36 +1,30 @@
 import argparse
 import inspect
-import sys
 import os
 import re
+import sys
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
-from muffin.plugins import BasePlugin
 
 
 PARAM_RE = re.compile('^\s+:param (\w+): (.+)$', re.M)
 
 
-class ManagePlugin(BasePlugin):
+class Manager(object):
 
-    name = 'manage'
+    """ Support application commands. """
+
     parser = argparse.ArgumentParser(description="Manage Application")
     parser.add_argument('app', metavar='app', type=str, help='Path to application.')
     parser.add_argument('--config', type=str, help='Path to configuration.')
 
-    def __init__(self, **options):
-        super().__init__(**options)
+    def __init__(self, app):
+        self.app = app
         self.parsers = self.parser.add_subparsers(dest='subparser')
         self.handlers = dict()
 
-    def setup(self, app):
-
-        super().setup(app)
-
         def shell_ctx():
             ctx = {'app': app}
-            if 'peewee' in app.plugins:
-                ctx['models'] = app.plugins.peewee.models
             return ctx
 
         app.cfg.setdefault('MANAGE_SHELL', shell_ctx)
@@ -136,6 +130,7 @@ class ManagePlugin(BasePlugin):
         self.app.cfg.MANAGE_SHELL = func
 
     def __call__(self, args=None):
+        """ Parse arguments and run handler. """
         args_ = self.parser.parse_args(args)
         kwargs = dict(args_._get_kwargs())
 
@@ -156,9 +151,10 @@ class ManagePlugin(BasePlugin):
             sys.exit(e)
 
 
-def manage():
+def run():
+    """ CLI endpoint. """
     args_ = [_ for _ in sys.argv[1:] if _ not in ["--help", "-h"]]
-    args_, unknown = ManagePlugin.parser.parse_known_args(args_)
+    args_, unknown = Manager.parser.parse_known_args(args_)
     if args_.config:
         os.environ[CONFIGURATION_ENVIRON_VARIABLE] = args_.config
 
@@ -173,6 +169,4 @@ def manage():
         print(e)
         raise sys.exit(1)
 
-    app.ps.manage()
-
-# pylama:ignore=E1103,W0612,E231
+    app.manage()

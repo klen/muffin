@@ -118,14 +118,36 @@ Write a custom command
 
 ::
 
-    @app.plugins.manage.command
-    def hello_world(option=None, boolean_option=False):
-        """ Command help here.
+    @app.manage.command
+    def hello(name, upper=False):
+        """ Write command help text here.
         
-        :param option: Option help here
+        :param name:  Write your name
+        :param upper: Use uppercase
 
         """
-        print('Hello world!')
+        greetings = 'Hello %s!' % name
+        if upper:
+            greetings = greetings.upper()
+        print(greetings)
+
+::
+    
+    $ muffin example.app hello --help
+
+        Write command help text here.
+
+        positional arguments:
+        name        Write your name
+
+        optional arguments:
+        -h, --help  show this help message and exit
+        --upper     Enable use uppercase
+        --no-upper  Disable use uppercase
+
+    $ muffin example.app hello mike --upper
+
+        HELLO MIKE!
 
 
 Templates (Jade)
