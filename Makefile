@@ -72,6 +72,10 @@ $(VIRTUALENV)/bin/py.test: $(VIRTUALENV) requirements-tests.txt
 	@$(VIRTUALENV)/bin/pip install -r requirements-tests.txt
 	@touch $(VIRTUALENV)/bin/py.test
 
+$(VIRTUALENV)/bin/muffin: $(VIRTUALENV) requirements-tests.txt
+	@$(VIRTUALENV)/bin/pip install -r requirements-tests.txt
+	@touch $(VIRTUALENV)/bin/muffin
+
 .PHONY: test
 # target: test - Runs tests
 test: $(VIRTUALENV)/bin/py.test
@@ -96,7 +100,7 @@ manage: $(VIRTUALENV)
 	@$(MANAGER) $(CMD)
 
 .PHONY: run
-run: $(VIRTUALENV) db.sqlite
+run: $(VIRTUALENV)/bin/muffin db.sqlite
 	@make manage CMD="run --reload"
 
 .PHONY: shell

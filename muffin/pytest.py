@@ -108,10 +108,6 @@ def pytest_load_initial_conftests(early_config, parser, args):
 
     # Initialize application
     app = options.muffin_app or early_config.getini('muffin_app')
-    if not app:
-        raise SystemExit('Improperly configured. '
-                         'Please set ``muffin_app`` in your pytest config. '
-                         'Or use ``--muffin-app`` command option.')
     early_config.app = app
 
 
@@ -127,6 +123,10 @@ def loop(request):
 def app(pytestconfig, loop):
     """ Provide an example application. """
     app = pytestconfig.app
+    if not app:
+        raise SystemExit(
+            'Improperly configured. Please set ``muffin_app`` in your pytest config. '
+            'Or use ``--muffin-app`` command option.')
     app = util.import_app(app)
     app._loop.run_until_complete(app.start())
 

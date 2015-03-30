@@ -45,7 +45,8 @@ docs/_build
 /db.sqlite
 /docs
 /libs
+/peewee.db
+/plugins
 /probe.py
 /settings
 /todo.txt
-/peewee.db
