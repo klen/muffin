@@ -1,10 +1,10 @@
 import peewee as pw
 import datetime as dt
 
-from muffin.plugins.peewee import PeeweePlugin
+from muffin_peewee import Plugin
 from muffin.utils import generate_password_hash, check_password_hash
 
-db = PeeweePlugin()
+db = Plugin()
 
 
 @db.register
