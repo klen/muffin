@@ -51,7 +51,7 @@ setup(
     packages=['muffin'],
     include_package_data=True,
     install_requires=install_requires,
-    entry_points = {
+    entry_points={
         'pytest11': ['muffin_pytest = muffin.pytest'],
         'console_scripts': ['muffin = muffin.plugins.manage:manage'],
     },
