@@ -67,6 +67,7 @@ class GunicornWorker(GunicornWebWorker):
         app = self.app.callable
         self.loop.set_debug(app.cfg.DEBUG)
         app._loop = self.loop
+        self.loop.run_until_complete(app.start())
         super(GunicornWorker, self).run()
 
     def make_handler(self, app, host, port):

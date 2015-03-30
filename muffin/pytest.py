@@ -116,10 +116,19 @@ def pytest_load_initial_conftests(early_config, parser, args):
 
 
 @pytest.fixture(scope='session')
-def app(pytestconfig):
+def loop(request):
+    """ Create and provide asyncio loop. """
+    loop = asyncio.new_event_loop()
+    request.addfinalizer(lambda: loop.close())
+    return loop
+
+
+@pytest.fixture(scope='session')
+def app(pytestconfig, loop):
     """ Provide an example application. """
     app = pytestconfig.app
     app = util.import_app(app)
+    app._loop.run_until_complete(app.start())
 
     if 'peewee' in app.plugins:
         import peewee
@@ -133,16 +142,8 @@ def app(pytestconfig):
     return app
 
 
-@pytest.fixture(scope='session')
-def loop(request):
-    """ Create and provide asyncio loop. """
-    loop = asyncio.new_event_loop()
-    request.addfinalizer(lambda: loop.close())
-    return loop
-
-
 @pytest.fixture(scope='function')
-def client(app, loop):
+def client(app):
     """ Prepare a tests' client. """
     client = TestApp(app, lint=False)
     client.exception = webtest.AppError
