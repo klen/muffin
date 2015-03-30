@@ -138,9 +138,9 @@ class Application(web.Application):
         """ Install plugin to the application. """
 
         if isinstance(plugin, str):
-            module, attr = plugin.split(':')
+            module, _, attr = plugin.partition(':')
             module = import_module(module)
-            plugin = getattr(module, attr)
+            plugin = getattr(module, attr or 'Plugin')
 
         if isinstance(plugin, type):
             plugin = plugin()
@@ -153,7 +153,7 @@ class Application(web.Application):
             self.middlewares.append(plugin.middleware_factory)
 
         if hasattr(plugin, 'start'):
-            self.register_on_start(plugin.start)
+            self.call_on_start(plugin.start)
 
         self.plugins[plugin.name] = plugin
 
@@ -172,7 +172,7 @@ class Application(web.Application):
                     'application': self,
                 })
 
-    def register_on_start(self, func, *args, **kwargs):
+    def call_on_start(self, func, *args, **kwargs):
         self._start_callbacks.append((func, args, kwargs))
 
     def register(self, *paths, methods=['GET'], name=None):
