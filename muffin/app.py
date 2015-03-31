@@ -123,13 +123,16 @@ class Application(web.Application):
             self.middlewares.append(plugin.middleware_factory)
 
         if hasattr(plugin, 'start'):
-            self.call_on_start(plugin.start)
+            self.register_on_start(plugin.start)
+
+        if hasattr(plugin, 'finish'):
+            self.register_on_finish(plugin.finish)
 
         self.plugins[plugin.name] = plugin
 
     @asyncio.coroutine
     def start(self):
-        """ Start application. """
+        """ Start the application. """
         for (cb, args, kwargs) in self._start_callbacks:
             try:
                 res = cb(self, *args, **kwargs)
@@ -142,7 +145,8 @@ class Application(web.Application):
                     'application': self,
                 })
 
-    def call_on_start(self, func, *args, **kwargs):
+    def register_on_start(self, func, *args, **kwargs):
+        """ Register a start callback. """
         self._start_callbacks.append((func, args, kwargs))
 
     def register(self, *paths, methods=['GET'], name=None):
