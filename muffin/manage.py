@@ -37,6 +37,8 @@ class Manager(object):
             :param ipython: Use IPython as shell
 
             """
+            app._loop.run_until_complete(app.start())
+
             banner = '\nInteractive Muffin Shell\n'
             namespace = app.cfg.MANAGE_SHELL
             if callable(namespace):
@@ -51,8 +53,11 @@ class Manager(object):
                 else:
                     sh(global_ns={}, local_ns=namespace)
                     return
+
             from code import interact
             interact(banner, local=namespace)
+
+            app._loop.run_until_complete(app.finish())
 
         @self.command
         def run(timeout:int=30, reload:bool=self.app.cfg.DEBUG, config:str=self.app.cfg.CONFIG,

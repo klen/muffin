@@ -120,7 +120,7 @@ def loop(request):
 
 
 @pytest.fixture(scope='session')
-def app(pytestconfig, loop):
+def app(pytestconfig, loop, request):
     """ Provide an example application. """
     app = pytestconfig.app
     if not app:
@@ -140,6 +140,10 @@ def app(pytestconfig, loop):
                 model.create_table()
             except peewee.OperationalError:
                 pass
+
+    @request.addfinalizer
+    def finish():
+        loop.run_until_complete(app.finish())
 
     return app
 
