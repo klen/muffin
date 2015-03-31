@@ -129,6 +129,11 @@ def app(pytestconfig, loop, request):
             'Or use ``--muffin-app`` command option.')
     app = util.import_app(app)
 
+    return app
+
+
+@pytest.fixture(scope='session', autouse=True)
+def _initialize(app, loop, request):
     app._loop = loop
     loop.run_until_complete(app.start())
 
@@ -144,8 +149,6 @@ def app(pytestconfig, loop, request):
     @request.addfinalizer
     def finish():
         loop.run_until_complete(app.finish())
-
-    return app
 
 
 @pytest.fixture(scope='function')
