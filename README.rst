@@ -94,12 +94,7 @@ Base Muffin options and default values: ::
         'DEBUG': False,
 
         # List of enabled plugins
-        'PLUGINS': (
-            'muffin.plugins.manage:ManagePlugin',
-            'muffin.plugins.jade:JadePlugin',
-            'muffin.plugins.peewee:PeeweePlugin',
-            'muffin.plugins.session:SessionPlugin',
-        ),
+        'PLUGINS': [],
 
         # Setup static files in development
         'STATIC_PREFIX': '/static',
@@ -149,46 +144,18 @@ Write a custom command
 
         HELLO MIKE!
 
+.. _plugins:
 
-Templates (Jade)
-----------------
+Plugins
+=======
 
-Use ``jade.render`` in your handlers: ::
+THe Muffin has a plugins support.
 
-    @app.view('/')
-    def hello(request):
-        return (yield from app.plugins.jade.render(
-            'index.jade', user=request.session.get('user', 'anonimous')))
-
-The syntax is: ::
-
-    jade.render(TEMPLATE_NAME, **CUSTOM_CONTEXT)
-
-
-Add default context provider: ::
-
-    @jade.ctx_provider
-    def my_context():
-        """ Could be a coroutine. """
-        return { ... }
-
-
-Sessions
---------
-
-SQL (Peewee)
-------------
-
-Migrations
-^^^^^^^^^^
-
-* Create migrations: ::
-
-    $ muffin example.app:app create [NAME]
-
-* Run migrations: ::
-
-    $ python example.app:app migrate [NAME]
+* `Muffin-Jade <https://github.com/klen/muffin-jade>`_ -- Jade templates
+* `Muffin-Mongo <https://github.com/klen/muffin-mongo>`_ -- MongoDB (pymongo) support
+* `Muffin-Peewee <https://github.com/klen/muffin-peewee>`_ -- Peewee support (SQL, ORM)
+* `Muffin-Redis <https://github.com/klen/muffin-redis>`_ -- Redis support
+* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
 
 .. _testing:
 
