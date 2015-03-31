@@ -8,3 +8,4 @@ webtest
 
 muffin_peewee
 muffin_session
+muffin_jade

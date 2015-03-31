@@ -65,12 +65,7 @@ class Application(web.Application):
         'DEBUG': False,
 
         # Install the plugins
-        'PLUGINS': (
-            'muffin.plugins.manage:ManagePlugin',
-            'muffin.plugins.jade:JadePlugin',
-            'muffin.plugins.peewee:PeeweePlugin',
-            'muffin.plugins.session:SessionPlugin',
-        ),
+        'PLUGINS': [],
 
         # Setup static files in development
         'STATIC_PREFIX': '/static',

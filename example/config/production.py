@@ -6,8 +6,9 @@ bind = '127.0.0.1:5000'
 # ======
 
 PLUGINS = (
-    'muffin.plugins.jade:JadePlugin',
 
+    # Contrib plugins
+    'muffin_jade',
     'muffin_peewee',
     'muffin_session',
 
