@@ -1,11 +1,6 @@
 """ Tests for `muffin` module. """
 
 
-def test_proxy(client):
-    response = client.get('/proxy/foo/bar')
-    assert response.json == {'path': 'foo/bar'}
-
-
 def test_app(client):
     response = client.get('/')
     assert response.status_code == 200

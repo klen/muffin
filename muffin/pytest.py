@@ -128,7 +128,9 @@ def app(pytestconfig, loop):
             'Improperly configured. Please set ``muffin_app`` in your pytest config. '
             'Or use ``--muffin-app`` command option.')
     app = util.import_app(app)
-    app._loop.run_until_complete(app.start())
+
+    app._loop = loop
+    loop.run_until_complete(app.start())
 
     if 'peewee' in app.plugins:
         import peewee
@@ -162,5 +164,6 @@ def db(app, request):
 
 @pytest.fixture(scope='session')
 def mixer(app):
-    from mixer.backend.peewee import Mixer
-    return Mixer(commit=True)
+    if 'peewee' in app.plugins:
+        from mixer.backend.peewee import Mixer
+        return Mixer(commit=True)

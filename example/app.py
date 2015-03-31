@@ -1,5 +1,4 @@
 import muffin
-import re
 
 
 from .models import Test, db, User
@@ -75,12 +74,6 @@ def json(request):
 @app.register('/404')
 def raise404(request):
     raise muffin.HTTPNotFound
-
-
-# Custom route
-@app.register(re.compile('^/proxy/(?P<path>.*)$'))
-def proxy(request):
-    return request.match_info
 
 
 # @app.view('/oauth')
