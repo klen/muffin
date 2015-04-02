@@ -1,4 +1,5 @@
 import muffin
+import re
 
 
 from .models import Test, db, User
@@ -35,7 +36,7 @@ def index(request):
     return app.ps.jade.render('index.jade', user=user)
 
 
-@app.register('/login', methods='POST')
+@app.register(re.compile('^/login/?'), methods='POST')
 def login(request):
     """ Implement user's login. """
     data = yield from request.post()

@@ -20,7 +20,7 @@ STATIC_ROOT = 'example/static'
 # Plugin options
 # ==============
 
-AUTH_SECRET = 'SecretHere'
+SESSION_SECRET = 'SecretHere'
 JADE_TEMPLATE_FOLDER = 'example/templates'
 OAUTH2_CLIENTS = {
     'github': {

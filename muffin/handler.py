@@ -1,10 +1,13 @@
 import asyncio
+import re
 
 import ujson as json
 from aiohttp import web
 
 from muffin.utils import to_coroutine
 
+
+RETYPE = type(re.compile('@'))
 
 HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
@@ -55,6 +58,8 @@ class Handler(object, metaclass=HandlerMeta):
     @classmethod
     def connect(cls, app, *paths, name=None):
         """ Connect to the application. """
+
+        @asyncio.coroutine
         def view(request):
             handler = cls(app)
             response = yield from handler.dispatch(request)
@@ -65,7 +70,12 @@ class Handler(object, metaclass=HandlerMeta):
             name = "%s-%s" % (name.lower(), method.lower())
             lname = name
             for num, path in enumerate(paths, 1):
-                app.router.add_route(method, path, view, name=lname)
+                if isinstance(path, RETYPE):
+                    app.router.register_route(RawReRoute(
+                       method.upper(), view, lname, path))
+                else:
+                    app.router.add_route(method, path, view, name=lname)
+
                 lname = "%s-%s" % (name, num)
 
     @asyncio.coroutine
@@ -89,3 +99,17 @@ class Handler(object, metaclass=HandlerMeta):
             return web.Response(text=str(response), content_type='text/html')
 
         return response
+
+
+class RawReRoute(web.DynamicRoute):
+
+    def __init__(self, method, handler, name, pattern):
+        super().__init__(method, handler, name, pattern, None)
+
+    def url(self, *, parts, query=None):
+        raise NotImplemented
+
+    def __repr__(self):
+        name = "'" + self.name + "' " if self.name is not None else ""
+        return "<RawReRoute {name}[{method}] {pattern} -> {handler!r}".format(
+            name=name, method=self.method, pattern=self._pattern, handler=self.handler)

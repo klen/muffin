@@ -29,7 +29,7 @@ def test_login_logout(client, mixer):
 
     from muffin.utils import generate_password_hash
     user = mixer.blend('example.models.User', password=generate_password_hash('pass'))
-    response = client.post('/login', params={'email': user.email, 'password': 'pass'})
+    response = client.post('/login/', params={'email': user.email, 'password': 'pass'})
     assert response.status_code == 302
 
     response = client.get('/')
