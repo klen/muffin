@@ -124,6 +124,6 @@ def sre(reg):
         [part] = match.groups()
         match = DYNR_RE.match(part)
         params = match.groupdict()
-        return '(?P<{}>{})'.format(params['var'], params['re'] or '[^{}/]+')
+        return '(?P<%s>%s)' % (params['var'], params['re'] or '[^{}/]+')
 
-    return re.compile(DYNS_RE.sub(parse, reg))
+    return re.compile('^%s$' % DYNS_RE.sub(parse, reg))

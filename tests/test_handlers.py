@@ -24,6 +24,5 @@ def test_sre(app):
     assert re.match('/test/1/Mike')
 
     re = sre('/test(/{id}/?)?')
-    assert re.match('/test/')
     assert re.match('/test/1')
     assert re.match('/test/1/').group('id') == '1'

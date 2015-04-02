@@ -58,4 +58,4 @@ class Structure(dict):
         try:
             return self[name]
         except KeyError:
-            raise AttributeError(name)
+            raise AttributeError("Attribute '%s' doesn't exists. " % name)
