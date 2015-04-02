@@ -8,6 +8,8 @@ from muffin.utils import to_coroutine
 
 
 RETYPE = type(re.compile('@'))
+DYNS_RE = re.compile(r'(\{[^{}]*\})')
+DYNR_RE = re.compile(r'^\{(?P<var>[a-zA-Z][_a-zA-Z0-9]*)(?::(?P<re>.+))*\}$')
 
 HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
@@ -113,3 +115,15 @@ class RawReRoute(web.DynamicRoute):
         name = "'" + self.name + "' " if self.name is not None else ""
         return "<RawReRoute {name}[{method}] {pattern} -> {handler!r}".format(
             name=name, method=self.method, pattern=self._pattern, handler=self.handler)
+
+
+def sre(reg):
+    reg = reg.strip('^$')
+
+    def parse(match):
+        [part] = match.groups()
+        match = DYNR_RE.match(part)
+        params = match.groupdict()
+        return '(?P<{}>{})'.format(params['var'], params['re'] or '[^{}/]+')
+
+    return re.compile(DYNS_RE.sub(parse, reg))
