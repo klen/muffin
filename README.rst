@@ -151,10 +151,11 @@ Plugins
 
 THe Muffin has a plugins support.
 
-* `Muffin-Jade <https://github.com/klen/muffin-jade>`_ -- Jade templates
-* `Muffin-Mongo <https://github.com/klen/muffin-mongo>`_ -- MongoDB (pymongo) support
-* `Muffin-Peewee <https://github.com/klen/muffin-peewee>`_ -- Peewee support (SQL, ORM)
-* `Muffin-Redis <https://github.com/klen/muffin-redis>`_ -- Redis support
+* `Muffin-Jade    <https://github.com/klen/muffin-jade>`_   -- Jade templates
+* `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_  -- MongoDB (pymongo) support
+* `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_  -- OAuth client
+* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_ -- Peewee support (SQL, ORM)
+* `Muffin-Redis   <https://github.com/klen/muffin-redis>`_  -- Redis support
 * `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
 
 .. _testing:

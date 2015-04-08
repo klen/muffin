@@ -74,10 +74,12 @@ def raise404(request):
     raise muffin.HTTPNotFound
 
 
-# @app.view('/oauth')
-# @app.oauth.handle
-# def oauth(request):
-    # return 'OAuth Here'
+@app.register('/github')
+@app.ps.oauth.login('github')
+def oauth(request, client):
+    response = yield from client.request('GET', 'user')
+    json = yield from response.json()
+    return json
 
 
 @app.register('/db-async')

@@ -11,6 +11,7 @@ PLUGINS = (
     'muffin_jade',
     'muffin_peewee',
     'muffin_session',
+    'muffin_oauth',
 
     'invalid.plugin',
 )
@@ -22,10 +23,10 @@ STATIC_ROOT = 'example/static'
 
 SESSION_SECRET = 'SecretHere'
 JADE_TEMPLATE_FOLDER = 'example/templates'
-OAUTH2_CLIENTS = {
+OAUTH_CLIENTS = {
     'github': {
-        'id': 'b6281b6fe88fa4c313e6',
-        'secret': '21ff23d9f1cad775daee6a38d230e1ee05b04f7c',
+        'client_id': 'b6281b6fe88fa4c313e6',
+        'client_secret': '21ff23d9f1cad775daee6a38d230e1ee05b04f7c',
     }
 }
 PEEWEE_MIGRATIONS_PATH = 'example/migrations'
