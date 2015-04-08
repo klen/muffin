@@ -6,6 +6,8 @@ from aiohttp import web
 
 from muffin.utils import to_coroutine
 
+# TODO: aiohttp 0.15.2 swith method to * for Handler
+
 
 RETYPE = type(re.compile('@'))
 DYNS_RE = re.compile(r'(\{[^{}]*\})')

@@ -78,11 +78,10 @@ class Manager(object):
             """
             from muffin.worker import GunicornApp
 
-            # Clean argv
-            sys.argv = sys.argv[1:]
-
             gapp = GunicornApp(usage="%(prog)s APP_MODULE run [OPTIONS]", config=config)
-            gapp.app_uri = app
+            gapp.app_uri = sys.argv[1]
+            if ':' not in gapp.app_uri:
+                gapp.app_uri += ':app'
             gapp.cfg.set('bind', bind)
             gapp.cfg.set('pidfile', pid)
             gapp.cfg.set('proc_name', name)
@@ -158,6 +157,8 @@ class Manager(object):
 
 def run():
     """ CLI endpoint. """
+    sys.path.insert(0, os.getcwd())
+
     args_ = [_ for _ in sys.argv[1:] if _ not in ["--help", "-h"]]
     args_, unknown = Manager.parser.parse_known_args(args_)
     if args_.config:
@@ -166,10 +167,10 @@ def run():
     from gunicorn.util import import_app
 
     try:
-        app = args_.app
-        if ':' not in app:
-            app += ':app'
-        app = import_app(app)
+        app_uri = args_.app
+        if ':' not in app_uri:
+            app_uri += ':app'
+        app = import_app(app_uri)
     except Exception as e:
         print(e)
         raise sys.exit(1)
