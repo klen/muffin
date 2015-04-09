@@ -87,6 +87,9 @@ class Application(web.Application):
     def __call__(self, *args, **kwargs):
         return self
 
+    def __repr__(self):
+        return "<Application: %s>" % self.name
+
     @cached_property
     def cfg(self):
         """ Load the application configuration. """
