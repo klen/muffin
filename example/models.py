@@ -1,25 +1,24 @@
-import peewee as pw
 import datetime as dt
 
-from muffin_peewee import Plugin
+import peewee as pw
+
+from example import app
 from muffin.utils import generate_password_hash, check_password_hash
 
-db = Plugin()
 
-
-@db.register
+@app.ps.peewee.register
 class Test(pw.Model):
 
     data = pw.CharField()
 
 
-@db.register
+@app.ps.peewee.register
 class Lama(pw.Model):
 
     data = pw.CharField()
 
 
-@db.register
+@app.ps.peewee.register
 class User(pw.Model):
 
     created = pw.DateTimeField(default=dt.datetime.now)

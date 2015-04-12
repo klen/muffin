@@ -75,7 +75,7 @@ There are few ways to redifine configuration module:
 
 * Set environment variable `MUFFIN_CONFIG`: ::
 
-    $ MUFFIN_CONFIG=settings_local muffin example.app:app run
+    $ MUFFIN_CONFIG=settings_local muffin example run
 
 Also you can define any options while initializing your application: ::
 
@@ -128,7 +128,7 @@ Write a custom command
 
 ::
     
-    $ muffin example.app hello --help
+    $ muffin example hello --help
 
         Write command help text here.
 
@@ -140,7 +140,7 @@ Write a custom command
         --upper     Enable use uppercase
         --no-upper  Disable use uppercase
 
-    $ muffin example.app hello mike --upper
+    $ muffin example hello mike --upper
 
         HELLO MIKE!
 
@@ -168,7 +168,7 @@ command line option ``--muffin-app``.
 
 Example: ::
 
-    $ py.test -xs --muffin-app example.app:app
+    $ py.test -xs --muffin-app example
 
 .. _deployment:
 
@@ -177,7 +177,7 @@ Deployment
 
 Use ``muffin`` command. By example: ::
 
-    $ muffin example.app:app run --workers=4
+    $ muffin example run --workers=4
 
 See ``muffin {APP} run --help`` for more info.
 

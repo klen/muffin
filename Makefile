@@ -92,7 +92,7 @@ doc: docs $(VIRTUALENV)
 	@$(VIRTUALENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
 
-MANAGER=$(VIRTUALENV)/bin/muffin example.app
+MANAGER=$(VIRTUALENV)/bin/muffin example
 CMD = --help
 
 .PHONY: manage
@@ -101,7 +101,7 @@ manage: $(VIRTUALENV)
 
 .PHONY: run
 run: $(VIRTUALENV)/bin/muffin db.sqlite
-	@make manage CMD="run --reload"
+	@make manage CMD="run --reload --timeout=300"
 
 .PHONY: shell
 shell: $(VIRTUALENV)

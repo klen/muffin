@@ -1,11 +1,7 @@
 import muffin
-from .models import Test, db, User
+from example import app
 
-
-app = muffin.Application('example', CONFIG='example.config.debug')
-
-# Manual installation of plugin
-app.install(db)
+from example.models import User, Test
 
 
 # Add to context providers
@@ -20,10 +16,6 @@ def add_constant():
 def get_user(user_id):
     """ This provides a user loading procedure to the application. """
     return User.select().where(User.id == user_id).get()
-
-
-# Views
-# =====
 
 
 @app.register('/')
@@ -96,20 +88,3 @@ class Example(muffin.Handler):
 
     def post(self, request):
         return [1, 2, 3]
-
-
-# Commands
-# ========
-
-@app.manage.command
-def hello(name, upper=False):
-    """ Write command help text here.
-
-    :param name:  Write your name
-    :param upper: Use uppercase
-
-    """
-    greetings = 'Hello %s!' % name
-    if upper:
-        greetings = greetings.upper()
-    print(greetings)
