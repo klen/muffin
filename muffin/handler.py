@@ -57,6 +57,9 @@ class Handler(object, metaclass=HandlerMeta):
             response = yield from view(*args, **kwargs)
             return response
 
+        if "*" in methods:
+            methods = HTTP_METHODS
+
         return type(name or view.__name__, (cls,), {m.lower(): method for m in methods})
 
     @classmethod
