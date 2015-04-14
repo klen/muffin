@@ -38,6 +38,9 @@ def test_sre():
 
 
 def test_handler(app, client):
+    assert 'resource-get' in app.router._routes
+    assert 'resource-post' in app.router._routes
+
     response = client.get('/res')
     assert response.json == {'res': None}
 

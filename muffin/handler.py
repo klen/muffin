@@ -46,6 +46,7 @@ class Handler(object, metaclass=HandlerMeta):
 
     def __init__(self, app):
         self.app = app
+        self.loop = app._loop
 
     @classmethod
     def from_view(cls, view, *methods, name=None):
@@ -74,8 +75,7 @@ class Handler(object, metaclass=HandlerMeta):
 
         for method in cls.methods:
             name = name or cls.name
-            name = "%s-%s" % (name.lower(), method.lower())
-            lname = name
+            lname = "%s-%s" % (name.lower(), method.lower())
             for num, path in enumerate(paths, 1):
                 if isinstance(path, RETYPE):
                     app.router.register_route(RawReRoute(
@@ -83,13 +83,13 @@ class Handler(object, metaclass=HandlerMeta):
                 else:
                     app.router.add_route(method, path, view, name=lname)
 
-                lname = "%s-%s" % (name, num)
+                lname = "%s-%s" % (lname, num)
 
     @asyncio.coroutine
-    def dispatch(self, request):
+    def dispatch(self, request, **kwargs):
         """ Dispatch request. """
         method = getattr(self, request.method.lower())
-        response = yield from method(request)
+        response = yield from method(request, **kwargs)
         return (yield from self.make_response(response))
 
     @asyncio.coroutine
@@ -111,7 +111,17 @@ class Handler(object, metaclass=HandlerMeta):
         return web.Response(text=str(response), content_type='text/html')
 
     def parse(self, request):
-        """ Return data from request. """
+        """ Return data from request.
+
+        Usage: ::
+
+            # ...
+
+            def post(self, request):
+                data = yield from self.parse(request)
+                # ...
+
+        """
         if request.content_type in ('application/x-www-form-urlencoded', 'multipart/form-data'):
             return request.post()
 

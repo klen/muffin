@@ -103,10 +103,11 @@ class Application(web.Application):
                 if name == name.upper() and not name.startswith('_')
             })
             config._mod = module
-            return config
 
         except ImportError:
             self.logger.warn("The configuration hasn't found: %s" % module)
+
+        return config
 
     def install(self, plugin):
         """ Install plugin to the application. """
@@ -154,7 +155,7 @@ class Application(web.Application):
         self._start_callbacks.append((func, args, kwargs))
 
     def register(self, *paths, methods=['GET'], name=None):
-        """ Register function (coroutine) or muffin.Handler to application and bind to route. """
+        """ Register function (coroutine) or muffin.Handler to application. """
 
         if isinstance(methods, str):
             methods = [methods]
