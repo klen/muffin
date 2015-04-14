@@ -3,7 +3,7 @@ import asyncio
 import logging
 import os
 import re
-from importlib import import_module
+import importlib
 from types import FunctionType
 
 from aiohttp import web
@@ -97,22 +97,23 @@ class Application(web.Application):
         module = config['CONFIG'] = os.environ.get(
             CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
         try:
-            module = import_module(module)
+            module = importlib.import_module(module)
             config.update({
                 name: getattr(module, name) for name in dir(module)
                 if name == name.upper() and not name.startswith('_')
             })
+            config._mod = module
+            return config
+
         except ImportError:
             self.logger.warn("The configuration hasn't found: %s" % module)
-
-        return config
 
     def install(self, plugin):
         """ Install plugin to the application. """
 
         if isinstance(plugin, str):
             module, _, attr = plugin.partition(':')
-            module = import_module(module)
+            module = importlib.import_module(module)
             plugin = getattr(module, attr or 'Plugin')
 
         if isinstance(plugin, type):

@@ -14,12 +14,11 @@ class Manager(object):
 
     """ Support application commands. """
 
-    parser = argparse.ArgumentParser(description="Manage Application")
-    parser.add_argument('app', metavar='app', type=str, help='Path to application.')
-    parser.add_argument('--config', type=str, help='Path to configuration.')
-
     def __init__(self, app):
         self.app = app
+        self.parser = argparse.ArgumentParser(description="Manage %s" % app.name.capitalize())
+        self.parser.add_argument('app', metavar='app', type=str, help='Path to application.')
+        self.parser.add_argument('--config', type=str, help='Path to configuration.')
         self.parsers = self.parser.add_subparsers(dest='subparser')
         self.handlers = dict()
 
@@ -28,7 +27,6 @@ class Manager(object):
             return ctx
 
         app.cfg.setdefault('MANAGE_SHELL', shell_ctx)
-        self.parser.description = "Manage %s" % app.name.capitalize()
 
         @self.command
         def shell(ipython:bool=True):
@@ -79,9 +77,7 @@ class Manager(object):
             from muffin.worker import GunicornApp
 
             gapp = GunicornApp(usage="%(prog)s APP_MODULE run [OPTIONS]", config=config)
-            gapp.app_uri = sys.argv[1]
-            if ':' not in gapp.app_uri:
-                gapp.app_uri += ':app'
+            gapp.app_uri = app
             gapp.cfg.set('bind', bind)
             gapp.cfg.set('pidfile', pid)
             gapp.cfg.set('proc_name', name)
@@ -159,8 +155,12 @@ def run():
     """ CLI endpoint. """
     sys.path.insert(0, os.getcwd())
 
+    parser = argparse.ArgumentParser(description="Manage Application")
+    parser.add_argument('app', metavar='app', type=str, help='Path to application.')
+    parser.add_argument('--config', type=str, help='Path to configuration.')
+
     args_ = [_ for _ in sys.argv[1:] if _ not in ["--help", "-h"]]
-    args_, unknown = Manager.parser.parse_known_args(args_)
+    args_, unknown = parser.parse_known_args(args_)
     if args_.config:
         os.environ[CONFIGURATION_ENVIRON_VARIABLE] = args_.config
 
@@ -171,6 +171,8 @@ def run():
         if ':' not in app_uri:
             app_uri += ':app'
         app = import_app(app_uri)
+        app.logger.info('Application is loaded: %s' % app.name)
+
     except Exception as e:
         print(e)
         raise sys.exit(1)

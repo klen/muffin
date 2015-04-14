@@ -2,7 +2,7 @@ import asyncio
 import re
 
 import ujson as json
-from aiohttp import web
+from aiohttp import web, multidict
 
 from muffin.utils import to_coroutine
 
@@ -99,13 +99,26 @@ class Handler(object, metaclass=HandlerMeta):
         while asyncio.iscoroutine(response):
             response = yield from response
 
+        if isinstance(response, web.Response):
+            return response
+
+        if isinstance(response, (multidict.MultiDict, multidict.MultiDictProxy)):
+            response = dict(response)
+
         if isinstance(response, (list, dict)):
             return web.Response(text=json.dumps(response), content_type='application/json')
 
-        if not isinstance(response, web.Response):
-            return web.Response(text=str(response), content_type='text/html')
+        return web.Response(text=str(response), content_type='text/html')
 
-        return response
+    def parse(self, request):
+        """ Return data from request. """
+        if request.content_type in ('application/x-www-form-urlencoded', 'multipart/form-data'):
+            return request.post()
+
+        if request.content_type == 'application/json':
+            return request.json()
+
+        return request.text()
 
 
 class RawReRoute(web.DynamicRoute):
