@@ -18,7 +18,7 @@ HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
 class HandlerMeta(type):
 
-    __handlers = set()
+    handlers = set()
 
     def __new__(mcs, name, bases, params):
 
@@ -37,11 +37,6 @@ class HandlerMeta(type):
 
         cls.methods = cls.methods or http_handlers
         cls.dispatch = to_coroutine(cls.dispatch)
-
-        if cls.name in mcs.__handlers:
-            raise MuffinException('Handler with name %s already exists.' % cls.name)
-
-        mcs.__handlers.add(cls.name)
 
         return cls
 
@@ -76,6 +71,9 @@ class Handler(object, metaclass=HandlerMeta):
     def connect(cls, app, *paths, name=None):
         """ Connect to the application. """
 
+        if cls.name in cls.handlers:
+            raise MuffinException('Handler with name %s already connected.' % cls.name)
+
         @asyncio.coroutine
         def view(request):
             handler = cls(app)
@@ -93,6 +91,8 @@ class Handler(object, metaclass=HandlerMeta):
                     app.router.add_route(method, path, view, name=lname)
 
                 lname = "%s-%s" % (lname, num)
+
+        cls.handlers.add(cls.name)
 
     @asyncio.coroutine
     def dispatch(self, request, **kwargs):
@@ -113,9 +113,13 @@ class Handler(object, metaclass=HandlerMeta):
 
         if isinstance(response, (multidict.MultiDict, multidict.MultiDictProxy)):
             response = dict(response)
+            return web.Response(text=json.dumps(response), content_type='application/json')
 
         if isinstance(response, (list, dict)):
             return web.Response(text=json.dumps(response), content_type='application/json')
+
+        if response is None:
+            response = ''
 
         return web.Response(text=str(response), content_type='text/html')
 
