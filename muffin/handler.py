@@ -4,7 +4,7 @@ import re
 import ujson as json
 from aiohttp import web, multidict
 
-from muffin.utils import to_coroutine
+from muffin.utils import to_coroutine, MuffinException
 
 # TODO: aiohttp 0.15.2 swith method to * for Handler
 
@@ -18,24 +18,32 @@ HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
 class HandlerMeta(type):
 
+    __handlers = set()
+
     def __new__(mcs, name, bases, params):
 
-        methods = set(params.get(
-            'methods', sum([list(getattr(o, 'methods', [])) for o in bases], [])))
+        params['name'] = params.get('name', name.lower())
 
+        cls = super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
+
+        if isinstance(cls.methods, str):
+            cls.methods = [cls.methods]
+
+        http_handlers = set()
         for method in HTTP_METHODS:
-            if method not in params:
-                continue
-            methods.add(method)
-            params[method] = to_coroutine(params[method])
+            if method in cls.__dict__:
+                setattr(cls, method, to_coroutine(getattr(cls, method)))
+                http_handlers.add(method)
 
-        if 'dispatch' in params:
-            params['dispatch'] = to_coroutine(params['dispatch'])
+        cls.methods = cls.methods or http_handlers
+        cls.dispatch = to_coroutine(cls.dispatch)
 
-        params['methods'] = methods
-        params['name'] = params.get('name') or name.lower()
+        if cls.name in mcs.__handlers:
+            raise MuffinException('Handler with name %s already exists.' % cls.name)
 
-        return super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
+        mcs.__handlers.add(cls.name)
+
+        return cls
 
 
 class Handler(object, metaclass=HandlerMeta):
@@ -43,6 +51,7 @@ class Handler(object, metaclass=HandlerMeta):
     """ Handle request. """
 
     name = None
+    methods = None
 
     def __init__(self, app):
         self.app = app

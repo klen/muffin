@@ -18,13 +18,6 @@ from muffin.manage import Manager
 RETYPE = type(re.compile('@'))
 
 
-class MuffinException(Exception):
-
-    """ Implement a Muffin's exception. """
-
-    pass
-
-
 class Application(web.Application):
 
     """ Improve aiohttp Application. """
@@ -169,6 +162,12 @@ class Application(web.Application):
             handler.connect(self, *paths, name=name)
 
             return view
+
+        # Support for @app.register(func)
+        if len(paths) == 1 and callable(paths[0]):
+            view = paths[0]
+            paths = []
+            return wrapper(view)
 
         return wrapper
 

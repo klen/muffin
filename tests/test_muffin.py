@@ -4,19 +4,7 @@ import muffin
 
 @pytest.fixture(scope='session')
 def app(loop):
-    app = muffin.Application('muffin', loop=loop)
-
-    @app.register(muffin.sre('/res(/{res})?/?'))
-    class Resource(muffin.Handler):
-
-        def get(self, request):
-            return request.match_info
-
-        def post(self, request):
-            data = yield from self.parse(request)
-            return data
-
-    return app
+    return muffin.Application('muffin', loop=loop)
 
 
 def test_app(app):
@@ -38,6 +26,44 @@ def test_sre():
 
 
 def test_handler(app, client):
+
+    @app.register('/test', methods='get')
+    def test(request):
+        return 'TEST PASSED'
+
+    assert 'test-get' in app.router._routes
+    assert 'test-post' not in app.router._routes
+
+    response = client.get('/test')
+    assert response.text == 'TEST PASSED'
+
+    @app.register('/test2', methods=('get', 'post'))
+    def test2(request):
+        return 'TEST PASSED'
+
+    assert 'test2-get' in app.router._routes
+    assert 'test2-post' in app.router._routes
+
+    @app.register('/test3', methods='*')
+    def test3(request):
+        return 'TEST PASSED'
+
+    assert 'test3-get' in app.router._routes
+    assert 'test3-post' in app.router._routes
+    assert 'test3-put' in app.router._routes
+
+    @app.register(muffin.sre('/res(/{res})?/?'))
+    class Resource(muffin.Handler):
+
+        def get(self, request):
+            return request.match_info
+
+        def post(self, request):
+            data = yield from self.parse(request)
+            return data
+
+    assert set(Resource.methods) == set(['get', 'post'])
+
     assert 'resource-get' in app.router._routes
     assert 'resource-post' in app.router._routes
 
@@ -55,6 +81,22 @@ def test_handler(app, client):
 
     response = client.post_json('/res', {'data': 'json'})
     assert response.json == {'data': 'json'}
+
+    @app.register(muffin.sre('/res2(/{res2})?/?'))
+    class Resource2(muffin.Handler):
+
+        methods = 'get',
+
+        def get(self, request):
+            return 'OK'
+
+        def put(self, request):
+            raise Exception('Shouldnt be called')
+
+    response = client.get('/res2')
+    assert response.text == 'OK'
+
+    client.put('/res2', status=405)
 
 
 def test_manage(app, capsys):

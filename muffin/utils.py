@@ -7,6 +7,13 @@ import asyncio
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
 
+class MuffinException(Exception):
+
+    """ Implement a Muffin's exception. """
+
+    pass
+
+
 def to_coroutine(func):
     """ Ensure that the function is coroutine. """
     if not asyncio.iscoroutinefunction(func):
