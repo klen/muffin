@@ -50,6 +50,22 @@ Installation
 
     pip install muffin
 
+.. _plugins:
+
+Plugins
+=======
+
+The Muffin has a plugins support.
+
+* `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
+* `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
+* `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
+* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
+* `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
+* `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
+* `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
+* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
+
 .. _usage:
 
 Usage
@@ -143,21 +159,6 @@ Write a custom command
     $ muffin example hello mike --upper
 
         HELLO MIKE!
-
-.. _plugins:
-
-Plugins
-=======
-
-THe Muffin has a plugins support.
-
-* `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
-* `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
-* `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
-* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
-* `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
-* `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
-* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
 
 .. _testing:
 
