@@ -60,7 +60,8 @@ class Manager(object):
         @self.command
         def run(timeout:int=30, reload:bool=self.app.cfg.DEBUG, config:str=self.app.cfg.CONFIG,
                 name:str=self.app.name, pid:str=None, workers:int=1, bind:str='127.0.0.1:5000',
-                log_file:str=None, worker_class:str='muffin.worker.GunicornWorker'):
+                log_file:str=None, worker_class:str='muffin.worker.GunicornWorker',
+                daemon:bool=False):
             """ Run the application.
 
             :param bind: The socket to bind
@@ -82,6 +83,7 @@ class Manager(object):
             gapp.cfg.set('pidfile', pid)
             gapp.cfg.set('proc_name', name)
             gapp.cfg.set('reload', reload)
+            gapp.cfg.set('daemon', daemon)
             gapp.cfg.set('timeout', timeout)
             gapp.cfg.set('worker_class', worker_class)
             if log_file:

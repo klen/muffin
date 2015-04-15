@@ -120,7 +120,7 @@ manage: $(VIRTUALENV)
 
 .PHONY: run
 run: $(VIRTUALENV)/bin/muffin db.sqlite
-	@make manage CMD="run --reload --timeout=300"
+	@make manage CMD="run --timeout=300 --pid=$(CURDIR)/pid"
 
 .PHONY: shell
 shell: $(VIRTUALENV)
