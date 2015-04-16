@@ -18,6 +18,13 @@ from muffin.manage import Manager
 RETYPE = type(re.compile('@'))
 
 
+class MuffinException(Exception):
+
+    """ Implement a Muffin's exception. """
+
+    pass
+
+
 class Application(web.Application):
 
     """ Improve aiohttp Application. """
@@ -78,9 +85,11 @@ class Application(web.Application):
             self.logger.warn('Disable STATIC_ROOT (hasnt found): %s' % self.cfg.STATIC_ROOT)
 
     def __call__(self, *args, **kwargs):
+        """ Return the application. """
         return self
 
     def __repr__(self):
+        """ Human readable representation. """
         return "<Application: %s>" % self.name
 
     @cached_property
@@ -98,13 +107,13 @@ class Application(web.Application):
             config._mod = module
 
         except ImportError:
+            config.CONFIG = None
             self.logger.warn("The configuration hasn't found: %s" % module)
 
         return config
 
-    def install(self, plugin):
+    def install(self, plugin, name=None):
         """ Install plugin to the application. """
-
         if isinstance(plugin, str):
             module, _, attr = plugin.partition(':')
             module = importlib.import_module(module)
@@ -126,7 +135,7 @@ class Application(web.Application):
         if hasattr(plugin, 'finish'):
             self.register_on_finish(plugin.finish)
 
-        self.plugins[plugin.name] = plugin
+        self.plugins[name or plugin.name] = plugin
 
     @asyncio.coroutine
     def start(self):
@@ -149,7 +158,6 @@ class Application(web.Application):
 
     def register(self, *paths, methods=['GET'], name=None):
         """ Register function (coroutine) or muffin.Handler to application. """
-
         if isinstance(methods, str):
             methods = [methods]
 
