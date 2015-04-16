@@ -22,7 +22,7 @@ STATIC_ROOT = 'example/static'
 # ==============
 
 SESSION_SECRET = 'SecretHere'
-JADE_TEMPLATE_FOLDER = 'example/templates'
+JADE_TEMPLATE_FOLDERS = 'example/templates',
 OAUTH_CLIENTS = {
     'github': {
         'client_id': 'b6281b6fe88fa4c313e6',
