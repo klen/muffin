@@ -1,3 +1,5 @@
+""" Base handler class. """
+
 import asyncio
 import re
 
@@ -18,10 +20,12 @@ HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
 class HandlerMeta(type):
 
+    """ Prepare handlers. """
+
     handlers = set()
 
     def __new__(mcs, name, bases, params):
-
+        """ Calculate handler params. """
         params['name'] = params.get('name', name.lower())
 
         cls = super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
@@ -49,6 +53,7 @@ class Handler(object, metaclass=HandlerMeta):
     methods = None
 
     def __init__(self, app):
+        """ Initialize an application. """
         self.app = app
         self.loop = app._loop
 
@@ -70,7 +75,6 @@ class Handler(object, metaclass=HandlerMeta):
     @classmethod
     def connect(cls, app, *paths, name=None):
         """ Connect to the application. """
-
         if cls.name in cls.handlers:
             raise MuffinException('Handler with name %s already connected.' % cls.name)
 
@@ -99,12 +103,11 @@ class Handler(object, metaclass=HandlerMeta):
         """ Dispatch request. """
         method = getattr(self, request.method.lower())
         response = yield from method(request, **kwargs)
-        return (yield from self.make_response(response))
+        return (yield from self.make_response(request, response))
 
     @asyncio.coroutine
-    def make_response(self, response):
+    def make_response(self, request, response):
         """ Ensure that response is web.Response or convert it. """
-
         while asyncio.iscoroutine(response):
             response = yield from response
 
@@ -146,19 +149,25 @@ class Handler(object, metaclass=HandlerMeta):
 
 class RawReRoute(web.DynamicRoute):
 
+    """ Support raw re. """
+
     def __init__(self, method, handler, name, pattern):
+        """ Skip a formatter. """
         super().__init__(method, handler, name, pattern, None)
 
     def url(self, *, parts, query=None):
+        """ Skip URL calculation. """
         raise NotImplemented
 
     def __repr__(self):
+        """ Fix representation. """
         name = "'" + self.name + "' " if self.name is not None else ""
         return "<RawReRoute {name}[{method}] {pattern} -> {handler!r}".format(
             name=name, method=self.method, pattern=self._pattern, handler=self.handler)
 
 
 def sre(reg):
+    """ Support `Muffin` URL RE. """
     reg = reg.strip('^$')
 
     def parse(match):

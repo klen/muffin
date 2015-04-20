@@ -43,7 +43,7 @@ class Application(web.Application):
 
         # Setup static files in development
         'STATIC_PREFIX': '/static',
-        'STATIC_ROOT': 'static',
+        'STATIC_FOLDERS': ['static'],
     }
 
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
@@ -79,10 +79,17 @@ class Application(web.Application):
                 self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
 
         # Setup static files (development)
-        if os.path.isdir(self.cfg.STATIC_ROOT):
-            self.router.add_static(self.cfg.STATIC_PREFIX, self.cfg.STATIC_ROOT)
-        else:
-            self.logger.warn('Disable STATIC_ROOT (hasnt found): %s' % self.cfg.STATIC_ROOT)
+        if isinstance(self.cfg.STATIC_FOLDERS, str):
+            self.cfg.STATIC_FOLDERS = [self.cfg.STATIC_FOLDERS]
+
+        elif not isinstance(self.cfg.STATIC_FOLDERS, list):
+            self.cfg.STATIC_FOLDERS = list(self.cfg.STATIC_FOLDERS)
+
+        for path in self.cfg.STATIC_FOLDERS:
+            if os.path.isdir(path):
+                self.router.add_static(self.cfg.STATIC_PREFIX, path)
+            else:
+                self.logger.warn('Disable static folder (hasnt found): %s' % path)
 
     def __call__(self, *args, **kwargs):
         """ Return the application. """

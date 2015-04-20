@@ -16,7 +16,7 @@ PLUGINS = (
     'invalid.plugin',
 )
 
-STATIC_ROOT = 'example/static'
+STATIC_FOLDERS = 'example/static',
 
 # Plugin options
 # ==============

@@ -114,7 +114,7 @@ Base Muffin options and default values: ::
 
         # Setup static files in development
         'STATIC_PREFIX': '/static',
-        'STATIC_ROOT': 'static',
+        'STATIC_FOLDERS': 'static',
 
 
 CLI integration
