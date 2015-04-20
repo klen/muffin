@@ -1,12 +1,12 @@
 """ Base handler class. """
-
 import asyncio
 import re
 
 import ujson as json
 from aiohttp import web, multidict
 
-from muffin.utils import to_coroutine, MuffinException
+from muffin.utils import to_coroutine, abcoroutine
+
 
 # TODO: aiohttp 0.15.2 swith method to * for Handler
 
@@ -22,25 +22,34 @@ class HandlerMeta(type):
 
     """ Prepare handlers. """
 
-    handlers = set()
+    coroutines = set(HTTP_METHODS)
 
     def __new__(mcs, name, bases, params):
-        """ Calculate handler params. """
+        """ Check for handler is correct. """
+
+        # Define new coroutines
+        for fname, method in params.items():
+            if callable(method) and hasattr(method, '_abcoroutine'):
+                mcs.coroutines.add(fname)
+
+        # Set name
         params['name'] = params.get('name', name.lower())
 
         cls = super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
 
+        # Set a class methods
         if isinstance(cls.methods, str):
             cls.methods = [cls.methods]
 
-        http_handlers = set()
-        for method in HTTP_METHODS:
-            if method in cls.__dict__:
-                setattr(cls, method, to_coroutine(getattr(cls, method)))
-                http_handlers.add(method)
+        if not cls.methods:
+            cls.methods = set(method for method in HTTP_METHODS if method in cls.__dict__)
 
-        cls.methods = cls.methods or http_handlers
-        cls.dispatch = to_coroutine(cls.dispatch)
+        # Ensure that coroutine methods is coroutines
+        for name in mcs.coroutines:
+            method = getattr(cls, name, None)
+            if not method:
+                continue
+            setattr(cls, name, to_coroutine(method))
 
         return cls
 
@@ -75,8 +84,6 @@ class Handler(object, metaclass=HandlerMeta):
     @classmethod
     def connect(cls, app, *paths, name=None):
         """ Connect to the application. """
-        if cls.name in cls.handlers:
-            raise MuffinException('Handler with name %s already connected.' % cls.name)
 
         @asyncio.coroutine
         def view(request):
@@ -96,16 +103,14 @@ class Handler(object, metaclass=HandlerMeta):
 
                 lname = "%s-%s" % (lname, num)
 
-        cls.handlers.add(cls.name)
-
-    @asyncio.coroutine
+    @abcoroutine
     def dispatch(self, request, **kwargs):
         """ Dispatch request. """
         method = getattr(self, request.method.lower())
         response = yield from method(request, **kwargs)
         return (yield from self.make_response(request, response))
 
-    @asyncio.coroutine
+    @abcoroutine
     def make_response(self, request, response):
         """ Ensure that response is web.Response or convert it. """
         while asyncio.iscoroutine(response):
@@ -127,7 +132,7 @@ class Handler(object, metaclass=HandlerMeta):
         return web.Response(text=str(response), content_type='text/html')
 
     def parse(self, request):
-        """ Return data from request.
+        """ Return coroutine which take data from request depended on content-type.
 
         Usage: ::
 

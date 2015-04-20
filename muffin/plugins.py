@@ -1,7 +1,7 @@
-from muffin.utils import Structure
+from muffin.utils import Structure, MuffinException
 
 
-class PluginException(Exception):
+class PluginException(MuffinException):
 
     """ Implement any exception in plugins. """
 

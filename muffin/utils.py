@@ -14,6 +14,12 @@ class MuffinException(Exception):
     pass
 
 
+def abcoroutine(func):
+    """ Mark function/method as coroutine. """
+    func._abcoroutine = True
+    return func
+
+
 def to_coroutine(func):
     """ Ensure that the function is coroutine. """
     if not asyncio.iscoroutinefunction(func):
