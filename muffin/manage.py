@@ -3,8 +3,10 @@ import inspect
 import os
 import re
 import sys
+from shutil import copy
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
+from muffin.utils import MuffinException
 
 
 PARAM_RE = re.compile('^\s+:param (\w+): (.+)$', re.M)
@@ -89,6 +91,43 @@ class Manager(object):
             if log_file:
                 gapp.cfg.set('errorlog', log_file)
             gapp.run()
+
+        @self.command
+        def collect(destination:str, replace=False):
+            """ Collect static files from the application and plugins.
+
+            :param destination: Path where static files will be collected.
+            :param replace: Replace existed files
+
+            """
+            sources = dict()
+            for path in app.cfg.STATIC_FOLDERS:
+                path = os.path.abspath(path)
+                for root, _, files in os.walk(path):
+                    for f in files:
+                        fpath = os.path.join(root, f)
+                        rpath = os.path.relpath(fpath, path)
+                        if rpath in sources:
+                            app.logger.info('Already collected: %s' % fpath)
+                            continue
+                        sources[rpath] = fpath
+
+            destination = os.path.abspath(destination)
+            if not os.path.exists(destination):
+                raise MuffinException('Destination is not exist: %s' % destination)
+
+            for rpath, fpath in sources.items():
+                dpath = os.path.join(destination, rpath)
+                if os.path.exists(dpath):
+                    if not replace or os.path.getmtime(dpath) >= os.path.getmtime(fpath):
+                        continue
+                    os.remove(dpath)
+                ddir = os.path.dirname(dpath)
+                if not os.path.exists(ddir):
+                    os.makedirs(ddir)
+
+                copy(fpath, dpath)
+                app.logger.info('Copied %s' % rpath)
 
     def command(self, func):
         header = '\n'.join([s for s in (func.__doc__ or '').split('\n')
