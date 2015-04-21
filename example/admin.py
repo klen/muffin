@@ -1,7 +1,7 @@
 from muffin_admin.peewee import PWAdminHandler
 
 from example import app
-from example.models import User, Test
+from example.models import User, Test, Token
 
 
 @app.register
@@ -11,6 +11,11 @@ class UserAdmin(PWAdminHandler):
     form_meta = {
         'exclude': ['password'],
     }
+
+
+@app.register
+class TokenAdmin(PWAdminHandler):
+    model = Token
 
 
 @app.register

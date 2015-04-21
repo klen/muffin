@@ -1,7 +1,7 @@
 import muffin
 from example import app
 
-from example.models import User, Test
+from example.models import User, Test, Token
 
 
 # Add to context providers
@@ -69,9 +69,22 @@ def raise404(request):
 @app.register('/github')
 @app.ps.oauth.login('github')
 def oauth(request, client):
-    response = yield from client.request('GET', 'user')
-    json = yield from response.json()
-    return json
+    try:
+        token = Token.select().where(token=client.access_token)
+        user = token.user
+    except Exception:
+        response = yield from client.request('GET', 'user')
+        info = yield from response.json()
+
+        user = User(username=info['login'], email=info['email'], password='NULL')
+        user.save()
+
+        token = Token(provider='github', token=client.access_token, user=user)
+        token.save()
+
+    yield from app.ps.session.login(request, user.id)
+
+    return muffin.HTTPFound('/')
 
 
 @app.register('/db-async')

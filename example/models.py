@@ -36,3 +36,15 @@ class User(pw.Model):
 
     def check_password(self, password):
         return check_password_hash(password, self.password)
+
+
+@app.ps.peewee.register
+class Token(pw.Model):
+    provider = pw.CharField()
+    token = pw.CharField()
+    token_secret = pw.CharField(null=True)
+
+    user = pw.ForeignKeyField(User)
+
+    def __unicode__(self):
+        return self.provider

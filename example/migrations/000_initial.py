@@ -30,3 +30,10 @@ def migrate(migrator, database, **kwargs):
     @migrator.create_table
     class Test(pw.Model):
         data = pw.CharField()
+
+    @migrator.create_table
+    class Token(pw.Model):
+        provider = pw.CharField()
+        token = pw.CharField()
+        token_secret = pw.CharField(null=True)
+        user = pw.ForeignKeyField(User)

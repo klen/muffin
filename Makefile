@@ -124,6 +124,20 @@ manage: $(VIRTUALENV)
 run: $(VIRTUALENV)/bin/muffin db.sqlite
 	@make manage CMD="run --timeout=300 --pid=$(CURDIR)/pid"
 
+.PHONY: daemon
+daemon: $(VIRTUALENV)/bin/py.test daemon-kill
+	@while nc localhost 5000; do echo 'Waiting for port' && sleep 2; done
+	@$(VIRTUALENV)/bin/muffin example run --bind=0.0.0.0:5000 --pid=$(CURDIR)/pid --daemon
+
+.PHONY: daemon-kill
+daemon-kill:
+	@[ -r $(CURDIR)/pid ] && echo "Kill daemon" `cat $(CURDIR)/pid` && kill `cat $(CURDIR)/pid` || true
+
+.PHONY: watch
+watch:
+	@make daemon
+	@(fswatch -0or $(CURDIR)/example -e "__pycache__" | xargs -0n1 -I {} make daemon) || make daemon-kill
+
 .PHONY: shell
 shell: $(VIRTUALENV)
 	@make manage CMD=shell
