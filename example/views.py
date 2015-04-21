@@ -70,7 +70,7 @@ def raise404(request):
 @app.ps.oauth.login('github')
 def oauth(request, client):
     try:
-        token = Token.select().where(token=client.access_token)
+        token = Token.select().where(Token.token == client.access_token).get()
         user = token.user
     except Exception:
         response = yield from client.request('GET', 'user')

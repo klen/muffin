@@ -1,4 +1,4 @@
-""" Application's manage commands. """
+""" The application's commands. """
 
 from example import app
 

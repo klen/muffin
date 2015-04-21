@@ -23,7 +23,7 @@ def migrate(migrator, database, **kwargs):
     @migrator.create_table
     class User(pw.Model):
         username = pw.CharField()
-        email = pw.CharField()
+        email = pw.CharField(unique=True)
         password = pw.CharField()
         is_super = pw.BooleanField(default=False)
 
@@ -37,3 +37,6 @@ def migrate(migrator, database, **kwargs):
         token = pw.CharField()
         token_secret = pw.CharField(null=True)
         user = pw.ForeignKeyField(User)
+
+        class Meta:
+            indexes = (('token', 'provider'), True),
