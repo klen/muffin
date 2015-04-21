@@ -77,6 +77,8 @@ Run example server: ::
 
     $ make run
 
+And open http://fuf.me:5000 in your browser.
+
 Configuration
 -------------
 
