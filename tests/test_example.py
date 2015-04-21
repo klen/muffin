@@ -14,15 +14,6 @@ def test_app(client):
     assert response.json['json'] == 'here'
 
 
-def test_static(client):
-    response = client.get('/static/app.css')
-    assert response.status_code == 200
-    assert response.content_type == 'text/css'
-
-    response = client.get('/static/unknow', status=404)
-    assert '404' in response.text
-
-
 def test_login_logout(client, mixer):
     response = client.get('/')
     assert "Hello anonimous" in response.text
@@ -33,7 +24,7 @@ def test_login_logout(client, mixer):
     assert response.status_code == 302
 
     response = client.get('/')
-    assert "Hello %s" % user.username in response.text
+    assert "Hello %s" % user.email in response.text
 
     response = client.get('/profile')
     assert "%s profile here" % user.username in response.text
