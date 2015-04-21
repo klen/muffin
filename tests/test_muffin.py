@@ -4,12 +4,34 @@ import muffin
 
 @pytest.fixture(scope='session')
 def app(loop):
-    return muffin.Application('muffin', loop=loop)
+    app = muffin.Application(
+        'muffin', loop=loop,
+
+        PLUGINS=(
+            'invalid.plugin',
+        ),
+
+        STATIC_FOLDERS=(
+            'tests/static1',
+            'tests/static2',
+        ))
+    return app
 
 
 def test_app(app):
     assert app.name == 'muffin'
     assert app.cfg
+
+
+def test_static(app, client):
+    assert app.cfg.STATIC_FOLDERS == [
+        'tests/static1',
+        'tests/static2',
+    ]
+    response = client.get('/static/file1')
+    assert response.status_code == 200
+    response = client.get('/static/file2')
+    assert response.status_code == 200
 
 
 def test_sre():

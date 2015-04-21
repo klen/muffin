@@ -86,22 +86,24 @@ t: test
 
 .PHONY: tp
 tp:
-	@echo 'Test Muffin-REST'
-	@make -C $(CURDIR)/plugins/muffin-rest t
+	@echo 'Test Muffin-Admin'
+	@make -C $(CURDIR)/plugins/muffin-admin t
 	@echo 'Test Muffin-Jade'
 	@make -C $(CURDIR)/plugins/muffin-jade t
-	@echo 'Test Muffin-Session'
-	@make -C $(CURDIR)/plugins/muffin-session t
 	@echo 'Test Muffin-Mongo'
 	@make -C $(CURDIR)/plugins/muffin-mongo t
 	@echo 'Test Muffin-OAuth'
 	@make -C $(CURDIR)/plugins/muffin-oauth t
 	@echo 'Test Muffin-Peewee'
 	@make -C $(CURDIR)/plugins/muffin-peewee t
+	@echo 'Test Muffin-REST'
+	@make -C $(CURDIR)/plugins/muffin-rest t
 	@echo 'Test Muffin-Redis'
 	@make -C $(CURDIR)/plugins/muffin-redis t
 	@echo 'Test Muffin-Sentry'
 	@make -C $(CURDIR)/plugins/muffin-sentry t
+	@echo 'Test Muffin-Session'
+	@make -C $(CURDIR)/plugins/muffin-session t
 
 .PHONY: doc
 doc: docs $(VIRTUALENV)
@@ -131,3 +133,4 @@ db: db.sqlite
 
 db.sqlite: $(VIRTUALENV)
 	@make manage CMD=migrate
+	@make manage CMD=example_data

@@ -4,8 +4,11 @@ nav.navbar.navbar-inverse.navbar-fixed-top
       a.navbar-brand(href='#') Muffin
     #navbar.collapse.navbar-collapse
       ul.nav.navbar-nav
-        li.active: a(href='#') Home
-        li: a(href='#about') About
+        li(class="#{view == 'index' and 'active'}"): a(href='/') Home
+        if user
+          li(class="#{view == 'profile' and 'active'}"): a(href='/profile') Profile
+        if user.is_super
+          li: a(href='/admin') Admin
 
       if user
         ul.nav.navbar-nav.navbar-right

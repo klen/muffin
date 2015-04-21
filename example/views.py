@@ -22,7 +22,7 @@ def get_user(user_id):
 def index(request):
     """ Get a current logged user and render a template. """
     user = yield from app.ps.session.load_user(request)
-    return app.ps.jade.render('index.jade', user=user)
+    return app.ps.jade.render('index.jade', user=user, view='index')
 
 
 @app.register(muffin.sre('/login/?'), methods='POST')
@@ -48,7 +48,7 @@ def logout(request):
 # ensure that request user is logged to the application
 @app.ps.session.user_pass(lambda u: u, '/')
 def profile(request):
-    return app.ps.jade.render('profile.jade', user=request.user)
+    return app.ps.jade.render('profile.jade', user=request.user, view='profile')
 
 
 @app.register('/db-sync')

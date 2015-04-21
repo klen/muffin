@@ -104,17 +104,17 @@ Base application options
 Base Muffin options and default values: ::
 
         # Configuration module
-        'CONFIG': 'config',
+        'CONFIG': 'config'
 
         # Enable debug mode
-        'DEBUG': False,
+        'DEBUG': False
 
         # List of enabled plugins
-        'PLUGINS': [],
+        'PLUGINS': []
 
         # Setup static files in development
-        'STATIC_PREFIX': '/static',
-        'STATIC_FOLDERS': 'static',
+        'STATIC_PREFIX': '/static'
+        'STATIC_FOLDERS': ['static']
 
 
 CLI integration

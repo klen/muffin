@@ -12,8 +12,7 @@ PLUGINS = (
     'muffin_peewee',
     'muffin_session',
     'muffin_oauth',
-
-    'invalid.plugin',
+    'muffin_admin',
 )
 
 STATIC_FOLDERS = 'example/static',

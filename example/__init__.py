@@ -4,5 +4,6 @@ import muffin
 app = application = muffin.Application('example', CONFIG='example.config.debug')
 
 
-from .views import *  # noqa Import views
-from .manage import * # noqa Import commands
+from .admin import *  # noqa Initialize admin views
+from .views import *  # noqa Initialize app views
+from .manage import * # noqa Initialize app commands

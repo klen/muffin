@@ -25,3 +25,8 @@ def migrate(migrator, database, **kwargs):
         username = pw.CharField()
         email = pw.CharField()
         password = pw.CharField()
+        is_super = pw.BooleanField(default=False)
+
+    @migrator.create_table
+    class Test(pw.Model):
+        data = pw.CharField()

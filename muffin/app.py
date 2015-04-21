@@ -11,6 +11,7 @@ from cached_property import cached_property
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
 from muffin.handler import Handler
+from muffin.urls import StaticRoute
 from muffin.utils import Structure
 from muffin.manage import Manager
 
@@ -53,11 +54,13 @@ class Application(web.Application):
                                           logger=logger, handler_factory=handler_factory)
 
         self.name = name
-        self.defaults = dict(self.__defaults)
-        self.defaults.update(OPTIONS)
 
         self._middlewares = list(self._middlewares)
         self._start_callbacks = []
+
+        # Overide options
+        self.__defaults['CONFIG'] = OPTIONS.pop('CONFIG', self.__defaults['CONFIG'])
+        self.cfg.update(OPTIONS)
 
         # Setup logging
         ch = logging.StreamHandler()
@@ -85,10 +88,11 @@ class Application(web.Application):
             except Exception as exc:
                 self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
 
-        # Serve static folders (dev)
         for path in self.cfg.STATIC_FOLDERS:
             if os.path.isdir(path):
-                self.router.add_static(self.cfg.STATIC_PREFIX, path)
+                route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path, None)
+                self.router.register_route(route)
+
             else:
                 self.logger.warn('Disable static folder (hasnt found): %s' % path)
 
@@ -103,7 +107,7 @@ class Application(web.Application):
     @cached_property
     def cfg(self):
         """ Load the application configuration. """
-        config = Structure(self.defaults)
+        config = Structure(self.__defaults)
         module = config['CONFIG'] = os.environ.get(
             CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
         try:

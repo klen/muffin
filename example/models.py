@@ -25,6 +25,7 @@ class User(pw.Model):
     username = pw.CharField()
     email = pw.CharField()
     password = pw.CharField()
+    is_super = pw.BooleanField(default=False)
 
     @property
     def pk(self):

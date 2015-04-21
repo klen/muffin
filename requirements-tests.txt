@@ -10,3 +10,5 @@ muffin_peewee
 muffin_session      >= 0.0.4
 muffin_oauth
 muffin_jade         >= 0.0.5
+muffin_admin
+wtf-peewee

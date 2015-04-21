@@ -5,6 +5,7 @@ import re
 import ujson as json
 from aiohttp import web, multidict
 
+from muffin.urls import RawReRoute
 from muffin.utils import to_coroutine, abcoroutine
 
 
@@ -12,8 +13,6 @@ from muffin.utils import to_coroutine, abcoroutine
 
 
 RETYPE = type(re.compile('@'))
-DYNS_RE = re.compile(r'(\{[^{}]*\})')
-DYNR_RE = re.compile(r'^\{(?P<var>[a-zA-Z][_a-zA-Z0-9]*)(?::(?P<re>.+))*\}$')
 
 HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
@@ -71,10 +70,8 @@ class Handler(object, metaclass=HandlerMeta):
         """ Create handler class from function or coroutine. """
         view = to_coroutine(view)
 
-        @asyncio.coroutine
         def method(self, *args, **kwargs):
-            response = yield from view(*args, **kwargs)
-            return response
+            return view(*args, **kwargs)
 
         if "*" in methods:
             methods = HTTP_METHODS
@@ -150,35 +147,3 @@ class Handler(object, metaclass=HandlerMeta):
             return request.json()
 
         return request.text()
-
-
-class RawReRoute(web.DynamicRoute):
-
-    """ Support raw re. """
-
-    def __init__(self, method, handler, name, pattern):
-        """ Skip a formatter. """
-        super().__init__(method, handler, name, pattern, None)
-
-    def url(self, *, parts, query=None):
-        """ Skip URL calculation. """
-        raise NotImplemented
-
-    def __repr__(self):
-        """ Fix representation. """
-        name = "'" + self.name + "' " if self.name is not None else ""
-        return "<RawReRoute {name}[{method}] {pattern} -> {handler!r}".format(
-            name=name, method=self.method, pattern=self._pattern, handler=self.handler)
-
-
-def sre(reg):
-    """ Support `Muffin` URL RE. """
-    reg = reg.strip('^$')
-
-    def parse(match):
-        [part] = match.groups()
-        match = DYNR_RE.match(part)
-        params = match.groupdict()
-        return '(?P<%s>%s)' % (params['var'], params['re'] or '[^{}/]+')
-
-    return re.compile('^%s$' % DYNS_RE.sub(parse, reg))
