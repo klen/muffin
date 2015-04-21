@@ -70,18 +70,12 @@ class Application(web.Application):
 
         self.manage = Manager(self)
 
-        # Setup static files (development)
+        # Setup static files option
         if isinstance(self.cfg.STATIC_FOLDERS, str):
             self.cfg.STATIC_FOLDERS = [self.cfg.STATIC_FOLDERS]
 
         elif not isinstance(self.cfg.STATIC_FOLDERS, list):
             self.cfg.STATIC_FOLDERS = list(self.cfg.STATIC_FOLDERS)
-
-        for path in self.cfg.STATIC_FOLDERS:
-            if os.path.isdir(path):
-                self.router.add_static(self.cfg.STATIC_PREFIX, path)
-            else:
-                self.logger.warn('Disable static folder (hasnt found): %s' % path)
 
         # Setup plugins
         self.plugins = self.ps = Structure()
@@ -90,6 +84,13 @@ class Application(web.Application):
                 self.install(plugin)
             except Exception as exc:
                 self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
+
+        # Serve static folders (dev)
+        for path in self.cfg.STATIC_FOLDERS:
+            if os.path.isdir(path):
+                self.router.add_static(self.cfg.STATIC_PREFIX, path)
+            else:
+                self.logger.warn('Disable static folder (hasnt found): %s' % path)
 
     def __call__(self, *args, **kwargs):
         """ Return the application. """
