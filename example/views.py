@@ -66,9 +66,9 @@ def raise404(request):
     raise muffin.HTTPNotFound
 
 
-@app.register('/github')
-@app.ps.oauth.login('github')
-def oauth(request, client):
+@app.register('/oauth/github')
+def oauth(request):
+    client = yield from app.ps.oauth.login('github', request)
     try:
         token = Token.select().where(Token.token == client.access_token).get()
         user = token.user
