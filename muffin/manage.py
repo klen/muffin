@@ -129,11 +129,11 @@ class Manager(object):
 
                 if symlink:
                     os.symlink(fpath, dpath)
+                    app.logger.info('%s is linked' % rpath)
 
                 else:
                     copy(fpath, dpath)
-
-                app.logger.info('Copied %s' % rpath)
+                    app.logger.info('%s is copied' % rpath)
 
     def command(self, func):
         header = '\n'.join([s for s in (func.__doc__ or '').split('\n')
