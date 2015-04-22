@@ -119,6 +119,9 @@ class Manager(object):
 
             for rpath, fpath in sources.items():
                 dpath = os.path.join(destination, rpath)
+                if fpath == dpath:
+                    continue
+
                 if os.path.exists(dpath):
                     if not replace or os.path.getmtime(dpath) >= os.path.getmtime(fpath):
                         continue
@@ -129,11 +132,11 @@ class Manager(object):
 
                 if symlink:
                     os.symlink(fpath, dpath)
-                    app.logger.info('%s is linked' % rpath)
+                    app.logger.info('Linked: %s' % rpath)
 
                 else:
                     copy(fpath, dpath)
-                    app.logger.info('%s is copied' % rpath)
+                    app.logger.info('Copied: %s' % rpath)
 
     def command(self, func):
         header = '\n'.join([s for s in (func.__doc__ or '').split('\n')
