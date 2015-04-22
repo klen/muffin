@@ -93,11 +93,12 @@ class Manager(object):
             gapp.run()
 
         @self.command
-        def collect(destination:str, replace=False):
+        def collect(destination:str, replace=False, symlink=True):
             """ Collect static files from the application and plugins.
 
             :param destination: Path where static files will be collected.
             :param replace: Replace existed files
+            :param symlink: Create symlinks except file copy
 
             """
             sources = dict()
@@ -126,7 +127,12 @@ class Manager(object):
                 if not os.path.exists(ddir):
                     os.makedirs(ddir)
 
-                copy(fpath, dpath)
+                if symlink:
+                    os.symlink(fpath, dpath)
+
+                else:
+                    copy(fpath, dpath)
+
                 app.logger.info('Copied %s' % rpath)
 
     def command(self, func):
@@ -219,3 +225,5 @@ def run():
         raise sys.exit(1)
 
     app.manage()
+
+# pylama:ignore=C901

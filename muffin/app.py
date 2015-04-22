@@ -39,6 +39,11 @@ class Application(web.Application):
         # Enable debug mode
         'DEBUG': False,
 
+        # Logging options
+        'LOG_LEVEL': 'WARNING',
+        'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',
+        'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]',
+
         # Install the plugins
         'PLUGINS': [],
 
@@ -64,11 +69,9 @@ class Application(web.Application):
 
         # Setup logging
         ch = logging.StreamHandler()
-        ch.setFormatter(logging.Formatter(
-            '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',
-            '[%Y-%m-%d %H:%M:%S %z]'))
+        ch.setFormatter(logging.Formatter(self.cfg.LOG_FORMAT, self.cfg.LOG_DATE_FORMAT))
         self.logger.addHandler(ch)
-        self.logger.setLevel('DEBUG') if self.cfg.DEBUG else self.logger.setLevel('WARNING')
+        self.logger.setLevel(self.cfg.LOG_LEVEL)
         self.logger.name = 'muffin'
 
         self.manage = Manager(self)
