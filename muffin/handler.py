@@ -113,7 +113,7 @@ class Handler(object, metaclass=HandlerMeta):
         while asyncio.iscoroutine(response):
             response = yield from response
 
-        if isinstance(response, web.Response):
+        if isinstance(response, web.StreamResponse):
             return response
 
         if isinstance(response, (multidict.MultiDict, multidict.MultiDictProxy)):
