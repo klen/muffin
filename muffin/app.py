@@ -140,12 +140,12 @@ class Application(web.Application):
         if isinstance(plugin, type):
             plugin = plugin()
 
-        if hasattr(plugin, 'setup'):
-            plugin.setup(self)
-
         if hasattr(plugin, 'middleware_factory') \
                 and plugin.middleware_factory not in self.middlewares:
             self.middlewares.append(plugin.middleware_factory)
+
+        if hasattr(plugin, 'setup'):
+            plugin.setup(self)
 
         if hasattr(plugin, 'start'):
             self.register_on_start(plugin.start)

@@ -90,6 +90,8 @@ tp:
 	@make -C $(CURDIR)/plugins/muffin-admin t
 	@echo 'Test Muffin-Jade'
 	@make -C $(CURDIR)/plugins/muffin-jade t
+	@echo 'Test Muffin-Jinja2'
+	@make -C $(CURDIR)/plugins/muffin-jinja2 t
 	@echo 'Test Muffin-Mongo'
 	@make -C $(CURDIR)/plugins/muffin-mongo t
 	@echo 'Test Muffin-OAuth'
