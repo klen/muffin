@@ -57,6 +57,7 @@ Plugins
 
 The Muffin has a plugins support.
 
+* `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
 * `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
 * `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
 * `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
