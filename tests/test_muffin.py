@@ -15,12 +15,34 @@ def app(loop):
             'tests/static1',
             'tests/static2',
         ))
+
     return app
 
 
 def test_app(app):
     assert app.name == 'muffin'
     assert app.cfg
+
+
+def test_str(app, client):
+
+    @app.register('/str')
+    def str(request):
+        return 'STR'
+
+    response = client.get('/str')
+    assert response.text == 'STR'
+
+
+def test_bytes(app, client):
+
+    @app.register('/bytes')
+    def bytes(request):
+        return b'BYTES'
+
+    response = client.get('/bytes')
+    assert response.headers['Content-Type'] == 'text/html; charset=utf-8'
+    assert response.text == 'BYTES'
 
 
 def test_static(app, client):

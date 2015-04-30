@@ -39,6 +39,9 @@ class Application(web.Application):
         # Enable debug mode
         'DEBUG': False,
 
+        # Default encoding
+        'ENCODING': 'utf-8',
+
         # Logging options
         'LOG_LEVEL': 'WARNING',
         'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',

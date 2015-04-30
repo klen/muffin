@@ -116,14 +116,22 @@ class Handler(object, metaclass=HandlerMeta):
         if isinstance(response, web.StreamResponse):
             return response
 
-        if isinstance(response, (multidict.MultiDict, multidict.MultiDictProxy)):
-            response = dict(response)
-            return web.Response(text=json.dumps(response), content_type='application/json')
+        if isinstance(response, str):
+            return web.Response(text=response, content_type='text/html')
 
         if isinstance(response, (list, dict)):
             return web.Response(text=json.dumps(response), content_type='application/json')
 
-        if response is None:
+        if isinstance(response, (multidict.MultiDict, multidict.MultiDictProxy)):
+            response = dict(response)
+            return web.Response(text=json.dumps(response), content_type='application/json')
+
+        if isinstance(response, bytes):
+            response = web.Response(body=response, content_type='text/html')
+            response.charset = self.app.cfg.ENCODING
+            return response
+
+        elif response is None:
             response = ''
 
         return web.Response(text=str(response), content_type='text/html')
