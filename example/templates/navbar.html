@@ -1,0 +1,37 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"> Muffin </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav">
+                <li class="{{ view == 'index' and 'active' }}">
+                    <a href="/"> Home </a>
+                </li>
+                {% if user %}
+                    <li class="{{ view == 'profile' and 'active' }}">
+                        <a href="/profile"> Profile </a>
+                    </li>
+                {% endif %}
+                {% if user.is_super %}
+                    <li> <a href="/admin"> Admin </a> </li>
+                {% endif %}
+            </ul>
+            {% if user %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li> <a href="/logout"> Logout </a> </li>
+                </ul>
+            {% else %}
+                <form class="navbar-form navbar-right" action="/login" method="POST">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="email" placeholder="Email" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" name="password" placeholder="Password" />
+                    </div>
+                    <button class="btn btn-default" type="submit"> Login </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>

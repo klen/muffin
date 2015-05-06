@@ -8,7 +8,7 @@ bind = '127.0.0.1:5000'
 PLUGINS = (
 
     # Contrib plugins
-    'muffin_jade',
+    'muffin_jinja2',
     'muffin_peewee',
     'muffin_session',
     'muffin_oauth',
@@ -21,7 +21,7 @@ STATIC_FOLDERS = 'example/static',
 # ==============
 
 SESSION_SECRET = 'SecretHere'
-JADE_TEMPLATE_FOLDERS = 'example/templates',
+JINJA2_TEMPLATE_FOLDERS = 'example/templates',
 OAUTH_CLIENTS = {
     'github': {
         'client_id': 'b6281b6fe88fa4c313e6',
