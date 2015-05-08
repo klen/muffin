@@ -126,7 +126,8 @@ class Application(web.Application):
 
         except ImportError:
             config.CONFIG = None
-            self.logger.warn("The configuration hasn't found: %s" % module)
+            self.register_on_start(
+                lambda app: app.logger.warn("The configuration hasn't found: %s" % module))
 
         return config
 
