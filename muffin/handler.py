@@ -135,7 +135,7 @@ class Handler(object, metaclass=HandlerMeta):
         return web.Response(text=str(response), content_type='text/html')
 
     def parse(self, request):
-        """ Return coroutine which take data from request depended on content-type.
+        """ Return a coroutine which parse data from request depended on content-type.
 
         Usage: ::
 
@@ -150,7 +150,6 @@ class Handler(object, metaclass=HandlerMeta):
             return request.post()
 
         if request.content_type == 'application/json':
-            json = yield from request.json()
-            return multidict.MultiDict(json)
+            return request.json()
 
         return request.text()

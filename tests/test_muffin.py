@@ -104,7 +104,7 @@ def test_handler(app, client):
 
         def post(self, request):
             data = yield from self.parse(request)
-            return data
+            return dict(data)
 
     assert set(Resource.methods) == set(['get', 'post'])
 
