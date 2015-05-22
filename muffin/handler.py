@@ -25,7 +25,6 @@ class HandlerMeta(type):
 
     def __new__(mcs, name, bases, params):
         """ Check for handler is correct. """
-
         # Define new coroutines
         for fname, method in params.items():
             if callable(method) and hasattr(method, '_abcoroutine'):
@@ -81,7 +80,6 @@ class Handler(object, metaclass=HandlerMeta):
     @classmethod
     def connect(cls, app, *paths, name=None):
         """ Connect to the application. """
-
         @asyncio.coroutine
         def view(request):
             handler = cls(app)
@@ -152,6 +150,7 @@ class Handler(object, metaclass=HandlerMeta):
             return request.post()
 
         if request.content_type == 'application/json':
-            return request.json()
+            json = yield from request.json()
+            return multidict.MultiDict(json)
 
         return request.text()

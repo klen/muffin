@@ -7,8 +7,8 @@ pytest-pythonpath
 webtest
 
 muffin_peewee
-muffin_session      >= 0.0.4
-muffin_oauth
+muffin_session      >= 0.0.5
+muffin_oauth        >= 0.0.9
 muffin_jinja2       >= 0.0.4
 muffin_admin        >= 0.0.7
 wtf-peewee
