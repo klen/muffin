@@ -71,7 +71,8 @@ class GunicornWorker(GunicornWebWorker):
         super(GunicornWorker, self).run()
 
     def make_handler(self, app, host, port):
-        return app.make_handler(
+        handler = app.make_handler(
             host=host, port=port, logger=self.log,
             debug=app.cfg.DEBUG, keep_alive=self.cfg.keepalive, timeout=self.cfg.timeout,
             access_log=self.log.access_log, access_log_format=self.cfg.access_log_format)
+        return handler

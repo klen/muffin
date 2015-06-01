@@ -1,94 +1,19 @@
 # Configure your tests here
 import asyncio
+import io
 import os
 
+import aiohttp
 import pytest
+import webob
 import webtest
-from aiohttp.multidict import CIMultiDict
-from aiohttp.protocol import HttpVersion11, HttpVersion10, RawRequestMessage
-from aiohttp.streams import StreamReader
-from aiohttp.web import (
-    AbstractMatchInfo,
-    HTTPException,
-    Request,
-    RequestHandler,
-    RequestHandlerFactory,
-    StreamResponse,
-)
 from gunicorn import util
 
-
-class TestRequestHandler(RequestHandler):
-
-    @asyncio.coroutine
-    def handle_request(self, message, payload):
-        app = self._app
-
-        request = Request(app, message, payload, self.transport, self.reader, self.writer)
-
-        request._writer = lambda: None # noqa
-        request._writer.write = lambda b: None # noqa
-
-        try:
-            match_info = yield from self._router.resolve(request)
-
-            assert isinstance(match_info, AbstractMatchInfo), match_info
-
-            request._match_info = match_info
-            handler = match_info.handler
-
-            for factory in reversed(self._middlewares):
-                handler = yield from factory(app, handler)
-            resp = yield from handler(request)
-
-            if not isinstance(resp, StreamResponse):
-                raise RuntimeError(
-                    ("Handler {!r} should return response instance, "
-                     "got {!r} [middlewares {!r}]").format(
-                         match_info.handler,
-                         type(resp),
-                         self._middlewares))
-        except HTTPException as exc:
-            resp = exc
-
-        return resp
-
-
-class TestRequest(webtest.TestRequest):
-
-    """ Support asyncio loop. """
-
-    def call_application(self, application, catch_exc_info=False):
-        if self.is_body_seekable:
-            self.body_file_raw.seek(0)
-
-        http_version = HttpVersion10 if self.http_version == 'HTTP/1.0' else HttpVersion11
-        message = RawRequestMessage(
-            self.method, self.path_qs, http_version, CIMultiDict(self.headers), False, False)
-        payload = StreamReader(loop=application.loop)
-        payload.feed_data(self.body_file_raw.read())
-        payload.feed_eof()
-
-        loop = asyncio.get_event_loop()
-        handler = RequestHandlerFactory(
-            application, application.router, handler=TestRequestHandler, loop=loop)()
-        response = loop.run_until_complete(handler.handle_request(message, payload))
-
-        headers = dict(response.headers)
-        for cookie in response.cookies.values():
-            headers['SET-COOKIE'] = cookie.OutputString()
-
-        return response.status, headers.items(), [response._body], None
-
-
-class TestApp(webtest.TestApp):
-
-    RequestClass = TestRequest
+import muffin
 
 
 def pytest_addoption(parser):
-    """ Add MUFFIN testing options. """
-
+    """ Append pytest options for testing Muffin apps. """
     parser.addini('muffin_app', 'Set path to muffin application')
     parser.addoption('--muffin-app', dest='muffin_app', help='Set to muffin application')
 
@@ -98,29 +23,54 @@ def pytest_addoption(parser):
 
 
 def pytest_load_initial_conftests(early_config, parser, args):
-    from muffin import CONFIGURATION_ENVIRON_VARIABLE
+    """ Prepare to loading Muffin application. """
     options = parser.parse_known_args(args)
 
     # Initialize configuration
     config = options.muffin_config or early_config.getini('muffin_config')
     if config:
-        os.environ[CONFIGURATION_ENVIRON_VARIABLE] = config
+        os.environ[muffin.CONFIGURATION_ENVIRON_VARIABLE] = config
 
     # Initialize application
     app = options.muffin_app or early_config.getini('muffin_app')
     early_config.app = app
 
 
+def WSGIHandler(app, loop):
+
+    def handle(environ, start_response):
+
+        req = webob.Request(environ)
+        vers = aiohttp.HttpVersion10 if req.http_version == 'HTTP/1.0' else aiohttp.HttpVersion11
+        message = aiohttp.RawRequestMessage(
+            req.method, req.path_qs, vers, aiohttp.CIMultiDict(req.headers), False, False)
+        payload = aiohttp.StreamReader(loop=loop)
+        payload.feed_data(req.body)
+        payload.feed_eof()
+        factory = aiohttp.web.RequestHandlerFactory(
+            app, app.router, loop=loop, keep_alive_on=False)
+        handler = factory()
+        handler.transport = io.BytesIO()
+        handler.writer = aiohttp.parsers.StreamWriter(
+            handler.transport, handler, handler.reader, handler._loop)
+        loop.run_until_complete(handler.handle_request(message, payload))
+        handler.transport.seek(0)
+        res = webob.Response.from_file(handler.transport)
+        start_response(res.status[9:], res.headerlist)
+        return res.app_iter
+
+    return handle
+
+
 @pytest.fixture(scope='session')
 def loop(request):
     """ Create and provide asyncio loop. """
     loop = asyncio.new_event_loop()
-    request.addfinalizer(lambda: loop.close())
     return loop
 
 
 @pytest.fixture(scope='session')
-def app(pytestconfig, loop, request):
+def app(pytestconfig, request):
     """ Provide an example application. """
     app = pytestconfig.app
     if not app:
@@ -128,7 +78,6 @@ def app(pytestconfig, loop, request):
             'Improperly configured. Please set ``muffin_app`` in your pytest config. '
             'Or use ``--muffin-app`` command option.')
     app = util.import_app(app)
-
     return app
 
 
@@ -149,12 +98,14 @@ def _initialize(app, loop, request):
     @request.addfinalizer
     def finish():
         loop.run_until_complete(app.finish())
+        loop.close()
 
 
 @pytest.fixture(scope='function')
-def client(app):
+def client(app, loop):
     """ Prepare a tests' client. """
-    client = TestApp(app, lint=False)
+    app = WSGIHandler(app, loop=loop)
+    client = webtest.TestApp(app)
     client.exception = webtest.AppError
     return client
 
