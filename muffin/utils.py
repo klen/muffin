@@ -15,13 +15,21 @@ class MuffinException(Exception):
 
 
 def abcoroutine(func):
-    """ Mark function/method as coroutine. """
+    """ Mark function/method as coroutine.
+
+    Used with Meta classes.
+
+    """
     func._abcoroutine = True
     return func
 
 
 def to_coroutine(func):
-    """ Ensure that the function is coroutine. """
+    """ Ensure that the function is coroutine.
+
+    If not convert to coroutine.
+
+    """
     if not asyncio.iscoroutinefunction(func):
         func = asyncio.coroutine(func)
     return func

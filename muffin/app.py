@@ -96,7 +96,7 @@ class Application(web.Application):
 
         for path in self.cfg.STATIC_FOLDERS:
             if os.path.isdir(path):
-                route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path, None)
+                route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path)
                 self.router.register_route(route)
 
             else:
