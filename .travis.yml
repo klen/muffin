@@ -3,13 +3,46 @@ language: python
 python: 3.4
 
 branches:
-    only:
-        - master
-        - develop
+  only:
+  - master
+  - develop
 
-install: pip install -r requirements-tests.txt
+install:
+- git clone https://github.com/klen/muffin-admin   plugins/muffin-admin
+- git clone https://github.com/klen/muffin-jade    plugins/muffin-jade
+- git clone https://github.com/klen/muffin-jinja2  plugins/muffin-jinja2
+- git clone https://github.com/klen/muffin-mongo   plugins/muffin-mongo
+- git clone https://github.com/klen/muffin-oauth   plugins/muffin-oauth
+- git clone https://github.com/klen/muffin-peewee  plugins/muffin-peewee
+- git clone https://github.com/klen/muffin-redis   plugins/muffin-redis
+- git clone https://github.com/klen/muffin-rest    plugins/muffin-rest
+- git clone https://github.com/klen/muffin-sentry  plugins/muffin-sentry
+- git clone https://github.com/klen/muffin-session plugins/muffin-session
+- pip install -r requirements-tests.txt
 
-script: py.test
+script:
+- py.test tests
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-admin/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-jade/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-jinja2/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-mongo/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-oauth/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-peewee/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-redis/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-rest/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-sentry/requirements-tests.txt
+- pip install -r $TRAVIS_BUILD_DIR/plugins/muffin-session/requirements-tests.txt
+- export VDIR=$VIRTUAL_ENV
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-admin   t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-jade    t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-jinja2  t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-mongo   t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-oauth   t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-peewee  t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-redis   t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-rest    t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-sentry  t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-session t
 
 after_script:
     pip install --quiet --use-mirrors coveralls coverage;
