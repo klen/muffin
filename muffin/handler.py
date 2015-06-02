@@ -17,6 +17,20 @@ RETYPE = type(re.compile('@'))
 HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
 
+def register(router, view, path, method, name):
+    """ Register URL path/re to router. """
+    # Fix route name
+    cname, num = name + "-" + method.lower(), 1
+    while cname in router:
+        cname = name + "-" + str(num)
+        num += 1
+
+    if isinstance(path, RETYPE):
+        return router.register_route(RawReRoute(method.upper(), view, cname, path))
+
+    return router.add_route(method, path, view, name=cname)
+
+
 class HandlerMeta(type):
 
     """ Prepare handlers. """
@@ -89,16 +103,8 @@ class Handler(object, metaclass=HandlerMeta):
             return response
 
         for method in methods or ["*"]:
-            name = name or cls.name
-            lname = "%s-%s" % (name.lower(), method.lower())
-            for num, path in enumerate(paths, 1):
-                if isinstance(path, RETYPE):
-                    app.router.register_route(RawReRoute(
-                       method.upper(), view, lname, path))
-                else:
-                    app.router.add_route(method, path, view, name=lname)
-
-                lname = "%s-%s" % (lname, num)
+            for path in paths:
+                register(app.router, view, path, method, name or cls.name)
 
     @abcoroutine
     def dispatch(self, request, **kwargs):
