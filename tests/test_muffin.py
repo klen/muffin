@@ -92,9 +92,15 @@ def test_handler(app, client):
     def test3(request):
         return 'TEST PASSED'
 
-    assert 'test3-get' in app.router._routes
-    assert 'test3-post' in app.router._routes
-    assert 'test3-put' in app.router._routes
+    assert 'test3-*' in app.router._routes
+    response = client.get('/test3')
+    assert response.status_code == 200
+
+    response = client.post('/test3')
+    assert response.status_code == 200
+
+    response = client.delete('/test3')
+    assert response.status_code == 200
 
     @app.register(muffin.sre('/res(/{res})?/?'))
     class Resource(muffin.Handler):
@@ -106,10 +112,11 @@ def test_handler(app, client):
             data = yield from self.parse(request)
             return dict(data)
 
-    assert set(Resource.methods) == set(['get', 'post'])
+    assert set(Resource.methods) == set(['GET', 'POST'])
 
-    assert 'resource-get' in app.router._routes
-    assert 'resource-post' in app.router._routes
+    assert 'resource-*' in app.router._routes
+
+    response = client.delete('/res', status=405)
 
     response = client.get('/res')
     assert response.json == {'res': None}

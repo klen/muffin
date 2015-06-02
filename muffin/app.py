@@ -175,8 +175,8 @@ class Application(web.Application):
         """ Register a start callback. """
         self._start_callbacks.append((func, args, kwargs))
 
-    def register(self, *paths, methods=['GET'], name=None):
-        """ Register function (coroutine) or muffin.Handler to application. """
+    def register(self, *paths, methods=None, name=None):
+        """ Register function/coroutine/muffin.Handler on current application. """
         if isinstance(methods, str):
             methods = [methods]
 
@@ -184,9 +184,9 @@ class Application(web.Application):
             handler = view
 
             if isinstance(handler, FunctionType):
-                handler = Handler.from_view(handler, *methods, name=name)
+                handler = Handler.from_view(handler, *methods or ['GET'], name=name)
 
-            handler.connect(self, *paths, name=name)
+            handler.connect(self, *paths, methods=methods, name=name)
 
             return view
 

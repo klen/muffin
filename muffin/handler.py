@@ -42,6 +42,8 @@ class HandlerMeta(type):
         if not cls.methods:
             cls.methods = set(method for method in HTTP_METHODS if method in cls.__dict__)
 
+        cls.methods = [method.upper() for method in cls.methods]
+
         # Ensure that coroutine methods is coroutines
         for name in mcs.coroutines:
             method = getattr(cls, name, None)
@@ -78,7 +80,7 @@ class Handler(object, metaclass=HandlerMeta):
         return type(name or view.__name__, (cls,), {m.lower(): method for m in methods})
 
     @classmethod
-    def connect(cls, app, *paths, name=None):
+    def connect(cls, app, *paths, methods=None, name=None):
         """ Connect to the application. """
         @asyncio.coroutine
         def view(request):
@@ -86,7 +88,7 @@ class Handler(object, metaclass=HandlerMeta):
             response = yield from handler.dispatch(request)
             return response
 
-        for method in cls.methods:
+        for method in methods or ["*"]:
             name = name or cls.name
             lname = "%s-%s" % (name.lower(), method.lower())
             for num, path in enumerate(paths, 1):
@@ -101,6 +103,8 @@ class Handler(object, metaclass=HandlerMeta):
     @abcoroutine
     def dispatch(self, request, **kwargs):
         """ Dispatch request. """
+        if request.method not in self.methods:
+            raise web.HTTPMethodNotAllowed(request.method, self.methods)
         method = getattr(self, request.method.lower())
         response = yield from method(request, **kwargs)
         return (yield from self.make_response(request, response))
