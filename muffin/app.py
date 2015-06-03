@@ -12,7 +12,7 @@ from cached_property import cached_property
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
 from muffin.handler import Handler
 from muffin.urls import StaticRoute
-from muffin.utils import Structure
+from muffin.utils import Structure, to_coroutine
 from muffin.manage import Manager
 
 
@@ -64,6 +64,8 @@ class Application(web.Application):
         self.name = name
 
         self._middlewares = list(self._middlewares)
+        self._error_handlers = {}
+
         self._start_callbacks = []
 
         # Overide options
@@ -159,6 +161,24 @@ class Application(web.Application):
     @asyncio.coroutine
     def start(self):
         """ Start the application. """
+
+        @asyncio.coroutine
+        def exc_middleware_factory(app, handler):
+            """ Handle exceptions. """
+            @asyncio.coroutine
+            def middleware(request):
+                try:
+                    return (yield from handler(request))
+                except Exception as exc:
+                    if type(exc) in app._error_handlers:
+                        request.exception = exc
+                        return (yield from self._error_handlers[type(exc)](request))
+                    raise
+            return middleware
+
+        if self._error_handlers:
+            self._middlewares.append(exc_middleware_factory)
+
         for (cb, args, kwargs) in self._start_callbacks:
             try:
                 res = cb(self, *args, **kwargs)
@@ -191,12 +211,25 @@ class Application(web.Application):
             return view
 
         # Support for @app.register(func)
-        if len(paths) == 1 and callable(paths[0]):
+        if len(paths) == 1 and callable(paths[0]) and not issubclass(paths[0], web.HTTPError):
             view = paths[0]
+
             paths = []
             return wrapper(view)
 
         return wrapper
+
+    def register_error(self, exc_class, func=None):
+        """ Register an exception handler. """
+        def wrapper(func):
+            func = to_coroutine(func)
+            self._error_handlers[exc_class] = func
+            return func
+
+        if not func:
+            return wrapper
+
+        return wrapper(func)
 
 
 def run():

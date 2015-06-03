@@ -107,6 +107,11 @@ class Handler(object, metaclass=HandlerMeta):
 
         for method in methods or ["*"]:
             for path in paths:
+
+                if isinstance(path, type) and issubclass(path, Exception):
+                    app._error_handlers[path] = view
+                    continue
+
                 register(router, view, path, method, name or cls.name)
 
     @abcoroutine

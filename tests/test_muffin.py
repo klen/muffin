@@ -191,3 +191,41 @@ def test_password_hash():
 
     assert not muffin.utils.check_password_hash('wrong', pwhash)
     assert muffin.utils.check_password_hash('pass', pwhash)
+
+
+def test_error_pages(client, loop, app):
+
+    def handle_404(request):
+        return muffin.Response(text='Muffin 404', status=404)
+
+    app.register_error(muffin.HTTPNotFound, handle_404)
+
+    loop.run_until_complete(app.start())
+
+    response = client.get('/404', status=404)
+    assert 'Muffin 404' == response.text
+
+    @app.register('/401')
+    def raise_401(request):
+        raise muffin.HTTPBadRequest()
+
+    @app.register_error(muffin.HTTPBadRequest)
+    def handle_401(request):
+        return muffin.Response(text='Muffin 401', status=401)
+
+    response = client.get('/401', status=401)
+    assert 'Muffin 401' == response.text
+
+    @app.register('/500', muffin.HTTPInternalServerError)
+    def handle_500(request):
+        return muffin.Response(text='Muffin 500', status=500)
+
+    @app.register('/raise500')
+    def raise_500(request):
+        raise muffin.HTTPInternalServerError()
+
+    response = client.get('/500', status=500)
+    assert 'Muffin 500' == response.text
+
+    response = client.get('/raise500', status=500)
+    assert 'Muffin 500' == response.text
