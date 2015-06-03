@@ -51,6 +51,7 @@ def WSGIHandler(app, loop):
             app, app.router, loop=loop, keep_alive_on=False)
         handler = factory()
         handler.transport = io.BytesIO()
+        handler.transport._conn_lost = 0
         handler.writer = aiohttp.parsers.StreamWriter(
             handler.transport, handler, handler.reader, handler._loop)
         loop.run_until_complete(handler.handle_request(message, payload))
