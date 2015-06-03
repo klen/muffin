@@ -1,4 +1,5 @@
 import pytest
+
 import muffin
 
 
@@ -17,6 +18,12 @@ def app(loop):
         ))
 
     return app
+
+
+def test_pytest(loop):
+    import asyncio
+
+    assert asyncio.get_event_loop() == loop
 
 
 def test_app(app):

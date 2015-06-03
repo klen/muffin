@@ -65,7 +65,7 @@ def WSGIHandler(app, loop):
 @pytest.fixture(scope='session')
 def loop(request):
     """ Create and provide asyncio loop. """
-    loop = asyncio.new_event_loop()
+    loop = asyncio.get_event_loop()
     return loop
 
 
