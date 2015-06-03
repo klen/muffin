@@ -162,21 +162,7 @@ class Application(web.Application):
     def start(self):
         """ Start the application. """
 
-        @asyncio.coroutine
-        def exc_middleware_factory(app, handler):
-            """ Handle exceptions. """
-            @asyncio.coroutine
-            def middleware(request):
-                try:
-                    return (yield from handler(request))
-                except Exception as exc:
-                    if type(exc) in app._error_handlers:
-                        request.exception = exc
-                        return (yield from self._error_handlers[type(exc)](request))
-                    raise
-            return middleware
-
-        if self._error_handlers:
+        if self._error_handlers and exc_middleware_factory not in self._middlewares:
             self._middlewares.append(exc_middleware_factory)
 
         for (cb, args, kwargs) in self._start_callbacks:
@@ -230,6 +216,21 @@ class Application(web.Application):
             return wrapper
 
         return wrapper(func)
+
+
+@asyncio.coroutine
+def exc_middleware_factory(app, handler):
+    """ Handle application exceptions. """
+    @asyncio.coroutine
+    def middleware(request):
+        try:
+            return (yield from handler(request))
+        except Exception as exc:
+            if type(exc) in app._error_handlers:
+                request.exception = exc
+                return (yield from app._error_handlers[type(exc)](request))
+            raise
+    return middleware
 
 
 def run():
