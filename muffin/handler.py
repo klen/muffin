@@ -94,7 +94,7 @@ class Handler(object, metaclass=HandlerMeta):
         return type(name or view.__name__, (cls,), {m.lower(): method for m in methods})
 
     @classmethod
-    def connect(cls, app, *paths, methods=None, name=None):
+    def connect(cls, app, *paths, methods=None, name=None, router=None):
         """ Connect to the application. """
         @asyncio.coroutine
         def view(request):
@@ -102,9 +102,12 @@ class Handler(object, metaclass=HandlerMeta):
             response = yield from handler.dispatch(request)
             return response
 
+        if router is None:
+            router = app.router
+
         for method in methods or ["*"]:
             for path in paths:
-                register(app.router, view, path, method, name or cls.name)
+                register(router, view, path, method, name or cls.name)
 
     @abcoroutine
     def dispatch(self, request, **kwargs):
