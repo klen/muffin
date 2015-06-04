@@ -5,3 +5,5 @@ cached_property     == 1.2.0
 chardet             >= 2.3.0
 gunicorn            == 19.3.0
 ujson               == 1.33
+
+-e .
