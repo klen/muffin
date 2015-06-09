@@ -45,6 +45,11 @@ class GunicornApp(VanillaGunicornApp):
             self.cfg.set('config', self._cfg)
             os.environ[CONFIGURATION_ENVIRON_VARIABLE] = self._cfg
 
+    def load_config(self):
+        parser = self.cfg.parser()
+        args, _ = parser.parse_known_args()
+        self.init(parser, args, args.args)
+
     def load(self):
         """ Load a Muffin application. """
         # Fix paths
