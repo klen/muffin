@@ -4,7 +4,7 @@ import logging
 import os
 import re
 import importlib
-from types import FunctionType
+from types import FunctionType, MethodType
 
 from aiohttp import web
 from cached_property import cached_property
@@ -96,14 +96,6 @@ class Application(web.Application):
             except Exception as exc:
                 self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
 
-        for path in self.cfg.STATIC_FOLDERS:
-            if os.path.isdir(path):
-                route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path)
-                self.router.register_route(route)
-
-            else:
-                self.logger.warn('Disable static folder (hasnt found): %s' % path)
-
     def __call__(self, *args, **kwargs):
         """ Return the application. """
         return self
@@ -143,12 +135,12 @@ class Application(web.Application):
         if isinstance(plugin, type):
             plugin = plugin()
 
+        if hasattr(plugin, 'setup'):
+            plugin.setup(self)
+
         if hasattr(plugin, 'middleware_factory') \
                 and plugin.middleware_factory not in self.middlewares:
             self.middlewares.append(plugin.middleware_factory)
-
-        if hasattr(plugin, 'setup'):
-            plugin.setup(self)
 
         if hasattr(plugin, 'start'):
             self.register_on_start(plugin.start)
@@ -165,13 +157,21 @@ class Application(web.Application):
         if self._error_handlers and exc_middleware_factory not in self._middlewares:
             self._middlewares.append(exc_middleware_factory)
 
+        for path in self.cfg.STATIC_FOLDERS:
+            if os.path.isdir(path):
+                route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path)
+                self.router.register_route(route)
+
+            else:
+                self.logger.warn('Disable static folder (hasnt found): %s' % path)
+
         for (cb, args, kwargs) in self._start_callbacks:
             try:
                 res = cb(self, *args, **kwargs)
                 if (asyncio.iscoroutine(res) or isinstance(res, asyncio.Future)):
                     yield from res
             except Exception as exc:
-                self._loop.call_exception_handler({
+                self.loop.call_exception_handler({
                     'message': "Error in start callback",
                     'exception': exc,
                     'application': self,
@@ -189,7 +189,7 @@ class Application(web.Application):
         def wrapper(view):
             handler = view
 
-            if isinstance(handler, FunctionType):
+            if isinstance(handler, (FunctionType, MethodType)):
                 handler = Handler.from_view(handler, *methods or ['GET'], name=name)
 
             handler.connect(self, *paths, methods=methods, name=name)

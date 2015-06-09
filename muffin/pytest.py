@@ -52,6 +52,7 @@ def WSGIHandler(app, loop):
         handler = factory()
         handler.transport = io.BytesIO()
         handler.transport._conn_lost = 0
+        handler.transport.get_extra_info = lambda s: ('127.0.0.1', 80)
         handler.writer = aiohttp.parsers.StreamWriter(
             handler.transport, handler, handler.reader, handler._loop)
         loop.run_until_complete(handler.handle_request(message, payload))

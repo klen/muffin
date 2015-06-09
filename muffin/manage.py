@@ -37,7 +37,7 @@ class Manager(object):
             :param ipython: Use IPython as shell
 
             """
-            app._loop.run_until_complete(app.start())
+            app.loop.run_until_complete(app.start())
 
             banner = '\nInteractive Muffin Shell\n'
             namespace = app.cfg.MANAGE_SHELL
@@ -57,17 +57,15 @@ class Manager(object):
             from code import interact
             interact(banner, local=namespace)
 
-            app._loop.run_until_complete(app.finish())
+            app.loop.run_until_complete(app.finish())
 
         @self.command
-        def run(timeout:int=30, reload:bool=self.app.cfg.DEBUG, config:str=self.app.cfg.CONFIG,
-                name:str=self.app.name, pid:str=None, workers:int=1, bind:str='127.0.0.1:5000',
-                log_file:str=None, worker_class:str='muffin.worker.GunicornWorker',
-                daemon:bool=False):
+        def run(timeout:int=30, reload:bool=self.app.cfg.DEBUG, name:str=self.app.name,
+                pid:str=None, workers:int=1, bind:str='127.0.0.1:5000', log_file:str=None,
+                worker_class:str='muffin.worker.GunicornWorker', daemon:bool=False):
             """ Run the application.
 
             :param bind: The socket to bind
-            :param config: The path to a Muffin config file
             :param log_file: The Error log file to write to
             :param name: A base to use with setproctitle for process naming
             :param pid: A filename to use for the PID file
@@ -79,7 +77,8 @@ class Manager(object):
             """
             from muffin.worker import GunicornApp
 
-            gapp = GunicornApp(usage="%(prog)s APP_MODULE run [OPTIONS]", config=config)
+            gapp = GunicornApp(
+                usage="%(prog)s APP_MODULE run [OPTIONS]", config=self.app.cfg.CONFIG)
             gapp.app_uri = app
             gapp.cfg.set('bind', bind)
             gapp.cfg.set('pidfile', pid)
@@ -181,7 +180,7 @@ class Manager(object):
 
     def __call__(self, args=None):
         """ Parse arguments and run handler. """
-        args_ = self.parser.parse_args(args)
+        args_, unknown = self.parser.parse_known_args(args)
         kwargs = dict(args_._get_kwargs())
 
         handler = self.handlers.get(kwargs.pop('subparser'))

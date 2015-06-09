@@ -78,7 +78,6 @@ class Handler(object, metaclass=HandlerMeta):
     def __init__(self, app):
         """ Initialize an application. """
         self.app = app
-        self.loop = app._loop
 
     @classmethod
     def from_view(cls, view, *methods, name=None):

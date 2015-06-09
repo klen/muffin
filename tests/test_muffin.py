@@ -17,6 +17,7 @@ def app(loop):
             'tests/static2',
         ))
 
+    loop.run_until_complete(app.start())
     return app
 
 
@@ -205,16 +206,16 @@ def test_error_pages(client, loop, app):
     response = client.get('/404', status=404)
     assert 'Muffin 404' == response.text
 
-    @app.register('/401')
-    def raise_401(request):
+    @app.register('/400')
+    def raise_400(request):
         raise muffin.HTTPBadRequest()
 
     @app.register_error(muffin.HTTPBadRequest)
-    def handle_401(request):
-        return muffin.Response(text='Muffin 401', status=401)
+    def handle_400(request):
+        return muffin.Response(text='Muffin 400', status=400)
 
-    response = client.get('/401', status=401)
-    assert 'Muffin 401' == response.text
+    response = client.get('/400', status=400)
+    assert 'Muffin 400' == response.text
 
     @app.register('/500', muffin.HTTPInternalServerError)
     def handle_500(request):
