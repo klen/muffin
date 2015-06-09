@@ -88,6 +88,8 @@ t: test
 tp:
 	@echo 'Test Muffin-Admin'
 	@make -C $(CURDIR)/plugins/muffin-admin t
+	@echo 'Test Muffin-DebugToolbar'
+	@make -C $(CURDIR)/plugins/muffin-debugtoolbar t
 	@echo 'Test Muffin-Jade'
 	@make -C $(CURDIR)/plugins/muffin-jade t
 	@echo 'Test Muffin-Jinja2'

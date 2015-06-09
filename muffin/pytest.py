@@ -4,6 +4,7 @@ import io
 import os
 
 import aiohttp
+import logging
 import pytest
 import webob
 import webtest
@@ -74,13 +75,13 @@ def loop(request):
 @pytest.fixture(scope='session')
 def app(pytestconfig, request):
     """ Provide an example application. """
-    app = pytestconfig.app
-    if not app:
-        raise SystemExit(
-            'Improperly configured. Please set ``muffin_app`` in your pytest config. '
-            'Or use ``--muffin-app`` command option.')
-    app = util.import_app(app)
-    return app
+    if pytestconfig.app:
+        return util.import_app(pytestconfig.app)
+
+    logging.warn(
+        'Improperly configured. Please set ``muffin_app`` in your pytest config. '
+        'Or use ``--muffin-app`` command option.')
+    return None
 
 
 @pytest.fixture(scope='session', autouse=True)
