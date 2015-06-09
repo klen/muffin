@@ -72,9 +72,10 @@ The Muffin has a plugins support.
 Usage
 =====
 
-See sources of example application.
+See sources of example application. The application is deployed on Heroku:
+https://muffin-py.herokuapp.com
 
-Run example server: ::
+Run example server locally: ::
 
     $ make run
 
