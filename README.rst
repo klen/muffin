@@ -57,6 +57,8 @@ Plugins
 
 The Muffin has a plugins support.
 
+* `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
+* `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
 * `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
 * `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
 * `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
