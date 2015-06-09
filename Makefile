@@ -1,6 +1,6 @@
-VIRTUALENV=$(shell echo "$${VDIR:-'.env'}")
+VIRTUAL_ENV=$(shell echo "$${VDIR:-'.env'}")
 
-all: $(VIRTUALENV)
+all: $(VIRTUAL_ENV)
 
 .PHONY: help
 # target: help - Display callable targets
@@ -23,8 +23,8 @@ clean:
 VERSION?=minor
 # target: release - Bump version
 release:
-	@$(VIRTUALENV)/bin/pip install bumpversion
-	@$(VIRTUALENV)/bin/bumpversion $(VERSION)
+	@$(VIRTUAL_ENV)/bin/pip install bumpversion
+	@$(VIRTUAL_ENV)/bin/bumpversion $(VERSION)
 	@git checkout master
 	@git merge develop
 	@git checkout develop
@@ -49,37 +49,37 @@ major:
 .PHONY: register
 # target: register - Register module on PyPi
 register:
-	@$(VIRTUALENV)/bin/python setup.py register
+	@$(VIRTUAL_ENV)/bin/python setup.py register
 
 .PHONY: upload
 # target: upload - Upload module on PyPi
 upload: clean
-	@$(VIRTUALENV)/bin/pip install twine wheel
-	@$(VIRTUALENV)/bin/python setup.py sdist bdist_wheel
-	@$(VIRTUALENV)/bin/twine upload dist/*
-	@$(VIRTUALENV)/bin/pip install -e $(CURDIR)
+	@$(VIRTUAL_ENV)/bin/pip install twine wheel
+	@$(VIRTUAL_ENV)/bin/python setup.py sdist bdist_wheel
+	@$(VIRTUAL_ENV)/bin/twine upload dist/*
+	@$(VIRTUAL_ENV)/bin/pip install -e $(CURDIR)
 
 # =============
 #  Development
 # =============
 
-$(VIRTUALENV): requirements.txt
-	@[ -d $(VIRTUALENV) ] || virtualenv --no-site-packages $(VIRTUALENV)
-	@$(VIRTUALENV)/bin/pip install -r requirements.txt
-	@touch $(VIRTUALENV)
+$(VIRTUAL_ENV): requirements.txt
+	@[ -d $(VIRTUAL_ENV) ] || virtualenv --no-site-packages $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pip install -r requirements.txt
+	@touch $(VIRTUAL_ENV)
 
-$(VIRTUALENV)/bin/py.test: $(VIRTUALENV) requirements-tests.txt
-	@$(VIRTUALENV)/bin/pip install -r requirements-tests.txt
-	@touch $(VIRTUALENV)/bin/py.test
+$(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV) requirements-tests.txt
+	@$(VIRTUAL_ENV)/bin/pip install -r requirements-tests.txt
+	@touch $(VIRTUAL_ENV)/bin/py.test
 
-$(VIRTUALENV)/bin/muffin: $(VIRTUALENV) requirements-tests.txt
-	@$(VIRTUALENV)/bin/pip install -r requirements-tests.txt
-	@touch $(VIRTUALENV)/bin/muffin
+$(VIRTUAL_ENV)/bin/muffin: $(VIRTUAL_ENV) requirements-tests.txt
+	@$(VIRTUAL_ENV)/bin/pip install -r requirements-tests.txt
+	@touch $(VIRTUAL_ENV)/bin/muffin
 
 .PHONY: test
 # target: test - Runs tests
-test: $(VIRTUALENV)/bin/py.test
-	@$(VIRTUALENV)/bin/py.test tests
+test: $(VIRTUAL_ENV)/bin/py.test
+	@$(VIRTUAL_ENV)/bin/py.test tests
 
 .PHONY: t
 t: test
@@ -108,28 +108,29 @@ tp:
 	@make -C $(CURDIR)/plugins/muffin-session t
 
 .PHONY: doc
-doc: docs $(VIRTUALENV)
-	@$(VIRTUALENV)/bin/pip install sphinx
-	@$(VIRTUALENV)/bin/pip install sphinx-pypi-upload
-	@$(VIRTUALENV)/bin/python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
-	@$(VIRTUALENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
+doc: docs $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pip install sphinx
+	@$(VIRTUAL_ENV)/bin/pip install sphinx-pypi-upload
+	@$(VIRTUAL_ENV)/bin/python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
+	@$(VIRTUAL_ENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
 
-MANAGER=$(VIRTUALENV)/bin/muffin example
+MANAGER=$(VIRTUAL_ENV)/bin/muffin example
 CMD = --help
 
 .PHONY: manage
-manage: $(VIRTUALENV)
+manage: $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pip install -e $(CURDIR)/example
 	@$(MANAGER) $(CMD)
 
 .PHONY: run
-run: $(VIRTUALENV)/bin/muffin db.sqlite
+run: $(VIRTUAL_ENV)/bin/muffin db.sqlite
 	@make manage CMD="run --timeout=300 --pid=$(CURDIR)/pid"
 
 .PHONY: daemon
-daemon: $(VIRTUALENV)/bin/py.test daemon-kill
+daemon: $(VIRTUAL_ENV)/bin/py.test daemon-kill
 	@while nc localhost 5000; do echo 'Waiting for port' && sleep 2; done
-	@$(VIRTUALENV)/bin/muffin example run --bind=0.0.0.0:5000 --pid=$(CURDIR)/pid --daemon
+	@$(VIRTUAL_ENV)/bin/muffin example run --bind=0.0.0.0:5000 --pid=$(CURDIR)/pid --daemon
 
 .PHONY: daemon-kill
 daemon-kill:
@@ -141,12 +142,12 @@ watch:
 	@(fswatch -0or $(CURDIR)/example -e "__pycache__" | xargs -0n1 -I {} make daemon) || make daemon-kill
 
 .PHONY: shell
-shell: $(VIRTUALENV)
+shell: $(VIRTUAL_ENV)
 	@make manage CMD=shell
 
 .PHONY: db
 db: db.sqlite
 
-db.sqlite: $(VIRTUALENV)
+db.sqlite: $(VIRTUAL_ENV)
 	@make manage CMD=migrate
 	@make manage CMD=example_data

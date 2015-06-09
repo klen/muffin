@@ -77,7 +77,7 @@ https://muffin-py.herokuapp.com
 
 Run example server locally: ::
 
-    $ make run
+    $ make -C example run
 
 And open http://fuf.me:5000 in your browser.
 
