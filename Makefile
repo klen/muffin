@@ -72,10 +72,6 @@ $(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV) requirements-tests.txt
 	@$(VIRTUAL_ENV)/bin/pip install -r requirements-tests.txt
 	@touch $(VIRTUAL_ENV)/bin/py.test
 
-$(VIRTUAL_ENV)/bin/muffin: $(VIRTUAL_ENV) requirements-tests.txt
-	@$(VIRTUAL_ENV)/bin/pip install -r requirements-tests.txt
-	@touch $(VIRTUAL_ENV)/bin/muffin
-
 .PHONY: test
 # target: test - Runs tests
 test: $(VIRTUAL_ENV)/bin/py.test
@@ -117,39 +113,10 @@ doc: docs $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
 
-MANAGER=$(VIRTUAL_ENV)/bin/muffin example
-CMD = --help
-
-.PHONY: manage
-manage: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install -e $(CURDIR)/example
-	@$(MANAGER) $(CMD)
-
 .PHONY: run
-run: $(VIRTUAL_ENV)/bin/muffin db.sqlite
-	@make manage CMD="run --timeout=300 --pid=$(CURDIR)/pid"
-
-.PHONY: daemon
-daemon: $(VIRTUAL_ENV)/bin/py.test daemon-kill
-	@while nc localhost 5000; do echo 'Waiting for port' && sleep 2; done
-	@$(VIRTUAL_ENV)/bin/muffin example run --bind=0.0.0.0:5000 --pid=$(CURDIR)/pid --daemon
-
-.PHONY: daemon-kill
-daemon-kill:
-	@[ -r $(CURDIR)/pid ] && echo "Kill daemon" `cat $(CURDIR)/pid` && kill `cat $(CURDIR)/pid` || true
-
-.PHONY: watch
-watch:
-	@make daemon
-	@(fswatch -0or $(CURDIR)/example -e "__pycache__" | xargs -0n1 -I {} make daemon) || make daemon-kill
+run:
+	make -C $(CURDIR)/example run
 
 .PHONY: shell
-shell: $(VIRTUAL_ENV)
-	@make manage CMD=shell
-
-.PHONY: db
-db: db.sqlite
-
-db.sqlite: $(VIRTUAL_ENV)
-	@make manage CMD=migrate
-	@make manage CMD=example_data
+shell:
+	make -C $(CURDIR)/example shell
