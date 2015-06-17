@@ -9,9 +9,6 @@ from muffin.urls import RawReRoute
 from muffin.utils import to_coroutine, abcoroutine
 
 
-# TODO: aiohttp 0.15.2 swith method to * for Handler
-
-
 RETYPE = type(re.compile('@'))
 
 HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
