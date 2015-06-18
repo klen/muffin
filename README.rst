@@ -43,6 +43,11 @@ Requirements
 
 .. _installation:
 
+Benchmarks
+==========
+
+You could find some tests here: http://klen.github.io/py-frameworks-bench/
+
 Installation
 =============
 
