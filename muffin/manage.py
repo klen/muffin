@@ -60,9 +60,9 @@ class Manager(object):
             app.loop.run_until_complete(app.finish())
 
         @self.command
-        def run(timeout:int=30, reload:bool=self.app.cfg.DEBUG, name:str=self.app.name,
-                pid:str=None, workers:int=1, bind:str='127.0.0.1:5000', log_file:str=None,
-                worker_class:str='muffin.worker.GunicornWorker', daemon:bool=False):
+        def run(bind:str='127.0.0.1:5000', daemon:bool=False, pid:str=None,
+                reload:bool=self.app.cfg.DEBUG, timeout:int=30, name:str=self.app.name,
+                worker_class:str='muffin.worker.GunicornWorker', workers:int=1, log_file:str=None):
             """ Run the application.
 
             :param bind: The socket to bind
@@ -81,12 +81,13 @@ class Manager(object):
                 usage="%(prog)s APP_MODULE run [OPTIONS]", config=self.app.cfg.CONFIG)
             gapp.app_uri = app
             gapp.cfg.set('bind', bind)
+            gapp.cfg.set('daemon', daemon)
             gapp.cfg.set('pidfile', pid)
             gapp.cfg.set('proc_name', name)
             gapp.cfg.set('reload', reload)
-            gapp.cfg.set('daemon', daemon)
             gapp.cfg.set('timeout', timeout)
             gapp.cfg.set('worker_class', worker_class)
+            gapp.cfg.set('workers', workers)
             if log_file:
                 gapp.cfg.set('errorlog', log_file)
             gapp.run()
