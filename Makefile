@@ -1,4 +1,4 @@
-VIRTUAL_ENV=$(shell echo "$${VDIR:-'.env'}")
+VIRTUAL_ENV=$(shell echo "$${VDIR:-.env}")
 
 all: $(VIRTUAL_ENV)
 
@@ -83,27 +83,27 @@ t: test
 .PHONY: tp
 tp:
 	@echo 'Test Muffin-Admin'
-	@make -C $(CURDIR)/plugins/muffin-admin t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-admin t
 	@echo 'Test Muffin-DebugToolbar'
-	@make -C $(CURDIR)/plugins/muffin-debugtoolbar t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-debugtoolbar t
 	@echo 'Test Muffin-Jade'
-	@make -C $(CURDIR)/plugins/muffin-jade t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-jade t
 	@echo 'Test Muffin-Jinja2'
-	@make -C $(CURDIR)/plugins/muffin-jinja2 t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-jinja2 t
 	@echo 'Test Muffin-Mongo'
-	@make -C $(CURDIR)/plugins/muffin-mongo t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-mongo t
 	@echo 'Test Muffin-OAuth'
-	@make -C $(CURDIR)/plugins/muffin-oauth t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-oauth t
 	@echo 'Test Muffin-Peewee'
-	@make -C $(CURDIR)/plugins/muffin-peewee t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-peewee t
 	@echo 'Test Muffin-REST'
-	@make -C $(CURDIR)/plugins/muffin-rest t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-rest t
 	@echo 'Test Muffin-Redis'
-	@make -C $(CURDIR)/plugins/muffin-redis t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-redis t
 	@echo 'Test Muffin-Sentry'
-	@make -C $(CURDIR)/plugins/muffin-sentry t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-sentry t
 	@echo 'Test Muffin-Session'
-	@make -C $(CURDIR)/plugins/muffin-session t
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-session t
 
 .PHONY: doc
 doc: docs $(VIRTUAL_ENV)
