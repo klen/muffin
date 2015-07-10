@@ -1,7 +1,7 @@
 -r requirements.txt
 -e .
 
-mixer               >= 5.0.8
+mixer               >= 5.1.6
 pytest
 pytest-pythonpath
 webtest

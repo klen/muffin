@@ -14,7 +14,7 @@ RETYPE = type(re.compile('@'))
 HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
 
 
-def register(router, view, path, method, name):
+def register(router, view, path, method='GET', name=''):
     """ Register URL path/re to router. """
     # Fix route name
     cname, num = name + "-" + method.lower(), 1
@@ -92,11 +92,11 @@ class Handler(object, metaclass=HandlerMeta):
     @classmethod
     def connect(cls, app, *paths, methods=None, name=None, router=None):
         """ Connect to the application. """
+
         @asyncio.coroutine
         def view(request):
             handler = cls(app)
-            response = yield from handler.dispatch(request)
-            return response
+            return (yield from handler.dispatch(request))
 
         if router is None:
             router = app.router

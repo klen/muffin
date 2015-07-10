@@ -1,19 +1,19 @@
 """ Implement Muffin Application. """
 import asyncio
+import importlib
+import inspect
 import logging
 import os
 import re
-import importlib
-from types import FunctionType, MethodType
 
 from aiohttp import web
 from cached_property import cached_property
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
 from muffin.handler import Handler
+from muffin.manage import Manager
 from muffin.urls import StaticRoute
 from muffin.utils import Structure, to_coroutine
-from muffin.manage import Manager
 
 
 RETYPE = type(re.compile('@'))
@@ -189,7 +189,7 @@ class Application(web.Application):
         def wrapper(view):
             handler = view
 
-            if isinstance(handler, (FunctionType, MethodType)):
+            if inspect.isfunction(handler) or inspect.ismethod(handler):
                 handler = Handler.from_view(handler, *methods or ['GET'], name=name)
 
             handler.connect(self, *paths, methods=methods, name=name)
