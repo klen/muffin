@@ -1,16 +1,27 @@
 import muffin
 
 
-def test_handler(app, client):
+def test_handler_func(app, client):
 
-    @app.register('/test', methods='get')
+    @app.register('/test')
     def test(request):
         return 'TEST PASSED'
-
-    assert 'test-get' in app.router._routes
-    assert 'test-post' not in app.router._routes
+    assert 'test-*' in app.router._routes
 
     response = client.get('/test')
+    assert response.text == 'TEST PASSED'
+
+    response = client.post('/test')
+    assert response.text == 'TEST PASSED'
+
+    @app.register('/test1', methods='get')
+    def test1(request):
+        return 'TEST PASSED'
+
+    assert 'test1-get' in app.router._routes
+    assert 'test1-post' not in app.router._routes
+
+    response = client.get('/test1')
     assert response.text == 'TEST PASSED'
 
     @app.register('/test2', methods=('get', 'post'))
@@ -33,6 +44,9 @@ def test_handler(app, client):
 
     response = client.delete('/test3')
     assert response.status_code == 200
+
+
+def test_handler(app, client):
 
     @app.register(muffin.sre('/res(/{res})?/?'))
     class Resource(muffin.Handler):
@@ -80,3 +94,32 @@ def test_handler(app, client):
     assert response.text == 'OK'
 
     client.put('/res2', status=405)
+
+    @Resource2.register('/connect')
+    def connect_(handler, request):
+        return handler.app.name
+
+    response = client.get('/connect')
+    assert response.text == 'muffin'
+
+
+def test_deffered(client, app):
+
+    class Resource3(muffin.Handler):
+
+        methods = 'get',
+
+        def get(self, request):
+            return 'Resource3'
+
+    @Resource3.register('/dummy')
+    def dummy(handler, request):
+        return 'dummy here'
+
+    app.register('/resource-3')(Resource3)
+
+    response = client.get('/resource-3')
+    assert response.text == 'Resource3'
+
+    response = client.get('/dummy')
+    assert response.text == 'dummy here'

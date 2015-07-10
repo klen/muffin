@@ -6,6 +6,7 @@ from aiohttp import web
 
 DYNS_RE = re.compile(r'(\{[^{}]*\})')
 DYNR_RE = re.compile(r'^\{(?P<var>[a-zA-Z][_a-zA-Z0-9]*)(?::(?P<re>.+))*\}$')
+RETYPE = type(re.compile('@'))
 
 
 def sre(reg):
@@ -55,3 +56,31 @@ class StaticRoute(web.StaticRoute):
             return None
 
         return {'filename': path[self._prefix_len:]}
+
+
+def routes_register(app, view, *paths, methods=None, router=None, name=''):
+    """ Register routes. """
+
+    if router is None:
+        router = app.router
+
+    for method in methods or [web.hdrs.METH_ANY]:
+        for path in paths:
+
+            # Register any exception to app
+            if isinstance(path, type) and issubclass(path, Exception):
+                app._error_handlers[path] = view
+                continue
+
+            # Fix route name
+            cname, num = name + "-" + method.lower(), 1
+            while cname in router:
+                cname = name + "-" + str(num)
+                num += 1
+
+            # Support regexpa in paths
+            if isinstance(path, RETYPE):
+                router.register_route(RawReRoute(method.upper(), view, cname, path))
+                continue
+
+            router.add_route(method, path, view, name=cname)

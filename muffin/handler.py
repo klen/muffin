@@ -1,31 +1,15 @@
 """ Base handler class. """
 import asyncio
-import re
 
 import ujson as json
 from aiohttp import web, multidict
+from collections import defaultdict
 
-from muffin.urls import RawReRoute
+from muffin.urls import routes_register
 from muffin.utils import to_coroutine, abcoroutine
 
 
-RETYPE = type(re.compile('@'))
-
 HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
-
-
-def register(router, view, path, method='GET', name=''):
-    """ Register URL path/re to router. """
-    # Fix route name
-    cname, num = name + "-" + method.lower(), 1
-    while cname in router:
-        cname = name + "-" + str(num)
-        num += 1
-
-    if isinstance(path, RETYPE):
-        return router.register_route(RawReRoute(method.upper(), view, cname, path))
-
-    return router.add_route(method, path, view, name=cname)
 
 
 class HandlerMeta(type):
@@ -65,16 +49,30 @@ class HandlerMeta(type):
         return cls
 
 
+class DummyApp:
+
+    def __init__(self):
+        self.callbacks = defaultdict(list)
+
+    def register(self, *args, handler=None, **kwargs):
+        def wrapper(func):
+            self.callbacks[handler].append((args, kwargs, func))
+            return func
+        return wrapper
+
+    def install(self, app, handler):
+        for args, kwargs, func in self.callbacks[handler]:
+            app.register(*args, handler=handler, **kwargs)(func)
+        del self.callbacks[handler]
+
+
 class Handler(object, metaclass=HandlerMeta):
 
     """ Handle request. """
 
+    app = DummyApp()
     name = None
     methods = None
-
-    def __init__(self, app):
-        """ Initialize an application. """
-        self.app = app
 
     @classmethod
     def from_view(cls, view, *methods, name=None):
@@ -84,39 +82,41 @@ class Handler(object, metaclass=HandlerMeta):
         def method(self, *args, **kwargs):
             return view(*args, **kwargs)
 
-        if "*" in methods:
+        if web.hdrs.METH_ANY in methods:
             methods = HTTP_METHODS
 
         return type(name or view.__name__, (cls,), {m.lower(): method for m in methods})
 
     @classmethod
-    def connect(cls, app, *paths, methods=None, name=None, router=None):
+    def connect(cls, app, *paths, methods=None, name=None, router=None, view=None):
         """ Connect to the application. """
+        if isinstance(cls.app, DummyApp):
+            cls.app, dummy = app, cls.app
+            dummy.install(app, cls)
 
         @asyncio.coroutine
-        def view(request):
-            handler = cls(app)
-            return (yield from handler.dispatch(request))
+        def handle(request):
+            return (yield from cls().dispatch(request, view=view))
 
-        if router is None:
-            router = app.router
+        if not paths:
+            paths = ["/%s" % cls.__name__]
 
-        for method in methods or ["*"]:
-            for path in paths:
+        routes_register(app, handle, *paths, methods=methods, router=router, name=name or cls.name)
 
-                if isinstance(path, type) and issubclass(path, Exception):
-                    app._error_handlers[path] = view
-                    continue
-
-                register(router, view, path, method, name or cls.name)
+    @classmethod
+    def register(cls, *args, **kwargs):
+        """ Register view to handler. """
+        return cls.app.register(*args, handler=cls, **kwargs)
 
     @abcoroutine
-    def dispatch(self, request, **kwargs):
+    def dispatch(self, request, view=None, **kwargs):
         """ Dispatch request. """
         if request.method not in self.methods:
             raise web.HTTPMethodNotAllowed(request.method, self.methods)
-        method = getattr(self, request.method.lower())
+
+        method = getattr(self, view or request.method.lower())
         response = yield from method(request, **kwargs)
+
         return (yield from self.make_response(request, response))
 
     @abcoroutine

@@ -181,18 +181,30 @@ class Application(web.Application):
         """ Register a start callback. """
         self._start_callbacks.append((func, args, kwargs))
 
-    def register(self, *paths, methods=None, name=None):
+    def register(self, *paths, methods=None, name=None, handler=None):
         """ Register function/coroutine/muffin.Handler on current application. """
         if isinstance(methods, str):
             methods = [methods]
 
         def wrapper(view):
-            handler = view
+            if handler is None:
 
-            if inspect.isfunction(handler) or inspect.ismethod(handler):
-                handler = Handler.from_view(handler, *methods or ['GET'], name=name)
+                handler_ = view
+                methods_ = methods or [web.hdrs.METH_ANY]
 
-            handler.connect(self, *paths, methods=methods, name=name)
+                if inspect.isfunction(handler_) or inspect.ismethod(handler_):
+                    handler_ = Handler.from_view(view, *methods_, name=name)
+
+                handler_.connect(self, *paths, methods=methods_, name=name)
+
+            else:
+
+                view_name = view.__name__
+                if hasattr(handler, view_name):
+                    raise RuntimeError('Handler already have method "%s"' % view_name)
+                setattr(handler, view_name, to_coroutine(view))
+                name_ = name or view_name
+                handler.connect(self, *paths, methods=methods, name=name_, view=view_name)
 
             return view
 
