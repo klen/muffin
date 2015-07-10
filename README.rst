@@ -76,10 +76,27 @@ The Muffin has a plugins support.
 
 .. _usage:
 
-Usage
-=====
+Getting Started
+===============
 
-See sources of example application. The application is deployed on Heroku:
+Hello World example `hello.py` ::
+
+    import muffin
+
+    app = muffin.Application('example')
+
+    @app.register('/')
+    def index(request):
+        return 'Hello, World!'
+
+Run with command: ::
+
+    $ muffin hello run
+
+And open http://fuf.me:5000 in your browser.
+
+
+See more in the example application sources. The application is deployed on Heroku:
 https://muffin-py.herokuapp.com
 
 Run example server locally: ::
