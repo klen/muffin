@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import inspect
 import os
 import re
@@ -195,7 +196,11 @@ class Manager(object):
                 kwargs.pop(name, None)
 
         try:
-            handler(**kwargs)
+            res = handler(**kwargs)
+            if asyncio.iscoroutine(res):
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(res)
+
             sys.exit(0)
         except Exception as e:
             sys.exit(e)
