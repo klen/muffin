@@ -1,5 +1,6 @@
 # Configure your tests here
 import asyncio
+import inspect
 import io
 import os
 
@@ -21,6 +22,34 @@ def pytest_addoption(parser):
     parser.addini('muffin_config', 'Set module path to muffin configuration')
     parser.addoption('--muffin-config', dest='muffin_config',
                      help='Set module path to muffin configuration')
+
+
+def pytest_configure(config):
+    config.addinivalue_line('markers', 'async: mark test to run asynchronuosly.')
+
+
+@pytest.mark.tryfirst
+def pytest_pycollect_makeitem(collector, name, obj):
+    if collector.funcnamefilter(name) and inspect.isgeneratorfunction(obj):
+        item = pytest.Function(name, parent=collector)
+        if ('async' in item.keywords):
+            return list(collector._genfunctions(name, obj))
+
+
+def pytest_runtest_setup(item):
+    if 'async' in item.keywords and 'loop' not in item.fixturenames:
+        item.fixturenames.append('loop')
+
+
+@pytest.mark.tryfirst
+def pytest_pyfunc_call(pyfuncitem):
+    if 'async' in pyfuncitem.keywords:
+        loop = pyfuncitem.funcargs['loop']
+        funcargs = pyfuncitem.funcargs
+        testargs = {arg: funcargs[arg]
+                    for arg in pyfuncitem._fixtureinfo.argnames}
+        loop.run_until_complete(asyncio.async(pyfuncitem.obj(**testargs)))
+        return True
 
 
 def pytest_load_initial_conftests(early_config, parser, args):
