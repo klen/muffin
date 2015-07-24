@@ -1,6 +1,4 @@
-Cython              >= 0.22
-
-aiohttp             == 0.16.5
+aiohttp             == 0.16.6
 cached_property     == 1.2.0
 chardet             >= 2.3.0
 gunicorn            == 19.3.0
