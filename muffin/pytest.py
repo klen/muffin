@@ -48,7 +48,8 @@ def pytest_pyfunc_call(pyfuncitem):
         funcargs = pyfuncitem.funcargs
         testargs = {arg: funcargs[arg]
                     for arg in pyfuncitem._fixtureinfo.argnames}
-        loop.run_until_complete(asyncio.async(pyfuncitem.obj(**testargs)))
+        coro = muffin.to_coroutine(pyfuncitem.obj)
+        loop.run_until_complete(asyncio.async(coro(**testargs), loop=loop))
         return True
 
 
@@ -85,7 +86,11 @@ def WSGIHandler(app, loop):
         handler.transport.get_extra_info = lambda s: ('127.0.0.1', 80)
         handler.writer = aiohttp.parsers.StreamWriter(
             handler.transport, handler, handler.reader, handler._loop)
-        loop.run_until_complete(handler.handle_request(message, payload))
+        coro = handler.handle_request(message, payload)
+        if loop.is_running():
+            raise RuntimeError('Client cannot running in coroutines')
+
+        loop.run_until_complete(coro)
         handler.transport.seek(0)
         res = webob.Response.from_file(handler.transport)
         start_response(res.status[9:], res.headerlist)
@@ -98,6 +103,7 @@ def WSGIHandler(app, loop):
 def loop(request):
     """ Create and provide asyncio loop. """
     loop = asyncio.get_event_loop()
+    asyncio.set_event_loop(loop)
     return loop
 
 

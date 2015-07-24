@@ -1,7 +1,7 @@
-import hmac
-import hashlib
-import random
 import asyncio
+import hashlib
+import hmac
+import random
 
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -73,7 +73,7 @@ def check_password_hash(password, pwhash):
 
 class Structure(dict):
 
-    """ `Attribute` dictionary. """
+    """ `Attribute` dictionary. Use attributes as keys. """
 
     def __getattr__(self, name):
         try:
@@ -83,3 +83,47 @@ class Structure(dict):
 
     def __setattr__(self, name, value):
         self[name] = value
+
+
+class local:
+
+    """ coroutine.local storage is simular to python's threading.local.
+
+    Usage: ::
+
+        local = muffin.local(loop)
+        local.value = 42
+
+    """
+
+    __slots__ = '_loop',
+    __locals__ = {}
+
+    def __new__(cls, loop=None):
+        key = id(loop)
+        if key not in cls.__locals__:
+            cls.__locals__[key] = object.__new__(cls)
+        return cls.__locals__[key]
+
+    def __init__(self, loop=None):
+        object.__setattr__(self, '_loop', loop or asyncio.get_event_loop())
+
+    def __getattr__(self, name):
+        try:
+            return self.__local__[name]
+        except KeyError:
+            raise AttributeError
+
+    def __setattr__(self, name, value):
+        self.__local__[name] = value
+
+    @property
+    def __local__(self):
+        """ Create namespace in current task. """
+        task = asyncio.Task.current_task(loop=self._loop)
+        if not task:
+            raise RuntimeError('No one running tasks were found.')
+
+        if not hasattr(task, '_local'):
+            task._local = {}
+        return task._local

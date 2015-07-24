@@ -13,7 +13,7 @@ from muffin import CONFIGURATION_ENVIRON_VARIABLE
 from muffin.handler import Handler
 from muffin.manage import Manager
 from muffin.urls import StaticRoute
-from muffin.utils import Structure, to_coroutine
+from muffin.utils import Structure, to_coroutine, local
 
 
 RETYPE = type(re.compile('@'))
@@ -103,6 +103,12 @@ class Application(web.Application):
     def __repr__(self):
         """ Human readable representation. """
         return "<Application: %s>" % self.name
+
+    @cached_property
+    def local(self):
+        if self.loop.is_running():
+            return local(self.loop)
+        raise AttributeError('Application is not started.')
 
     @cached_property
     def cfg(self):

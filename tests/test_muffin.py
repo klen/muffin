@@ -3,23 +3,11 @@ import pytest
 import muffin
 
 
-@pytest.mark.async
-def test_async():
-    from aiohttp import request
-    response = yield from request('GET', 'http://google.com')
-    text = yield from response.text()
-    assert 'html' in text
-
-
-def test_pytest(loop):
-    import asyncio
-
-    assert asyncio.get_event_loop() == loop
-
-
 def test_app(app):
     assert app.name == 'muffin'
     assert app.cfg
+    with pytest.raises(AttributeError):
+        app.local
 
 
 def test_str(app, client):
