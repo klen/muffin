@@ -90,6 +90,8 @@ tp:
 	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-jade t
 	@echo 'Test Muffin-Jinja2'
 	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-jinja2 t
+	@echo 'Test Muffin-Metrics'
+	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-metrics t
 	@echo 'Test Muffin-Mongo'
 	@VIRTUAL_ENV=$(CURDIR)/$(VIRTUAL_ENV) make -C $(CURDIR)/plugins/muffin-mongo t
 	@echo 'Test Muffin-OAuth'
