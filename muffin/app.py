@@ -13,7 +13,7 @@ from muffin import CONFIGURATION_ENVIRON_VARIABLE
 from muffin.handler import Handler
 from muffin.manage import Manager
 from muffin.urls import StaticRoute
-from muffin.utils import Structure, to_coroutine, local
+from muffin.utils import LStruct, to_coroutine
 
 
 RETYPE = type(re.compile('@'))
@@ -31,10 +31,10 @@ class Application(web.Application):
     """ Improve aiohttp Application. """
 
     # Default application settings
-    __defaults = {
+    defaults = {
 
-        # Configuration module
-        'CONFIG': 'config',
+        # Path to configuration module
+        'CONFIG': None,
 
         # Enable debug mode
         'DEBUG': False,
@@ -47,7 +47,7 @@ class Application(web.Application):
         'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',
         'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]',
 
-        # Install the plugins
+        # List of plugins
         'PLUGINS': [],
 
         # Setup static files in development
@@ -63,13 +63,14 @@ class Application(web.Application):
 
         self.name = name
 
+        # Convert self middlewares to list because plugins can change it.
         self._middlewares = list(self._middlewares)
-        self._error_handlers = {}
 
+        self._error_handlers = {}
         self._start_callbacks = []
 
         # Overide options
-        self.__defaults['CONFIG'] = OPTIONS.pop('CONFIG', self.__defaults['CONFIG'])
+        self.defaults['CONFIG'] = OPTIONS.pop('CONFIG', self.defaults['CONFIG'])
         self.cfg.update(OPTIONS)
 
         # Setup logging
@@ -89,54 +90,50 @@ class Application(web.Application):
             self.cfg.STATIC_FOLDERS = list(self.cfg.STATIC_FOLDERS)
 
         # Setup plugins
-        self.plugins = self.ps = Structure()
+        self.plugins = self.ps = LStruct()
         for plugin in self.cfg.PLUGINS:
             try:
                 self.install(plugin)
             except Exception as exc:
-                self.logger.error('Plugin is invalid: %s (%s)' % (plugin, exc))
-
-    def __call__(self, *args, **kwargs):
-        """ Return the application. """
-        return self
+                self.logger.error('Plugin is invalid: %s', plugin)
+                self.logger.exception(exc)
 
     def __repr__(self):
         """ Human readable representation. """
         return "<Application: %s>" % self.name
 
     @cached_property
-    def local(self):
-        if self.loop.is_running():
-            return local(self.loop)
-        raise AttributeError('Application is not started.')
-
-    @cached_property
     def cfg(self):
         """ Load the application configuration. """
-        config = Structure(self.__defaults)
+        config = LStruct(self.defaults)
         module = config['CONFIG'] = os.environ.get(
             CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
-        try:
-            module = importlib.import_module(module)
-            config.update({
-                name: getattr(module, name) for name in dir(module)
-                if name == name.upper() and not name.startswith('_')
-            })
-            config._mod = module
 
-        except ImportError:
-            config.CONFIG = None
-            self.register_on_start(
-                lambda app: app.logger.warn("The configuration hasn't found: %s" % module))
+        if module:
+            try:
+                module = importlib.import_module(module)
+                config.update({
+                    name: getattr(module, name) for name in dir(module)
+                    if name == name.upper() and not name.startswith('_')
+                })
+
+            except ImportError:
+                config.CONFIG = None
+                self.register_on_start(
+                    lambda app: app.logger.warn("The configuration hasn't found: %s" % module))
 
         return config
 
     def install(self, plugin, name=None):
-        """ Install plugin to the application. """
+        """Install plugin to the application."""
         if isinstance(plugin, str):
             module, _, attr = plugin.partition(':')
             module = importlib.import_module(module)
             plugin = getattr(module, attr or 'Plugin')
+
+        name = name or plugin.name
+        if name in self.ps:
+            raise MuffinException('Plugin with name `%s` is already intalled.' % name)
 
         if isinstance(plugin, type):
             plugin = plugin()
@@ -154,12 +151,15 @@ class Application(web.Application):
         if hasattr(plugin, 'finish'):
             self.register_on_finish(plugin.finish)
 
-        self.plugins[name or plugin.name] = plugin
+        # Save plugin links
+        self.ps[name] = plugin
+
+        # Lock plugin's cnfiguration
+        plugin.cfg.lock()
 
     @asyncio.coroutine
     def start(self):
-        """ Start the application. """
-
+        """Start the application """
         if self._error_handlers and exc_middleware_factory not in self._middlewares:
             self._middlewares.append(exc_middleware_factory)
 
@@ -182,6 +182,10 @@ class Application(web.Application):
                     'exception': exc,
                     'application': self,
                 })
+
+        # Lock the application's settings and plugin's registry after start
+        self.cfg.lock()
+        self.ps.lock()
 
     def register_on_start(self, func, *args, **kwargs):
         """ Register a start callback. """

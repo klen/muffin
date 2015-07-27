@@ -31,8 +31,36 @@ def test_local(loop):
     assert log == ['task1', 'task2']
 
 
-def test_local2():
+def test_slocal():
+    from muffin.utils import local, slocal
     loop = asyncio.get_event_loop()
-    local = muffin.local(loop=loop)
+    local = local(loop=loop)
     with pytest.raises(RuntimeError):
         local.test = 1
+
+    sl = slocal(loop=loop)
+    sl.test = 1
+    assert sl.test == 1
+
+    sl2 = slocal(loop=loop)
+    assert sl is sl2
+
+
+def test_struct():
+    from muffin.utils import Struct, LStruct
+
+    data = Struct({'test': 42})
+    assert data.test == 42
+
+    data.test = 21
+    assert data.test == 21
+
+    settings = LStruct({'option': 'value'})
+    assert settings.option == 'value'
+
+    settings.option2 = 'value2'
+    settings.lock()
+    settings.lock()
+
+    with pytest.raises(RuntimeError):
+        settings.test = 42

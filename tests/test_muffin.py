@@ -6,8 +6,15 @@ import muffin
 def test_app(app):
     assert app.name == 'muffin'
     assert app.cfg
+
     with pytest.raises(AttributeError):
         app.local
+
+    with pytest.raises(RuntimeError):
+        app.cfg.OPTION = 42
+
+    with pytest.raises(RuntimeError):
+        app.ps.PLUGIN = 42
 
 
 def test_str(app, client):

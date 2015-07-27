@@ -122,7 +122,6 @@ def app(pytestconfig, request):
 @pytest.fixture(scope='session', autouse=True)
 def _initialize(app, loop, request):
     app._loop = loop
-    loop.run_until_complete(app.start())
 
     if 'peewee' in app.plugins:
         import peewee
@@ -132,6 +131,8 @@ def _initialize(app, loop, request):
                 model.create_table()
             except peewee.OperationalError:
                 pass
+
+    loop.run_until_complete(app.start())
 
     @request.addfinalizer
     def finish():

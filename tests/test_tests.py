@@ -1,12 +1,11 @@
 import pytest
+import asyncio
 
 
 @pytest.mark.async
 def test_async():
-    from aiohttp import request
-    response = yield from request('GET', 'http://google.com')
-    text = yield from response.text()
-    assert 'html' in text
+    yield from asyncio.sleep(.1)
+    assert True
 
 
 def test_client(app, client):

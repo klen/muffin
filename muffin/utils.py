@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import hmac
 import random
+import threading
 
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -71,7 +72,7 @@ def check_password_hash(password, pwhash):
     return check_signature(signature, salt, password, digestmod=digestmod)
 
 
-class Structure(dict):
+class Struct(dict):
 
     """ `Attribute` dictionary. Use attributes as keys. """
 
@@ -83,6 +84,27 @@ class Structure(dict):
 
     def __setattr__(self, name, value):
         self[name] = value
+
+
+class LStruct(Struct):
+
+    """ Locked structure. Used as application/plugins settings.
+
+    Going to be immutable after application is started.
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        object.__setattr__(self, '_lock', False)
+        super(LStruct, self).__init__(*args, **kwargs)
+
+    def lock(self):
+        object.__setattr__(self, '_lock', True)
+
+    def __setitem__(self, name, value):
+        if self._lock:
+            raise RuntimeError('`%s` is locked.' % type(self))
+        super(LStruct, self).__setitem__(name, value)
 
 
 class local:
@@ -97,33 +119,63 @@ class local:
     """
 
     __slots__ = '_loop',
-    __locals__ = {}
+    __loops__ = {}
 
     def __new__(cls, loop=None):
+        """ The local is singleton per loop. """
         key = id(loop)
-        if key not in cls.__locals__:
-            cls.__locals__[key] = object.__new__(cls)
-        return cls.__locals__[key]
+        if key not in cls.__loops__:
+            cls.__loops__[key] = object.__new__(cls)
+        return cls.__loops__[key]
 
     def __init__(self, loop=None):
+        """ Bind loop to self. """
         object.__setattr__(self, '_loop', loop or asyncio.get_event_loop())
 
     def __getattr__(self, name):
+        """ Get attribute from current task's space. """
         try:
-            return self.__local__[name]
+            return self.__curtask__[name]
         except KeyError:
-            raise AttributeError
+            raise AttributeError("'%s' object has no attribute '%s'" % (type(self), name))
 
     def __setattr__(self, name, value):
-        self.__local__[name] = value
+        """ Set attribute to current task's space. """
+        self.__curtask__[name] = value
 
     @property
-    def __local__(self):
+    def __curtask__(self):
         """ Create namespace in current task. """
         task = asyncio.Task.current_task(loop=self._loop)
         if not task:
-            raise RuntimeError('No one running tasks were found.')
+            raise RuntimeError('No task is currently running')
 
-        if not hasattr(task, '_local'):
-            task._local = {}
-        return task._local
+        if not hasattr(task, '_locals'):
+            task._locals = {}
+        return task._locals
+
+
+tlocals = threading.local()
+
+
+class slocal(local):
+
+    """ Fail silently to threading.local if curent loop is not running. """
+
+    __loops__ = {}
+
+    def __getattr__(self, name):
+        """ Get attribute from current task's space. """
+        try:
+            if self._loop.is_running():
+                return self.__curtask__[name]
+            return getattr(tlocals, name)
+        except KeyError:
+            raise AttributeError("'%s' object has no attribute '%s'" % (type(self), name))
+
+    def __setattr__(self, name, value):
+        """ Set attribute to current task's space. """
+        if self._loop.is_running():
+            self.__curtask__[name] = value
+        else:
+            setattr(tlocals, name, value)
