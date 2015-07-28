@@ -219,25 +219,16 @@ class Application(web.Application):
             return view
 
         # Support for @app.register(func)
-        if len(paths) == 1 and callable(paths[0]) and not issubclass(paths[0], web.HTTPError):
+        if len(paths) == 1 and callable(paths[0]):
             view = paths[0]
+
+            if inspect.isclass(view) and issubclass(view, web.HTTPError):
+                return wrapper
 
             paths = []
             return wrapper(view)
 
         return wrapper
-
-    def register_error(self, exc_class, func=None):
-        """ Register an exception handler. """
-        def wrapper(func):
-            func = to_coroutine(func)
-            self._error_handlers[exc_class] = func
-            return func
-
-        if not func:
-            return wrapper
-
-        return wrapper(func)
 
 
 @asyncio.coroutine

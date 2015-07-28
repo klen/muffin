@@ -17,6 +17,16 @@ def test_app(app):
         app.ps.PLUGIN = 42
 
 
+def test_view(app, client):
+
+    @app.register
+    def view(request):
+        return 'VIEW'
+
+    response = client.get('/view')
+    assert response.text == 'VIEW'
+
+
 def test_str(app, client):
 
     @app.register('/str')
@@ -103,7 +113,7 @@ def test_error_pages(client, loop, app):
     def handle_404(request):
         return muffin.Response(text='Muffin 404', status=404)
 
-    app.register_error(muffin.HTTPNotFound, handle_404)
+    app.register(muffin.HTTPNotFound)(handle_404)
 
     loop.run_until_complete(app.start())
 
@@ -114,7 +124,7 @@ def test_error_pages(client, loop, app):
     def raise_400(request):
         raise muffin.HTTPBadRequest()
 
-    @app.register_error(muffin.HTTPBadRequest)
+    @app.register(muffin.HTTPBadRequest)
     def handle_400(request):
         return muffin.Response(text='Muffin 400', status=400)
 
