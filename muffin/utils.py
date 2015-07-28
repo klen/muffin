@@ -107,6 +107,10 @@ class LStruct(Struct):
         super(LStruct, self).__setitem__(name, value)
 
 
+class local_storage:
+    pass
+
+
 class local:
 
     """ coroutine.local storage is simular to python's threading.local.
@@ -132,16 +136,18 @@ class local:
         """ Bind loop to self. """
         object.__setattr__(self, '_loop', loop or asyncio.get_event_loop())
 
-    def __getattr__(self, name):
+    def __getattribute__(self, name):
         """ Get attribute from current task's space. """
-        try:
-            return self.__curtask__[name]
-        except KeyError:
-            raise AttributeError("'%s' object has no attribute '%s'" % (type(self), name))
+        if name in ('__setattr__', '__getattr__', '__delattr__', '_loop', '__curtask__'):
+            return object.__getattribute__(self, name)
+        return getattr(self.__curtask__, name)
 
     def __setattr__(self, name, value):
         """ Set attribute to current task's space. """
-        self.__curtask__[name] = value
+        self.__curtask__.__dict__[name] = value
+
+    def __delattr__(self, name):
+        delattr(self.__curtask__, name)
 
     @property
     def __curtask__(self):
@@ -151,7 +157,7 @@ class local:
             raise RuntimeError('No task is currently running')
 
         if not hasattr(task, '_locals'):
-            task._locals = {}
+            task._locals = local_storage()
         return task._locals
 
 
@@ -164,18 +170,18 @@ class slocal(local):
 
     __loops__ = {}
 
-    def __getattr__(self, name):
+    def __getattribute__(self, name):
         """ Get attribute from current task's space. """
-        try:
-            if self._loop.is_running():
-                return self.__curtask__[name]
-            return getattr(tlocals, name)
-        except KeyError:
-            raise AttributeError("'%s' object has no attribute '%s'" % (type(self), name))
+        if name in ('__setattr__', '__getattr__', '__delattr__', '_loop', '__curtask__'):
+            return object.__getattribute__(self, name)
+
+        if self._loop.is_running():
+            return getattr(self.__curtask__, name)
+        return getattr(tlocals, name)
 
     def __setattr__(self, name, value):
         """ Set attribute to current task's space. """
         if self._loop.is_running():
-            self.__curtask__[name] = value
+            super(slocal, self).__setattr__(name, value)
         else:
             setattr(tlocals, name, value)

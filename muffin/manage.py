@@ -67,6 +67,7 @@ class Manager(object):
             """ Run the application.
 
             :param bind: The socket to bind
+            :param daemon: Daemonize the program
             :param log_file: The Error log file to write to
             :param name: A base to use with setproctitle for process naming
             :param pid: A filename to use for the PID file
