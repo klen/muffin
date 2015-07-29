@@ -172,7 +172,7 @@ class Manager(object):
                 continue
 
             parser.add_argument("--" + argname, type=anns.get(name, type(value)),
-                                default=value, help=arghelp + ' [%s]' % value)
+                                default=value, help=arghelp + ' [%s]' % repr(value))
 
         self.handlers[func.__name__] = func
         func.parser = parser

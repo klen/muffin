@@ -83,4 +83,9 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
                 router.register_route(RawReRoute(method.upper(), view, cname, path))
                 continue
 
+            # Support custom methods
+            method = method.upper()
+            if method not in router.METHODS:
+                router.METHODS.add(method)
+
             router.add_route(method, path, view, name=cname)

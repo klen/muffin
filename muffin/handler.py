@@ -9,14 +9,14 @@ from muffin.urls import routes_register
 from muffin.utils import to_coroutine, abcoroutine
 
 
-HTTP_METHODS = 'head', 'options', 'get', 'post', 'put', 'patch', 'delete'
+HTTP_METHODS = 'HEAD', 'OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'
 
 
 class HandlerMeta(type):
 
     """ Prepare handlers. """
 
-    coroutines = set(HTTP_METHODS)
+    coroutines = set(m.lower() for m in HTTP_METHODS)
 
     def __new__(mcs, name, bases, params):
         """ Check for handler is correct. """
@@ -35,7 +35,7 @@ class HandlerMeta(type):
             cls.methods = [cls.methods]
 
         if not cls.methods:
-            cls.methods = set(method for method in HTTP_METHODS if method in cls.__dict__)
+            cls.methods = set(method for method in HTTP_METHODS if method.lower() in cls.__dict__)
 
         cls.methods = [method.upper() for method in cls.methods]
 
@@ -79,13 +79,15 @@ class Handler(object, metaclass=HandlerMeta):
         """ Create handler class from function or coroutine. """
         view = to_coroutine(view)
 
-        def method(self, *args, **kwargs):
-            return view(*args, **kwargs)
-
         if web.hdrs.METH_ANY in methods:
             methods = HTTP_METHODS
 
-        return type(name or view.__name__, (cls,), {m.lower(): method for m in methods})
+        def method(self, *args, **kwargs):
+            return view(*args, **kwargs)
+
+        params = {m.lower(): method for m in methods}
+        params['methods'] = methods
+        return type(name or view.__name__, (cls,), params)
 
     @classmethod
     def connect(cls, app, *paths, methods=None, name=None, router=None, view=None):

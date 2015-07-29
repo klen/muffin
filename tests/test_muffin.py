@@ -48,6 +48,16 @@ def test_bytes(app, client):
     assert response.text == 'BYTES'
 
 
+def test_custom_methods(app, client):
+
+    @app.register('/caldav', methods='PROPFIND')
+    def propfind(request):
+        return b'PROPFIND'
+
+    response = client.request('/caldav', method='PROPFIND')
+    assert response.text == 'PROPFIND'
+
+
 def test_static(app, client):
     assert app.cfg.STATIC_FOLDERS == [
         'tests/static1',
