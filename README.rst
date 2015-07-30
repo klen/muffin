@@ -8,17 +8,15 @@ The Muffin
 
 .. _description:
 
-The Muffin -- A web framework based on Asyncio stack. **(early alpha)**
+The Muffin -- A web framework based on Asyncio_ stack ``(early beta)``
+
+Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
 
 .. _badges:
 
 .. image:: http://img.shields.io/travis/klen/muffin.svg?style=flat-square
     :target: http://travis-ci.org/klen/muffin
     :alt: Build Status
-
-.. image:: http://img.shields.io/coveralls/klen/muffin.svg?style=flat-square
-    :target: https://coveralls.io/r/klen/muffin
-    :alt: Coverals
 
 .. image:: http://img.shields.io/pypi/v/muffin.svg?style=flat-square
     :target: https://pypi.python.org/pypi/muffin
@@ -30,9 +28,49 @@ The Muffin -- A web framework based on Asyncio stack. **(early alpha)**
     :target: https://www.gratipay.com/klen/
     :alt: Donate
 
+
+Example "Hello User" with the Muffin: ::
+
+    import muffin
+
+
+    app = muffin.Application('example')
+
+
+    @app.register('/', '/hello/{name}')
+    def hello(request):
+        name = request.match_info.get('name', 'anonymous')
+        return 'Hello %s!' % name
+
+Save the script as `example.py` and run it: ::
+
+    $ muffin example run
+
+Open http://fuf.me:5000, http://fuf.me:5000/hello/username in your browser. Enjoy!
+
 .. _contents:
 
 .. contents::
+
+.. _plugins:
+
+Plugins
+=======
+
+The list of Muffin plugins:
+
+* `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
+* `Muffin-Babel   <https://github.com/klen/muffin-babel>`_   -- Localization support
+* `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
+* `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
+* `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
+* `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
+* `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
+* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
+* `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
+* `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
+* `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
+* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
 
 .. _requirements:
 
@@ -54,25 +92,6 @@ Installation
 **The Muffin** should be installed using pip: ::
 
     pip install muffin
-
-.. _plugins:
-
-Plugins
-=======
-
-The Muffin has a plugins support.
-
-* `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
-* `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
-* `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
-* `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
-* `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
-* `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
-* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
-* `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
-* `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
-* `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
-* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
 
 .. _usage:
 
@@ -276,3 +295,5 @@ Licensed under a MIT license (See LICENSE)
 .. _links:
 
 .. _klen: https://github.com/klen
+.. _Asynctio: https://docs.python.org/3/library/asyncio.html
+.. _Python: http://python.org
