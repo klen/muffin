@@ -6,12 +6,6 @@
 The Muffin
 ##########
 
-.. _description:
-
-The Muffin -- A web framework based on Asyncio_ stack ``(early beta)``
-
-Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
-
 .. _badges:
 
 .. image:: http://img.shields.io/travis/klen/muffin.svg?style=flat-square
@@ -28,6 +22,11 @@ Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
     :target: https://www.gratipay.com/klen/
     :alt: Donate
 
+.. _description:
+
+The Muffin -- A web framework based on Asyncio_ stack ``(early beta)``
+
+Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
 
 Example "Hello User" with the Muffin: ::
 
@@ -95,25 +94,8 @@ Installation
 
 .. _usage:
 
-Getting Started
-===============
-
-Hello World example `hello.py` ::
-
-    import muffin
-
-    app = muffin.Application('example')
-
-    @app.register('/')
-    def index(request):
-        return 'Hello, World!'
-
-Run with command: ::
-
-    $ muffin hello run
-
-And open http://fuf.me:5000 in your browser.
-
+Usage
+=====
 
 See more in the example application sources. The application is deployed on Heroku:
 https://muffin-py.herokuapp.com
@@ -295,5 +277,5 @@ Licensed under a MIT license (See LICENSE)
 .. _links:
 
 .. _klen: https://github.com/klen
-.. _Asynctio: https://docs.python.org/3/library/asyncio.html
+.. _Asyncio: https://docs.python.org/3/library/asyncio.html
 .. _Python: http://python.org
