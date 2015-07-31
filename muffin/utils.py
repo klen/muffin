@@ -127,7 +127,7 @@ class local:
 
     def __new__(cls, loop=None):
         """ The local is singleton per loop. """
-        key = id(loop)
+        key = "%s%s" % (cls, id(loop))
         if key not in cls.__loops__:
             cls.__loops__[key] = object.__new__(cls)
         return cls.__loops__[key]

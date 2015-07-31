@@ -50,9 +50,9 @@ class BasePlugin(metaclass=PluginMeta):
         self.app = app
         for name, ptype in self.dependencies.items():
             if name not in app.ps or not isinstance(app.ps[name], ptype):
-                raise PluginException('Plugin `%s` requires for plugin `%s` to be installed.' % (
-                    self.name, ptype
-                ))
+                raise PluginException(
+                    'Plugin `%s` requires for plugin `%s` to be installed to the application.' % (
+                        self.name, ptype))
 
         for oname, dvalue in self.defaults.items():
             aname = ('%s_%s' % (self.name, oname)).upper()
