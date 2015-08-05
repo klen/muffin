@@ -154,9 +154,6 @@ class Application(web.Application):
         # Save plugin links
         self.ps[name] = plugin
 
-        # Lock plugin's cnfiguration
-        plugin.cfg.lock()
-
     @asyncio.coroutine
     def start(self):
         """Start the application """
@@ -186,6 +183,10 @@ class Application(web.Application):
         # Lock the application's settings and plugin's registry after start
         self.cfg.lock()
         self.ps.lock()
+
+        # Lock plugin's configurations
+        for plugin in self.ps.values():
+            plugin.cfg.lock()
 
     def register_on_start(self, func, *args, **kwargs):
         """ Register a start callback. """
