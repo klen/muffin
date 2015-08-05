@@ -30,9 +30,15 @@ class RawReRoute(web.DynamicRoute):
         """ Skip a formatter. """
         super().__init__(method, handler, name, pattern, None)
 
+    def match(self, path):
+        match = self._pattern.match(path)
+        if match is None:
+            return None
+        return match.groupdict('')
+
     def url(self, *, parts, query=None):
-        """ Skip URL calculation. """
-        raise NotImplemented
+        """ Not supported. """
+        raise RuntimeError(".url() is not allowed for RawReRoute")
 
     def __repr__(self):
         """ Fix representation. """

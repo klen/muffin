@@ -16,31 +16,37 @@ class HandlerMeta(type):
 
     """ Prepare handlers. """
 
-    coroutines = set(m.lower() for m in HTTP_METHODS)
+    _coroutines = set(m.lower() for m in HTTP_METHODS)
 
     def __new__(mcs, name, bases, params):
-        """ Check for handler is correct. """
-        # Define new coroutines
-        for fname, method in params.items():
-            if callable(method) and hasattr(method, '_abcoroutine'):
-                mcs.coroutines.add(fname)
+        """ Prepare a Handler Class.
 
+        Ensure that the Handler class has a name.
+        Ensure that required methods are coroutines.
+        Fix the Handler params.
+
+        """
         # Set name
         params['name'] = params.get('name', name.lower())
 
+        # Define new coroutines
+        for fname, method in params.items():
+            if callable(method) and hasattr(method, '_abcoroutine'):
+                mcs._coroutines.add(fname)
+
         cls = super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
 
-        # Set a class methods
-        if isinstance(cls.methods, str):
-            cls.methods = [cls.methods]
-
+        # Ensure that the class methods are exist and iterable
         if not cls.methods:
             cls.methods = set(method for method in HTTP_METHODS if method.lower() in cls.__dict__)
+
+        elif isinstance(cls.methods, str):
+            cls.methods = [cls.methods]
 
         cls.methods = [method.upper() for method in cls.methods]
 
         # Ensure that coroutine methods is coroutines
-        for name in mcs.coroutines:
+        for name in mcs._coroutines:
             method = getattr(cls, name, None)
             if not method:
                 continue
@@ -76,16 +82,16 @@ class Handler(object, metaclass=HandlerMeta):
 
     @classmethod
     def from_view(cls, view, *methods, name=None):
-        """ Create handler class from function or coroutine. """
+        """ Create a handler class from function or coroutine. """
         view = to_coroutine(view)
 
         if web.hdrs.METH_ANY in methods:
             methods = HTTP_METHODS
 
-        def method(self, *args, **kwargs):
+        def proxy(self, *args, **kwargs):
             return view(*args, **kwargs)
 
-        params = {m.lower(): method for m in methods}
+        params = {m.lower(): proxy for m in methods}
         params['methods'] = methods
         return type(name or view.__name__, (cls,), params)
 
@@ -97,13 +103,14 @@ class Handler(object, metaclass=HandlerMeta):
             dummy.install(app, cls)
 
         @asyncio.coroutine
-        def handle(request):
-            return (yield from cls().dispatch(request, view=view))
+        def handler(request):
+            return cls().dispatch(request, view=view)
 
         if not paths:
             paths = ["/%s" % cls.__name__]
 
-        routes_register(app, handle, *paths, methods=methods, router=router, name=name or cls.name)
+        routes_register(
+            app, handler, *paths, methods=methods, router=router, name=name or cls.name)
 
     @classmethod
     def register(cls, *args, **kwargs):
@@ -123,7 +130,8 @@ class Handler(object, metaclass=HandlerMeta):
 
     @abcoroutine
     def make_response(self, request, response):
-        """ Ensure that response is web.Response or convert it. """
+        """ Convert a handler result to web response. """
+
         while asyncio.iscoroutine(response):
             response = yield from response
 
@@ -145,17 +153,15 @@ class Handler(object, metaclass=HandlerMeta):
             response.charset = self.app.cfg.ENCODING
             return response
 
-        elif response is None:
+        if response is None:
             response = ''
 
         return web.Response(text=str(response), content_type='text/html')
 
     def parse(self, request):
-        """ Return a coroutine which parse data from request depended on content-type.
+        """ Return a coroutine which parses data from request depends on content-type.
 
         Usage: ::
-
-            # ...
 
             def post(self, request):
                 data = yield from self.parse(request)

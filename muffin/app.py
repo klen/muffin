@@ -63,9 +63,6 @@ class Application(web.Application):
 
         self.name = name
 
-        # Convert self middlewares to list because plugins can change it.
-        self._middlewares = list(self._middlewares)
-
         self._error_handlers = {}
         self._start_callbacks = []
 
@@ -125,7 +122,7 @@ class Application(web.Application):
         return config
 
     def install(self, plugin, name=None):
-        """Install plugin to the application."""
+        """Install a plugin to the application."""
         if isinstance(plugin, str):
             module, _, attr = plugin.partition(':')
             module = importlib.import_module(module)
@@ -156,7 +153,11 @@ class Application(web.Application):
 
     @asyncio.coroutine
     def start(self):
-        """Start the application """
+        """Start the application.
+
+        Support for start-callbacks and lock the application's configuration and plugins.
+
+        """
         if self._error_handlers and exc_middleware_factory not in self._middlewares:
             self._middlewares.append(exc_middleware_factory)
 
@@ -194,6 +195,7 @@ class Application(web.Application):
 
     def register(self, *paths, methods=None, name=None, handler=None):
         """ Register function/coroutine/muffin.Handler on current application. """
+
         if isinstance(methods, str):
             methods = [methods]
 
@@ -234,7 +236,7 @@ class Application(web.Application):
 
 @asyncio.coroutine
 def exc_middleware_factory(app, handler):
-    """ Handle application exceptions. """
+    """ Handle exceptions. """
     @asyncio.coroutine
     def middleware(request):
         try:

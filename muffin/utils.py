@@ -16,9 +16,9 @@ class MuffinException(Exception):
 
 
 def abcoroutine(func):
-    """ Mark function/method as coroutine.
+    """ Mark a function/method as coroutine.
 
-    Used with Meta classes.
+    Used for meta proposals.
 
     """
     func._abcoroutine = True

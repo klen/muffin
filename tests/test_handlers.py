@@ -1,4 +1,5 @@
 import muffin
+import asyncio
 
 
 def test_handler_func(app, client):
@@ -49,6 +50,7 @@ def test_handler_func(app, client):
 def test_handler(app, client):
 
     @app.register(muffin.sre('/res(/{res})?/?'))
+    @app.register('/res/{res}')
     class Resource(muffin.Handler):
 
         def get(self, request):
@@ -59,13 +61,14 @@ def test_handler(app, client):
             return dict(data)
 
     assert set(Resource.methods) == set(['GET', 'POST'])
+    assert asyncio.iscoroutinefunction(Resource.get)
 
     assert 'resource-*' in app.router._routes
 
     response = client.delete('/res', status=405)
 
     response = client.get('/res')
-    assert response.json == {'res': None}
+    assert response.json == {'res': ''}
 
     response = client.get('/res/1')
     assert response.json == {'res': '1'}
