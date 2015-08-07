@@ -1,7 +1,7 @@
 .. image:: https://raw.github.com/klen/muffin/develop/logo.png
    :height: 100px
    :width: 100px
-    
+
 
 The Muffin
 ##########
@@ -151,6 +151,44 @@ Base Muffin options and default values: ::
         'STATIC_FOLDERS': ['static']
 
 
+Configuring logging
+^^^^^^^^^^^^^^^^^^^
+You can define your logging configurations with `Python dictConfig format  <https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema>`_ and place in `LOGGING` conf:  ::
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'default': {
+                'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
+            },
+        },
+        'handlers': {
+            'logfile': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.RotatingFileHandler',
+                'filename': 'my_log.log',
+                'maxBytes': 50 * 1024 * 1024,
+                'backupCount': 10
+            },
+        },
+        'loggers': {
+            '': {
+                'handlers': ['logfile'],
+                'level': 'ERROR'
+            },
+            'project': {
+                'level': 'INFO',
+                'propagate': True,
+            },
+        }
+    }
+
+To use just get logger with `logging.getLogger()`: ::
+
+    import logging
+    logger = logging.getLogger('project')
+
 CLI integration
 ---------------
 
@@ -166,7 +204,7 @@ Write a custom command
     @app.manage.command
     def hello(name, upper=False):
         """ Write command help text here.
-        
+
         :param name:  Write your name
         :param upper: Use uppercase
 
@@ -177,7 +215,7 @@ Write a custom command
         print(greetings)
 
 ::
-    
+
     $ muffin example hello --help
 
         Write command help text here.
@@ -232,7 +270,7 @@ See examples: ::
         """ Make HTTP request to your application. """
         response = client.get('/my-handler')
         assert 'mydata' in response.text
-        
+
 
 .. _deployment:
 
