@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import pytest
 
 import muffin
@@ -15,6 +17,16 @@ def test_app(app):
 
     with pytest.raises(RuntimeError):
         app.ps.PLUGIN = 42
+
+
+def test_app_logging_cfg():
+    dummy = {'dummy': 'dict'}
+    with patch('logging.config.dictConfig') as m:
+        muffin.Application(
+            'muffin',
+            LOGGING=dummy
+        )
+    m.assert_called_once_with(dummy)
 
 
 def test_view(app, client):
