@@ -3,6 +3,7 @@ import asyncio
 import importlib
 import inspect
 import logging
+import logging.config
 import os
 import re
 
@@ -94,6 +95,11 @@ class Application(web.Application):
             except Exception as exc:
                 self.logger.error('Plugin is invalid: %s', plugin)
                 self.logger.exception(exc)
+
+        # Setup Logging
+        LOGGING_CFG = self.cfg.get('LOGGING')
+        if LOGGING_CFG and isinstance(LOGGING_CFG, dict):
+            logging.config.dictConfig(LOGGING_CFG)
 
     def __repr__(self):
         """ Human readable representation. """
