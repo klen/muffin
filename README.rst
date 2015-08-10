@@ -315,6 +315,8 @@ Contributors
 
 * klen_ (Kirill Klenov)
 
+* `Diego Garcia <https://github.com/drgarcia1986>`_
+
 .. _license:
 
 License
