@@ -28,7 +28,9 @@ The Muffin -- A web framework based on Asyncio_ stack ``(early beta)``
 
 Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
 
-Example "Hello User" with the Muffin: ::
+Example "Hello User" with the Muffin:
+
+.. code-block:: python
 
     import muffin
 
@@ -114,15 +116,19 @@ tries to load a configuration from `config` module (config.py).
 
 There are few ways to redifine configuration module:
 
-* Set configuration module in your app initialization: ::
+* Set configuration module in your app initialization: 
+  
+  .. code-block:: python
 
-    app = muffin.Application('myapp', CONFIG='config.debug')
+     app = muffin.Application('myapp', CONFIG='config.debug')
 
 * Set environment variable `MUFFIN_CONFIG`: ::
 
     $ MUFFIN_CONFIG=settings_local muffin example run
 
-Also you can define any options while initializing your application: ::
+Also you can define any options while initializing your application:
+
+.. code-block:: python
 
     app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
 
@@ -130,7 +136,9 @@ Also you can define any options while initializing your application: ::
 Base application options
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Base Muffin options and default values: ::
+Base Muffin options and default values:
+
+.. code-block:: python
 
         # Configuration module
         'CONFIG': 'config'
@@ -161,7 +169,7 @@ Run in your shell: ::
 Write a custom command
 ^^^^^^^^^^^^^^^^^^^^^^
 
-::
+.. code-block:: python
 
     @app.manage.command
     def hello(name, upper=False):
@@ -212,7 +220,9 @@ Example: ::
 Testing application
 -------------------
 
-See examples: ::
+See examples:
+
+.. code-block:: python
 
     import pytest
 
