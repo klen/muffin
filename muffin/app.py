@@ -1,13 +1,13 @@
 """ Implement Muffin Application. """
-import asyncio
-import importlib
-import inspect
-import logging
 import logging.config
 import os
 import re
+from asyncio import coroutine, iscoroutine, Future
+from importlib import import_module
+from inspect import isfunction, isclass, ismethod
 
 from aiohttp import web
+from aiohttp.hdrs import METH_ANY
 from cached_property import cached_property
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
@@ -114,7 +114,7 @@ class Application(web.Application):
 
         if module:
             try:
-                module = importlib.import_module(module)
+                module = import_module(module)
                 config.update({
                     name: getattr(module, name) for name in dir(module)
                     if name == name.upper() and not name.startswith('_')
@@ -131,7 +131,7 @@ class Application(web.Application):
         """Install a plugin to the application."""
         if isinstance(plugin, str):
             module, _, attr = plugin.partition(':')
-            module = importlib.import_module(module)
+            module = import_module(module)
             plugin = getattr(module, attr or 'Plugin')
 
         name = name or plugin.name
@@ -157,7 +157,7 @@ class Application(web.Application):
         # Save plugin links
         self.ps[name] = plugin
 
-    @asyncio.coroutine
+    @coroutine
     def start(self):
         """Start the application.
 
@@ -178,7 +178,7 @@ class Application(web.Application):
         for (cb, args, kwargs) in self._start_callbacks:
             try:
                 res = cb(self, *args, **kwargs)
-                if (asyncio.iscoroutine(res) or isinstance(res, asyncio.Future)):
+                if (iscoroutine(res) or isinstance(res, Future)):
                     yield from res
             except Exception as exc:
                 self.loop.call_exception_handler({
@@ -209,9 +209,9 @@ class Application(web.Application):
             if handler is None:
 
                 handler_ = view
-                methods_ = methods or [web.hdrs.METH_ANY]
+                methods_ = methods or [METH_ANY]
 
-                if inspect.isfunction(handler_) or inspect.ismethod(handler_):
+                if isfunction(handler_) or ismethod(handler_):
                     handler_ = Handler.from_view(view, *methods_, name=name)
 
                 handler_.connect(self, *paths, methods=methods_, name=name)
@@ -231,7 +231,7 @@ class Application(web.Application):
         if len(paths) == 1 and callable(paths[0]):
             view = paths[0]
 
-            if inspect.isclass(view) and issubclass(view, web.HTTPError):
+            if isclass(view) and issubclass(view, web.HTTPError):
                 return wrapper
 
             paths = []
@@ -240,10 +240,10 @@ class Application(web.Application):
         return wrapper
 
 
-@asyncio.coroutine
+@coroutine
 def exc_middleware_factory(app, handler):
     """ Handle exceptions. """
-    @asyncio.coroutine
+    @coroutine
     def middleware(request):
         try:
             return (yield from handler(request))

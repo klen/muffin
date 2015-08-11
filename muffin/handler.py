@@ -1,9 +1,11 @@
 """ Base handler class. """
-import asyncio
+from asyncio import coroutine, iscoroutine
+from collections import defaultdict
 
 import ujson as json
-from aiohttp import web, multidict
-from collections import defaultdict
+from aiohttp.hdrs import METH_ANY
+from aiohttp.multidict import MultiDict, MultiDictProxy
+from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
 
 from muffin.urls import routes_register
 from muffin.utils import to_coroutine, abcoroutine
@@ -85,7 +87,7 @@ class Handler(object, metaclass=HandlerMeta):
         """ Create a handler class from function or coroutine. """
         view = to_coroutine(view)
 
-        if web.hdrs.METH_ANY in methods:
+        if METH_ANY in methods:
             methods = HTTP_METHODS
 
         def proxy(self, *args, **kwargs):
@@ -102,7 +104,7 @@ class Handler(object, metaclass=HandlerMeta):
             cls.app, dummy = app, cls.app
             dummy.install(app, cls)
 
-        @asyncio.coroutine
+        @coroutine
         def handler(request):
             return cls().dispatch(request, view=view)
 
@@ -121,7 +123,7 @@ class Handler(object, metaclass=HandlerMeta):
     def dispatch(self, request, view=None, **kwargs):
         """ Dispatch request. """
         if request.method not in self.methods:
-            raise web.HTTPMethodNotAllowed(request.method, self.methods)
+            raise HTTPMethodNotAllowed(request.method, self.methods)
 
         method = getattr(self, view or request.method.lower())
         response = yield from method(request, **kwargs)
@@ -132,31 +134,31 @@ class Handler(object, metaclass=HandlerMeta):
     def make_response(self, request, response):
         """ Convert a handler result to web response. """
 
-        while asyncio.iscoroutine(response):
+        while iscoroutine(response):
             response = yield from response
 
-        if isinstance(response, web.StreamResponse):
+        if isinstance(response, StreamResponse):
             return response
 
         if isinstance(response, str):
-            return web.Response(text=response, content_type='text/html')
+            return Response(text=response, content_type='text/html')
 
         if isinstance(response, (list, dict)):
-            return web.Response(text=json.dumps(response), content_type='application/json')
+            return Response(text=json.dumps(response), content_type='application/json')
 
-        if isinstance(response, (multidict.MultiDict, multidict.MultiDictProxy)):
+        if isinstance(response, (MultiDict, MultiDictProxy)):
             response = dict(response)
-            return web.Response(text=json.dumps(response), content_type='application/json')
+            return Response(text=json.dumps(response), content_type='application/json')
 
         if isinstance(response, bytes):
-            response = web.Response(body=response, content_type='text/html')
+            response = Response(body=response, content_type='text/html')
             response.charset = self.app.cfg.ENCODING
             return response
 
         if response is None:
             response = ''
 
-        return web.Response(text=str(response), content_type='text/html')
+        return Response(text=str(response), content_type='text/html')
 
     def parse(self, request):
         """ Return a coroutine which parses data from request depends on content-type.

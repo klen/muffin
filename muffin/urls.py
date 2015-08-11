@@ -1,7 +1,9 @@
-import os.path
+#  import os.path
 import re
+from os import path as ospath
 
 from aiohttp import web
+from aiohttp.hdrs import METH_ANY
 
 
 DYNS_RE = re.compile(r'(\{[^{}]*\})')
@@ -57,8 +59,8 @@ class StaticRoute(web.StaticRoute):
             return None
 
         filename = path[self._prefix_len:]
-        filepath = os.path.join(self._directory, filename)
-        if not os.path.exists(filepath) or not os.path.isfile(filepath):
+        filepath = ospath.join(self._directory, filename)
+        if not ospath.exists(filepath) or not ospath.isfile(filepath):
             return None
 
         return {'filename': path[self._prefix_len:]}
@@ -70,7 +72,9 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
     if router is None:
         router = app.router
 
-    for method in methods or [web.hdrs.METH_ANY]:
+    methods = methods or [METH_ANY]
+
+    for method in methods:
         for path in paths:
 
             # Register any exception to app

@@ -313,7 +313,7 @@ Development of The Muffin happens at: https://github.com/klen/muffin
 Contributors
 =============
 
-* klen_ (Kirill Klenov)
+* `Kirill Klenov <https://github.com/klen`_
 
 * `Diego Garcia <https://github.com/drgarcia1986>`_
 

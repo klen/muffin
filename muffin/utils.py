@@ -1,8 +1,8 @@
-import asyncio
 import hashlib
 import hmac
 import random
 import threading
+from asyncio import coroutine, iscoroutinefunction, Task, get_event_loop
 
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -31,8 +31,8 @@ def to_coroutine(func):
     If not convert to coroutine.
 
     """
-    if not asyncio.iscoroutinefunction(func):
-        func = asyncio.coroutine(func)
+    if not iscoroutinefunction(func):
+        func = coroutine(func)
     return func
 
 
@@ -134,7 +134,7 @@ class local:
 
     def __init__(self, loop=None):
         """ Bind loop to self. """
-        object.__setattr__(self, '_loop', loop or asyncio.get_event_loop())
+        object.__setattr__(self, '_loop', loop or get_event_loop())
 
     def __getattribute__(self, name):
         """ Get attribute from current task's space. """
@@ -152,7 +152,7 @@ class local:
     @property
     def __curtask__(self):
         """ Create namespace in current task. """
-        task = asyncio.Task.current_task(loop=self._loop)
+        task = Task.current_task(loop=self._loop)
         if not task:
             raise RuntimeError('No task is currently running')
 
