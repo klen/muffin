@@ -1,4 +1,4 @@
-aiohttp             == 0.17.1
+aiohttp             == 0.17.2
 cached_property     == 1.2.0
 chardet             >= 2.3.0
 gunicorn            == 19.3.0
