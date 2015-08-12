@@ -65,6 +65,7 @@ The list of Muffin plugins:
 * `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
 * `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
 * `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
+* `Muffin-Metrics <https://github.com/klen/muffin-metrics>`_ -- Send metrics to Graphite/Statsd
 * `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
 * `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
 * `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
