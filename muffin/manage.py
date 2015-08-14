@@ -6,7 +6,7 @@ import re
 import sys
 from shutil import copy
 
-from muffin import CONFIGURATION_ENVIRON_VARIABLE
+from muffin import CONFIGURATION_ENVIRON_VARIABLE, __version__
 from muffin.utils import MuffinException
 
 
@@ -216,8 +216,10 @@ def run():
     sys.path.insert(0, os.getcwd())
 
     parser = argparse.ArgumentParser(description="Manage Application")
-    parser.add_argument('app', metavar='app', type=str, help='Path to application.')
+    parser.add_argument('app', metavar='app',
+                        type=str, help='Application module path')
     parser.add_argument('--config', type=str, help='Path to configuration.')
+    parser.add_argument('--version', action="version", version=__version__)
 
     args_ = [_ for _ in sys.argv[1:] if _ not in ["--help", "-h"]]
     args_, unknown = parser.parse_known_args(args_)
