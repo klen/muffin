@@ -167,6 +167,7 @@ class Application(web.Application):
         if self._error_handlers and exc_middleware_factory not in self._middlewares:
             self._middlewares.append(exc_middleware_factory)
 
+        # Register static paths
         for path in self.cfg.STATIC_FOLDERS:
             if os.path.isdir(path):
                 route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path)
@@ -175,6 +176,7 @@ class Application(web.Application):
             else:
                 self.logger.warn('Disable static folder (hasnt found): %s' % path)
 
+        # Run start callbacks
         for (cb, args, kwargs) in self._start_callbacks:
             try:
                 res = cb(self, *args, **kwargs)

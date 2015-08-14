@@ -95,16 +95,18 @@ class Manager(object):
             gapp.run()
 
         @self.command
-        def collect(destination:str, replace=False, symlink=True):
+        def collect(
+                destination:str, source:list=app.cfg.STATIC_FOLDERS, replace=False, symlink=True):
             """ Collect static files from the application and plugins.
 
             :param destination: Path where static files will be collected.
             :param replace: Replace existed files
+            :param source: Sources from static files will be copied
             :param symlink: Create symlinks except file copy
 
             """
             sources = dict()
-            for path in app.cfg.STATIC_FOLDERS:
+            for path in source:
                 path = os.path.abspath(path)
                 for root, _, files in os.walk(path):
                     for f in files:
@@ -160,10 +162,12 @@ class Manager(object):
             value = kwargs_[name]
 
             if isinstance(value, bool):
-                parser.add_argument("--" + argname, dest=name, action="store_true",
-                                    help="Enable %s" % (arghelp or name).lower())
-                parser.add_argument("--no-" + argname, dest=name, action="store_false",
-                                    help="Disable %s" % (arghelp or name).lower())
+                if value:
+                    parser.add_argument("--no-" + argname, dest=name, action="store_false",
+                                        help="Disable %s" % (arghelp or name).lower())
+                else:
+                    parser.add_argument("--" + argname, dest=name, action="store_true",
+                                        help="Enable %s" % (arghelp or name).lower())
                 continue
 
             if isinstance(value, list):
