@@ -117,8 +117,8 @@ tries to load a configuration from `config` module (config.py).
 
 There are few ways to redifine configuration module:
 
-* Set configuration module in your app initialization: 
-  
+* Set configuration module in your app initialization:
+
   .. code-block:: python
 
      app = muffin.Application('myapp', CONFIG='config.debug')
@@ -162,7 +162,9 @@ Base Muffin options and default values:
 
 Configuring logging
 ^^^^^^^^^^^^^^^^^^^
-You can define your logging configurations with `Python dictConfig format  <https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema>`_ and place in `LOGGING` conf:  ::
+You can define your logging configurations with `Python dictConfig format  <https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema>`_ and place in ``LOGGING`` conf:
+
+.. code-block:: python
 
     LOGGING = {
         'version': 1,
@@ -193,7 +195,9 @@ You can define your logging configurations with `Python dictConfig format  <http
         }
     }
 
-To use just get logger with `logging.getLogger()`: ::
+To use just get logger with ``logging.getLogger()``:
+
+.. code-block:: python
 
     import logging
     logger = logging.getLogger('project')
@@ -314,7 +318,7 @@ Development of The Muffin happens at: https://github.com/klen/muffin
 Contributors
 =============
 
-* `Kirill Klenov <https://github.com/klen`_
+* `Kirill Klenov <https://github.com/klen>`_
 
 * `Diego Garcia <https://github.com/drgarcia1986>`_
 
