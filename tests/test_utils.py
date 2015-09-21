@@ -64,3 +64,15 @@ def test_struct():
 
     with pytest.raises(RuntimeError):
         settings.test = 42
+
+
+def test_import_submodules():
+    from muffin import import_submodules
+
+    result = import_submodules('muffin')
+    assert len(result) == 8
+
+    result = import_submodules('muffin', 'plugins', 'manage')
+    assert len(result) == 2
+
+#  pylama:ignore=E0237
