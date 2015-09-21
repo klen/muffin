@@ -1,6 +1,9 @@
 import hashlib
 import hmac
+import importlib
+import pkgutil
 import random
+import sys
 import threading
 from asyncio import coroutine, iscoroutinefunction, Task, get_event_loop
 
@@ -185,3 +188,15 @@ class slocal(local):
             super(slocal, self).__setattr__(name, value)
         else:
             setattr(tlocals, name, value)
+
+
+def import_submodules(package_name, *submodules):
+    """Import all submodules by package name."""
+    package = sys.modules[package_name]
+    return {
+        name: importlib.import_module(package_name + '.' + name)
+        for _, name, _ in pkgutil.walk_packages(package.__path__)
+        if not submodules or name in submodules
+    }
+
+#  pylama:ignore=W0212
