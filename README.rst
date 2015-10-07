@@ -115,23 +115,23 @@ Configuration
 Muffin gets configuration options from python files. You have to specify
 default configuration module name in your app initialization:
 
-  .. code-block:: python
+.. code-block:: python
 
-    app = muffin.Application('myapp', CONFIG='config.debug')
+  app = muffin.Application('myapp', CONFIG='config.debug')
 
 This name could be overriden by environment variable `MUFFIN_CONFIG`: ::
 
-    $ MUFFIN_CONFIG=settings_local muffin example run
+  $ MUFFIN_CONFIG=settings_local muffin example run
 
 Which in its turn could be overriden by `--config` param of `muffin` command: ::
 
-    $ muffin --config=config.debug example run
+  $ muffin --config=config.debug example run
 
 Also you can define default config parameter values while initializing your application:
 
-  .. code-block:: python
+.. code-block:: python
 
-    app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
+  app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
 
 Base application options
 ^^^^^^^^^^^^^^^^^^^^^^^^
