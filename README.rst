@@ -119,11 +119,11 @@ default configuration module name in your app initialization:
 
   app = muffin.Application('myapp', CONFIG='config.debug')
 
-This name could be overriden by environment variable `MUFFIN_CONFIG`: ::
+This name could be overriden by ``MUFFIN_CONFIG`` environment variable: ::
 
   $ MUFFIN_CONFIG=settings_local muffin example run
 
-Which in its turn could be overriden by `--config` param of `muffin` command: ::
+Which in its turn could be overriden by ``--config`` param of ``muffin`` command: ::
 
   $ muffin --config=config.debug example run
 
