@@ -1,17 +1,17 @@
 import argparse
 import asyncio
 import inspect
+import logging
 import os
 import re
 import sys
-import logging
 from shutil import copy
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE, __version__
 from muffin.utils import MuffinException
 
 
-PARAM_RE = re.compile('^\s+:param (\w+): (.+)$', re.M)
+PARAM_RE = re.compile(r'^\s+:param (\w+): (.+)$', re.M)
 
 
 class Manager(object):
@@ -33,7 +33,7 @@ class Manager(object):
         app.cfg.setdefault('MANAGE_SHELL', shell_ctx)
 
         @self.command
-        def shell(ipython:bool=True):
+        def shell(ipython: bool=True):
             """ Run the application shell.
 
             :param ipython: Use IPython as shell
@@ -62,9 +62,10 @@ class Manager(object):
             app.loop.run_until_complete(app.finish())
 
         @self.command
-        def run(bind:str='127.0.0.1:5000', daemon:bool=False, pid:str=None,
-                reload:bool=self.app.cfg.DEBUG, timeout:int=30, name:str=self.app.name,
-                worker_class:str='muffin.worker.GunicornWorker', workers:int=1, log_file:str=None):
+        def run(bind: str='127.0.0.1:5000', daemon: bool=False, pid: str=None,
+                reload: bool=self.app.cfg.DEBUG, timeout: int=30, name: str=self.app.name,
+                worker_class: str='muffin.worker.GunicornWorker', workers: int=1,
+                log_file: str=None):
             """ Run the application.
 
             :param bind: The socket to bind
@@ -96,8 +97,8 @@ class Manager(object):
             gapp.run()
 
         @self.command
-        def collect(
-                destination:str, source:list=app.cfg.STATIC_FOLDERS, replace=False, symlink=True):
+        def collect(destination: str, source: list=app.cfg.STATIC_FOLDERS,
+                    replace=False, symlink=True):
             """ Collect static files from the application and plugins.
 
             :param destination: Path where static files will be collected.
@@ -215,6 +216,7 @@ class Manager(object):
 def run():
     """ CLI endpoint. """
     sys.path.insert(0, os.getcwd())
+    logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 
     parser = argparse.ArgumentParser(description="Manage Application")
     parser.add_argument('app', metavar='app',
@@ -223,7 +225,7 @@ def run():
     parser.add_argument('--version', action="version", version=__version__)
 
     args_ = [_ for _ in sys.argv[1:] if _ not in ["--help", "-h"]]
-    args_, unknown = parser.parse_known_args(args_)
+    args_, _ = parser.parse_known_args(args_)
     if args_.config:
         os.environ[CONFIGURATION_ENVIRON_VARIABLE] = args_.config
 
@@ -232,9 +234,13 @@ def run():
     app_uri = args_.app
     if ':' not in app_uri:
         app_uri += ':app'
-    app = import_app(app_uri)
-    app.logger.info('Application is loaded: %s' % app.name)
+        try:
+            app = import_app(app_uri)
+            app.logger.info('Application is loaded: %s' % app.name)
+        except Exception as exc:
+            logging.exception(exc)
+            raise sys.exit(1)
 
     app.manage()
 
-# pylama:ignore=C901
+# pylama:ignore=C901,W0612,W0703,W0212
