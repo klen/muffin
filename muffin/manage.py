@@ -4,7 +4,6 @@ import inspect
 import os
 import re
 import sys
-import logging
 from shutil import copy
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE, __version__
