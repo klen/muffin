@@ -4,6 +4,7 @@ import inspect
 import os
 import re
 import sys
+import logging
 from shutil import copy
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE, __version__
@@ -228,16 +229,11 @@ def run():
 
     from gunicorn.util import import_app
 
-    try:
-        app_uri = args_.app
-        if ':' not in app_uri:
-            app_uri += ':app'
-        app = import_app(app_uri)
-        app.logger.info('Application is loaded: %s' % app.name)
-
-    except Exception as e:
-        print(e)
-        raise sys.exit(1)
+    app_uri = args_.app
+    if ':' not in app_uri:
+        app_uri += ':app'
+    app = import_app(app_uri)
+    app.logger.info('Application is loaded: %s' % app.name)
 
     app.manage()
 
