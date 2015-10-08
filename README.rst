@@ -18,10 +18,6 @@ The Muffin
 .. image:: http://img.shields.io/pypi/dm/muffin.svg?style=flat-square
     :target: https://pypi.python.org/pypi/muffin
 
-.. image:: http://img.shields.io/gratipay/klen.svg?style=flat-square
-    :target: https://www.gratipay.com/klen/
-    :alt: Donate
-
 .. _description:
 
 The Muffin -- A web framework based on Asyncio_ stack ``(early beta)``
@@ -317,16 +313,24 @@ Development of The Muffin happens at: https://github.com/klen/muffin
 Contributors
 =============
 
-* `Kirill Klenov <https://github.com/klen>`_
-
+* `Andrew Grigorev <https://github.com/ei-grad>`_
 * `Diego Garcia <https://github.com/drgarcia1986>`_
+* `Kirill Klenov <https://github.com/klen>`_
 
 .. _license:
 
 License
-=======
+========
 
 Licensed under a MIT license (See LICENSE)
+
+If you wish to express your appreciation for the project, you are welcome to send
+a postcard to: ::
+
+    Kirill Klenov
+    pos. Severny 8-3
+    MO, Istra, 143500
+    Russia
 
 .. _links:
 
