@@ -5,6 +5,7 @@ mixer               >= 5.1.6
 pytest
 pytest-pythonpath
 webtest
+webob               <  1.5
 
 muffin_peewee
 muffin_session      >= 0.0.5
