@@ -54,21 +54,73 @@ Open http://fuf.me:5000, http://fuf.me:5000/hello/username in your browser. Enjo
 Plugins
 =======
 
-The list of Muffin plugins:
+The list of some Muffin plugins (please make PR if you want to provide more):
 
 * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
+
+  .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-admin
+
 * `Muffin-Babel   <https://github.com/klen/muffin-babel>`_   -- Localization support
+
+  .. image:: http://img.shields.io/travis/klen/muffin-babel.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-babel
+
 * `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
+
+  .. image:: http://img.shields.io/travis/klen/muffin-debugtoolbar.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-debugtoolbar
+
 * `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
+
+  .. image:: http://img.shields.io/travis/klen/muffin-jade.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-jade
+
 * `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
+
+  .. image:: http://img.shields.io/travis/klen/muffin-jinja2.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-jinja2
+
 * `Muffin-Metrics <https://github.com/klen/muffin-metrics>`_ -- Send metrics to Graphite/Statsd
+
+  .. image:: http://img.shields.io/travis/klen/muffin-metrics.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-metrics
+
 * `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
+
+  .. image:: http://img.shields.io/travis/klen/muffin-mongo.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-mongo
+
 * `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
+
+  .. image:: http://img.shields.io/travis/klen/muffin-oauth.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-oauth
+
 * `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
+
+  .. image:: http://img.shields.io/travis/klen/muffin-peewee.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-peewee
+
 * `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
+
+  .. image:: http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-rest
+
 * `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
+
+  .. image:: http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-redis
+
 * `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
+
+  .. image:: http://img.shields.io/travis/klen/muffin-sentry.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-sentry
+
 * `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
+
+  .. image:: http://img.shields.io/travis/klen/muffin-session.svg?style=flat-square
+     :target: http://travis-ci.org/klen/muffin-session
+
 
 .. _requirements:
 
