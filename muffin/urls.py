@@ -86,7 +86,7 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
                 # Fix route name
                 cname, num = name, 1
                 while cname in router:
-                    cname = name + "-" + str(num)
+                    cname = "%s%d" % (name, num)
                     num += 1
                 name = cname
 
