@@ -7,7 +7,6 @@ def test_handler_func(app, client):
     @app.register('/test')
     def test(request):
         return 'TEST PASSED'
-    assert 'test-*' in app.router._routes
 
     response = client.get('/test')
     assert response.text == 'TEST PASSED'
@@ -15,12 +14,13 @@ def test_handler_func(app, client):
     response = client.post('/test')
     assert response.text == 'TEST PASSED'
 
+    assert app.router['test'].url() == '/test'
+
     @app.register('/test1', methods='get')
     def test1(request):
         return 'TEST PASSED'
 
-    assert 'test1-get' in app.router._routes
-    assert 'test1-post' not in app.router._routes
+    assert app.router['test1'].url() == '/test1'
 
     response = client.get('/test1')
     assert response.text == 'TEST PASSED'
@@ -29,14 +29,13 @@ def test_handler_func(app, client):
     def test2(request):
         return 'TEST PASSED'
 
-    assert 'test2-get' in app.router._routes
-    assert 'test2-post' in app.router._routes
+    assert app.router['test2'].url() == '/test2'
 
     @app.register('/test3', methods='*')
     def test3(request):
         return 'TEST PASSED'
 
-    assert 'test3-*' in app.router._routes
+    assert app.router['test3'].url() == '/test3'
     response = client.get('/test3')
     assert response.status_code == 200
 
@@ -63,7 +62,8 @@ def test_handler(app, client):
     assert set(Resource.methods) == set(['GET', 'POST'])
     assert asyncio.iscoroutinefunction(Resource.get)
 
-    assert 'resource-*' in app.router._routes
+    assert app.router['resource'].url(parts={'res': 1}) == '/res/1'
+    assert 'resource-1' in app.router._routes
 
     response = client.delete('/res', status=405)
 

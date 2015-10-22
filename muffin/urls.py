@@ -82,15 +82,17 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
                 app._error_handlers[path] = view
                 continue
 
-            # Fix route name
-            cname, num = name + "-" + method.lower(), 1
-            while cname in router:
-                cname = name + "-" + str(num)
-                num += 1
+            if name in router:
+                # Fix route name
+                cname, num = name, 1
+                while cname in router:
+                    cname = "%s%d" % (name, num)
+                    num += 1
+                name = cname
 
             # Support regexpa in paths
             if isinstance(path, RETYPE):
-                router.register_route(RawReRoute(method.upper(), view, cname, path))
+                router.register_route(RawReRoute(method.upper(), view, name, path))
                 continue
 
             # Support custom methods
@@ -98,4 +100,4 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
             if method not in router.METHODS:
                 router.METHODS.add(method)
 
-            router.add_route(method, path, view, name=cname)
+            router.add_route(method, path, view, name=name)

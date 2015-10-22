@@ -26,6 +26,9 @@ pip-log.txt
 .tox
 nosetests.xml
 
+# py.test lastfailed cache
+.cache
+
 # Translations
 *.mo
 
