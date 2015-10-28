@@ -1,4 +1,4 @@
-.. image:: https://raw.github.com/klen/muffin/develop/logo.png
+.. image:: https://raw.github.com/klen/muffin/develop/docs/static/logo.png
    :height: 100px
    :width: 100px
 

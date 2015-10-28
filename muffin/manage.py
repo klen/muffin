@@ -1,3 +1,4 @@
+"""CLI Support is here."""
 import argparse
 import asyncio
 import inspect
@@ -16,7 +17,32 @@ PARAM_RE = re.compile(r'^\s+:param (\w+): (.+)$', re.M)
 
 class Manager(object):
 
-    """ Support application commands. """
+    """Provide simple interface to make application's commands.
+
+    ::
+
+        @app.manage.command
+        def hello(name, upper=False):
+            '''Say hello!
+
+            :param name: an user name
+            :param upper: to upper string
+
+            '''
+            message = 'Hello %s!' % name
+            if upper:
+                message = message.upper()
+            print(message)
+
+    ::
+
+        $ muffin app hello Mike
+        Hello Mike!
+
+        $ muffin app hello Mike --upper
+        HELLO MIKE!
+
+    """
 
     def __init__(self, app):
         self.app = app
@@ -66,7 +92,7 @@ class Manager(object):
                 reload: bool=self.app.cfg.DEBUG, timeout: int=30, name: str=self.app.name,
                 worker_class: str='muffin.worker.GunicornWorker', workers: int=1,
                 log_file: str=None):
-            """ Run the application.
+            """Run the application.
 
             :param bind: The socket to bind
             :param daemon: Daemonize the program
@@ -99,7 +125,7 @@ class Manager(object):
         @self.command
         def collect(destination: str, source: list=app.cfg.STATIC_FOLDERS,
                     replace=False, symlink=True):
-            """ Collect static files from the application and plugins.
+            """Collect static files from the application and plugins.
 
             :param destination: Path where static files will be collected.
             :param replace: Replace existed files

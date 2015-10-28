@@ -1,4 +1,4 @@
-""" Implement Muffin Application. """
+"""Implement Muffin Application."""
 import logging.config
 import os
 import re
@@ -22,14 +22,14 @@ RETYPE = type(re.compile('@'))
 
 class MuffinException(Exception):
 
-    """ Implement a Muffin's exception. """
+    """Exception class for Muffin errors."""
 
     pass
 
 
 class Application(web.Application):
 
-    """ Improve aiohttp Application. """
+    """Upgrade Aiohttp Application."""
 
     # Default application settings
     defaults = {
@@ -58,7 +58,7 @@ class Application(web.Application):
 
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
                  handler_factory=web.RequestHandlerFactory, **OPTIONS):
-        """ Initialize the application. """
+        """Initialize the application."""
         super(Application, self).__init__(loop=loop, router=router, middlewares=middlewares,
                                           logger=logger, handler_factory=handler_factory)
 
@@ -92,7 +92,7 @@ class Application(web.Application):
         for plugin in self.cfg.PLUGINS:
             try:
                 self.install(plugin)
-            except Exception as exc:
+            except Exception as exc:  # noqa
                 self.logger.error('Plugin is invalid: %s', plugin)
                 self.logger.exception(exc)
 
@@ -102,12 +102,15 @@ class Application(web.Application):
             logging.config.dictConfig(LOGGING_CFG)
 
     def __repr__(self):
-        """ Human readable representation. """
+        """Human readable representation."""
         return "<Application: %s>" % self.name
 
     @cached_property
     def cfg(self):
-        """ Load the application configuration. """
+        """Load the application configuration.
+
+        This method loads configuration from python module.
+        """
         config = LStruct(self.defaults)
         module = config['CONFIG'] = os.environ.get(
             CONFIGURATION_ENVIRON_VARIABLE, config['CONFIG'])
@@ -128,7 +131,7 @@ class Application(web.Application):
         return config
 
     def install(self, plugin, name=None):
-        """Install a plugin to the application."""
+        """Install plugin to the application."""
         if isinstance(plugin, str):
             module, _, attr = plugin.partition(':')
             module = import_module(module)
@@ -162,7 +165,6 @@ class Application(web.Application):
         """Start the application.
 
         Support for start-callbacks and lock the application's configuration and plugins.
-
         """
         if self._error_handlers and exc_middleware_factory not in self._middlewares:
             self._middlewares.append(exc_middleware_factory)
@@ -174,15 +176,15 @@ class Application(web.Application):
                 self.router.register_route(route)
 
             else:
-                self.logger.warn('Disable static folder (hasnt found): %s' % path)
+                self.logger.warn('Disable static folder (hasnt found): %s', path)
 
         # Run start callbacks
         for (cb, args, kwargs) in self._start_callbacks:
             try:
                 res = cb(self, *args, **kwargs)
-                if (iscoroutine(res) or isinstance(res, Future)):
+                if iscoroutine(res) or isinstance(res, Future):
                     yield from res
-            except Exception as exc:
+            except Exception as exc: # noqa
                 self.loop.call_exception_handler({
                     'message': "Error in start callback",
                     'exception': exc,
@@ -198,12 +200,22 @@ class Application(web.Application):
             plugin.cfg.lock()
 
     def register_on_start(self, func, *args, **kwargs):
-        """ Register a start callback. """
+        """Register a start callback."""
         self._start_callbacks.append((func, args, kwargs))
 
     def register(self, *paths, methods=None, name=None, handler=None):
-        """ Register function/coroutine/muffin.Handler on current application. """
+        """Register function/coroutine/muffin.Handler with the application.
 
+        Usage example:
+
+        .. code-block:: python
+
+            @app.register('/hello')
+            def hello(request):
+                return 'Hello World!'
+
+
+        """
         if isinstance(methods, str):
             methods = [methods]
 
@@ -244,7 +256,10 @@ class Application(web.Application):
 
 @coroutine
 def exc_middleware_factory(app, handler):
-    """ Handle exceptions. """
+    """Handle exceptions.
+
+    Route exceptions to handlers if they are registered in application.
+    """
     @coroutine
     def middleware(request):
         try:
@@ -258,7 +273,7 @@ def exc_middleware_factory(app, handler):
 
 
 def run():
-    """ Run the Gunicorn Application. """
+    """Run Gunicorn Application."""
     from .worker import GunicornApp
 
     GunicornApp("%(prog)s [OPTIONS] [APP]").run()
@@ -266,3 +281,5 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+#  pylama:ignore=W0212,W1504

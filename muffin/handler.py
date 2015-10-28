@@ -1,4 +1,4 @@
-""" Base handler class. """
+"""Base handler class."""
 from asyncio import coroutine, iscoroutine
 from collections import defaultdict
 
@@ -16,17 +16,16 @@ HTTP_METHODS = 'HEAD', 'OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'
 
 class HandlerMeta(type):
 
-    """ Prepare handlers. """
+    """Prepare handlers."""
 
     _coroutines = set(m.lower() for m in HTTP_METHODS)
 
     def __new__(mcs, name, bases, params):
-        """ Prepare a Handler Class.
+        """Prepare a Handler Class.
 
         Ensure that the Handler class has a name.
         Ensure that required methods are coroutines.
         Fix the Handler params.
-
         """
         # Set name
         params['name'] = params.get('name', name.lower())
@@ -59,16 +58,21 @@ class HandlerMeta(type):
 
 class DummyApp:
 
+    """Temporary register callbacks."""
+
     def __init__(self):
+        """Initialize self callbacks."""
         self.callbacks = defaultdict(list)
 
     def register(self, *args, handler=None, **kwargs):
+        """Save callback in self."""
         def wrapper(func):
             self.callbacks[handler].append((args, kwargs, func))
             return func
         return wrapper
 
     def install(self, app, handler):
+        """Register saved callbacks with real application."""
         for args, kwargs, func in self.callbacks[handler]:
             app.register(*args, handler=handler, **kwargs)(func)
         del self.callbacks[handler]
@@ -76,7 +80,7 @@ class DummyApp:
 
 class Handler(object, metaclass=HandlerMeta):
 
-    """ Handle request. """
+    """Handle request."""
 
     app = DummyApp()
     name = None
@@ -84,7 +88,7 @@ class Handler(object, metaclass=HandlerMeta):
 
     @classmethod
     def from_view(cls, view, *methods, name=None):
-        """ Create a handler class from function or coroutine. """
+        """Create a handler class from function or coroutine."""
         view = to_coroutine(view)
 
         if METH_ANY in methods:
@@ -99,7 +103,7 @@ class Handler(object, metaclass=HandlerMeta):
 
     @classmethod
     def connect(cls, app, *paths, methods=None, name=None, router=None, view=None):
-        """ Connect to the application. """
+        """Connect to the application."""
         if isinstance(cls.app, DummyApp):
             cls.app, dummy = app, cls.app
             dummy.install(app, cls)
@@ -116,12 +120,12 @@ class Handler(object, metaclass=HandlerMeta):
 
     @classmethod
     def register(cls, *args, **kwargs):
-        """ Register view to handler. """
+        """Register view to handler."""
         return cls.app.register(*args, handler=cls, **kwargs)
 
     @abcoroutine
     def dispatch(self, request, view=None, **kwargs):
-        """ Dispatch request. """
+        """Dispatch request."""
         if request.method not in self.methods:
             raise HTTPMethodNotAllowed(request.method, self.methods)
 
@@ -132,8 +136,7 @@ class Handler(object, metaclass=HandlerMeta):
 
     @abcoroutine
     def make_response(self, request, response):
-        """ Convert a handler result to web response. """
-
+        """Convert a handler result to web response."""
         while iscoroutine(response):
             response = yield from response
 
@@ -160,15 +163,15 @@ class Handler(object, metaclass=HandlerMeta):
 
         return Response(text=str(response), content_type='text/html')
 
-    def parse(self, request):
-        """ Return a coroutine which parses data from request depends on content-type.
+    @staticmethod
+    def parse(request):
+        """Return a coroutine which parses data from request depends on content-type.
 
         Usage: ::
 
             def post(self, request):
                 data = yield from self.parse(request)
                 # ...
-
         """
         if request.content_type in ('application/x-www-form-urlencoded', 'multipart/form-data'):
             return request.post()

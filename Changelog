@@ -1,3 +1,9 @@
+2015-10-28  klen
+
+	* Muffin supports Aiohttp 0.18.3
+	* Muffin.sre is depricated. Use plain text instead.
+	* Now RawReRoute supports url() method.
+
 2015-01-21  klen
 
 	* Version 0.1.0
