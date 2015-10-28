@@ -26,6 +26,9 @@ pip-log.txt
 .tox
 nosetests.xml
 
+# py.test lastfailed cache
+.cache
+
 # Translations
 *.mo
 
@@ -42,13 +45,14 @@ output/*/index.html
 docs/_build
 
 # Other
+/.env
+/.ropeproject
 /db.sqlite
-/docs
 /libs
+/ops
 /peewee.db
 /plugins
 /probe.py
 /settings
 /todo.txt
-/.env
-/.ropeproject
+/_

@@ -112,7 +112,7 @@ doc: docs $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/pip install sphinx
 	@$(VIRTUAL_ENV)/bin/pip install sphinx-pypi-upload
 	@$(VIRTUAL_ENV)/bin/python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
-	@$(VIRTUAL_ENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
+	# @$(VIRTUAL_ENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
 
 .PHONY: run

@@ -1,16 +1,16 @@
-""" Base class for plugins implementation. """
+"""Plugins support."""
 
 from muffin.utils import LStruct, MuffinException
 
 
 class PluginException(MuffinException):
 
-    """ Implement any exception in plugins. """
+    """Implement any exception in plugins."""
 
 
 class PluginMeta(type):
 
-    """ Ensure that each plugin is singleton. """
+    """Ensure that each plugin is singleton."""
 
     _instances = {}
 
@@ -26,7 +26,7 @@ class PluginMeta(type):
 
 class BasePlugin(metaclass=PluginMeta):
 
-    """ Base class for Muffin plugins. """
+    """Base class for Muffin plugins."""
 
     # Plugin options with default values
     defaults = {}
@@ -42,10 +42,9 @@ class BasePlugin(metaclass=PluginMeta):
         self.config = self.cfg = LStruct(options)
 
     def setup(self, app):
-        """ Initialize the plugin.
+        """Initialize the plugin.
 
         Fill the plugin's options from application.
-
         """
         self.app = app
         for name, ptype in self.dependencies.items():
