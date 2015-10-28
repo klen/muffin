@@ -7,7 +7,7 @@ def test_handler_func(app, client):
     @app.register('/test')
     def test(request):
         return 'TEST PASSED'
-    assert 'test.any' in app.router._routes
+    assert 'test' in app.router._routes
 
     response = client.get('/test')
     assert response.text == 'TEST PASSED'
@@ -19,8 +19,7 @@ def test_handler_func(app, client):
     def test1(request):
         return 'TEST PASSED'
 
-    assert 'test1.get' in app.router._routes
-    assert 'test1.post' not in app.router._routes
+    assert 'test1' in app.router._routes
 
     response = client.get('/test1')
     assert response.text == 'TEST PASSED'
@@ -29,14 +28,14 @@ def test_handler_func(app, client):
     def test2(request):
         return 'TEST PASSED'
 
-    assert 'test2.get' in app.router._routes
+    assert 'test2' in app.router._routes
     assert 'test2.post' in app.router._routes
 
     @app.register('/test3', methods='*')
     def test3(request):
         return 'TEST PASSED'
 
-    assert 'test3.any' in app.router._routes
+    assert 'test3' in app.router._routes
     response = client.get('/test3')
     assert response.status_code == 200
 
