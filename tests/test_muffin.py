@@ -81,19 +81,6 @@ def test_static(app, client):
     assert response.status_code == 200
 
 
-def test_sre():
-    re = muffin.sre('/test/{id:\d+}/?')
-    assert re.match('/test/1')
-    assert re.match('/test/2/')
-
-    re = muffin.sre('/test/{id:\d+}/{name}/?')
-    assert re.match('/test/1/Mike')
-
-    re = muffin.sre('/test(/{id}/?)?')
-    assert re.match('/test/1')
-    assert re.match('/test/1/').group('id') == '1'
-
-
 def test_manage(app, capsys):
     @app.manage.command
     def hello(name, lower=False):
