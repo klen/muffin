@@ -1,3 +1,4 @@
+"""Gunicorn support."""
 import logging
 import os
 import sys
@@ -13,14 +14,15 @@ from . import CONFIGURATION_ENVIRON_VARIABLE
 
 class GunicornApp(VanillaGunicornApp):
 
-    """ Support Gunicorn. """
+    """Implement Gunicorn application."""
 
     def __init__(self, usage=None, prog=None, config=None):
+        """Initialize self."""
         self._cfg = config
         super(GunicornApp, self).__init__(usage=usage, prog=prog)
 
     def init(self, parser, opts, args):
-        """ Initialize the application. """
+        """Initialize the application."""
         if len(args) < 1:
             parser.error("No application module specified.")
 
@@ -32,7 +34,7 @@ class GunicornApp(VanillaGunicornApp):
             self.load_config_from_file(self.cfg.config)
 
     def load_default_config(self):
-        """ Prepare default configuration. """
+        """Prepare default configuration."""
         self.cfg = VanillaGunicornConfig(self.usage, prog=self.prog)
 
         # Remove unused settings
@@ -46,12 +48,13 @@ class GunicornApp(VanillaGunicornApp):
             os.environ[CONFIGURATION_ENVIRON_VARIABLE] = self._cfg
 
     def load_config(self):
+        """Load configuration."""
         parser = self.cfg.parser()
         args, _ = parser.parse_known_args()
         self.init(parser, args, args.args)
 
     def load(self):
-        """ Load a Muffin application. """
+        """Load a Muffin application."""
         # Fix paths
         os.chdir(self.cfg.chdir)
         sys.path.insert(0, self.cfg.chdir)
@@ -65,10 +68,10 @@ class GunicornApp(VanillaGunicornApp):
 
 class GunicornWorker(GunicornWebWorker):
 
-    """ Work with Asyncio applications. """
+    """Work with Asyncio applications."""
 
     def run(self):
-        """ Create asyncio server and start the loop. """
+        """Create asyncio server and start the loop."""
         app = self.app.callable
         self.loop.set_debug(app.cfg.DEBUG)
         app._loop = self.loop
@@ -76,6 +79,7 @@ class GunicornWorker(GunicornWebWorker):
         super(GunicornWorker, self).run()
 
     def make_handler(self, app, *args):
+        """Create a handler."""
         handler = app.make_handler(
             logger=self.log, debug=app.cfg.DEBUG,
             keep_alive=self.cfg.keepalive, timeout=self.cfg.timeout,

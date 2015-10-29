@@ -44,6 +44,7 @@ class Application(web.Application):
         'ENCODING': 'utf-8',
 
         # Logging options
+        'ACCESS_LOG': '-',  # File path to access log, - to stderr
         'LOG_LEVEL': 'WARNING',
         'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',
         'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]',
