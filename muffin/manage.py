@@ -45,6 +45,7 @@ class Manager(object):
     """
 
     def __init__(self, app):
+        """Initialize the commands."""
         self.app = app
         self.parser = argparse.ArgumentParser(description="Manage %s" % app.name.capitalize())
         self.parser.add_argument('app', metavar='app', type=str, help='Path to application.')
@@ -60,10 +61,9 @@ class Manager(object):
 
         @self.command
         def shell(ipython: bool=True):
-            """ Run the application shell.
+            """Run the application shell.
 
             :param ipython: Use IPython as shell
-
             """
             app.loop.run_until_complete(app.start())
 
@@ -91,7 +91,7 @@ class Manager(object):
         def run(bind: str='127.0.0.1:5000', daemon: bool=False, pid: str=None,
                 reload: bool=self.app.cfg.DEBUG, timeout: int=30, name: str=self.app.name,
                 worker_class: str='muffin.worker.GunicornWorker', workers: int=1,
-                log_file: str=None):
+                log_file: str=None, access_logfile: str=self.app.cfg.ACCESS_LOG):
             """Run the application.
 
             :param bind: The socket to bind
@@ -120,6 +120,8 @@ class Manager(object):
             gapp.cfg.set('workers', workers)
             if log_file:
                 gapp.cfg.set('errorlog', log_file)
+            if access_logfile:
+                gapp.cfg.set('accesslog', access_logfile)
             gapp.run()
 
         @self.command
@@ -171,6 +173,7 @@ class Manager(object):
                     app.logger.info('Copied: %s' % rpath)
 
     def command(self, func):
+        """Define CLI command."""
         header = '\n'.join([s for s in (func.__doc__ or '').split('\n')
                             if not s.strip().startswith(':')])
         parser = self.parsers.add_parser(func.__name__, description=header)
@@ -211,10 +214,11 @@ class Manager(object):
         return func
 
     def shell(self, func):
+        """Set shell context function."""
         self.app.cfg.MANAGE_SHELL = func
 
     def __call__(self, args=None):
-        """ Parse arguments and run handler. """
+        """Parse arguments and run handler."""
         args_, unknown = self.parser.parse_known_args(args)
         kwargs = dict(args_._get_kwargs())
 
@@ -240,7 +244,7 @@ class Manager(object):
 
 
 def run():
-    """ CLI endpoint. """
+    """CLI endpoint."""
     sys.path.insert(0, os.getcwd())
     logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 

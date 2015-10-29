@@ -3,6 +3,7 @@ import asyncio
 
 
 def test_handler_func(app, client):
+    """Test convertion from function to Muffin Handlers."""
 
     @app.register('/test')
     def test(request):
@@ -47,6 +48,11 @@ def test_handler_func(app, client):
 
 
 def test_handler(app, client):
+    """Test class-based handlers.
+
+    Actually everything in Muffin is class-based handlers.
+    Because view-functions will convert to Handler classes.
+    """
 
     @app.register(muffin.sre('/res(/{res})?/?'))
     @app.register('/res/{res}')
