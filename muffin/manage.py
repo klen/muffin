@@ -48,8 +48,6 @@ class Manager(object):
         """Initialize the commands."""
         self.app = app
         self.parser = argparse.ArgumentParser(description="Manage %s" % app.name.capitalize())
-        self.parser.add_argument('app', metavar='app', type=str, help='Path to application.')
-        self.parser.add_argument('--config', type=str, help='Path to configuration.')
         self.parsers = self.parser.add_subparsers(dest='subparser')
         self.handlers = dict()
 
@@ -108,7 +106,7 @@ class Manager(object):
             from muffin.worker import GunicornApp
 
             gapp = GunicornApp(
-                usage="%(prog)s APP_MODULE run [OPTIONS]", config=self.app.cfg.CONFIG)
+                usage="%(prog)s run [OPTIONS]", config=self.app.cfg.CONFIG)
             gapp.app_uri = app
             gapp.cfg.set('bind', bind)
             gapp.cfg.set('daemon', daemon)
@@ -217,20 +215,19 @@ class Manager(object):
         """Set shell context function."""
         self.app.cfg.MANAGE_SHELL = func
 
-    def __call__(self, args=None):
+    def __call__(self, *args, prog=False):
         """Parse arguments and run handler."""
-        args_, unknown = self.parser.parse_known_args(args)
+        if prog:
+            self.parser.prog = prog
+        if not args:
+            args = sys.argv[1:]
+        args_, _ = self.parser.parse_known_args(args)
         kwargs = dict(args_._get_kwargs())
 
         handler = self.handlers.get(kwargs.pop('subparser'))
         if not handler:
             self.parser.print_help()
             sys.exit(1)
-
-        actions = [a.dest for a in handler.parser._actions]
-        for name in ('app', 'config'):
-            if name not in actions:
-                kwargs.pop(name, None)
 
         try:
             res = handler(**kwargs)
@@ -248,14 +245,13 @@ def run():
     sys.path.insert(0, os.getcwd())
     logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 
-    parser = argparse.ArgumentParser(description="Manage Application")
+    parser = argparse.ArgumentParser(description="Manage Application", add_help=False)
     parser.add_argument('app', metavar='app',
                         type=str, help='Application module path')
     parser.add_argument('--config', type=str, help='Path to configuration.')
     parser.add_argument('--version', action="version", version=__version__)
 
-    args_ = [_ for _ in sys.argv[1:] if _ not in ["--help", "-h"]]
-    args_, _ = parser.parse_known_args(args_)
+    args_, subargs_ = parser.parse_known_args(sys.argv[1:])
     if args_.config:
         os.environ[CONFIGURATION_ENVIRON_VARIABLE] = args_.config
 
@@ -271,6 +267,6 @@ def run():
             logging.exception(exc)
             raise sys.exit(1)
 
-    app.manage()
+    app.manage(*subargs_, prog='muffin %s' % args_.app)
 
 # pylama:ignore=C901,W0612,W0703,W0212

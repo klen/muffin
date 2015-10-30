@@ -89,18 +89,18 @@ def test_manage(app, capsys):
         print("hello " + name)
 
     with pytest.raises(SystemExit):
-        app.manage('example.app:app hello'.split())
+        app.manage(*'hello'.split())
     out, err = capsys.readouterr()
     assert not out
     assert err
 
     with pytest.raises(SystemExit):
-        app.manage('example.app:app hello Mike'.split())
+        app.manage(*'hello Mike'.split())
     out, err = capsys.readouterr()
     assert "hello Mike\n" == out
 
     with pytest.raises(SystemExit):
-        app.manage('example.app:app hello Sam --lower'.split())
+        app.manage(*'hello Sam --lower'.split())
     out, err = capsys.readouterr()
     assert "hello sam\n" == out
 
