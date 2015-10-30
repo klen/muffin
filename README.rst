@@ -39,9 +39,13 @@ Example "Hello User" with the Muffin:
         name = request.match_info.get('name', 'anonymous')
         return 'Hello %s!' % name
 
+    if __name__ == '__main__':
+        app.manage()
+
+
 Save the script as `example.py` and run it: ::
 
-    $ muffin example run
+    $ python3 example.py run
 
 Open http://fuf.me:5000, http://fuf.me:5000/hello/username in your browser. Enjoy!
 
