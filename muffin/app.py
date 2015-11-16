@@ -234,9 +234,8 @@ class Application(web.Application):
             else:
 
                 view_name = view.__name__
-                if hasattr(handler, view_name):
-                    raise RuntimeError('Handler already have method "%s"' % view_name)
-                setattr(handler, view_name, to_coroutine(view))
+                if not hasattr(handler, view_name):
+                    setattr(handler, view_name, to_coroutine(view))
                 name_ = name or view_name
                 handler.connect(self, *paths, methods=methods, name=name_, view=view_name)
 
