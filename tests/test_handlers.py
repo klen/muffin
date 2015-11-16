@@ -25,6 +25,10 @@ def test_handler(app, client):
         def lama(self, request):
             return 'LAMA'
 
+        @register('/res/rama/lama')
+        def rama(self, request):
+            return 'RAMA'
+
     assert set(Resource.methods) == set(['GET', 'POST'])
     assert asyncio.iscoroutinefunction(Resource.get)
 
@@ -32,6 +36,9 @@ def test_handler(app, client):
 
     response = client.get('/res/lama/rama')
     assert response.text == 'LAMA'
+
+    response = client.get('/res/rama/lama')
+    assert response.text == 'RAMA'
 
     response = client.delete('/res', status=405)
 
