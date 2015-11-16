@@ -12,6 +12,7 @@ from muffin.utils import to_coroutine, abcoroutine
 
 
 HTTP_METHODS = 'HEAD', 'OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'
+ROUTE_PARAMS_ATTR = '_route_params'
 
 
 def register(*paths, methods=None, name=None, handler=None):
@@ -19,10 +20,9 @@ def register(*paths, methods=None, name=None, handler=None):
     def wrapper(method):
         """Store route params into method."""
         method = to_coroutine(method)
-        method._route_params = paths, methods, name
-        mname = method.__name__
-        if handler and not hasattr(handler, mname):
-            setattr(handler, mname, method)
+        setattr(method, ROUTE_PARAMS_ATTR, (paths, methods, name))
+        if handler and not hasattr(handler, method.__name__):
+            setattr(handler, method.__name__, method)
         return method
     return wrapper
 
@@ -98,9 +98,11 @@ class Handler(object, metaclass=HandlerMeta):
         cls.app = app
 
         if cls.app is not None:
-            for _, m in inspect.getmembers(cls, predicate=lambda m: hasattr(m, '_route_params')):
-                paths_, methods_, name_ = m._route_params
-                delattr(m, '_route_params')
+            for _, m in inspect.getmembers(cls, predicate=inspect.isfunction):
+                if not hasattr(m, ROUTE_PARAMS_ATTR):
+                    continue
+                paths_, methods_, name_ = getattr(m, ROUTE_PARAMS_ATTR)
+                delattr(m, ROUTE_PARAMS_ATTR)
                 cls.app.register(*paths_, methods=methods_, name=name_, handler=cls)(m)
 
         @coroutine
