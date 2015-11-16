@@ -209,7 +209,7 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 Requirements
 =============
 
-- python >= 3.3
+- python >= 3.4.1
 
 .. _installation:
 

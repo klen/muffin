@@ -1,6 +1,6 @@
 """Base handler class."""
+import inspect
 from asyncio import coroutine, iscoroutine
-from collections import defaultdict
 
 import ujson as json
 from aiohttp.hdrs import METH_ANY
@@ -12,6 +12,19 @@ from muffin.utils import to_coroutine, abcoroutine
 
 
 HTTP_METHODS = 'HEAD', 'OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'
+
+
+def register(*paths, methods=None, name=None, handler=None):
+    """Mark Handler.method to aiohttp handler."""
+    def wrapper(method):
+        """Store route params into method."""
+        method = to_coroutine(method)
+        method._route_params = paths, methods, name
+        mname = method.__name__
+        if handler and not hasattr(handler, mname):
+            setattr(handler, mname, method)
+        return method
+    return wrapper
 
 
 class HandlerMeta(type):
@@ -56,33 +69,11 @@ class HandlerMeta(type):
         return cls
 
 
-class DummyApp:
-
-    """Temporary register callbacks."""
-
-    def __init__(self):
-        """Initialize self callbacks."""
-        self.callbacks = defaultdict(list)
-
-    def register(self, *args, handler=None, **kwargs):
-        """Save callback in self."""
-        def wrapper(func):
-            self.callbacks[handler].append((args, kwargs, func))
-            return func
-        return wrapper
-
-    def install(self, app, handler):
-        """Register saved callbacks with real application."""
-        for args, kwargs, func in self.callbacks[handler]:
-            app.register(*args, handler=handler, **kwargs)(func)
-        del self.callbacks[handler]
-
-
 class Handler(object, metaclass=HandlerMeta):
 
     """Handle request."""
 
-    app = DummyApp()
+    app = None
     name = None
     methods = None
 
@@ -103,10 +94,14 @@ class Handler(object, metaclass=HandlerMeta):
 
     @classmethod
     def connect(cls, app, *paths, methods=None, name=None, router=None, view=None):
-        """Connect to the application."""
-        if isinstance(cls.app, DummyApp):
-            cls.app, dummy = app, cls.app
-            dummy.install(app, cls)
+        """Connect to the given application."""
+        cls.app = app
+
+        if cls.app is not None:
+            for _, m in inspect.getmembers(cls, predicate=lambda m: hasattr(m, '_route_params')):
+                paths_, methods_, name_ = m._route_params
+                delattr(m, '_route_params')
+                cls.app.register(*paths_, methods=methods_, name=name_, handler=cls)(m)
 
         @coroutine
         def handler(request):
@@ -115,12 +110,14 @@ class Handler(object, metaclass=HandlerMeta):
         if not paths:
             paths = ["/%s" % cls.__name__]
 
-        routes_register(
+        return routes_register(
             app, handler, *paths, methods=methods, router=router, name=name or cls.name)
 
     @classmethod
     def register(cls, *args, **kwargs):
         """Register view to handler."""
+        if cls.app is None:
+            return register(*args, handler=cls, **kwargs)
         return cls.app.register(*args, handler=cls, **kwargs)
 
     @abcoroutine
