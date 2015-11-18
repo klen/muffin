@@ -139,7 +139,7 @@ class Handler(object, metaclass=HandlerMeta):
     @abcoroutine
     def dispatch(self, request, view=None, **kwargs):
         """Dispatch request."""
-        if request.method not in self.methods:
+        if view is None and request.method not in self.methods:
             raise HTTPMethodNotAllowed(request.method, self.methods)
 
         method = getattr(self, view or request.method.lower())
