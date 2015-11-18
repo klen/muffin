@@ -21,7 +21,7 @@ def test_handler(app, client):
             data = yield from self.parse(request)
             return dict(data)
 
-        @register('/res/lama/rama')
+        @register('/res/lama/rama', methods=['GET', 'POST', 'PATCH'])
         def lama(self, request):
             return 'LAMA'
 
@@ -36,6 +36,8 @@ def test_handler(app, client):
 
     response = client.get('/res/lama/rama')
     assert response.text == 'LAMA'
+    assert 'lama.post' in app.router
+    assert 'lama.patch' in app.router
 
     response = client.get('/res/rama/lama')
     assert response.text == 'RAMA'
