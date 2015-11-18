@@ -34,10 +34,14 @@ def test_handler(app, client):
 
     assert 'resource.any' in app.router._routes
 
-    response = client.get('/res/lama/rama')
-    assert response.text == 'LAMA'
     assert 'lama.post' in app.router
     assert 'lama.patch' in app.router
+
+    response = client.get('/res/lama/rama')
+    assert response.text == 'LAMA'
+
+    response = client.patch('/res/lama/rama')
+    assert response.text == 'LAMA'
 
     response = client.get('/res/rama/lama')
     assert response.text == 'RAMA'
