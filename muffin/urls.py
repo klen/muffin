@@ -98,10 +98,10 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
 
             # Ensure that the route's name is unique
             if cname in router:
-                cname, num = name + "." + method.lower(), 1
-                cname = cname.replace('*', 'any')
+                method_ = method.lower().replace('*', 'any')
+                cname, num = name + "." + method_, 1
                 while cname in router:
-                    cname = "%s%d.%s" % (name, num, method.lower())
+                    cname = "%s%d.%s" % (name, num, method_)
                     num += 1
 
             # Is the path a regexp?
