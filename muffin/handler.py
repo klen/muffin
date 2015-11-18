@@ -16,7 +16,21 @@ ROUTE_PARAMS_ATTR = '_route_params'
 
 
 def register(*paths, methods=None, name=None, handler=None):
-    """Mark Handler.method to aiohttp handler."""
+    """Mark Handler.method to aiohttp handler.
+
+    It uses when registration of the handler with application is postponed.
+
+    ::
+        class AwesomeHandler(Handler):
+
+            def get(self, request):
+                return "I'm awesome!"
+
+            @register('/awesome/best')
+            def best(self, request):
+                return "I'm best!"
+
+    """
     def wrapper(method):
         """Store route params into method."""
         method = to_coroutine(method)

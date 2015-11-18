@@ -94,21 +94,22 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
                 continue
 
             num = 1
+            cname = name
+
             # Ensure that the route's name is unique
-            if name in router:
+            if cname in router:
                 cname, num = name + "." + method.lower(), 1
                 cname = cname.replace('*', 'any')
                 while cname in router:
                     cname = "%s%d.%s" % (name, num, method.lower())
                     num += 1
-                name = cname
 
             # Is the path a regexp?
             path = parse(path)
 
             # Support regex as path
             if isinstance(path, RETYPE):
-                routes.append(router.register_route(RawReRoute(method.upper(), view, name, path)))
+                routes.append(router.register_route(RawReRoute(method.upper(), view, cname, path)))
                 continue
 
             # Support custom methods
@@ -116,7 +117,7 @@ def routes_register(app, view, *paths, methods=None, router=None, name=''):
             if method not in router.METHODS:
                 router.METHODS.add(method)
 
-            routes.append(router.add_route(method, path, view, name=name))
+            routes.append(router.add_route(method, path, view, name=cname))
 
     return routes
 
