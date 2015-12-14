@@ -1,6 +1,5 @@
 """URL helpers."""
 import re
-import warnings
 from os import path as ospath
 from random import choice
 from string import printable
@@ -12,15 +11,6 @@ from aiohttp.hdrs import METH_ANY
 DYNS_RE = re.compile(r'(\{[^{}]*\})')
 DYNR_RE = re.compile(r'^\{(?P<var>[a-zA-Z][_a-zA-Z0-9]*)(?::(?P<re>.+))*\}$')
 RETYPE = type(re.compile('@'))
-
-
-def sre(path):
-    """Support extended routes syntax.
-
-    Depricated since 0.3.0.
-    """
-    warnings.warn('Muffin.sre is depricated. The functionality will be removed in 0.4.0')
-    return path
 
 
 class RawReRoute(web.DynamicRoute):
