@@ -10,7 +10,7 @@ def test_handler(app, client):
     """
     from muffin.handler import register
 
-    @app.register(muffin.sre('/res(/{res})?/?'))
+    @app.register('/res(/{res})?/?')
     @app.register('/res/{res}')
     class Resource(muffin.Handler):
 
@@ -63,7 +63,7 @@ def test_handler(app, client):
     response = client.post_json('/res', {'data': 'json'})
     assert response.json == {'data': 'json'}
 
-    @app.register(muffin.sre('/res2(/{res2})?/?'))
+    @app.register('/res2(/{res2})?/?')
     class Resource2(muffin.Handler):
 
         methods = 'get',

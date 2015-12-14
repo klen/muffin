@@ -1,7 +1,4 @@
-"""
-    muffin description.
-
-"""
+"""Muffin is a web framework based on aiohttp."""
 
 # Package information
 # ===================
@@ -16,7 +13,6 @@ from aiohttp.web import *
 CONFIGURATION_ENVIRON_VARIABLE = 'MUFFIN_CONFIG'
 
 from .app import Application, Handler
-from .urls import sre
 from .utils import to_coroutine, MuffinException, local, import_submodules
 
 #  pylama:ignore=E402,W0611,W0401
