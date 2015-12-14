@@ -157,7 +157,7 @@ class Handler(object, metaclass=HandlerMeta):
             return response
 
         if isinstance(response, str):
-            return Response(text=response, content_type='text/html')
+            return Response(text=response, content_type='text/html', charset=self.app.cfg.ENCODING)
 
         if isinstance(response, (list, dict)):
             return Response(text=json.dumps(response), content_type='application/json')
@@ -167,8 +167,8 @@ class Handler(object, metaclass=HandlerMeta):
             return Response(text=json.dumps(response), content_type='application/json')
 
         if isinstance(response, bytes):
-            response = Response(body=response, content_type='text/html')
-            response.charset = self.app.cfg.ENCODING
+            response = Response(
+                body=response, content_type='text/html', charset=self.app.cfg.ENCODING)
             return response
 
         if response is None:

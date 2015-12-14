@@ -1,3 +1,7 @@
+2015-12-14  klen
+
+	* Muffin supports Aiohttp 0.19.0
+
 2015-10-28  klen
 
 	* Muffin supports Aiohttp 0.18.3
