@@ -116,7 +116,7 @@ def parse(path):
     """Parse URL path and convert it to regexp if needed."""
     parsed = re.sre_parse.parse(path)
     for case, _ in parsed:
-        if case not in ('literal', 'any'):
+        if case not in (re.sre_parse.LITERAL, re.sre_parse.ANY):
             break
     else:
         return path
@@ -146,7 +146,7 @@ class Traverser:
     def __iter__(self):
         """Iterate builded parts."""
         for state, value in self.parsed:
-            yield from getattr(self, "state_" + state, self.state_default)(value)
+            yield from getattr(self, "state_" + str(state).lower(), self.state_default)(value)
 
     def __next__(self):
         """Make self as generator."""
@@ -187,7 +187,7 @@ class Traverser:
     def state_in(self, value):
         """Parse ranges."""
         value = [val for val in Traverser(value, self.groups)]
-        if not value[0]:
+        if not value or not value[0]:
             for val in self.literals - set(value):
                 return (yield val)
         yield value[0]
@@ -197,10 +197,10 @@ class Traverser:
     @staticmethod
     def state_category(value):
         """Parse categories."""
-        if value == 'category_digit':
+        if value == re.sre_parse.CATEGORY_DIGIT:
             return (yield '0')
 
-        if value == 'category_word':
+        if value == re.sre_parse.CATEGORY_WORD:
             return (yield 'x')
 
     def state_subpattern(self, value):
