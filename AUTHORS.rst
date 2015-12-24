@@ -11,3 +11,4 @@ Contributors
 ------------
 
 * Diego Garcia (https://github.com/drgarcia1986)
+* Semyon Maryasin (https://github.com/MarSoft)
