@@ -143,11 +143,13 @@ def _initialize(app, loop, request):
 
 
 @pytest.fixture(scope='function')
-def client(app, loop):
+def client(app, loop, monkeypatch):
     """Provide test client for web requests."""
     app = WSGIHandler(app, loop)
     client_ = webtest.TestApp(app)
     client_.exception = webtest.AppError
+    monkeypatch.setattr(aiohttp.parsers.StreamWriter, 'set_tcp_cork', lambda s, v: True)
+    monkeypatch.setattr(aiohttp.parsers.StreamWriter, 'set_tcp_nodelay', lambda s, v: True)
     return client_
 
 
