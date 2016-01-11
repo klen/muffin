@@ -6,7 +6,6 @@ import sys
 from aiohttp.web import Application
 from aiohttp.worker import GunicornWebWorker
 from gunicorn.app.base import Application as VanillaGunicornApp
-from gunicorn.config import Config as VanillaGunicornConfig
 from gunicorn.util import import_app
 
 from . import CONFIGURATION_ENVIRON_VARIABLE
@@ -31,11 +30,14 @@ class GunicornApp(VanillaGunicornApp):
         logging.captureWarnings(True)
 
         if self.cfg.config:
-            self.load_config_from_file(self.cfg.config)
+            prefix = "python:"
+            if os.path.exists(self.cfg.config):
+                prefix = "file:"
+            self.load_config_from_file(prefix + self.cfg.config)
 
     def load_default_config(self):
         """Prepare default configuration."""
-        self.cfg = VanillaGunicornConfig(self.usage, prog=self.prog)
+        super(GunicornApp, self).load_default_config()
 
         # Remove unused settings
         del self.cfg.settings['paste']
