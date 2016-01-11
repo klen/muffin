@@ -73,7 +73,7 @@ $(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV) requirements-tests.txt
 	@touch $(VIRTUAL_ENV)/bin/py.test
 
 .PHONY: test
-# target: test - Runs tests
+# target: test - Run tests
 test: $(VIRTUAL_ENV)/bin/py.test
 	@$(VIRTUAL_ENV)/bin/py.test tests
 
