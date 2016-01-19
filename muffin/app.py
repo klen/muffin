@@ -60,7 +60,7 @@ class Application(web.Application):
     }
 
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
-                 handler_factory=web.RequestHandlerFactory, **OPTIONS):
+                 access_logger=None, handler_factory=web.RequestHandlerFactory, **OPTIONS):
         """Initialize the application."""
         super(Application, self).__init__(loop=loop, router=router, middlewares=middlewares,
                                           logger=logger, handler_factory=handler_factory)
@@ -83,6 +83,7 @@ class Application(web.Application):
 
         self.manage = Manager(self)
 
+
         # Setup static files option
         if isinstance(self.cfg.STATIC_FOLDERS, str):
             self.cfg.STATIC_FOLDERS = [self.cfg.STATIC_FOLDERS]
@@ -100,6 +101,7 @@ class Application(web.Application):
                 self.logger.exception(exc)
 
         # Setup Logging
+        self.access_logger = access_logger
         LOGGING_CFG = self.cfg.get('LOGGING')
         if LOGGING_CFG and isinstance(LOGGING_CFG, dict):
             logging.config.dictConfig(LOGGING_CFG)
