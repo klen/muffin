@@ -66,6 +66,16 @@ def test_struct():
         settings.test = 42
 
 
+def test_import_submodules():
+    from muffin import import_submodules
+
+    result = import_submodules('muffin')
+    assert len(result) == 8
+
+    result = import_submodules('muffin', 'plugins', 'manage')
+    assert len(result) == 2
+
+
 def test_generate_password_hash_default():
     from muffin.utils import generate_password_hash, check_password_hash
 
