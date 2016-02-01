@@ -75,4 +75,28 @@ def test_import_submodules():
     result = import_submodules('muffin', 'plugins', 'manage')
     assert len(result) == 2
 
+
+def test_generate_password_hash_default():
+    from muffin.utils import generate_password_hash, check_password_hash
+
+    password = '#secret$'
+    password_hash = generate_password_hash(password, digestmod='sha1', salt_length=8)
+
+    assert password_hash.startswith('sha1')
+    assert len(password_hash.split('$')[1]) == 8
+    assert len(password_hash.split('$')[2]) == 40
+    assert check_password_hash(password, password_hash)
+
+
+def test_generate_password_hash_sha256():
+    from muffin.utils import generate_password_hash, check_password_hash
+
+    password = '#secret$'
+    password_hash = generate_password_hash(password, digestmod='sha256', salt_length=20)
+
+    assert password_hash.startswith('sha256')
+    assert len(password_hash.split('$')[1]) == 20
+    assert len(password_hash.split('$')[2]) == 64
+    assert check_password_hash(password, password_hash)
+
 #  pylama:ignore=E0237

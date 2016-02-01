@@ -50,7 +50,7 @@ def create_signature(secret, value, digestmod='sha1', encoding='utf-8'):
     if isinstance(digestmod, str):
         digestmod = getattr(hashlib, digestmod, hashlib.sha1)
 
-    hm = hmac.new(secret, digestmod=hashlib.sha1)
+    hm = hmac.new(secret, digestmod=digestmod)
     hm.update(value)
     return hm.hexdigest()
 
