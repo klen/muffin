@@ -80,6 +80,7 @@ class Application(web.Application):
         self.logger.addHandler(ch)
         self.logger.setLevel(self.cfg.LOG_LEVEL)
         self.logger.name = 'muffin'
+        self.logger.propagate = False
 
         self.manage = Manager(self)
 
