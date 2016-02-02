@@ -39,7 +39,7 @@ def to_coroutine(func):
     return func
 
 
-def create_signature(secret, value, digestmod='sha1', encoding='utf-8'):
+def create_signature(secret, value, digestmod='sha256', encoding='utf-8'):
     """ Create HMAC Signature from secret for value. """
     if isinstance(secret, str):
         secret = secret.encode(encoding)
@@ -60,7 +60,7 @@ def check_signature(signature, *args, **kwargs):
     return hmac.compare_digest(signature, create_signature(*args, **kwargs))
 
 
-def generate_password_hash(password, digestmod='sha1', salt_length=8):
+def generate_password_hash(password, digestmod='sha256', salt_length=8):
     """ Hash a password with given method and salt length. """
 
     salt = ''.join(random.sample(SALT_CHARS, salt_length))
