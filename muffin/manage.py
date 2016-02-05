@@ -260,12 +260,12 @@ def run():
     app_uri = args_.app
     if ':' not in app_uri:
         app_uri += ':app'
-        try:
-            app = import_app(app_uri)
-            app.logger.info('Application is loaded: %s' % app.name)
-        except Exception as exc:
-            logging.exception(exc)
-            raise sys.exit(1)
+    try:
+        app = import_app(app_uri)
+        app.logger.info('Application is loaded: %s' % app.name)
+    except Exception as exc:
+        logging.exception(exc)
+        raise sys.exit(1)
 
     app.manage(*subargs_, prog='muffin %s' % args_.app)
 
