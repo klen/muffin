@@ -84,6 +84,7 @@ def WSGIHandler(app_, loop_):
             app_, app_.router, loop=loop_, keep_alive_on=False)
         handler = factory()
         handler.transport = io.BytesIO()
+        handler.transport.is_closing = lambda: False
         handler.transport._conn_lost = 0
         handler.transport.get_extra_info = lambda s: ('127.0.0.1', 80)
         handler.writer = aiohttp.parsers.StreamWriter(

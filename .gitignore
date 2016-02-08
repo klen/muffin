@@ -46,7 +46,9 @@ docs/_build
 
 # Other
 /.env
+/.python-version
 /.ropeproject
+/_
 /db.sqlite
 /libs
 /ops
@@ -54,6 +56,5 @@ docs/_build
 /plugins
 /probe.py
 /settings
-/todo.txt
-/_
 /test.py
+/todo.txt
