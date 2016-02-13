@@ -129,10 +129,12 @@ class Application(web.Application):
                     if name == name.upper() and not name.startswith('_')
                 })
 
-            except ImportError:
+            except ImportError as ie:
+                error_msg = ie.msg
                 config.CONFIG = None
                 self.register_on_start(
-                    lambda app: app.logger.warn("The configuration hasn't found: %s" % module))
+                    lambda app: app.logger.error("Error importing %s: %s" % (
+                        module, error_msg)))
 
         return config
 
