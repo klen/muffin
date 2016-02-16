@@ -2,7 +2,7 @@
 -e .
 
 mixer               == 5.4.1
-pytest              == 2.8.5
+pytest              == 2.8.7
 pytest-pythonpath   == 0.7
 webtest             == 2.0.20
 
