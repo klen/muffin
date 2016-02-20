@@ -129,12 +129,10 @@ class Application(web.Application):
                     if name == name.upper() and not name.startswith('_')
                 })
 
-            except ImportError as ie:
-                error_msg = ie.msg
+            except ImportError as exc:
                 config.CONFIG = None
                 self.register_on_start(
-                    lambda app: app.logger.error("Error importing %s: %s" % (
-                        module, error_msg)))
+                    lambda app: app.logger.error("Error importing %s: %s", module, exc))
 
         return config
 

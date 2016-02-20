@@ -64,7 +64,7 @@ upload: clean
 # =============
 
 $(VIRTUAL_ENV): requirements.txt
-	@[ -d $(VIRTUAL_ENV) ] || pyvenv $(VIRTUAL_ENV)
+	@[ -d $(VIRTUAL_ENV) ] || virtualenv --python=python3 $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/pip install -r requirements.txt
 	@touch $(VIRTUAL_ENV)
 
