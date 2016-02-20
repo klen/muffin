@@ -76,7 +76,8 @@ def WSGIHandler(app_, loop_):
         req = webob.Request(environ)
         vers = aiohttp.HttpVersion10 if req.http_version == 'HTTP/1.0' else aiohttp.HttpVersion11
         message = aiohttp.RawRequestMessage(
-            req.method, req.path_qs, vers, aiohttp.CIMultiDict(req.headers), False, False)
+            req.method, req.path_qs, vers, aiohttp.CIMultiDict(req.headers),
+            req.headers, False, False)
         payload = aiohttp.StreamReader(loop=loop_)
         payload.feed_data(req.body)
         payload.feed_eof()

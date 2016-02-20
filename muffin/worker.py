@@ -76,10 +76,9 @@ class GunicornWorker(GunicornWebWorker):
 
     def run(self):
         """Create asyncio server and start the loop."""
-        app = self.app.callable
-        self.loop.set_debug(app.cfg.DEBUG)
-        app._loop = self.loop
-        self.loop.run_until_complete(app.start())
+        self.loop.set_debug(self.wsgi.cfg.DEBUG)
+        self.wsgi._loop = self.loop
+        self.loop.run_until_complete(self.wsgi.start())
         super(GunicornWorker, self).run()
 
     def make_handler(self, app, *args):

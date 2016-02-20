@@ -32,10 +32,9 @@ def test_handler(app, client):
     assert set(Resource.methods) == set(['GET', 'POST'])
     assert asyncio.iscoroutinefunction(Resource.get)
 
-    assert 'resource.any' in app.router._routes
-
-    assert 'lama.post' in app.router
-    assert 'lama.patch' in app.router
+    assert 'resource' in app.router
+    assert 'resource.lama' in app.router
+    assert 'resource.rama' in app.router
 
     response = client.get('/res/lama/rama')
     assert response.text == 'LAMA'
@@ -93,7 +92,8 @@ def test_handler_func(app, client):
     @app.register('/test')
     def test(request):
         return 'TEST PASSED'
-    assert 'test' in app.router._routes
+
+    assert 'test' in app.router
 
     response = client.get('/test')
     assert response.text == 'TEST PASSED'
@@ -105,7 +105,7 @@ def test_handler_func(app, client):
     def test1(request):
         return 'TEST PASSED'
 
-    assert 'test1' in app.router._routes
+    assert 'test1' in app.router
 
     response = client.get('/test1')
     assert response.text == 'TEST PASSED'
@@ -114,14 +114,14 @@ def test_handler_func(app, client):
     def test2(request):
         return 'TEST PASSED'
 
-    assert 'test2' in app.router._routes
-    assert 'test2.post' in app.router._routes
+    assert 'test2' in app.router
 
     @app.register('/test3', methods='*')
     def test3(request):
         return 'TEST PASSED'
 
-    assert 'test3' in app.router._routes
+    assert 'test3' in app.router
+
     response = client.get('/test3')
     assert response.status_code == 200
 

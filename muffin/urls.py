@@ -1,11 +1,12 @@
 """URL helpers."""
 import re
-from os import path as ospath
+import asyncio
 from random import choice
 from string import printable
+from urllib.parse import unquote
 
-from aiohttp import web
 from aiohttp.hdrs import METH_ANY
+from aiohttp.web import AbstractRoute, Resource, StaticRoute as VanilaStaticRoute, UrlDispatcher
 
 
 DYNS_RE = re.compile(r'(\{[^{}]*\})')
@@ -13,22 +14,26 @@ DYNR_RE = re.compile(r'^\{(?P<var>[a-zA-Z][_a-zA-Z0-9]*)(?::(?P<re>.+))*\}$')
 RETYPE = type(re.compile('@'))
 
 
-class RawReRoute(web.DynamicRoute):
+class RawReResource(Resource):
 
-    """Support raw regular expresssions."""
+    """Allow any regexp in routes."""
 
-    def __init__(self, method, handler, name, pattern, *, expect_handler=None):
-        """Skip a formatter."""
+    def __init__(self, pattern, name=None):
+        """Ensure that the pattern is regexp."""
         if isinstance(pattern, str):
             pattern = re.compile(pattern)
-        super().__init__(method, handler, name, pattern, None, expect_handler=expect_handler)
+        self._pattern = pattern
+        super(RawReResource, self).__init__(name=name)
 
-    def match(self, path):
-        """Match given path."""
+    def get_info(self):
+        """Get the resource's information."""
+        return {'name': self._name, 'pattern': self._pattern}
+
+    def _match(self, path):
         match = self._pattern.match(path)
         if match is None:
             return None
-        return match.groupdict('')
+        return {key: unquote(value) for key, value in match.groupdict('').items()}
 
     def url(self, *subgroups, query=None, **groups):
         """Build URL."""
@@ -45,12 +50,73 @@ class RawReRoute(web.DynamicRoute):
 
     def __repr__(self):
         """Fix representation."""
-        name = "'" + self.name + "' " if self.name is not None else ""
-        return "<RawReRoute {name}[{method}] {pattern} -> {handler!r}".format(
-            name=name, method=self.method, pattern=self._pattern, handler=self.handler)
+        return "<RawReResource '%s' %s>" % (self.name or '', self._pattern)
 
 
-class StaticRoute(web.StaticRoute):
+# TODO: Remove me when aiohttp > 0.21.2 will be relased. See #794
+class StaticResource(Resource):
+
+    def __init__(self, route):
+        super(StaticResource, self).__init__()
+
+        assert isinstance(route, AbstractRoute), \
+            'Instance of Route class is required, got {!r}'.format(route)
+        self._route = route
+        self._routes.append(route)
+
+    def url(self, **kwargs):
+        return self._route.url(**kwargs)
+
+    def get_info(self):
+        return self._route.get_info()
+
+    def _match(self, path):
+        return self._route.match(path)
+
+    def __len__(self):
+        return 1
+
+    def __iter__(self):
+        yield self._route
+
+
+class ParentResource(Resource):
+
+    def __init__(self, path, *, name=None):
+        super(ParentResource, self).__init__(name=name)
+        self._path = path.rstrip('/')
+        self.router = UrlDispatcher()
+
+    @asyncio.coroutine
+    def resolve(self, method, path):
+        allowed_methods = set()
+        if not path.startswith(self._path + '/'):
+            return None, allowed_methods
+
+        path = path[len(self._path):]
+
+        for resource in self.router._resources:
+            match_dict, allowed = yield from resource.resolve(method, path)
+            if match_dict is not None:
+                return match_dict, allowed_methods
+            else:
+                allowed_methods |= allowed
+        return None, allowed_methods
+
+    def add_resource(self, path, *, name=None):
+        """Add resource."""
+        return self.router.add_resource(path, name=name)
+
+    def get_info(self):
+        return {'path': self._path}
+
+    def url(self, name=None, **kwargs):
+        if name:
+            return self._path + self.router[name].url(**kwargs)
+        return self._path + '/'
+
+
+class StaticRoute(VanilaStaticRoute):
 
     """Support multiple static resorces."""
 
@@ -60,56 +126,53 @@ class StaticRoute(web.StaticRoute):
             return None
 
         filename = path[self._prefix_len:]
-        filepath = ospath.join(self._directory, filename)
-        if not ospath.isfile(filepath):
+        try:
+            self._directory.joinpath(filename).resolve()
+            return {'filename': filename}
+        except (ValueError, FileNotFoundError):
             return None
 
-        return {'filename': path[self._prefix_len:]}
 
-
-def routes_register(app, view, *paths, methods=None, router=None, name=''):
+def routes_register(app, handler, *paths, methods=None, router=None, name=None):
     """Register routes."""
     if router is None:
         router = app.router
 
-    methods = methods or [METH_ANY]
-    routes = []
+    resources = []
 
-    for method in methods:
-        for path in paths:
+    for path in paths:
 
-            # Register any exception to app
-            if isinstance(path, type) and issubclass(path, Exception):
-                app._error_handlers[path] = view
-                continue
+        # Register any exception to app
+        if isinstance(path, type) and issubclass(path, Exception):
+            app._error_handlers[path] = handler
+            continue
 
-            num = 1
-            cname = name
+        # Ensure that names are unique
+        name = str(name or '')
+        rname, rnum = name, 2
+        while rname in router:
+            rname = "%s%d" % (rname, rnum)
 
-            # Ensure that the route's name is unique
-            if cname in router:
-                method_ = method.lower().replace('*', 'any')
-                cname, num = name + "." + method_, 1
-                while cname in router:
-                    cname = "%s%d.%s" % (name, num, method_)
-                    num += 1
+        path = parse(path)
+        if isinstance(path, RETYPE):
+            resource = RawReResource(path, name=rname)
+            router._reg_resource(resource)
 
-            # Is the path a regexp?
-            path = parse(path)
+        else:
+            resource = router.add_resource(path, name=rname)
 
-            # Support regex as path
-            if isinstance(path, RETYPE):
-                routes.append(router.register_route(RawReRoute(method.upper(), view, cname, path)))
-                continue
-
-            # Support custom methods
+        for method in methods or [METH_ANY]:
             method = method.upper()
-            if method not in router.METHODS:
-                router.METHODS.add(method)
 
-            routes.append(router.add_route(method, path, view, name=cname))
+            # Muffin allows to use any method
+            if method not in AbstractRoute.METHODS:
+                AbstractRoute.METHODS.add(method)
 
-    return routes
+            resource.add_route(method, handler)
+
+        resources.append(resource)
+
+    return resources
 
 
 def parse(path):

@@ -1,11 +1,12 @@
 """Base handler class."""
 import inspect
+import functools
 from asyncio import coroutine, iscoroutine
 
 import ujson as json
 from aiohttp.hdrs import METH_ANY
 from aiohttp.multidict import MultiDict, MultiDictProxy
-from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
+from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response, View
 
 from muffin.urls import routes_register
 from muffin.utils import to_coroutine, abcoroutine
@@ -116,10 +117,12 @@ class Handler(object, metaclass=HandlerMeta):
                 if not hasattr(m, ROUTE_PARAMS_ATTR):
                     continue
                 paths_, methods_, name_ = getattr(m, ROUTE_PARAMS_ATTR)
+                name_ = name_ or ("%s.%s" % (cls.name, m.__name__))
                 delattr(m, ROUTE_PARAMS_ATTR)
                 cls.app.register(*paths_, methods=methods_, name=name_, handler=cls)(m)
 
         @coroutine
+        @functools.wraps(cls)
         def handler(request):
             return cls().dispatch(request, view=view)
 
@@ -146,6 +149,8 @@ class Handler(object, metaclass=HandlerMeta):
         response = yield from method(request, **kwargs)
 
         return (yield from self.make_response(request, response))
+
+    __iter__ = dispatch
 
     @abcoroutine
     def make_response(self, request, response):

@@ -1,7 +1,6 @@
 """Implement Muffin Application."""
 import logging.config
 import os
-import re
 from asyncio import coroutine, iscoroutine, Future
 from importlib import import_module
 from inspect import isfunction, isclass, ismethod
@@ -13,11 +12,8 @@ from cached_property import cached_property
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
 from muffin.handler import Handler
 from muffin.manage import Manager
-from muffin.urls import StaticRoute
+from muffin.urls import StaticRoute, StaticResource
 from muffin.utils import LStruct, to_coroutine
-
-
-RETYPE = type(re.compile('@'))
 
 
 class MuffinException(Exception):
@@ -73,6 +69,7 @@ class Application(web.Application):
         # Overide options
         self.defaults['CONFIG'] = OPTIONS.pop('CONFIG', self.defaults['CONFIG'])
         self.cfg.update(OPTIONS)
+        self._debug = self.cfg.DEBUG
 
         # Setup logging
         ch = logging.StreamHandler()
@@ -82,10 +79,15 @@ class Application(web.Application):
         self.logger.name = 'muffin'
         self.logger.propagate = False
 
+        self.access_logger = access_logger
+        LOGGING_CFG = self.cfg.get('LOGGING')
+        if LOGGING_CFG and isinstance(LOGGING_CFG, dict):
+            logging.config.dictConfig(LOGGING_CFG)
+
+        # Setup CLI
         self.manage = Manager(self)
 
-
-        # Setup static files option
+        # Setup static files
         if isinstance(self.cfg.STATIC_FOLDERS, str):
             self.cfg.STATIC_FOLDERS = [self.cfg.STATIC_FOLDERS]
 
@@ -100,12 +102,6 @@ class Application(web.Application):
             except Exception as exc:  # noqa
                 self.logger.error('Plugin is invalid: %s', plugin)
                 self.logger.exception(exc)
-
-        # Setup Logging
-        self.access_logger = access_logger
-        LOGGING_CFG = self.cfg.get('LOGGING')
-        if LOGGING_CFG and isinstance(LOGGING_CFG, dict):
-            logging.config.dictConfig(LOGGING_CFG)
 
     def __repr__(self):
         """Human readable representation."""
@@ -179,7 +175,9 @@ class Application(web.Application):
         for path in self.cfg.STATIC_FOLDERS:
             if os.path.isdir(path):
                 route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path)
-                self.router.register_route(route)
+                # TODO: Remove me when aiohttp > 0.21.2 will be relased. See #794
+                resource = StaticResource(route)
+                self.router._reg_resource(resource)
 
             else:
                 self.logger.warn('Disable static folder (hasnt found): %s', path)
