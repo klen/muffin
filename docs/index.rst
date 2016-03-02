@@ -4,7 +4,6 @@ Welcome to Muffin
 .. toctree::
    :maxdepth: 2
    
-   index
    installation
    quickstart
 
