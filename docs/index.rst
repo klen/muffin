@@ -1,6 +1,13 @@
 Welcome to Muffin
 =================
 
+.. toctree::
+   :maxdepth: 2
+   
+   index
+   installation
+   quickstart
+
 .. image:: static/logo.png
    :height: 100px
    :width: 100px
