@@ -1,7 +1,7 @@
 Welcome to Muffin
 ================
 
-.. image:: https://raw.github.com/klen/muffin/develop/docs/static/logo.png
+.. image:: static/logo.png
    :height: 100px
    :width: 100px
    :alt: Muffin: A web-framework based on Asyncio stack
