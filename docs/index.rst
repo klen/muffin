@@ -1,12 +1,6 @@
 Welcome to Muffin
 =================
 
-.. toctree::
-   :maxdepth: 2
-   
-   installation
-   quickstart
-
 .. image:: static/logo.png
    :height: 100px
    :width: 100px
@@ -30,6 +24,15 @@ Example "Hello World" with the Muffin:
     def hello(request):
         name = request.match_info.get('name', 'anonymous')
         return 'Hello %s!' % name
+        
+      
+Table of Contents
+=================
+        
+.. toctree::
+   
+   installation
+   quickstart
 
 
 .. _aiohttp: http://aiohttp.readthedocs.org/en/stable/
