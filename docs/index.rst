@@ -1,5 +1,5 @@
 Welcome to Muffin
-================
+=================
 
 .. image:: static/logo.png
    :height: 100px
