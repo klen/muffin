@@ -33,6 +33,7 @@ Table of Contents
    
    installation
    quickstart
+   plugins
 
 
 .. _aiohttp: http://aiohttp.readthedocs.org/en/stable/
