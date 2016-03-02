@@ -133,7 +133,10 @@ latex_elements = {
 }
 latex_use_parts = True
 
-latex_additional_files = ['muffinstyle.sty', 'logo.pdf']
+latex_additional_files = [
+    # 'muffinstyle.sty',
+    'static/logo.png'
+]
 
 
 # -- Options for Epub output ---------------------------------------------------
