@@ -34,6 +34,7 @@ Table of Contents
    installation
    quickstart
    configuration
+   cli
    plugins
 
 
