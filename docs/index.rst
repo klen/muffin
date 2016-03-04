@@ -33,6 +33,7 @@ Table of Contents
    
    installation
    quickstart
+   configuration
    plugins
 
 
