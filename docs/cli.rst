@@ -23,7 +23,7 @@ Usage:
 
 Run the application shell.
 
-optional arguments:
+Optional arguments:
   -h, --help    Show this help message and exit
   --no-ipython  Disable use ipython as shell
 
@@ -41,7 +41,7 @@ Usage:
 
 Run the application.
 
-optional arguments:
+Optional arguments:
   -h, --help                  show this help message and exit
   --bind SOCKET               The socket to bind ['127.0.0.1:5000']
   --daemon                    Enable daemonize the program
@@ -59,6 +59,23 @@ optional arguments:
 collect
 ~~~~~~~
 
+Usage: 
+
+.. code-block:: console
+
+    $ muffin collect [-h] [--source SOURCE] [--replace] [--no-symlink] destination
+
+Collect static files from the application and plugins.
+
+Positional arguments:
+
+- Destination - path where static files will be collected.
+
+Optional arguments:
+  -h, --help       show this help message and exit
+  --source DIR     Sources from static files will be copied
+  --replace        Enable replace existed files
+  --no-symlink     Disable create symlinks except file copy
 
 
 Write a custom command
