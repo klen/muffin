@@ -7,7 +7,7 @@ library installed, how it described in :ref:`installation` section.
 An Example Application
 ----------------------
 
-A minimal Muffin application looks something like this:
+Example "Hello User" with the Muffin:
 
 .. code-block:: python
 
@@ -26,6 +26,12 @@ What did that code do?
    this class will be our application.
 2. Next we create an instance of this class. The first argument is the name of
    the application.
-3. We then use the :meth:`~muffin.Application.route` decorator to tell Muffin
+3. We then use the :meth:`~muffin.Application.register` decorator to tell Muffin
    what URLs should trigger our handler function.
 4. The function returns the message we want to display in the user's browser.
+
+Save the script as example.py and run it:
+
+.. code-block:: console
+
+    $ python3 example.py run

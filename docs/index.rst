@@ -1,7 +1,7 @@
 Welcome to Muffin
-================
+=================
 
-.. image:: https://raw.github.com/klen/muffin/develop/docs/static/logo.png
+.. image:: static/logo.png
    :height: 100px
    :width: 100px
    :alt: Muffin: A web-framework based on Asyncio stack
@@ -24,6 +24,19 @@ Example "Hello World" with the Muffin:
     def hello(request):
         name = request.match_info.get('name', 'anonymous')
         return 'Hello %s!' % name
+        
+      
+Table of Contents
+=================
+        
+.. toctree::
+   
+   installation
+   quickstart
+   configuration
+   cli
+   testing
+   plugins
 
 
 .. _aiohttp: http://aiohttp.readthedocs.org/en/stable/
