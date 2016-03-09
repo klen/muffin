@@ -35,6 +35,7 @@ Table of Contents
    quickstart
    configuration
    cli
+   testing
    plugins
 
 
