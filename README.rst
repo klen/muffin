@@ -24,6 +24,11 @@ The Muffin -- A web framework based on Asyncio_ stack ``(early beta)``
 
 Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
 
+.. _documentation:
+
+**Docs are available at https://muffin.readthedocs.org/. Pull requests
+with documentation enhancements and/or fixes are awesome and most welcome.**
+
 Example "Hello User" with the Muffin:
 
 .. code-block:: python
