@@ -53,9 +53,8 @@ def test_register_url(app):
     def handler():
         pass
 
-    routes_register(app, handler,
-                    '/path/{id:\d+}', '/path/add', '/other/path',
-                    name='handler')
-    assert 'handler' in app.router
-    assert 'handler2' in app.router
-    assert 'handler3' in app.router
+    routes_register(app, handler, '/path/{id:\d+}', '/path/add', '/other/path', name='endpoint')
+
+    assert 'endpoint' in app.router and app.router['endpoint'].url(id=5) == '/path/5'
+    assert 'endpoint2' in app.router and app.router['endpoint2'].url() == '/path/add'
+    assert 'endpoint3' in app.router and app.router['endpoint3'].url() == '/other/path'
