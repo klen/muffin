@@ -45,3 +45,15 @@ def test_parent(loop):
 
     assert parent.url() == '/api/'
     assert parent.url(name='test') == '/api/test/'
+
+def test_register_url(app):
+    from muffin.urls import routes_register
+
+    def handler():
+        pass
+
+    routes_register(app, handler,
+                    '/path/{id:\d+}', '/path/add', '/other/path')
+    assert 'handler' in app.router
+    assert 'handler2' in app.router
+    assert 'handler3' in app.router
