@@ -3,6 +3,7 @@ import argparse
 import asyncio
 import inspect
 import logging
+import multiprocessing
 import os
 import re
 import sys
@@ -85,10 +86,14 @@ class Manager(object):
 
             app.loop.run_until_complete(app.finish())
 
+        workers = 1
+        if not app.cfg.DEBUG:
+            workers = multiprocessing.cpu_count()
+
         @self.command
         def run(bind: str='127.0.0.1:5000', daemon: bool=False, pid: str=None,
                 reload: bool=self.app.cfg.DEBUG, timeout: int=30, name: str=self.app.name,
-                worker_class: str='muffin.worker.GunicornWorker', workers: int=1,
+                worker_class: str='muffin.worker.GunicornWorker', workers: int=workers,
                 log_file: str=None, access_logfile: str=self.app.cfg.ACCESS_LOG):
             """Run the application.
 
@@ -115,7 +120,9 @@ class Manager(object):
             gapp.cfg.set('reload', reload)
             gapp.cfg.set('timeout', timeout)
             gapp.cfg.set('worker_class', worker_class)
-            gapp.cfg.set('workers', workers)
+            if workers:
+                gapp.cfg.set('workers', workers)
+
             if log_file:
                 gapp.cfg.set('errorlog', log_file)
             if access_logfile:
