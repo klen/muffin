@@ -151,7 +151,8 @@ def routes_register(app, handler, *paths, methods=None, router=None, name=None):
         name = str(name or '')
         rname, rnum = name, 2
         while rname in router:
-            rname = "%s%d" % (rname, rnum)
+            rname = "%s%d" % (name, rnum)
+            rnum += 1
 
         path = parse(path)
         if isinstance(path, RETYPE):
