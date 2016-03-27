@@ -127,8 +127,8 @@ class Application(web.Application):
 
             except ImportError as exc:
                 config.CONFIG = None
-                self.register_on_start(
-                    lambda app: app.logger.error("Error importing %s: %s", module, exc))
+                message = "Error importing %s: %s" % (module, exc)
+                self.register_on_start(lambda app: app.logger.error(message))
 
         return config
 
