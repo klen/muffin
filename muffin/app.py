@@ -206,6 +206,7 @@ class Application(web.Application):
     def register_on_start(self, func, *args, **kwargs):
         """Register a start callback."""
         self._start_callbacks.append((func, args, kwargs))
+        return func
 
     def register(self, *paths, methods=None, name=None, handler=None):
         """Register function/coroutine/muffin.Handler with the application.
