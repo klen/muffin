@@ -155,14 +155,15 @@ def client(app, loop, monkeypatch):
     return client_
 
 
-@pytest.fixture(scope='function')
-def db(app, request):
+@pytest.yield_fixture(scope='function')
+def db(app):
     """ Run tests in transaction. """
-    if 'peewee' in app.plugins:
-        app.ps.peewee.database.set_autocommit(False)
-        app.ps.peewee.database.begin()
-        request.addfinalizer(app.ps.peewee.database.rollback)
-        return app.ps.peewee.database
+    if not 'peewee' in app.plugins:
+        yield None
+    else:
+        with app.ps.peewee.database.atomic() as trans:
+            yield app.ps.peewee.database
+            trans.rollback()
 
 
 @pytest.fixture(scope='session')
