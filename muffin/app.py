@@ -53,6 +53,12 @@ class Application(web.Application):
         # Setup static files in development
         'STATIC_PREFIX': '/static',
         'STATIC_FOLDERS': ['static'],
+
+        # JSON options
+        'JSON_ENSURE_ASCII': True,
+        'JSON_INDENT_SIZE': 0,
+        'JSON_ESCAPE_FORWARD_SLASHES': True,
+        'JSON_CONTENT_TYPE': 'application/json',
     }
 
     uri = None
