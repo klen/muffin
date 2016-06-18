@@ -69,6 +69,9 @@ class GunicornApp(VanillaGunicornApp):
             module, *_ = self.app_uri.split(':', 1)
             if module in sys.modules:
                 reload(sys.modules[module])
+                for path, mod in sys.modules.items():
+                    if path.startswith("%s." % module):
+                        reload(mod)
             app = import_app(app)
 
         return app
