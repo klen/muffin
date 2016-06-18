@@ -2,6 +2,7 @@
 import logging
 import os
 import sys
+from importlib import reload
 
 from aiohttp.web import Application
 from aiohttp.worker import GunicornWebWorker
@@ -65,6 +66,9 @@ class GunicornApp(VanillaGunicornApp):
 
         app = self.app_uri
         if not isinstance(app, Application):
+            module, *_ = self.app_uri.split(':', 1)
+            if module in sys.modules:
+                reload(sys.modules[module])
             app = import_app(app)
 
         return app

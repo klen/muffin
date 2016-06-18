@@ -55,6 +55,8 @@ class Application(web.Application):
         'STATIC_FOLDERS': ['static'],
     }
 
+    uri = None
+
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
                  access_logger=None, handler_factory=web.RequestHandlerFactory, **OPTIONS):
         """Initialize the application."""

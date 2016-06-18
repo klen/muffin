@@ -112,7 +112,7 @@ class Manager(object):
 
             gapp = GunicornApp(
                 usage="%(prog)s run [OPTIONS]", config=self.app.cfg.CONFIG)
-            gapp.app_uri = app
+            gapp.app_uri = app.uri or app
             gapp.cfg.set('bind', bind)
             gapp.cfg.set('daemon', daemon)
             gapp.cfg.set('pidfile', pid)
@@ -269,6 +269,7 @@ def run():
         app_uri += ':app'
     try:
         app = import_app(app_uri)
+        app.uri = app_uri
         app.logger.info('Application is loaded: %s' % app.name)
     except Exception as exc:
         logging.exception(exc)
