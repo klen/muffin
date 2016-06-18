@@ -53,6 +53,11 @@ class Application(web.Application):
         # Setup static files in development
         'STATIC_PREFIX': '/static',
         'STATIC_FOLDERS': ['static'],
+
+        # JSON options
+        'JSON_ENSURE_ASCII': False,
+        'JSON_INDENT_SIZE': 0,
+        'JSON_CONTENT_TYPE': 'application/json',
     }
 
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
