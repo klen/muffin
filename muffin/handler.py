@@ -164,11 +164,9 @@ class Handler(object, metaclass=HandlerMeta):
         if isinstance(response, str):
             return Response(text=response, content_type='text/html', charset=self.app.cfg.ENCODING)
 
-        if isinstance(response, (list, dict)):
-            return Response(text=json.dumps(response), content_type='application/json')
-
-        if isinstance(response, (MultiDict, MultiDictProxy)):
-            response = dict(response)
+        if isinstance(response, (list, dict, MultiDict, MultiDictProxy)):
+            if isinstance(response, (MultiDict, MultiDictProxy)):
+                response = dict(response)
             return Response(text=json.dumps(response), content_type='application/json')
 
         if isinstance(response, bytes):
