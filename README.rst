@@ -142,6 +142,17 @@ The list of some Muffin plugins (please make PR if you want to provide more):
   .. image:: https://img.shields.io/github/issues-raw/klen/muffin-mongo.svg?style=flat-square
      :target: https://github.com/klen/muffin-mongo/issues
 
+* `Muffin-Motor   <https://github.com/drgarcia1986/muffin-motor>`_   -- MongoDB (motor) support
+
+  .. image:: http://img.shields.io/travis/drgarcia1986/muffin-motor.svg?style=flat-square
+     :target: http://travis-ci.org/drgarcia1986/muffin-motor
+
+  .. image:: http://img.shields.io/pypi/v/muffin-motor.svg?style=flat-square
+     :target: https://pypi.python.org/pypi/muffin-motor
+
+  .. image:: https://img.shields.io/github/issues-raw/drgarcia1986/muffin-motor.svg?style=flat-square
+     :target: https://github.com/drgarcia1986/muffin-motor/issues
+
 * `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
 
   .. image:: http://img.shields.io/travis/klen/muffin-oauth.svg?style=flat-square
