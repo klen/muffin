@@ -257,7 +257,7 @@ class Application(web.Application):
         if len(paths) == 1 and callable(paths[0]):
             view = paths[0]
 
-            if isclass(view) and issubclass(view, web.HTTPError):
+            if isclass(view) and issubclass(view, BaseException):
                 return wrapper
 
             paths = []
@@ -277,9 +277,10 @@ def exc_middleware_factory(app, handler):
         try:
             return (yield from handler(request))
         except Exception as exc:
-            if type(exc) in app._error_handlers:
-                request.exception = exc
-                return (yield from app._error_handlers[type(exc)](request))
+            for cls in type(exc).mro():
+                if cls in app._error_handlers:
+                    request.exception = exc
+                    return (yield from app._error_handlers[type(exc)](request))
             raise
     return middleware
 

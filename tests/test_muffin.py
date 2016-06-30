@@ -119,15 +119,25 @@ def test_password_hash():
 
 def test_error_pages(client, loop, app):
 
+    @app.register(muffin.HTTPNotFound)
     def handle_404(request):
         return muffin.Response(text='Muffin 404', status=404)
 
-    app.register(muffin.HTTPNotFound)(handle_404)
+    @app.register(Exception)
+    def handle_500(request):
+        return muffin.Response(text='Muffin 500')
+
+    @app.register('/500')
+    def raise_500(request):
+        raise Exception('Unknow exception.')
 
     loop.run_until_complete(app.start())
 
     response = client.get('/404', status=404)
     assert 'Muffin 404' == response.text
+
+    response = client.get('/500')
+    assert response.text == 'Muffin 500'
 
     @app.register('/400')
     def raise_400(request):
@@ -139,17 +149,3 @@ def test_error_pages(client, loop, app):
 
     response = client.get('/400', status=400)
     assert 'Muffin 400' == response.text
-
-    @app.register('/500', muffin.HTTPInternalServerError)
-    def handle_500(request):
-        return muffin.Response(text='Muffin 500', status=500)
-
-    @app.register('/raise500')
-    def raise_500(request):
-        raise muffin.HTTPInternalServerError()
-
-    response = client.get('/500', status=500)
-    assert 'Muffin 500' == response.text
-
-    response = client.get('/raise500', status=500)
-    assert 'Muffin 500' == response.text

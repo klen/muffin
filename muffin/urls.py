@@ -143,7 +143,7 @@ def routes_register(app, handler, *paths, methods=None, router=None, name=None):
     for path in paths:
 
         # Register any exception to app
-        if isinstance(path, type) and issubclass(path, Exception):
+        if isinstance(path, type) and issubclass(path, BaseException):
             app._error_handlers[path] = handler
             continue
 
