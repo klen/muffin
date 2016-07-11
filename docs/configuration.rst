@@ -50,6 +50,10 @@ Base Muffin options and default values:
         'STATIC_PREFIX': '/static'
         'STATIC_FOLDERS': ['static']
 
+        # Setup recognition of HTTPS requests through reverse proxy:
+        # to enable, provide a tuple of (header, value)
+        'SECURE_PROXY_SSL_HEADER': None
+
 
 Configuring logging
 ^^^^^^^^^^^^^^^^^^^
