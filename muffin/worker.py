@@ -94,6 +94,7 @@ class GunicornWorker(GunicornWebWorker):
             logger=self.log, debug=app.cfg.DEBUG,
             keep_alive=self.cfg.keepalive, timeout=self.cfg.timeout,
             access_log=app.access_logger or self.log.access_log,
-            access_log_format=app.cfg.ACCESS_LOG_FORMAT
+            access_log_format=app.cfg.ACCESS_LOG_FORMAT,
+            secure_proxy_ssl_header=app.cfg.SECURE_PROXY_SSL_HEADER
         )
         return handler

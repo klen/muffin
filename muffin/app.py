@@ -59,6 +59,10 @@ class Application(web.Application):
         'JSON_INDENT_SIZE': 0,
         'JSON_ESCAPE_FORWARD_SLASHES': True,
         'JSON_CONTENT_TYPE': 'application/json',
+
+        # Which header should be present to treat request as HTTPS -
+        # tuple or (header, value) or None to disable
+        'SECURE_PROXY_SSL_HEADER': None,
     }
 
     uri = None
