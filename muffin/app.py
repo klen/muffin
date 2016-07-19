@@ -284,7 +284,7 @@ def exc_middleware_factory(app, handler):
             for cls in type(exc).mro():
                 if cls in app._error_handlers:
                     request.exception = exc
-                    return (yield from app._error_handlers[type(exc)](request))
+                    return (yield from app._error_handlers[cls](request))
             raise
     return middleware
 
