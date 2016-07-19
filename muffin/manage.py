@@ -78,7 +78,7 @@ class Manager(object):
                 except ImportError:
                     pass
                 else:
-                    sh(global_ns={}, local_ns=namespace)
+                    sh(local_ns=namespace)
                     return
 
             from code import interact
