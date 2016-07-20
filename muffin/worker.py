@@ -1,8 +1,8 @@
 """Gunicorn support."""
+import asyncio
 import logging
 import os
 import sys
-from importlib import reload
 
 from aiohttp.web import Application
 from aiohttp.worker import GunicornWebWorker
@@ -69,7 +69,10 @@ class GunicornApp(VanillaGunicornApp):
             module, *_ = self.app_uri.split(':', 1)
             if module in sys.modules:
                 sys.modules.pop(module)
-                paths = [p for p in sys.modules if p.startswith('%s.' % module)]
+                paths = [
+                    p for p in sys.modules
+                    if p.startswith('%s.' % module)
+                ]
                 for path in paths:
                     sys.modules.pop(path)
             app = import_app(app)
@@ -98,3 +101,13 @@ class GunicornWorker(GunicornWebWorker):
             secure_proxy_ssl_header=app.cfg.SECURE_PROXY_SSL_HEADER
         )
         return handler
+
+
+class GunicornUVLoopWorker(GunicornWorker):
+    """Work with asyncio application (using uvloop)"""
+
+    def init_process(self):
+        import uvloop
+        asyncio.get_event_loop().close()
+        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        super().init_process()
