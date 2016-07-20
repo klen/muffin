@@ -19,7 +19,7 @@ class GunicornApp(VanillaGunicornApp):
     def __init__(self, usage=None, prog=None, config=None):
         """Initialize self."""
         self._cfg = config
-        super(GunicornApp, self).__init__(usage=usage, prog=prog)
+        super().__init__(usage=usage, prog=prog)
 
     def init(self, parser, opts, args):
         """Initialize the application."""
@@ -38,7 +38,7 @@ class GunicornApp(VanillaGunicornApp):
 
     def load_default_config(self):
         """Prepare default configuration."""
-        super(GunicornApp, self).load_default_config()
+        super().load_default_config()
 
         # Remove unused settings
         del self.cfg.settings['paste']
@@ -89,7 +89,7 @@ class GunicornWorker(GunicornWebWorker):
         self.loop.set_debug(self.wsgi.cfg.DEBUG)
         self.wsgi._loop = self.loop
         self.loop.run_until_complete(self.wsgi.start())
-        super(GunicornWorker, self).run()
+        super().run()
 
     def make_handler(self, app, *args):
         """Create a handler."""

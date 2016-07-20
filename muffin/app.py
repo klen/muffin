@@ -70,7 +70,7 @@ class Application(web.Application):
     def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
                  access_logger=None, handler_factory=web.RequestHandlerFactory, **OPTIONS):
         """Initialize the application."""
-        super(Application, self).__init__(loop=loop, router=router, middlewares=middlewares,
+        super().__init__(loop=loop, router=router, middlewares=middlewares,
                                           logger=logger, handler_factory=handler_factory)
 
         self.name = name

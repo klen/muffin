@@ -23,7 +23,7 @@ class RawReResource(Resource):
         if isinstance(pattern, str):
             pattern = re.compile(pattern)
         self._pattern = pattern
-        super(RawReResource, self).__init__(name=name)
+        super().__init__(name=name)
 
     def get_info(self):
         """Get the resource's information."""
@@ -57,7 +57,7 @@ class RawReResource(Resource):
 class StaticResource(Resource):
 
     def __init__(self, route):
-        super(StaticResource, self).__init__()
+        super().__init__()
 
         assert isinstance(route, AbstractRoute), \
             'Instance of Route class is required, got {!r}'.format(route)
@@ -83,7 +83,7 @@ class StaticResource(Resource):
 class ParentResource(Resource):
 
     def __init__(self, path, *, name=None):
-        super(ParentResource, self).__init__(name=name)
+        super().__init__(name=name)
         self._path = path.rstrip('/')
         self.router = UrlDispatcher()
 
