@@ -99,7 +99,7 @@ class LStruct(Struct):
 
     def __init__(self, *args, **kwargs):
         object.__setattr__(self, '_lock', False)
-        super(LStruct, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def lock(self):
         object.__setattr__(self, '_lock', True)
@@ -107,7 +107,7 @@ class LStruct(Struct):
     def __setitem__(self, name, value):
         if self._lock:
             raise RuntimeError('`%s` is locked.' % type(self))
-        super(LStruct, self).__setitem__(name, value)
+        super().__setitem__(name, value)
 
 
 class local_storage:
@@ -185,7 +185,7 @@ class slocal(local):
     def __setattr__(self, name, value):
         """ Set attribute to current task's space. """
         if self._loop.is_running():
-            super(slocal, self).__setattr__(name, value)
+            super().__setattr__(name, value)
         else:
             setattr(tlocals, name, value)
 

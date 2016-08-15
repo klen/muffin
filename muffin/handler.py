@@ -63,7 +63,7 @@ class HandlerMeta(type):
             if callable(method) and hasattr(method, '_abcoroutine'):
                 mcs._coroutines.add(fname)
 
-        cls = super(HandlerMeta, mcs).__new__(mcs, name, bases, params)
+        cls = super().__new__(mcs, name, bases, params)
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:

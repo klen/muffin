@@ -1,8 +1,8 @@
 """Gunicorn support."""
+import asyncio
 import logging
 import os
 import sys
-from importlib import reload
 
 from aiohttp.web import Application
 from aiohttp.worker import GunicornWebWorker
@@ -19,7 +19,7 @@ class GunicornApp(VanillaGunicornApp):
     def __init__(self, usage=None, prog=None, config=None):
         """Initialize self."""
         self._cfg = config
-        super(GunicornApp, self).__init__(usage=usage, prog=prog)
+        super().__init__(usage=usage, prog=prog)
 
     def init(self, parser, opts, args):
         """Initialize the application."""
@@ -38,7 +38,7 @@ class GunicornApp(VanillaGunicornApp):
 
     def load_default_config(self):
         """Prepare default configuration."""
-        super(GunicornApp, self).load_default_config()
+        super().load_default_config()
 
         # Remove unused settings
         del self.cfg.settings['paste']
@@ -69,7 +69,10 @@ class GunicornApp(VanillaGunicornApp):
             module, *_ = self.app_uri.split(':', 1)
             if module in sys.modules:
                 sys.modules.pop(module)
-                paths = [p for p in sys.modules if p.startswith('%s.' % module)]
+                paths = [
+                    p for p in sys.modules
+                    if p.startswith('%s.' % module)
+                ]
                 for path in paths:
                     sys.modules.pop(path)
             app = import_app(app)
@@ -86,7 +89,7 @@ class GunicornWorker(GunicornWebWorker):
         self.loop.set_debug(self.wsgi.cfg.DEBUG)
         self.wsgi._loop = self.loop
         self.loop.run_until_complete(self.wsgi.start())
-        super(GunicornWorker, self).run()
+        super().run()
 
     def make_handler(self, app, *args):
         """Create a handler."""
@@ -98,3 +101,13 @@ class GunicornWorker(GunicornWebWorker):
             secure_proxy_ssl_header=app.cfg.SECURE_PROXY_SSL_HEADER
         )
         return handler
+
+
+class GunicornUVLoopWorker(GunicornWorker):
+    """Work with asyncio application (using uvloop)"""
+
+    def init_process(self):
+        import uvloop
+        asyncio.get_event_loop().close()
+        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        super().init_process()
