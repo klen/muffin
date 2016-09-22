@@ -173,6 +173,7 @@ class Application(web.Application):
 
         # Save plugin links
         self.ps[name] = plugin
+        return plugin
 
     @coroutine
     def start(self):

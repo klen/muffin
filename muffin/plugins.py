@@ -36,10 +36,12 @@ class BasePlugin(metaclass=PluginMeta):
 
     name = None
 
-    def __init__(self, **options):
+    def __init__(self, app=None, **options):
         """Save application and create he plugin's configuration."""
-        self.app = None
         self.config = self.cfg = LStruct(options)
+        self.app = app
+        if app:
+            app.install(self)
 
     def setup(self, app):
         """Initialize the plugin.
