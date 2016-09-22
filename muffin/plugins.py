@@ -40,7 +40,7 @@ class BasePlugin(metaclass=PluginMeta):
         """Save application and create he plugin's configuration."""
         self.config = self.cfg = LStruct(options)
         self.app = app
-        if app:
+        if app is not None:
             app.install(self)
 
     def setup(self, app):
