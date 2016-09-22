@@ -164,11 +164,6 @@ def routes_register(app, handler, *paths, methods=None, router=None, name=None):
 
         for method in methods or [METH_ANY]:
             method = method.upper()
-
-            # Muffin allows to use any method
-            if method not in AbstractRoute.METHODS:
-                AbstractRoute.METHODS.add(method)
-
             resource.add_route(method, handler)
 
         resources.append(resource)
