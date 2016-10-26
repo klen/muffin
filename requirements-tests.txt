@@ -4,7 +4,7 @@
 mixer==5.5.8
 pytest==3.0.3
 pytest-sugar        == 0.5.1
-pytest-pythonpath   == 0.7
+pytest-pythonpath==0.7.1
 webtest==2.0.23
 
 muffin-peewee==1.0.16
