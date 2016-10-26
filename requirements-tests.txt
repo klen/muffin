@@ -5,7 +5,7 @@ mixer               == 5.4.1
 pytest              == 2.8.7
 pytest-sugar        == 0.5.1
 pytest-pythonpath   == 0.7
-webtest             == 2.0.20
+webtest==2.0.23
 
 muffin_peewee
 muffin_session      >= 0.0.5
