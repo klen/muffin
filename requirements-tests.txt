@@ -7,7 +7,7 @@ pytest-sugar        == 0.5.1
 pytest-pythonpath   == 0.7
 webtest==2.0.23
 
-muffin_peewee
+muffin-peewee==1.0.16
 muffin_session      >= 0.0.5
 muffin_oauth        >= 0.0.9
 muffin_jinja2       >= 0.0.4
