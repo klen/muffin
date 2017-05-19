@@ -42,7 +42,6 @@ class GunicornApp(VanillaGunicornApp):
 
         # Remove unused settings
         del self.cfg.settings['paste']
-        del self.cfg.settings['django_settings']
 
         self.cfg.settings['worker_class'].default = (
             'muffin.worker.GunicornWorker'
