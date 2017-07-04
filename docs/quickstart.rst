@@ -19,6 +19,9 @@ Example "Hello User" with the Muffin:
     def hello(request):
         name = request.match_info.get('name', 'anonymous')
         return 'Hello %s!' % name
+    
+    if __name__ == '__main__':
+        app.manage()
 
 What did that code do?
 
