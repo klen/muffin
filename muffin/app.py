@@ -181,6 +181,9 @@ class Application(web.Application):
 
         Support for start-callbacks and lock the application's configuration and plugins.
         """
+        if self.cfg._lock:
+            return False
+
         if self._error_handlers and exc_middleware_factory not in self._middlewares:
             self._middlewares.append(exc_middleware_factory)
 
