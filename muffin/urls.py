@@ -127,8 +127,9 @@ class StaticRoute(VanilaStaticRoute):
 
         filename = path[self._prefix_len:]
         try:
-            self._directory.joinpath(filename).resolve()
-            return {'filename': filename}
+            pp = self._directory.joinpath(filename)
+            if pp.is_dir() or pp.is_file():
+                return {'filename': filename}
         except (ValueError, FileNotFoundError):
             return None
 
@@ -264,7 +265,7 @@ class Traverser:
 
     def state_subpattern(self, value):
         """Parse subpatterns."""
-        num, parsed = value
+        num, *_, parsed = value
         if num in self.groups:
             return (yield required(self.groups[num]))
 
