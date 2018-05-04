@@ -1,7 +1,6 @@
 -r requirements.txt
 -e .
 
-mixer               == 5.4.1
 pytest              == 2.8.7
 pytest-sugar        == 0.5.1
 pytest-pythonpath   == 0.7

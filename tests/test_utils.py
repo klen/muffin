@@ -99,4 +99,5 @@ def test_generate_password_hash_sha256():
     assert len(password_hash.split('$')[2]) == 64
     assert check_password_hash(password, password_hash)
 
+
 #  pylama:ignore=E0237

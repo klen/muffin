@@ -3,7 +3,7 @@ import pytest
 import muffin
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def app(loop):
     app = muffin.Application(
         'muffin', loop=loop,
@@ -17,5 +17,8 @@ def app(loop):
             'tests/static2',
         ))
 
-    loop.run_until_complete(app.start())
+    @app.register('/')
+    def index(request):
+        return 'OK'
+
     return app

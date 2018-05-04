@@ -4,7 +4,7 @@ import inspect
 from asyncio import coroutine, iscoroutine
 
 import ujson as json
-from aiohttp import MultiDict, MultiDictProxy
+from multidict import CIMultiDict, MultiDict, MultiDictProxy
 from aiohttp.hdrs import METH_ANY
 from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
 
@@ -95,6 +95,7 @@ class Handler(object, metaclass=HandlerMeta):
     @classmethod
     def from_view(cls, view, *methods, name=None):
         """Create a handler class from function or coroutine."""
+        docs = getattr(view, '__doc__', None)
         view = to_coroutine(view)
 
         if METH_ANY in methods:
@@ -105,6 +106,9 @@ class Handler(object, metaclass=HandlerMeta):
 
         params = {m.lower(): proxy for m in methods}
         params['methods'] = methods
+        if docs:
+            params['__doc__'] = docs
+
         return type(name or view.__name__, (cls,), params)
 
     @classmethod
@@ -164,8 +168,8 @@ class Handler(object, metaclass=HandlerMeta):
         if isinstance(response, str):
             return Response(text=response, content_type='text/html', charset=self.app.cfg.ENCODING)
 
-        if isinstance(response, (list, dict, MultiDict, MultiDictProxy)):
-            if isinstance(response, (MultiDict, MultiDictProxy)):
+        if isinstance(response, (list, dict, CIMultiDict, MultiDict, MultiDictProxy)):
+            if isinstance(response, (CIMultiDict, MultiDict, MultiDictProxy)):
                 response = dict(response)
             return Response(
                 text=json.dumps(

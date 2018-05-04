@@ -1,7 +1,6 @@
-aiohttp             == 1.0.5
+aiohttp             >= 3.0.6
 
-cached_property     >= 1.3.0
-chardet             >= 2.3.0
+cached_property     >= 1.4.0
 gunicorn            >= 19.7.1
 ujson               >= 1.35
 

@@ -5,14 +5,13 @@ from asyncio import coroutine, iscoroutine, Future
 from importlib import import_module
 from inspect import isfunction, isclass, ismethod
 
-from aiohttp import web
+from aiohttp import web, log
 from aiohttp.hdrs import METH_ANY
 from cached_property import cached_property
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE
 from muffin.handler import Handler
 from muffin.manage import Manager
-from muffin.urls import StaticRoute, StaticResource
 from muffin.utils import LStruct, to_coroutine
 
 
@@ -67,11 +66,12 @@ class Application(web.Application):
 
     uri = None
 
-    def __init__(self, name, *, loop=None, router=None, middlewares=(), logger=web.web_logger,
-                 access_logger=None, handler_factory=web.RequestHandlerFactory, **OPTIONS):
+    def __init__(self, name, *, logger=log.web_logger, router=None, middlewares=(),
+                 handler_args=None, client_max_size=1024**2, debug=False, **OPTIONS):
         """Initialize the application."""
-        super().__init__(loop=loop, router=router, middlewares=middlewares,
-                                          logger=logger, handler_factory=handler_factory)
+        super(Application, self).__init__(
+            logger=logger, router=router, middlewares=middlewares, handler_args=handler_args,
+            client_max_size=client_max_size, debug=debug)
 
         self.name = name
 
@@ -91,7 +91,6 @@ class Application(web.Application):
         self.logger.name = 'muffin'
         self.logger.propagate = False
 
-        self.access_logger = access_logger
         LOGGING_CFG = self.cfg.get('LOGGING')
         if LOGGING_CFG and isinstance(LOGGING_CFG, dict):
             logging.config.dictConfig(LOGGING_CFG)
@@ -166,10 +165,10 @@ class Application(web.Application):
             self.middlewares.append(plugin.middleware_factory)
 
         if hasattr(plugin, 'start'):
-            self.register_on_start(plugin.start)
+            self.on_startup.append(plugin.start)
 
         if hasattr(plugin, 'finish'):
-            self.register_on_finish(plugin.finish)
+            self.on_cleanup.append(plugin.finish)
 
         # Save plugin links
         self.ps[name] = plugin
@@ -181,6 +180,7 @@ class Application(web.Application):
 
         Support for start-callbacks and lock the application's configuration and plugins.
         """
+        import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
         if self.cfg._lock:
             return False
 
@@ -189,14 +189,7 @@ class Application(web.Application):
 
         # Register static paths
         for path in self.cfg.STATIC_FOLDERS:
-            if os.path.isdir(path):
-                route = StaticRoute(None, self.cfg.STATIC_PREFIX.rstrip('/') + '/', path)
-                # TODO: Remove me when aiohttp > 0.21.2 will be relased. See #794
-                resource = StaticResource(route)
-                self.router._reg_resource(resource)
-
-            else:
-                self.logger.warn('Disable static folder (hasnt found): %s', path)
+            self.router.add_static(self.cfg.STATIC_PREFIX, path)
 
         # Run start callbacks
         for (cb, args, kwargs) in self._start_callbacks:
@@ -218,11 +211,6 @@ class Application(web.Application):
         # Lock plugin's configurations
         for plugin in self.ps.values():
             plugin.cfg.lock()
-
-    def register_on_start(self, func, *args, **kwargs):
-        """Register a start callback."""
-        self._start_callbacks.append((func, args, kwargs))
-        return func
 
     def register(self, *paths, methods=None, name=None, handler=None):
         """Register function/coroutine/muffin.Handler with the application.

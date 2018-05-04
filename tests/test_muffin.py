@@ -22,14 +22,11 @@ def test_app(app):
 def test_app_logging_cfg():
     dummy = {'dummy': 'dict'}
     with patch('logging.config.dictConfig') as m:
-        muffin.Application(
-            'muffin',
-            LOGGING=dummy
-        )
+        muffin.Application('muffin', LOGGING=dummy)
     m.assert_called_once_with(dummy)
 
 
-def test_view(app, client):
+async def test_view(app, client):
 
     @app.register
     def view(request):
