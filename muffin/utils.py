@@ -18,16 +18,6 @@ class MuffinException(Exception):
     pass
 
 
-def abcoroutine(func):
-    """ Mark a function/method as coroutine.
-
-    Used for meta proposals.
-
-    """
-    func._abcoroutine = True
-    return func
-
-
 def to_coroutine(func):
     """ Ensure that the function is coroutine.
 

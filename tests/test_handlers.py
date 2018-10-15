@@ -2,13 +2,15 @@ import muffin
 import asyncio
 
 
-def test_handler(app, client):
+async def test_handler(aiohttp_client):
     """Test class-based handlers.
 
     Actually everything in Muffin is class-based handlers.
     Because view-functions will convert to Handler classes.
     """
     from muffin.handler import register
+
+    app = muffin.Application('test')
 
     @app.register('/res(/{res})?/?')
     @app.register('/res/{res}')
@@ -17,8 +19,8 @@ def test_handler(app, client):
         def get(self, request):
             return request.match_info
 
-        def post(self, request):
-            data = yield from self.parse(request)
+        async def post(self, request):
+            data = await self.parse(request)
             return dict(data)
 
         @register('/res/lama/rama', methods=['GET', 'POST', 'PATCH'])
@@ -32,36 +34,6 @@ def test_handler(app, client):
     assert set(Resource.methods) == set(['GET', 'POST'])
     assert asyncio.iscoroutinefunction(Resource.get)
 
-    assert 'resource' in app.router
-    assert 'resource.lama' in app.router
-    assert 'resource.rama' in app.router
-
-    response = client.get('/res/lama/rama')
-    assert response.text == 'LAMA'
-
-    response = client.patch('/res/lama/rama')
-    assert response.text == 'LAMA'
-
-    response = client.get('/res/rama/lama')
-    assert response.text == 'RAMA'
-
-    response = client.delete('/res', status=405)
-
-    response = client.get('/res')
-    assert response.json == {'res': ''}
-
-    response = client.get('/res/1')
-    assert response.json == {'res': '1'}
-
-    response = client.get('/res/2/')
-    assert response.json == {'res': '2'}
-
-    response = client.post('/res', {'data': 'form'})
-    assert response.json == {'data': 'form'}
-
-    response = client.post_json('/res', {'data': 'json'})
-    assert response.json == {'data': 'json'}
-
     @app.register('/res2(/{res2})?/?')
     class Resource2(muffin.Handler):
 
@@ -71,68 +43,135 @@ def test_handler(app, client):
             return 'OK'
 
         def put(self, request):
-            raise Exception('Shouldnt be called')
-
-    response = client.get('/res2')
-    assert response.text == 'OK'
-
-    client.put('/res2', status=405)
+            raise Exception('Must not be called')
 
     @Resource2.register('/connect')
     def connect_(handler, request):
         return handler.app.name
 
-    response = client.get('/connect')
-    assert response.text == 'muffin'
+    assert 'resource' in app.router
+    assert 'resource.lama' in app.router
+    assert 'resource.rama' in app.router
+
+    client = await aiohttp_client(app)
+
+    async with client.get('/res/lama/rama') as resp:
+        text = await resp.text()
+        assert text == 'LAMA'
+
+    async with client.patch('/res/lama/rama') as resp:
+        text = await resp.text()
+        assert text == 'LAMA'
+
+    async with client.get('/res/rama/lama') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'RAMA'
+
+    async with client.delete('/res') as resp:
+        assert resp.status == 405
+
+    async with client.get('/res') as resp:
+        assert resp.status == 200
+        json = await resp.json()
+        assert json == {'res': ''}
+
+    async with client.get('/res/passed') as resp:
+        assert resp.status == 200
+        json = await resp.json()
+        assert json == {'res': 'passed'}
+
+    async with client.post('/res', data={'form': 'value'}) as resp:
+        assert resp.status == 200
+        json = await resp.json()
+        assert json == {'form': 'value'}
+
+    async with client.post('/res', json={'json': 'value'}) as resp:
+        assert resp.status == 200
+        json = await resp.json()
+        assert json == {'json': 'value'}
+
+    async with client.get('/res2') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'OK'
+
+    async with client.put('/res2') as resp:
+        assert resp.status == 405
+
+    async with client.get('/res2') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'OK'
+
+    async with client.get('/connect') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test'
 
 
-def test_handler_func(app, client):
+async def test_handler_func(aiohttp_client):
     """Test convert functions to Muffin's Handlers."""
 
-    @app.register('/test')
-    def test(request):
-        return 'TEST PASSED'
+    app = muffin.Application('test')
 
-    assert 'test' in app.router
-
-    response = client.get('/test')
-    assert response.text == 'TEST PASSED'
-
-    response = client.post('/test')
-    assert response.text == 'TEST PASSED'
-
-    @app.register('/test1', methods='get')
+    @app.register('/test1')
     def test1(request):
-        return 'TEST PASSED'
+        return 'test1 passed'
 
     assert 'test1' in app.router
 
-    response = client.get('/test1')
-    assert response.text == 'TEST PASSED'
-
-    @app.register('/test2', methods=('get', 'post'))
+    @app.register('/test2', methods='put')
     def test2(request):
-        return 'TEST PASSED'
+        return 'test2 passed'
 
-    assert 'test2' in app.router
+    @app.register('/test3', methods=('get', 'post'))
+    def test2(request):
+        return 'test3 passed'
 
-    @app.register('/test3', methods='*')
+    @app.register('/test4', methods='*')
     def test3(request):
-        return 'TEST PASSED'
+        return 'test4 passed'
 
-    assert 'test3' in app.router
+    client = await aiohttp_client(app)
 
-    response = client.get('/test3')
-    assert response.status_code == 200
+    async with client.get('/test1') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test1 passed'
 
-    response = client.post('/test3')
-    assert response.status_code == 200
+    async with client.post('/test1') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test1 passed'
 
-    response = client.delete('/test3')
-    assert response.status_code == 200
+    async with client.put('/test2') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test2 passed'
+
+    async with client.post('/test3') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test3 passed'
+
+    async with client.get('/test4') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test4 passed'
+
+    async with client.post('/test4') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test4 passed'
+
+    async with client.delete('/test4') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test4 passed'
 
 
-def test_deffered(client, app):
+async def test_deffered(aiohttp_client):
 
     class Resource3(muffin.Handler):
 
@@ -145,10 +184,85 @@ def test_deffered(client, app):
     def dummy(handler, request):
         return 'dummy here'
 
+    app = muffin.Application('test')
     app.register('/resource-3')(Resource3)
 
-    response = client.get('/resource-3')
-    assert response.text == 'Resource3'
+    client = await aiohttp_client(app)
+    async with client.get('/resource-3') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'Resource3'
 
-    response = client.get('/dummy')
-    assert response.text == 'dummy here'
+    async with client.get('/dummy') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'dummy here'
+
+
+async def test_responses(aiohttp_client):
+
+    app = muffin.Application('test')
+
+    @app.register('/none')
+    def none(request):
+        return None
+
+    @app.register('/str')
+    def str(request):
+        return 'str'
+
+    @app.register('/bytes')
+    def bytes(request):
+        return b'bytes'
+
+    @app.register('/json')
+    def json(request):
+        return {'test': 'passed'}
+
+    client = await aiohttp_client(app)
+
+    async with client.get('/none') as resp:
+        assert resp.status == 200
+        assert resp.content_type == 'application/json'
+
+        text = await resp.text()
+        assert text == 'null'
+
+    async with client.get('/json') as resp:
+        assert resp.status == 200
+        assert resp.content_type == 'application/json'
+
+        json = await resp.json()
+        assert json == {'test': 'passed'}
+
+    async with client.get('/str') as resp:
+        assert resp.status == 200
+        assert resp.content_type == 'text/html'
+
+        text = await resp.text()
+        assert text == 'str'
+
+    async with client.get('/bytes') as resp:
+        assert resp.status == 200
+        assert resp.content_type == 'text/html'
+
+        text = await resp.text()
+        assert text == 'bytes'
+
+
+async def test_custom_methods(aiohttp_client):
+
+    app = muffin.Application('test')
+
+    @app.register('/caldav', methods='PROPFIND')
+    def propfind(request):
+        return b'PROPFIND'
+
+    client = await aiohttp_client(app)
+
+    resp = await client.request('PROPFIND', '/caldav')
+    assert resp.status == 200
+
+    text = await resp.text()
+    assert text == 'PROPFIND'
+    resp.close()

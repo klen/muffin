@@ -49,8 +49,8 @@ def app(pytestconfig, request):
 
 
 @pytest.fixture
-def client(loop, aiohttp_client, app):
-    return loop.run_until_complete(aiohttp_client(app))
+async def client(aiohttp_client, app):
+    return await aiohttp_client(app)
 
 
 @pytest.yield_fixture

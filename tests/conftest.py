@@ -4,13 +4,9 @@ import muffin
 
 
 @pytest.fixture
-def app(loop):
+def app():
     app = muffin.Application(
-        'muffin', loop=loop,
-
-        PLUGINS=(
-            'invalid.plugin',
-        ),
+        'muffin',
 
         STATIC_FOLDERS=(
             'tests/static1',

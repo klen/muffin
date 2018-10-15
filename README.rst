@@ -300,9 +300,6 @@ Base Muffin options and default values:
         'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s'
         'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]'
 
-        # List of enabled plugins
-        'PLUGINS': []
-
         # Setup static files in development
         'STATIC_PREFIX': '/static'
         'STATIC_FOLDERS': ['static']

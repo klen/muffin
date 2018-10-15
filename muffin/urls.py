@@ -2,6 +2,7 @@
 import re
 import asyncio
 from yarl import URL
+from pathlib import Path
 from random import choice
 from string import printable
 from urllib.parse import unquote
@@ -10,7 +11,7 @@ from aiohttp.hdrs import METH_ANY
 from aiohttp.web import (
     AbstractRoute,
     Resource,
-    #  StaticRoute as VanilaStaticRoute,
+    StaticResource,
     UrlDispatcher
 )
 
@@ -31,21 +32,9 @@ class RawReResource(Resource):
         self._pattern = pattern
         super().__init__(name=name)
 
-    def get_info(self):
-        """Get the resource's information."""
-        return {'name': self._name, 'pattern': self._pattern}
-
-    def _match(self, path):
-        match = self.raw_match()
-        if match is None:
-            return None
-        return {key: unquote(value) for key, value in match.groupdict('').items()}
-
-    def add_prefix(self, prefix):
-        self._pattern = re.compile(re.escape(prefix)+self._pattern.pattern)
-
-    def raw_match(self, path):
-        return self._pattern.match(path)
+    @property
+    def canonical(self):
+        return self._pattern.pattern
 
     def url_for(self, *subgroups, **groups):
         """Build URL."""
@@ -60,54 +49,48 @@ class RawReResource(Resource):
         path = ''.join(str(val) for val in Traverser(parsed, subgroups))
         return URL.build(path=path, encoded=True)
 
+    def _match(self, path):
+        match = self.raw_match(path)
+        if match is None:
+            return None
+        return {key: unquote(value) for key, value in match.groupdict('').items()}
+
+    def add_prefix(self, prefix):
+        self._pattern = re.compile(re.escape(prefix) + self._pattern.pattern)
+
+    def get_info(self):
+        """Get the resource's information."""
+        return {'name': self._name, 'pattern': self._pattern}
+
+    def raw_match(self, path):
+        return self._pattern.match(path)
+
     def __repr__(self):
         """Fix representation."""
         return "<RawReResource '%s' %s>" % (self.name or '', self._pattern)
 
 
-#  # TODO: Remove me when aiohttp > 0.21.2 will be relased. See #794
-#  class StaticResource(Resource):
+class SafeStaticResource(StaticResource):
+    """Doesn't match for non-existing files.."""
 
-    #  def __init__(self, route):
-        #  super().__init__()
+    async def resolve(self, request):
+        match_info, methods = await super().resolve(request)
+        if match_info:
+            rel_url = match_info['filename']
+            try:
+                filename = Path(rel_url)
+                if filename.anchor:
+                    return None, set()
 
-        #  assert isinstance(route, AbstractRoute), \
-            #  'Instance of Route class is required, got {!r}'.format(route)
-        #  self._route = route
-        #  self._routes.append(route)
+                filepath = self._directory.joinpath(filename).resolve()
+                if filepath.exists():
+                    return match_info, methods
 
-    #  def url(self, **kwargs):
-        #  return self._route.url(**kwargs)
+            except (ValueError, FileNotFoundError) as error:
+                # relatively safe
+                return None, set()
 
-    #  def get_info(self):
-        #  return self._route.get_info()
-
-    #  def _match(self, path):
-        #  return self._route.match(path)
-
-    #  def __len__(self):
-        #  return 1
-
-    #  def __iter__(self):
-        #  yield self._route
-
-
-#  class StaticRoute(VanilaStaticRoute):
-
-    #  """Support multiple static resorces."""
-
-    #  def match(self, path):
-        #  """Check for file is exists."""
-        #  if not path.startswith(self._prefix):
-            #  return None
-
-        #  filename = path[self._prefix_len:]
-        #  try:
-            #  pp = self._directory.joinpath(filename)
-            #  if pp.is_dir() or pp.is_file():
-                #  return {'filename': filename}
-        #  except (ValueError, FileNotFoundError):
-            #  return None
+        return None, set()
 
 
 #  class ParentResource(Resource):
