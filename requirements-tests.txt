@@ -1,13 +1,5 @@
 -r requirements.txt
 -e .
 
-pytest              == 3.8.2
+pytest              == 3.9.1
 pytest-sugar        == 0.9.1
-webtest             == 2.0.32
-
-muffin_peewee
-muffin_session      >= 0.0.5
-muffin_oauth        >= 0.0.9
-muffin_jinja2       >= 0.0.4
-muffin_admin        >= 0.0.7
-wtf-peewee          == 0.2.6
