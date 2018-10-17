@@ -88,6 +88,9 @@ class Application(BaseApplication):
         # Enable debug mode (optional)
         'DEBUG': ...,
 
+        # Plugins to install
+        'PLUGINS': [],
+
         # Logging options
         'ACCESS_LOG': '-',  # File path to access log, - to stderr
         'ACCESS_LOG_FORMAT': '%a %l %u %t "%r" %s %b "%{Referrer}i" "%{User-Agent}i"',
@@ -143,6 +146,12 @@ class Application(BaseApplication):
 
         # Setup plugins
         self.plugins = self.ps = LStruct()
+        for plugin in self.cfg.PLUGINS:
+            try:
+                self.install(plugin)
+            except Exception as exc:  # noqa
+                self.logger.error('Plugin is invalid: %s', plugin)
+                self.logger.exception(exc)
 
     def __repr__(self):
         """Human readable representation."""
