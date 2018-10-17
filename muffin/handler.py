@@ -113,7 +113,6 @@ class Handler(object, metaclass=HandlerMeta):
     def bind(cls, app, *paths, methods=None, name=None, router=None, view=None):
         """Bind to the given application."""
         cls.app = app
-
         if cls.app is not None:
             for _, m in inspect.getmembers(cls, predicate=inspect.isfunction):
                 if not hasattr(m, ROUTE_PARAMS_ATTR):
@@ -161,17 +160,12 @@ class Handler(object, metaclass=HandlerMeta):
             return response
 
         if isinstance(response, str):
-            return Response(text=response, content_type='text/html', charset=self.app.cfg.ENCODING)
+            return Response(text=response, content_type='text/html')
 
         if isinstance(response, bytes):
-            return Response(body=response, content_type='text/html', charset=self.app.cfg.ENCODING)
+            return Response(body=response, content_type='text/html')
 
-        return Response(
-            text=json.dumps(
-                response, ensure_ascii=self.app.cfg.JSON_ENSURE_ASCII,
-                indent=self.app.cfg.JSON_INDENT_SIZE,
-                escape_forward_slashes=self.app.cfg.JSON_ESCAPE_FORWARD_SLASHES),
-            content_type=self.app.cfg.JSON_CONTENT_TYPE)
+        return Response(text=json.dumps(response), content_type='application/json')
 
     @staticmethod
     def parse(request):

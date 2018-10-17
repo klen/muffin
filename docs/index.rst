@@ -8,6 +8,20 @@ Welcome to Muffin
 
 Welcome to Muffin's documentation.
 
+.. _important:
+
+    The framework has been created in 2015 when asyncio/aiohttp stack was very
+    young and small. It was an attempt to build a foundation for asyncio web
+    based project with all required tools (plugins system, admin interfaces,
+    REST API and etc). For current moment (2018) aiohttp stack is quite good
+    and the Muffin is depricated. It can be supported because some projects
+    still use it but if you are planning to start a new project I would
+    recomend to have a look on something else.
+
+.. _danger:
+
+    The documentation can be outdated.
+
 Muffin is a web-framework based on aiohttp_, :term:`asyncio` (:pep:`3156`).
 
 Example "Hello World" with the Muffin:

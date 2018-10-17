@@ -57,5 +57,5 @@ class BasePlugin(metaclass=PluginMeta):
 
         for oname, dvalue in self.defaults.items():
             aname = ('%s_%s' % (self.name, oname)).upper()
-            app.cfg.setdefault(aname, dvalue)
-            self.cfg.setdefault(oname, app.cfg[aname])
+            self.cfg.setdefault(oname, app.cfg.get(aname, dvalue))
+            app.cfg.setdefault(aname, self.cfg[oname])

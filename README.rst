@@ -15,14 +15,20 @@ The Muffin
 .. image:: http://img.shields.io/pypi/v/muffin.svg?style=flat-square
     :target: https://pypi.python.org/pypi/muffin
 
-.. image:: http://img.shields.io/pypi/dm/muffin.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/muffin
+.. _important:
+
+    The framework has been created in 2015 when asyncio/aiohttp stack was very
+    young and small. It was an attempt to build a foundation for asyncio web
+    based project with all required tools (plugins system, admin interfaces,
+    REST API and etc). For current moment (2018) aiohttp stack is quite good
+    and the Muffin is depricated. It can be supported because some projects
+    still use it but if you are planning to start a new project I would
+    recomend to have a look on something else.
 
 .. _description:
 
-The Muffin -- A web framework based on Asyncio_ stack ``(early beta)``
-
-Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
+    The Muffin -- A web framework based on Asyncio_ stack ``(depricated)``
+    Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
 
 .. _documentation:
 
@@ -52,7 +58,7 @@ Save the script as `example.py` and run it: ::
 
     $ python3 example.py run
 
-Open http://fuf.me:5000, http://fuf.me:5000/hello/username in your browser. Enjoy!
+Open http://localhost:5000, http://localhost:5000/hello/username in your browser. Enjoy!
 
 .. _contents:
 
@@ -225,7 +231,7 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 Requirements
 =============
 
-- python >= 3.4.1
+- python >= 3.5.3
 
 .. _installation:
 
@@ -290,12 +296,11 @@ Base Muffin options and default values:
         'CONFIG': 'config'
 
         # Enable debug mode
-        'DEBUG': False
+        'DEBUG': ...
 
         # Logging options
         'ACCESS_LOG': '-',  # File path to access log, - to stderr
         'ACCESS_LOG_FORMAT': '%a %l %u %t "%r" %s %b "%{Referrer}i" "%{User-Agent}i"',
-
         'LOG_LEVEL': 'WARNING'
         'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s'
         'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]'
@@ -303,10 +308,6 @@ Base Muffin options and default values:
         # Setup static files in development
         'STATIC_PREFIX': '/static'
         'STATIC_FOLDERS': ['static']
-
-        # Setup recognition of HTTPS requests through reverse proxy:
-        # to enable, provide a tuple of (header, value)
-        'SECURE_PROXY_SSL_HEADER': None
 
 
 Configuring logging
@@ -416,24 +417,24 @@ See examples:
 
 .. code-block:: python
 
-    import pytest
+    async def test_async_code():
+        async def coro():
+            return True
 
-    @pytest.mark.async
-    def test_async_code():
-        from aiohttp import request
-        response = yield from request('GET', 'http://google.com')
-        text = yield from response.text()
-        assert 'html' in text
+        assert await coro()
 
     def test_app(app):
         """ Get your app in your tests as fixture. """
         assert app.name == 'my app name'
         assert app.cfg.MYOPTION == 'develop'
 
-    def test_view(client):
+    async def test_view(client):
         """ Make HTTP request to your application. """
-        response = client.get('/my-handler')
-        assert 'mydata' in response.text
+        async with client.get('/my-handler') as resp:
+            text = await resp.text()
+            assert 'mydata' in text
+
+Also please check `aiohttp testing documentation <https://docs.aiohttp.org/en/stable/testing.html>`_.
 
 
 .. _deployment:
@@ -477,14 +478,6 @@ License
 ========
 
 Licensed under a MIT license (See LICENSE)
-
-If you wish to express your appreciation for the project, you are welcome to send
-a postcard to: ::
-
-    Kirill Klenov
-    pos. Severny 8-3
-    MO, Istra, 143500
-    Russia
 
 .. _links:
 

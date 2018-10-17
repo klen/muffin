@@ -27,27 +27,6 @@ def test_parse():
     assert isinstance(parse('/{foo}/?'), RETYPE)
 
 
-#  def test_parent(loop):
-    #  from muffin.urls import ParentResource
-
-    #  parent = ParentResource('/api/', name='api')
-    #  resource = parent.add_resource('/test/', name='test')
-
-    #  @asyncio.coroutine
-    #  def handler(request):
-        #  return 'TEST PASSED.'
-
-    #  resource.add_route('*', handler)
-    #  info, _ = loop.run_until_complete(parent.resolve('GET', '/api/test/'))
-    #  assert info is not None
-
-    #  result = loop.run_until_complete(info.handler(None))
-    #  assert result == 'TEST PASSED.'
-
-    #  assert parent.url() == '/api/'
-    #  assert parent.url(name='test') == '/api/test/'
-
-
 def test_register_url(app):
     from muffin.urls import routes_register
 

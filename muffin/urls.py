@@ -1,7 +1,5 @@
 """URL helpers."""
 import re
-import asyncio
-from yarl import URL
 from pathlib import Path
 from random import choice
 from string import printable
@@ -9,11 +7,12 @@ from urllib.parse import unquote
 
 from aiohttp.hdrs import METH_ANY
 from aiohttp.web import (
-    AbstractRoute,
     Resource,
     StaticResource,
-    UrlDispatcher
 )
+from yarl import URL
+
+from .utils import to_coroutine
 
 
 DYNS_RE = re.compile(r'(\{[^{}]*\})')
@@ -56,7 +55,7 @@ class RawReResource(Resource):
         return {key: unquote(value) for key, value in match.groupdict('').items()}
 
     def add_prefix(self, prefix):
-        self._pattern = re.compile(re.escape(prefix) + self._pattern.pattern)
+        self._pattern = re.compile(re.escape(prefix) + self._pattern.pattern.strip('^'))
 
     def get_info(self):
         """Get the resource's information."""
@@ -93,46 +92,12 @@ class SafeStaticResource(StaticResource):
         return None, set()
 
 
-#  class ParentResource(Resource):
-
-    #  def __init__(self, path, *, name=None):
-        #  super().__init__(name=name)
-        #  self._path = path.rstrip('/')
-        #  self.router = UrlDispatcher()
-
-    #  @asyncio.coroutine
-    #  def resolve(self, method, path):
-        #  allowed_methods = set()
-        #  if not path.startswith(self._path + '/'):
-            #  return None, allowed_methods
-
-        #  path = path[len(self._path):]
-
-        #  for resource in self.router._resources:
-            #  match_dict, allowed = yield from resource.resolve(method, path)
-            #  if match_dict is not None:
-                #  return match_dict, allowed_methods
-            #  else:
-                #  allowed_methods |= allowed
-        #  return None, allowed_methods
-
-    #  def add_resource(self, path, *, name=None):
-        #  """Add resource."""
-        #  return self.router.add_resource(path, name=name)
-
-    #  def get_info(self):
-        #  return {'path': self._path}
-
-    #  def url(self, name=None, **kwargs):
-        #  if name:
-            #  return self._path + self.router[name].url(**kwargs)
-        #  return self._path + '/'
-
-
 def routes_register(app, handler, *paths, methods=None, router=None, name=None):
     """Register routes."""
     if router is None:
         router = app.router
+
+    handler = to_coroutine(handler)
 
     resources = []
 

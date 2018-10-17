@@ -67,7 +67,7 @@ def test_import_submodules():
     from muffin import import_submodules
 
     result = import_submodules('muffin')
-    assert len(result) == 8
+    assert len(result) == 7
 
     result = import_submodules('muffin', 'plugins', 'manage')
     assert len(result) == 2
