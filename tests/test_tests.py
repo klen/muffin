@@ -1,24 +1,20 @@
-import pytest
 import asyncio
 
-
-@pytest.mark.async
-def test_async():
-    yield from asyncio.sleep(.1)
-    assert True
+import pytest
 
 
-def test_client(app, client):
+async def test_async():
 
-    @app.register('/client')
-    def handler(request):
-        return 'RESPONSE'
+    async def TRUE():
+        return True
 
-    response = client.get('/client')
-    assert response.text == 'RESPONSE'
+    result = await TRUE()
+    assert result
 
 
-def test_pytest(loop):
-    import asyncio
+async def test_client(client):
+    response = await client.get('/')
+    assert response.status == 200
 
-    assert asyncio.get_event_loop() is loop
+    body = await response.text()
+    assert body == 'OK'

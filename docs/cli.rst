@@ -56,28 +56,6 @@ Optional arguments:
   --access-logfile FILE       The access log file to write to ['-']
 
 
-collect
-~~~~~~~
-
-Usage: 
-
-.. code-block:: console
-
-    $ muffin collect [-h] [--source SOURCE] [--replace] [--no-symlink] destination
-
-Collect static files from the application and plugins.
-
-Positional arguments:
-
-- Destination - path where static files will be collected.
-
-Optional arguments:
-  -h, --help       show this help message and exit
-  --source DIR     Sources from static files will be copied
-  --replace        Enable replace existed files
-  --no-symlink     Disable create symlinks except file copy
-
-
 Write a custom command
 ----------------------
 

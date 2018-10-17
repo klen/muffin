@@ -1,4 +1,4 @@
-VIRTUAL_ENV=$(shell echo "$${VDIR:-.env}")
+VIRTUAL_ENV ?= env
 
 all: $(VIRTUAL_ENV)
 

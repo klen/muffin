@@ -1,18 +1,16 @@
 """Base handler class."""
 import functools
 import inspect
-from asyncio import coroutine, iscoroutine
+from asyncio import coroutine, iscoroutine, iscoroutinefunction
 
 import ujson as json
-from aiohttp import MultiDict, MultiDictProxy
-from aiohttp.hdrs import METH_ANY
+from aiohttp.hdrs import METH_ANY, METH_ALL
 from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
 
 from muffin.urls import routes_register
-from muffin.utils import to_coroutine, abcoroutine
+from muffin.utils import to_coroutine
 
 
-HTTP_METHODS = 'HEAD', 'OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'
 ROUTE_PARAMS_ATTR = '_route_params'
 
 
@@ -46,7 +44,7 @@ class HandlerMeta(type):
 
     """Prepare handlers."""
 
-    _coroutines = set(m.lower() for m in HTTP_METHODS)
+    _coroutines = set(m.lower() for m in METH_ALL)
 
     def __new__(mcs, name, bases, params):
         """Prepare a Handler Class.
@@ -60,14 +58,14 @@ class HandlerMeta(type):
 
         # Define new coroutines
         for fname, method in params.items():
-            if callable(method) and hasattr(method, '_abcoroutine'):
+            if iscoroutinefunction(method):
                 mcs._coroutines.add(fname)
 
         cls = super().__new__(mcs, name, bases, params)
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:
-            cls.methods = set(method for method in HTTP_METHODS if method.lower() in cls.__dict__)
+            cls.methods = set(method for method in METH_ALL if method.lower() in cls.__dict__)
 
         elif isinstance(cls.methods, str):
             cls.methods = [cls.methods]
@@ -95,23 +93,26 @@ class Handler(object, metaclass=HandlerMeta):
     @classmethod
     def from_view(cls, view, *methods, name=None):
         """Create a handler class from function or coroutine."""
+        docs = getattr(view, '__doc__', None)
         view = to_coroutine(view)
 
         if METH_ANY in methods:
-            methods = HTTP_METHODS
+            methods = METH_ALL
 
         def proxy(self, *args, **kwargs):
             return view(*args, **kwargs)
 
         params = {m.lower(): proxy for m in methods}
         params['methods'] = methods
+        if docs:
+            params['__doc__'] = docs
+
         return type(name or view.__name__, (cls,), params)
 
     @classmethod
-    def connect(cls, app, *paths, methods=None, name=None, router=None, view=None):
-        """Connect to the given application."""
+    def bind(cls, app, *paths, methods=None, name=None, router=None, view=None):
+        """Bind to the given application."""
         cls.app = app
-
         if cls.app is not None:
             for _, m in inspect.getmembers(cls, predicate=inspect.isfunction):
                 if not hasattr(m, ROUTE_PARAMS_ATTR):
@@ -139,50 +140,32 @@ class Handler(object, metaclass=HandlerMeta):
             return register(*args, handler=cls, **kwargs)
         return cls.app.register(*args, handler=cls, **kwargs)
 
-    @abcoroutine
-    def dispatch(self, request, view=None, **kwargs):
+    async def dispatch(self, request, view=None, **kwargs):
         """Dispatch request."""
         if view is None and request.method not in self.methods:
             raise HTTPMethodNotAllowed(request.method, self.methods)
 
         method = getattr(self, view or request.method.lower())
-        response = yield from method(request, **kwargs)
-
-        return (yield from self.make_response(request, response))
+        response = await method(request, **kwargs)
+        return await self.make_response(request, response)
 
     __iter__ = dispatch
 
-    @abcoroutine
-    def make_response(self, request, response):
+    async def make_response(self, request, response):
         """Convert a handler result to web response."""
         while iscoroutine(response):
-            response = yield from response
+            response = await response
 
         if isinstance(response, StreamResponse):
             return response
 
         if isinstance(response, str):
-            return Response(text=response, content_type='text/html', charset=self.app.cfg.ENCODING)
-
-        if isinstance(response, (list, dict, MultiDict, MultiDictProxy)):
-            if isinstance(response, (MultiDict, MultiDictProxy)):
-                response = dict(response)
-            return Response(
-                text=json.dumps(
-                    response, ensure_ascii=self.app.cfg.JSON_ENSURE_ASCII,
-                    indent=self.app.cfg.JSON_INDENT_SIZE,
-                    escape_forward_slashes=self.app.cfg.JSON_ESCAPE_FORWARD_SLASHES),
-                content_type=self.app.cfg.JSON_CONTENT_TYPE)
+            return Response(text=response, content_type='text/html')
 
         if isinstance(response, bytes):
-            response = Response(
-                body=response, content_type='text/html', charset=self.app.cfg.ENCODING)
-            return response
+            return Response(body=response, content_type='text/html')
 
-        if response is None:
-            response = ''
-
-        return Response(text=str(response), content_type='text/html')
+        return Response(text=json.dumps(response), content_type='application/json')
 
     @staticmethod
     def parse(request):

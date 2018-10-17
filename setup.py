@@ -12,6 +12,7 @@ def _read(fname):
     except IOError:
         return ''
 
+
 _meta = _read('muffin/__init__.py')
 _license = re.search(r'^__license__\s*=\s*"(.*)"', _meta, re.M).group(1)
 _project = re.search(r'^__project__\s*=\s*"(.*)"', _meta, re.M).group(1)

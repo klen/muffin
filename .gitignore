@@ -45,7 +45,7 @@ output/*/index.html
 docs/_build
 
 # Other
-/.env
+/env
 /.python-version
 /.ropeproject
 /_
@@ -58,3 +58,4 @@ docs/_build
 /settings
 /test.py
 /todo.txt
+/.pytest_cache

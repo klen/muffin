@@ -20,6 +20,7 @@ def test_plugins():
     assert pl1 is pl2
     assert pl1.cfg.test == 42
 
-    app = muffin.Application(__name__)
+    app = muffin.Application(__name__, PLUGIN_DEBUG=False)
     app.install(pl1)
     assert pl1.name in app.ps
+    assert not pl1.cfg.debug

@@ -3,19 +3,18 @@ import pytest
 import muffin
 
 
-@pytest.fixture(scope='session')
-def app(loop):
+@pytest.fixture
+def app():
     app = muffin.Application(
-        'muffin', loop=loop,
-
-        PLUGINS=(
-            'invalid.plugin',
-        ),
+        'muffin',
 
         STATIC_FOLDERS=(
             'tests/static1',
             'tests/static2',
         ))
 
-    loop.run_until_complete(app.start())
+    @app.register('/')
+    def index(request):
+        return 'OK'
+
     return app
