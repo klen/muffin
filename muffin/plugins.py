@@ -1,5 +1,6 @@
 """Plugins support."""
 
+from abc import ABC, abstractmethod
 from muffin.utils import LStruct, MuffinException
 
 
@@ -24,7 +25,7 @@ class PluginMeta(type):
         return cls._instances[cls]
 
 
-class BasePlugin(metaclass=PluginMeta):
+class BasePlugin(ABC):
 
     """Base class for Muffin plugins."""
 
@@ -34,14 +35,17 @@ class BasePlugin(metaclass=PluginMeta):
     # Plugin dependencies (name: Plugin)
     dependencies = {}
 
-    name = None
-
     def __init__(self, app=None, **options):
         """Save application and create he plugin's configuration."""
         self.config = self.cfg = LStruct(options)
         self.app = app
         if app is not None:
             app.install(self)
+
+    @property
+    @abstractmethod
+    def name(self):
+        raise NotImplementedError
 
     def setup(self, app):
         """Initialize the plugin.
@@ -59,3 +63,12 @@ class BasePlugin(metaclass=PluginMeta):
             aname = ('%s_%s' % (self.name, oname)).upper()
             self.cfg.setdefault(oname, app.cfg.get(aname, dvalue))
             app.cfg.setdefault(aname, self.cfg[oname])
+
+    def freeze(self):
+        """Freeze the plugin."""
+        return self.cfg.freeze()
+
+    @property
+    def frozen(self):
+        """Is the plugin is frozen."""
+        return self.cfg.frozen

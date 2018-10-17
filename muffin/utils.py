@@ -81,22 +81,22 @@ class Struct(dict):
 
 class LStruct(Struct):
 
-    """ Locked structure. Used as application/plugins settings.
+    """ Frosen structure. Used as application/plugins settings.
 
     Going to be immutable after application is started.
 
     """
 
     def __init__(self, *args, **kwargs):
-        object.__setattr__(self, '_lock', False)
+        object.__setattr__(self, 'frozen', False)
         super().__init__(*args, **kwargs)
 
-    def lock(self):
-        object.__setattr__(self, '_lock', True)
+    def freeze(self):
+        object.__setattr__(self, 'frozen', True)
 
     def __setitem__(self, name, value):
-        if self._lock:
-            raise RuntimeError('`%s` is locked.' % type(self))
+        if self.frozen:
+            raise RuntimeError('`%s` is frozen.' % type(self))
         super().__setitem__(name, value)
 
 

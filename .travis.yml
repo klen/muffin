@@ -45,7 +45,7 @@ script:
 - make -C $TRAVIS_BUILD_DIR/plugins/muffin-babel        t
 - make -C $TRAVIS_BUILD_DIR/plugins/muffin-peewee       t
 - make -C $TRAVIS_BUILD_DIR/plugins/muffin-session      t
-# - make -C $TRAVIS_BUILD_DIR/plugins/muffin-admin        t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-admin        t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-debugtoolbar t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-jade         t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-mongo        t

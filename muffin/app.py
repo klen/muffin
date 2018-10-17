@@ -240,12 +240,12 @@ class Application(BaseApplication):
 
     def pre_freeze(self) -> None:
         # Lock the application's settings and plugin's registry after start
-        self.cfg.lock()
-        self.ps.lock()
+        self.cfg.freeze()
+        self.ps.freeze()
 
-        # Lock plugin's configurations
+        # Freeze plugin's
         for plugin in self.ps.values():
-            plugin.cfg.lock()
+            plugin.freeze()
 
         return super(Application, self).pre_freeze()
 

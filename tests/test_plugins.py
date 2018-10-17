@@ -5,7 +5,7 @@ from muffin.plugins import BasePlugin, PluginException
 
 
 def test_plugins():
-    with pytest.raises(PluginException):
+    with pytest.raises(TypeError):
         BasePlugin()
 
     class Plugin(BasePlugin):
@@ -15,12 +15,13 @@ def test_plugins():
         }
 
     pl1 = Plugin(test=42)
-    pl2 = Plugin(test=24)
 
-    assert pl1 is pl2
     assert pl1.cfg.test == 42
 
     app = muffin.Application(__name__, PLUGIN_DEBUG=False)
     app.install(pl1)
     assert pl1.name in app.ps
     assert not pl1.cfg.debug
+    assert not pl1.frozen
+    app.freeze()
+    assert pl1.frozen

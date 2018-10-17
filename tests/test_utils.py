@@ -56,8 +56,8 @@ def test_struct():
     assert settings.option == 'value'
 
     settings.option2 = 'value2'
-    settings.lock()
-    settings.lock()
+    settings.freeze()
+    settings.freeze()
 
     with pytest.raises(RuntimeError):
         settings.test = 42
