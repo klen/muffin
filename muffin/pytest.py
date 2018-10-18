@@ -64,6 +64,8 @@ def app(pytestconfig, request):
 async def client(app, aiohttp_client, loop):
     """Dirty hack for aiohttp tests."""
     app._loop = loop
+    for subapp in app._subapps:
+        subapp._loop = loop
     return await aiohttp_client(app)
 
 
