@@ -1,7 +1,8 @@
 """Plugins support."""
 
-from abc import ABC, abstractmethod
-from muffin.utils import LStruct, MuffinException
+from abc import ABC, abstractmethod, ABCMeta
+from muffin.utils import LStruct, MuffinException, to_coroutine
+from aiohttp.web import middleware
 
 
 class PluginException(MuffinException):
@@ -9,23 +10,32 @@ class PluginException(MuffinException):
     """Implement any exception in plugins."""
 
 
-class PluginMeta(type):
+class PluginMeta(ABCMeta):
 
     """Ensure that each plugin is singleton."""
 
-    _instances = {}
+    def __new__(mcs, name, bases, params):
+        # Ensure that some methods is coroutines
+        for name in ('middleware', 'startup', 'cleanup'):
+            if name not in params:
+                continue
+            params[name] = to_coroutine(params[name])
+
+        # Ensure that middleware is converted to version 1
+        if 'middleware' in params:
+            params['middleware'] = middleware(params['middleware'])
+
+        return super().__new__(mcs, name, bases, params)
 
     def __call__(cls, *args, **kwargs):
         """Check for the plugin is initialized already."""
         if not cls.name:
             raise PluginException('Plugin `%s` doesn\'t have a name.' % cls)
 
-        if cls not in cls._instances:
-            cls._instances[cls] = super().__call__(*args, **kwargs)
-        return cls._instances[cls]
+        return super().__call__(*args, **kwargs)
 
 
-class BasePlugin(ABC):
+class BasePlugin(ABC, metaclass=PluginMeta):
 
     """Base class for Muffin plugins."""
 

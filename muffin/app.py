@@ -208,13 +208,13 @@ class Application(BaseApplication):
             plugin.setup(self)
 
         if hasattr(plugin, 'middleware') and plugin.middleware not in self.middlewares:
-            self.middlewares.append(web.middleware(plugin.middleware))
+            self.middlewares.append(plugin.middleware)
 
         if hasattr(plugin, 'startup'):
-            self.on_startup.append(to_coroutine(plugin.startup))
+            self.on_startup.append(plugin.startup)
 
         if hasattr(plugin, 'cleanup'):
-            self.on_cleanup.append(to_coroutine(plugin.cleanup))
+            self.on_cleanup.append(plugin.cleanup)
 
         # Save plugin links
         self.ps[name] = plugin

@@ -1,5 +1,6 @@
 import pytest
 import muffin
+import asyncio
 
 from muffin.plugins import BasePlugin, PluginException
 
@@ -14,7 +15,15 @@ def test_plugins():
             'debug': True
         }
 
+        def middleware(self, request, handler):
+            return handler(request)
+
+        def startup(self, app):
+            return 1
+
     pl1 = Plugin(test=42)
+    assert asyncio.iscoroutinefunction(pl1.middleware)
+    assert asyncio.iscoroutinefunction(pl1.startup)
 
     assert pl1.cfg.test == 42
 
