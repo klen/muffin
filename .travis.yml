@@ -46,11 +46,11 @@ script:
 - make -C $TRAVIS_BUILD_DIR/plugins/muffin-peewee       t
 - make -C $TRAVIS_BUILD_DIR/plugins/muffin-session      t
 - make -C $TRAVIS_BUILD_DIR/plugins/muffin-admin        t
+- make -C $TRAVIS_BUILD_DIR/plugins/muffin-oauth        t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-debugtoolbar t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-jade         t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-mongo        t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-metrics      t
-# - make -C $TRAVIS_BUILD_DIR/plugins/muffin-oauth        t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-redis        t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-rest         t
 # - make -C $TRAVIS_BUILD_DIR/plugins/muffin-sentry       t

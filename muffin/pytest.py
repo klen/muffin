@@ -67,15 +67,4 @@ async def client(app, aiohttp_client, loop):
     return await aiohttp_client(app)
 
 
-@pytest.yield_fixture
-def db(app):
-    """ Run tests in transaction. """
-    if 'peewee' not in app.plugins:
-        yield None
-    else:
-        with app.ps.peewee.database.atomic() as trans:
-            yield app.ps.peewee.database
-            trans.rollback()
-
-
 #  pylama:ignore=W0212,W0621
