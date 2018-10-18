@@ -95,6 +95,8 @@ tp:
 	make -C $(CURDIR)/plugins/muffin-oauth t
 	@echo 'Test Muffin-REST'
 	make -C $(CURDIR)/plugins/muffin-rest t
+	@echo 'Test Muffin-Redis'
+	make -C $(CURDIR)/plugins/muffin-redis t
 	# @echo 'Test Muffin-DebugToolbar'
 	# make -C $(CURDIR)/plugins/muffin-debugtoolbar t
 	# @echo 'Test Muffin-Jade'
@@ -103,8 +105,6 @@ tp:
 	# make -C $(CURDIR)/plugins/muffin-metrics t
 	# @echo 'Test Muffin-Mongo'
 	# make -C $(CURDIR)/plugins/muffin-mongo t
-	# @echo 'Test Muffin-Redis'
-	# make -C $(CURDIR)/plugins/muffin-redis t
 	# @echo 'Test Muffin-Sentry'
 	# make -C $(CURDIR)/plugins/muffin-sentry t
 
