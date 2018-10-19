@@ -4,11 +4,11 @@ import asyncio
 def test_raw_route():
     from muffin.urls import RawReResource
 
-    resource = RawReResource('/foo/bar/?', 'test')
+    resource = RawReResource(r'/foo/bar/?', 'test')
     url = resource.url_for()
     assert resource.url_for().path == '/foo/bar'
 
-    resource = RawReResource('/foo/(?P<bar>\d+)(/(?P<foo>\w+))?/?', 'test')
+    resource = RawReResource(r'/foo/(?P<bar>\d+)(/(?P<foo>\w+))?/?', 'test')
     assert resource.url_for().path == '/foo/0'
     assert resource.url_for(10).path == '/foo/10'
     assert resource.url_for(bar=11).path == '/foo/11'
@@ -22,9 +22,9 @@ def test_parse():
 
     assert isinstance(parse('/'), str)
     assert isinstance(parse('/test.jpg'), str)
-    assert isinstance(parse('/{foo}/'), str)
-    assert isinstance(parse('/{foo:\d+}/'), RETYPE)
-    assert isinstance(parse('/{foo}/?'), RETYPE)
+    assert isinstance(parse(r'/{foo}/'), str)
+    assert isinstance(parse(r'/{foo:\d+}/'), RETYPE)
+    assert isinstance(parse(r'/{foo}/?'), RETYPE)
 
 
 def test_register_url(app):
@@ -33,7 +33,7 @@ def test_register_url(app):
     def handler():
         pass
 
-    routes_register(app, handler, '/path/{id:\d+}', '/path/add', '/other/path', name='endpoint')
+    routes_register(app, handler, r'/path/{id:\d+}', '/path/add', '/other/path', name='endpoint')
 
     assert 'endpoint' in app.router and str(app.router['endpoint'].url_for(id=5)) == '/path/5'
     assert 'endpoint2' in app.router and str(app.router['endpoint2'].url_for()) == '/path/add'

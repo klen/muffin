@@ -169,19 +169,19 @@ class Handler(object, metaclass=HandlerMeta):
         return Response(text=json.dumps(response), content_type='application/json')
 
     @staticmethod
-    def parse(request):
+    async def parse(request):
         """Return a coroutine which parses data from request depends on content-type.
 
         Usage: ::
 
             def post(self, request):
-                data = yield from self.parse(request)
+                data = await self.parse(request)
                 # ...
         """
-        if request.content_type in ('application/x-www-form-urlencoded', 'multipart/form-data'):
-            return request.post()
+        if request.content_type in {'application/x-www-form-urlencoded', 'multipart/form-data'}:
+            return await request.post()
 
         if request.content_type == 'application/json':
-            return request.json()
+            return await request.json()
 
-        return request.text()
+        return await request.text()
