@@ -126,12 +126,17 @@ async def test_handler_func(aiohttp_client):
         return 'test2 passed'
 
     @app.register('/test3', methods=('get', 'post'))
-    def test2(request):
+    def test3(request):
         return 'test3 passed'
 
     @app.register('/test4', methods='*')
-    def test3(request):
+    def test4(request):
         return 'test4 passed'
+
+    def test5(request):
+        return 'test5 passed'
+
+    app.register('/test5')(muffin.Handler.from_view(test5))
 
     client = await aiohttp_client(app)
 
@@ -169,6 +174,11 @@ async def test_handler_func(aiohttp_client):
         assert resp.status == 200
         text = await resp.text()
         assert text == 'test4 passed'
+
+    async with client.get('/test5') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'test5 passed'
 
 
 async def test_deffered(aiohttp_client):

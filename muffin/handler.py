@@ -95,6 +95,7 @@ class Handler(object, metaclass=HandlerMeta):
         """Create a handler class from function or coroutine."""
         docs = getattr(view, '__doc__', None)
         view = to_coroutine(view)
+        methods = methods or ['GET']
 
         if METH_ANY in methods:
             methods = METH_ALL
