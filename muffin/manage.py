@@ -7,10 +7,8 @@ import multiprocessing
 import os
 import re
 import sys
-from shutil import copy
 
 from muffin import CONFIGURATION_ENVIRON_VARIABLE, __version__
-from muffin.utils import MuffinException
 
 
 PARAM_RE = re.compile(r'^\s+:param (\w+): (.+)$', re.M)
@@ -53,8 +51,7 @@ class Manager(object):
         self.handlers = dict()
 
         def shell_ctx():
-            ctx = {'app': app}
-            return ctx
+            return {'app': app, 'run': lambda coro: app.loop.run_until_complete(coro)}
 
         app.cfg.setdefault('MANAGE_SHELL', shell_ctx)
 
@@ -64,7 +61,10 @@ class Manager(object):
 
             :param ipython: Use IPython as shell
             """
-            app.loop.run_until_complete(app.start())
+            loop = asyncio.get_event_loop()
+            app._set_loop(loop)
+            app.freeze()
+            loop.run_until_complete(app.startup())
 
             banner = '\nInteractive Muffin Shell\n'
             namespace = app.cfg.MANAGE_SHELL
@@ -84,16 +84,18 @@ class Manager(object):
             from code import interact
             interact(banner, local=namespace)
 
-            app.loop.run_until_complete(app.finish())
+            loop.run_until_complete(app.cleanup())
+            loop.run_until_complete(app.shutdown())
 
         workers = 1
-        if not app.cfg.DEBUG:
+        debug = app.cfg.DEBUG is not ... and app.cfg.DEBUG
+        if not debug:
             workers = multiprocessing.cpu_count()
 
         @self.command
         def run(bind: str='127.0.0.1:5000', daemon: bool=False, pid: str=None,
-                reload: bool=self.app.cfg.DEBUG, timeout: int=30, name: str=self.app.name,
-                worker_class: str='muffin.worker.GunicornWorker', workers: int=workers,
+                reload: bool=debug, timeout: int=30, name: str=self.app.name,
+                worker_class: str='aiohttp.worker.GunicornWebWorker', workers: int=workers,
                 log_file: str=None, access_logfile: str=self.app.cfg.ACCESS_LOG):
             """Run the application.
 
@@ -108,74 +110,45 @@ class Manager(object):
             :param workers: The number of worker processes for handling requests
 
             """
-            from muffin.worker import GunicornApp
+            from gunicorn.app.base import Application
+            from gunicorn.util import import_app
 
-            gapp = GunicornApp(
-                usage="%(prog)s run [OPTIONS]", config=self.app.cfg.CONFIG)
-            gapp.app_uri = app.uri or app
-            gapp.cfg.set('bind', bind)
-            gapp.cfg.set('daemon', daemon)
-            gapp.cfg.set('pidfile', pid)
-            gapp.cfg.set('proc_name', name)
-            gapp.cfg.set('reload', reload)
-            gapp.cfg.set('timeout', timeout)
-            gapp.cfg.set('worker_class', worker_class)
+            class MuffinServer(Application):
+
+                def init(self, *args):
+                    """Store config in env."""
+                    os.environ[CONFIGURATION_ENVIRON_VARIABLE] = app.cfg.CONFIG or ''
+
+                def load(self):
+                    """Reload modules."""
+                    if not app.uri:
+                        return app
+
+                    module, *_ = app.uri.split(':', 1)
+                    if module in sys.modules:
+                        sys.modules.pop(module)
+                        paths = [p for p in sys.modules if p.startswith('%s.' % module)]
+                        for path in paths:
+                            sys.modules.pop(path)
+                    return import_app(app.uri)
+
+            server = MuffinServer('%(prog)s run [OPTIONS]')
+            server.cfg.set('bind', bind)
+            server.cfg.set('daemon', daemon)
+            server.cfg.set('pidfile', pid)
+            server.cfg.set('proc_name', name)
+            server.cfg.set('reload', reload)
+            server.cfg.set('timeout', timeout)
+            server.cfg.set('worker_class', worker_class)
             if workers:
-                gapp.cfg.set('workers', workers)
+                server.cfg.set('workers', workers)
 
             if log_file:
-                gapp.cfg.set('errorlog', log_file)
+                server.cfg.set('errorlog', log_file)
             if access_logfile:
-                gapp.cfg.set('accesslog', access_logfile)
-            gapp.run()
+                server.cfg.set('accesslog', access_logfile)
 
-        @self.command
-        def collect(destination: str, source: list=app.cfg.STATIC_FOLDERS,
-                    replace=False, symlink=True):
-            """Collect static files from the application and plugins.
-
-            :param destination: Path where static files will be collected.
-            :param replace: Replace existed files
-            :param source: Sources from static files will be copied
-            :param symlink: Create symlinks except file copy
-
-            """
-            sources = dict()
-            for path in source:
-                path = os.path.abspath(path)
-                for root, _, files in os.walk(path):
-                    for f in files:
-                        fpath = os.path.join(root, f)
-                        rpath = os.path.relpath(fpath, path)
-                        if rpath in sources:
-                            app.logger.info('Already collected: %s' % fpath)
-                            continue
-                        sources[rpath] = fpath
-
-            destination = os.path.abspath(destination)
-            if not os.path.exists(destination):
-                raise MuffinException('Destination is not exist: %s' % destination)
-
-            for rpath, fpath in sources.items():
-                dpath = os.path.join(destination, rpath)
-                if fpath == dpath:
-                    continue
-
-                if os.path.exists(dpath):
-                    if not replace or os.path.getmtime(dpath) >= os.path.getmtime(fpath):
-                        continue
-                    os.remove(dpath)
-                ddir = os.path.dirname(dpath)
-                if not os.path.exists(ddir):
-                    os.makedirs(ddir)
-
-                if symlink:
-                    os.symlink(fpath, dpath)
-                    app.logger.info('Linked: %s' % rpath)
-
-                else:
-                    copy(fpath, dpath)
-                    app.logger.info('Copied: %s' % rpath)
+            server.run()
 
     def command(self, func):
         """Define CLI command."""

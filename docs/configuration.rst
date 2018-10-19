@@ -38,21 +38,13 @@ Base Muffin options and default values:
         # Logging options
         'ACCESS_LOG': '-',  # File path to access log, - to stderr
         'ACCESS_LOG_FORMAT': '%a %l %u %t "%r" %s %b "%{Referrer}i" "%{User-Agent}i"',
-
         'LOG_LEVEL': 'WARNING'
         'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s'
         'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]'
 
-        # List of enabled plugins
-        'PLUGINS': []
-
         # Setup static files in development
         'STATIC_PREFIX': '/static'
         'STATIC_FOLDERS': ['static']
-
-        # Setup recognition of HTTPS requests through reverse proxy:
-        # to enable, provide a tuple of (header, value)
-        'SECURE_PROXY_SSL_HEADER': None
 
 
 Configuring logging
@@ -96,8 +88,8 @@ To use just get logger with ``logging.getLogger()``:
 
     import logging
     logger = logging.getLogger('project')
-    
-    
+
+
 Config example
 ^^^^^^^^^^^^^^
 
@@ -109,26 +101,16 @@ Example has been taken from `example application <https://github.com/klen/muffin
 
   # Basic Muffin configuration
   # ==========================
-  
-  PLUGINS = (
-      # Some plugins
-      'muffin_jinja2',
-      'muffin_peewee',
-      'muffin_session',
-      'muffin_oauth',
-      'muffin_admin',
-      'muffin_debugtoolbar',
-  )
-  
+
   STATIC_FOLDERS = 'example/static',
-  
+
   # Plugin options
   # ==============
-  
+
   SESSION_SECRET = 'SecretHere'
-  
+
   JINJA2_TEMPLATE_FOLDERS = 'example/templates',
-  
+
   OAUTH_CLIENTS = {
       'github': {
           'client_id': 'b212c829c357ea0bd950',
@@ -136,10 +118,10 @@ Example has been taken from `example application <https://github.com/klen/muffin
       }
   }
   OAUTH_REDIRECT_URI = 'https://muffin-py.herokuapp.com/oauth/github'
-  
+
   PEEWEE_MIGRATIONS_PATH = 'example/migrations'
   PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
-  
+
   DEBUGTOOLBAR_EXCLUDE = ['/static']
   DEBUGTOOLBAR_HOSTS = ['0.0.0.0/0']
   DEBUGTOOLBAR_INTERCEPT_REDIRECTS = False

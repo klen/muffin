@@ -5,9 +5,13 @@ import pytest
 import muffin
 
 
-def test_app(app):
+async def test_app(app):
     assert app.name == 'muffin'
     assert app.cfg
+
+    app.on_startup.freeze()
+    await app.startup()
+    app.freeze()
 
     with pytest.raises(AttributeError):
         app.local
@@ -22,66 +26,30 @@ def test_app(app):
 def test_app_logging_cfg():
     dummy = {'dummy': 'dict'}
     with patch('logging.config.dictConfig') as m:
-        muffin.Application(
-            'muffin',
-            LOGGING=dummy
-        )
+        muffin.Application('muffin', LOGGING=dummy)
     m.assert_called_once_with(dummy)
 
 
-def test_view(app, client):
-
-    @app.register
-    def view(request):
-        return 'VIEW'
-
-    response = client.get('/view')
-    assert response.text == 'VIEW'
-
-
-def test_str(app, client):
-
-    @app.register('/str')
-    def str(request):
-        return 'STR'
-
-    response = client.get('/str')
-    assert response.text == 'STR'
-
-
-def test_bytes(app, client):
-
-    @app.register('/bytes')
-    def bytes(request):
-        return b'BYTES'
-
-    response = client.get('/bytes')
-    assert response.headers['Content-Type'] == 'text/html; charset=utf-8'
-    assert response.text == 'BYTES'
-
-
-def test_custom_methods(app, client):
-
-    @app.register('/caldav', methods='PROPFIND')
-    def propfind(request):
-        return b'PROPFIND'
-
-    response = client.request('/caldav', method='PROPFIND')
-    assert response.text == 'PROPFIND'
-
-
-def test_static(app, client):
-    assert app.cfg.STATIC_FOLDERS == [
+async def test_static(aiohttp_client):
+    app = muffin.Application('test', STATIC_FOLDERS=[
         'tests/static1',
         'tests/static2',
-    ]
-    response = client.get('/static/file1')
-    assert response.status_code == 200
-    response = client.get('/static/file2')
-    assert response.status_code == 200
+    ])
+    client = await aiohttp_client(app)
+
+    resp = await client.get('/static/file1')
+    assert resp.status == 200
+    body = await resp.read()
+    assert body == b'content1\n'
+
+    resp = await client.get('/static/file2')
+    assert resp.status == 200
+    body = await resp.read()
+    assert body == b'content2\n'
 
 
 def test_manage(app, capsys):
+
     @app.manage.command
     def hello(name, lower=False):
         if lower:
@@ -90,6 +58,7 @@ def test_manage(app, capsys):
 
     with pytest.raises(SystemExit):
         app.manage(*'hello'.split())
+
     out, err = capsys.readouterr()
     assert not out
     assert err
@@ -117,27 +86,9 @@ def test_password_hash():
     assert muffin.utils.check_password_hash('pass', pwhash)
 
 
-def test_error_pages(client, loop, app):
+async def test_error_pages(aiohttp_client):
 
-    @app.register(muffin.HTTPNotFound)
-    def handle_404(request):
-        return muffin.Response(text='Muffin 404', status=404)
-
-    @app.register(Exception)
-    def handle_500(request):
-        return muffin.Response(text='Muffin 500')
-
-    @app.register('/500')
-    def raise_500(request):
-        raise Exception('Unknow exception.')
-
-    loop.run_until_complete(app.start())
-
-    response = client.get('/404', status=404)
-    assert 'Muffin 404' == response.text
-
-    response = client.get('/500')
-    assert response.text == 'Muffin 500'
+    app = muffin.Application('test')
 
     @app.register('/400')
     def raise_400(request):
@@ -145,7 +96,33 @@ def test_error_pages(client, loop, app):
 
     @app.register(muffin.HTTPBadRequest)
     def handle_400(request):
-        return muffin.Response(text='Muffin 400', status=400)
+        return muffin.Response(text='Custom 400', status=400)
 
-    response = client.get('/400', status=400)
-    assert 'Muffin 400' == response.text
+    @app.register(muffin.HTTPNotFound)
+    def handle_404(request):
+        return muffin.Response(text='Custom 404', status=404)
+
+    @app.register(Exception)
+    def handle_500(request):
+        return muffin.Response(text='Custom 500')
+
+    @app.register('/500')
+    def raise_500(request):
+        raise Exception('Unknow exception.')
+
+    client = await aiohttp_client(app)
+
+    async with client.get('/400') as resp:
+        assert resp.status == 400
+        text = await resp.text()
+        assert text == 'Custom 400'
+
+    async with client.get('/404') as resp:
+        assert resp.status == 404
+        text = await resp.text()
+        assert text == 'Custom 404'
+
+    async with client.get('/500') as resp:
+        assert resp.status == 200
+        text = await resp.text()
+        assert text == 'Custom 500'

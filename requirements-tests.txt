@@ -1,15 +1,6 @@
 -r requirements.txt
 -e .
 
-mixer               == 5.4.1
-pytest              == 2.8.7
-pytest-sugar        == 0.5.1
-pytest-pythonpath   == 0.7
-webtest             == 2.0.20
-
-muffin_peewee
-muffin_session      >= 0.0.5
-muffin_oauth        >= 0.0.9
-muffin_jinja2       >= 0.0.4
-muffin_admin        >= 0.0.7
-wtf-peewee          == 0.2.6
+pytest              >= 3.9.1
+pytest-sugar        >= 0.9.1
+attrs               >= 17.4.0

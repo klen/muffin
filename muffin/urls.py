@@ -1,12 +1,18 @@
 """URL helpers."""
 import re
-import asyncio
+from pathlib import Path
 from random import choice
 from string import printable
 from urllib.parse import unquote
 
 from aiohttp.hdrs import METH_ANY
-from aiohttp.web import AbstractRoute, Resource, StaticRoute as VanilaStaticRoute, UrlDispatcher
+from aiohttp.web import (
+    Resource,
+    StaticResource,
+)
+from yarl import URL
+
+from .utils import to_coroutine
 
 
 DYNS_RE = re.compile(r'(\{[^{}]*\})')
@@ -25,17 +31,11 @@ class RawReResource(Resource):
         self._pattern = pattern
         super().__init__(name=name)
 
-    def get_info(self):
-        """Get the resource's information."""
-        return {'name': self._name, 'pattern': self._pattern}
+    @property
+    def canonical(self):
+        return self._pattern.pattern
 
-    def _match(self, path):
-        match = self._pattern.match(path)
-        if match is None:
-            return None
-        return {key: unquote(value) for key, value in match.groupdict('').items()}
-
-    def url(self, *subgroups, query=None, **groups):
+    def url_for(self, *subgroups, **groups):
         """Build URL."""
         parsed = re.sre_parse.parse(self._pattern.pattern)
         subgroups = {n:str(v) for n, v in enumerate(subgroups, 1)}
@@ -45,99 +45,59 @@ class RawReResource(Resource):
             for k0, v0 in groups.items()
             if k0 in groups_
         })
-        url = ''.join(str(val) for val in Traverser(parsed, subgroups))
-        return self._append_query(url, query)
+        path = ''.join(str(val) for val in Traverser(parsed, subgroups))
+        return URL.build(path=path, encoded=True)
+
+    def _match(self, path):
+        match = self.raw_match(path)
+        if match is None:
+            return None
+        return {key: unquote(value) for key, value in match.groupdict('').items()}
+
+    def add_prefix(self, prefix):
+        self._pattern = re.compile(re.escape(prefix) + self._pattern.pattern.strip('^'))
+
+    def get_info(self):
+        """Get the resource's information."""
+        return {'name': self._name, 'pattern': self._pattern}
+
+    def raw_match(self, path):
+        return self._pattern.match(path)
 
     def __repr__(self):
         """Fix representation."""
         return "<RawReResource '%s' %s>" % (self.name or '', self._pattern)
 
 
-# TODO: Remove me when aiohttp > 0.21.2 will be relased. See #794
-class StaticResource(Resource):
+class SafeStaticResource(StaticResource):
+    """Doesn't match for non-existing files.."""
 
-    def __init__(self, route):
-        super().__init__()
+    async def resolve(self, request):
+        match_info, methods = await super().resolve(request)
+        if match_info:
+            rel_url = match_info['filename']
+            try:
+                filename = Path(rel_url)
+                if filename.anchor:
+                    return None, set()
 
-        assert isinstance(route, AbstractRoute), \
-            'Instance of Route class is required, got {!r}'.format(route)
-        self._route = route
-        self._routes.append(route)
+                filepath = self._directory.joinpath(filename).resolve()
+                if filepath.exists():
+                    return match_info, methods
 
-    def url(self, **kwargs):
-        return self._route.url(**kwargs)
+            except (ValueError, FileNotFoundError) as error:
+                # relatively safe
+                return None, set()
 
-    def get_info(self):
-        return self._route.get_info()
-
-    def _match(self, path):
-        return self._route.match(path)
-
-    def __len__(self):
-        return 1
-
-    def __iter__(self):
-        yield self._route
-
-
-class ParentResource(Resource):
-
-    def __init__(self, path, *, name=None):
-        super().__init__(name=name)
-        self._path = path.rstrip('/')
-        self.router = UrlDispatcher()
-
-    @asyncio.coroutine
-    def resolve(self, method, path):
-        allowed_methods = set()
-        if not path.startswith(self._path + '/'):
-            return None, allowed_methods
-
-        path = path[len(self._path):]
-
-        for resource in self.router._resources:
-            match_dict, allowed = yield from resource.resolve(method, path)
-            if match_dict is not None:
-                return match_dict, allowed_methods
-            else:
-                allowed_methods |= allowed
-        return None, allowed_methods
-
-    def add_resource(self, path, *, name=None):
-        """Add resource."""
-        return self.router.add_resource(path, name=name)
-
-    def get_info(self):
-        return {'path': self._path}
-
-    def url(self, name=None, **kwargs):
-        if name:
-            return self._path + self.router[name].url(**kwargs)
-        return self._path + '/'
-
-
-class StaticRoute(VanilaStaticRoute):
-
-    """Support multiple static resorces."""
-
-    def match(self, path):
-        """Check for file is exists."""
-        if not path.startswith(self._prefix):
-            return None
-
-        filename = path[self._prefix_len:]
-        try:
-            pp = self._directory.joinpath(filename)
-            if pp.is_dir() or pp.is_file():
-                return {'filename': filename}
-        except (ValueError, FileNotFoundError):
-            return None
+        return None, set()
 
 
 def routes_register(app, handler, *paths, methods=None, router=None, name=None):
     """Register routes."""
     if router is None:
         router = app.router
+
+    handler = to_coroutine(handler)
 
     resources = []
 
@@ -158,7 +118,7 @@ def routes_register(app, handler, *paths, methods=None, router=None, name=None):
         path = parse(path)
         if isinstance(path, RETYPE):
             resource = RawReResource(path, name=rname)
-            router._reg_resource(resource)
+            router.register_resource(resource)
 
         else:
             resource = router.add_resource(path, name=rname)

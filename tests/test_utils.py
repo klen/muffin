@@ -5,35 +5,32 @@ import pytest
 import muffin
 
 
-@pytest.mark.async
-def test_local(loop):
+async def test_local(loop):
     l1 = muffin.local(loop)
     l2 = muffin.local(loop)
     assert l1 is l2
 
     log, fut1, fut2 = [], asyncio.Future(), asyncio.Future()
 
-    @asyncio.coroutine
-    def coro1():
+    async def coro1():
         l1.value = 'task1'
-        yield from fut1
+        await fut1
         log.append(l1.value)
         fut2.set_result(True)
 
-    @asyncio.coroutine
-    def coro2():
+    async def coro2():
         l1.value = 'task2'
         fut1.set_result(True)
-        yield from fut2
+        await fut2
         log.append(l1.value)
 
-    yield from asyncio.wait([coro1(), coro2()])
+    await asyncio.wait([coro1(), coro2()])
     assert log == ['task1', 'task2']
 
 
-def test_slocal():
+def test_slocal(loop):
     from muffin.utils import local, slocal
-    loop = asyncio.get_event_loop()
+
     local = local(loop=loop)
     with pytest.raises(RuntimeError):
         local.test = 1
@@ -59,8 +56,8 @@ def test_struct():
     assert settings.option == 'value'
 
     settings.option2 = 'value2'
-    settings.lock()
-    settings.lock()
+    settings.freeze()
+    settings.freeze()
 
     with pytest.raises(RuntimeError):
         settings.test = 42
@@ -70,7 +67,7 @@ def test_import_submodules():
     from muffin import import_submodules
 
     result = import_submodules('muffin')
-    assert len(result) == 8
+    assert len(result) == 7
 
     result = import_submodules('muffin', 'plugins', 'manage')
     assert len(result) == 2
@@ -98,5 +95,6 @@ def test_generate_password_hash_sha256():
     assert len(password_hash.split('$')[1]) == 20
     assert len(password_hash.split('$')[2]) == 64
     assert check_password_hash(password, password_hash)
+
 
 #  pylama:ignore=E0237
