@@ -219,8 +219,9 @@ class Manager(object):
             sys.exit(e)
 
         finally:
-            loop.run_until_complete(self.app.cleanup())
-            loop.run_until_complete(self.app.shutdown())
+            if not loop.is_closed():
+                loop.run_until_complete(self.app.cleanup())
+                loop.run_until_complete(self.app.shutdown())
 
 
 def run():
