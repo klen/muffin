@@ -61,11 +61,6 @@ class Manager(object):
 
             :param ipython: Use IPython as shell
             """
-            loop = asyncio.get_event_loop()
-            app._set_loop(loop)
-            app.freeze()
-            loop.run_until_complete(app.startup())
-
             banner = '\nInteractive Muffin Shell\n'
             namespace = app.cfg.MANAGE_SHELL
             if callable(namespace):
@@ -83,9 +78,6 @@ class Manager(object):
 
             from code import interact
             interact(banner, local=namespace)
-
-            loop.run_until_complete(app.cleanup())
-            loop.run_until_complete(app.shutdown())
 
         workers = 1
         debug = app.cfg.DEBUG is not ... and app.cfg.DEBUG
@@ -209,15 +201,26 @@ class Manager(object):
             self.parser.print_help()
             sys.exit(1)
 
+        loop = asyncio.get_event_loop()
+        self.app._set_loop(loop)
+        self.app.on_startup.freeze()
+        loop.run_until_complete(self.app.startup())
+        self.app.freeze()
+
         try:
+
             res = handler(**kwargs)
             if asyncio.iscoroutine(res):
-                loop = asyncio.get_event_loop()
                 loop.run_until_complete(res)
 
             sys.exit(0)
+
         except Exception as e:
             sys.exit(e)
+
+        finally:
+            loop.run_until_complete(self.app.cleanup())
+            loop.run_until_complete(self.app.shutdown())
 
 
 def run():

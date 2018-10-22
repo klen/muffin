@@ -48,7 +48,7 @@ async def test_static(aiohttp_client):
     assert body == b'content2\n'
 
 
-def test_manage(app, capsys):
+def test_manage(app, loop, capsys):
 
     @app.manage.command
     def hello(name, lower=False):
