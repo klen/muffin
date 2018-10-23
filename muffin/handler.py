@@ -168,8 +168,7 @@ class Handler(object, metaclass=HandlerMeta):
 
         return Response(text=json.dumps(response), content_type='application/json')
 
-    @staticmethod
-    async def parse(request):
+    async def parse(self, request):
         """Return a coroutine which parses data from request depends on content-type.
 
         Usage: ::
