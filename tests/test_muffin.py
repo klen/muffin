@@ -48,32 +48,6 @@ async def test_static(aiohttp_client):
     assert body == b'content2\n'
 
 
-def test_manage(app, loop, capsys):
-
-    @app.manage.command
-    def hello(name, lower=False):
-        if lower:
-            name = name.lower()
-        print("hello " + name)
-
-    with pytest.raises(SystemExit):
-        app.manage(*'hello'.split())
-
-    out, err = capsys.readouterr()
-    assert not out
-    assert err
-
-    with pytest.raises(SystemExit):
-        app.manage(*'hello Mike'.split())
-    out, err = capsys.readouterr()
-    assert "hello Mike\n" == out
-
-    with pytest.raises(SystemExit):
-        app.manage(*'hello Sam --lower'.split())
-    out, err = capsys.readouterr()
-    assert "hello sam\n" == out
-
-
 def test_signature():
     assert muffin.utils.create_signature('secret', 'message')
 
