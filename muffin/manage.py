@@ -61,11 +61,6 @@ class Manager(object):
 
             :param ipython: Use IPython as shell
             """
-            loop = asyncio.get_event_loop()
-            app._set_loop(loop)
-            app.freeze()
-            loop.run_until_complete(app.startup())
-
             banner = '\nInteractive Muffin Shell\n'
             namespace = app.cfg.MANAGE_SHELL
             if callable(namespace):
@@ -83,9 +78,6 @@ class Manager(object):
 
             from code import interact
             interact(banner, local=namespace)
-
-            loop.run_until_complete(app.cleanup())
-            loop.run_until_complete(app.shutdown())
 
         workers = 1
         debug = app.cfg.DEBUG is not ... and app.cfg.DEBUG
@@ -160,32 +152,38 @@ class Manager(object):
         kwargs_ = dict(zip(args[-len(defs):], defs))
         docs = dict(PARAM_RE.findall(func.__doc__ or ""))
 
-        for name in args:
+        def process_arg(name, *, value=..., **opts):
             argname = name.replace('_', '-').lower()
-            arghelp = docs.get(name, '')
-
-            if name not in kwargs_:
-                parser.add_argument(argname, help=arghelp)
-                continue
-
-            value = kwargs_[name]
+            arghelp = docs.get(vargs, '')
+            if value is ...:
+                return parser.add_argument(argname, help=arghelp, **opts)
 
             if isinstance(value, bool):
                 if value:
-                    parser.add_argument("--no-" + argname, dest=name, action="store_false",
-                                        help="Disable %s" % (arghelp or name).lower())
-                else:
-                    parser.add_argument("--" + argname, dest=name, action="store_true",
-                                        help="Enable %s" % (arghelp or name).lower())
-                continue
+                    return parser.add_argument(
+                        "--no-" + argname, dest=name, action="store_false",
+                        help="Disable %s" % (arghelp or name).lower())
+
+                return parser.add_argument(
+                    "--" + argname, dest=name, action="store_true",
+                    help="Enable %s" % (arghelp or name).lower())
 
             if isinstance(value, list):
-                parser.add_argument("--" + argname, action="append",
-                                    default=value, help=arghelp)
-                continue
+                return parser.add_argument(
+                    "--" + argname, action="append", default=value, help=arghelp)
 
-            parser.add_argument("--" + argname, type=anns.get(name, type(value)),
-                                default=value, help=arghelp + ' [%s]' % repr(value))
+            return parser.add_argument(
+                "--" + argname, type=anns.get(name, type(value)),
+                default=value, help=arghelp + ' [%s]' % repr(value))
+
+        if vargs:
+            process_arg('*', nargs="*", metavar=vargs)
+
+        for name, value in (kwdefs or {}).items():
+            process_arg(name, value=value)
+
+        for name in args:
+            process_arg(name, value=kwargs_.get(name, ...))
 
         self.handlers[func.__name__] = func
         func.parser = parser
@@ -201,23 +199,38 @@ class Manager(object):
             self.parser.prog = prog
         if not args:
             args = sys.argv[1:]
-        args_, _ = self.parser.parse_known_args(args)
-        kwargs = dict(args_._get_kwargs())
+
+        ns, _ = self.parser.parse_known_args(args)
+        kwargs = dict(ns._get_kwargs())
 
         handler = self.handlers.get(kwargs.pop('subparser'))
         if not handler:
             self.parser.print_help()
             sys.exit(1)
 
+        loop = asyncio.get_event_loop()
+        self.app._set_loop(loop)
+        self.app.on_startup.freeze()
+        loop.run_until_complete(self.app.startup())
+        self.app.freeze()
+
+        args = kwargs.pop('*', [])
+
         try:
-            res = handler(**kwargs)
+
+            res = handler(*args, **kwargs)
             if asyncio.iscoroutine(res):
-                loop = asyncio.get_event_loop()
                 loop.run_until_complete(res)
 
             sys.exit(0)
+
         except Exception as e:
             sys.exit(e)
+
+        finally:
+            if not loop.is_closed():
+                loop.run_until_complete(self.app.cleanup())
+                loop.run_until_complete(self.app.shutdown())
 
 
 def run():

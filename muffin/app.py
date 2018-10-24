@@ -4,6 +4,7 @@ import os
 from importlib import import_module
 from inspect import isfunction, isclass, ismethod
 import types
+import ujson as json
 
 from aiohttp import web, log
 from aiohttp.hdrs import METH_ANY
@@ -177,8 +178,14 @@ class Application(BaseApplication):
 
             except ImportError as exc:
                 config.CONFIG = None
-                message = "Error importing %s: %s" % (module, exc)
-                self.register_on_start(lambda app: app.logger.error(message))
+                self.logger.error("Error importing %s: %s", module, exc)
+
+        # Patch configuration from ENV
+        config.update({
+            name: json.loads(os.environ[name])
+            for name in config
+            if not name.startswith('_') and name == name.upper() and name in os.environ
+        })
 
         return config
 
