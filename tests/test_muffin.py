@@ -9,6 +9,10 @@ async def test_app(app):
     assert app.name == 'muffin'
     assert app.cfg
 
+    @app.middleware
+    def test_middleware(request, handler):
+        return handler(request)
+
     app.on_startup.freeze()
     await app.startup()
     app.freeze()
@@ -21,6 +25,8 @@ async def test_app(app):
 
     with pytest.raises(RuntimeError):
         app.ps.PLUGIN = 42
+
+    assert app.middlewares
 
 
 def test_app_logging_cfg():
