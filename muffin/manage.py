@@ -84,7 +84,7 @@ class Manager(object):
         if not debug:
             workers = multiprocessing.cpu_count()
 
-        @self.command
+        @self.command(init=False)
         def run(bind: str='127.0.0.1:5000', daemon: bool=False, pid: str=None,
                 reload: bool=debug, timeout: int=30, name: str=self.app.name,
                 worker_class: str='aiohttp.worker.GunicornWebWorker', workers: int=workers,
@@ -142,52 +142,64 @@ class Manager(object):
 
             server.run()
 
-    def command(self, func):
+    def command(self, init=False):
         """Define CLI command."""
-        header = '\n'.join([s for s in (func.__doc__ or '').split('\n')
-                            if not s.strip().startswith(':')])
-        parser = self.parsers.add_parser(func.__name__, description=header)
-        args, vargs, kw, defs, kwargs, kwdefs, anns = inspect.getfullargspec(func)
-        defs = defs or []
-        kwargs_ = dict(zip(args[-len(defs):], defs))
-        docs = dict(PARAM_RE.findall(func.__doc__ or ""))
 
-        def process_arg(name, *, value=..., **opts):
-            argname = name.replace('_', '-').lower()
-            arghelp = docs.get(vargs, '')
-            if value is ...:
-                return parser.add_argument(argname, help=arghelp, **opts)
+        def wrapper(func):
+            header = '\n'.join([s for s in (func.__doc__ or '').split('\n')
+                                if not s.strip().startswith(':')])
+            parser = self.parsers.add_parser(func.__name__, description=header)
+            args, vargs, kw, defs, kwargs, kwdefs, anns = inspect.getfullargspec(func)
+            defs = defs or []
+            kwargs_ = dict(zip(args[-len(defs):], defs))
+            docs = dict(PARAM_RE.findall(func.__doc__ or ""))
 
-            if isinstance(value, bool):
-                if value:
+            def process_arg(name, *, value=..., **opts):
+                argname = name.replace('_', '-').lower()
+                arghelp = docs.get(vargs, '')
+                if value is ...:
+                    return parser.add_argument(argname, help=arghelp, **opts)
+
+                if isinstance(value, bool):
+                    if value:
+                        return parser.add_argument(
+                            "--no-" + argname, dest=name, action="store_false",
+                            help="Disable %s" % (arghelp or name).lower())
+
                     return parser.add_argument(
-                        "--no-" + argname, dest=name, action="store_false",
-                        help="Disable %s" % (arghelp or name).lower())
+                        "--" + argname, dest=name, action="store_true",
+                        help="Enable %s" % (arghelp or name).lower())
+
+                if isinstance(value, list):
+                    return parser.add_argument(
+                        "--" + argname, action="append", default=value, help=arghelp)
 
                 return parser.add_argument(
-                    "--" + argname, dest=name, action="store_true",
-                    help="Enable %s" % (arghelp or name).lower())
+                    "--" + argname, type=anns.get(name, type(value)),
+                    default=value, help=arghelp + ' [%s]' % repr(value))
 
-            if isinstance(value, list):
-                return parser.add_argument(
-                    "--" + argname, action="append", default=value, help=arghelp)
+            if vargs:
+                process_arg('*', nargs="*", metavar=vargs)
 
-            return parser.add_argument(
-                "--" + argname, type=anns.get(name, type(value)),
-                default=value, help=arghelp + ' [%s]' % repr(value))
+            for name, value in (kwdefs or {}).items():
+                process_arg(name, value=value)
 
-        if vargs:
-            process_arg('*', nargs="*", metavar=vargs)
+            for name in args:
+                process_arg(name, value=kwargs_.get(name, ...))
 
-        for name, value in (kwdefs or {}).items():
-            process_arg(name, value=value)
+            self.handlers[func.__name__] = func
+            func.parser = parser
+            return func
 
-        for name in args:
-            process_arg(name, value=kwargs_.get(name, ...))
+        if callable(init):
+            init.__init__ = True
+            return wrapper(init)
 
-        self.handlers[func.__name__] = func
-        func.parser = parser
-        return func
+        def decorator(func):
+            func.__init__ = bool(init)
+            return wrapper(func)
+
+        return decorator
 
     def shell(self, func):
         """Set shell context function."""
@@ -210,9 +222,11 @@ class Manager(object):
 
         loop = asyncio.get_event_loop()
         self.app._set_loop(loop)
-        self.app.on_startup.freeze()
-        loop.run_until_complete(self.app.startup())
-        self.app.freeze()
+
+        if handler.__init__:
+            self.app.on_startup.freeze()
+            loop.run_until_complete(self.app.startup())
+            self.app.freeze()
 
         args = kwargs.pop('*', [])
 
@@ -228,7 +242,7 @@ class Manager(object):
             sys.exit(e)
 
         finally:
-            if not loop.is_closed():
+            if not loop.is_closed() and handler.__init__:
                 loop.run_until_complete(self.app.cleanup())
                 loop.run_until_complete(self.app.shutdown())
 

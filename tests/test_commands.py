@@ -1,4 +1,5 @@
 import pytest
+import mock
 
 
 def test_command(app):
@@ -19,9 +20,14 @@ def test_command(app):
     assert dict(ns._get_kwargs()) == {'*': ['test'], 'lower': False}
 
 
-def test_manage(app, capsys):
+def test_manage(app, capsys, monkeypatch):
 
-    @app.manage.command
+    def startup(*args):
+        raise Exception('must not be called')
+
+    monkeypatch.setattr(app, 'startup', startup)
+
+    @app.manage.command(init=False)
     def hello(name, lower=False):
         if lower:
             name = name.lower()
