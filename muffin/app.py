@@ -256,6 +256,10 @@ class Application(BaseApplication):
 
         return super(Application, self).pre_freeze()
 
+    def middleware(self, func):
+        """Register given middleware (v1)."""
+        self.middlewares.append(web.middleware(to_coroutine(func)))
+
 
 def _exc_middleware_factory(app):
     """Handle exceptions.
