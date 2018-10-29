@@ -29,6 +29,14 @@ async def test_app(app):
     assert app.middlewares
 
 
+def test_app_config():
+    import os
+
+    os.environ['DEBUG'] = 'invalid'
+    app = muffin.Application('test')
+    assert app.cfg.DEBUG
+
+
 def test_app_logging_cfg():
     dummy = {'dummy': 'dict'}
     with patch('logging.config.dictConfig') as m:

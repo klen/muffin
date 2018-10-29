@@ -181,11 +181,13 @@ class Application(BaseApplication):
                 self.logger.error("Error importing %s: %s", module, exc)
 
         # Patch configuration from ENV
-        config.update({
-            name: json.loads(os.environ[name])
-            for name in config
-            if not name.startswith('_') and name == name.upper() and name in os.environ
-        })
+        for name in config:
+            if name.startswith('_') or name != name.upper() or name not in os.environ:
+                continue
+            try:
+                config[name] = json.loads(os.environ[name])
+            except ValueError:
+                pass
 
         return config
 
