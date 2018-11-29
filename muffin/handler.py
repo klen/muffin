@@ -44,8 +44,6 @@ class HandlerMeta(type):
 
     """Prepare handlers."""
 
-    _coroutines = set(m.lower() for m in METH_ALL)
-
     def __new__(mcs, name, bases, params):
         """Prepare a Handler Class.
 
@@ -57,9 +55,10 @@ class HandlerMeta(type):
         params['name'] = params.get('name', name.lower())
 
         # Define new coroutines
-        for fname, method in params.items():
-            if iscoroutinefunction(method):
-                mcs._coroutines.add(fname)
+        coroutines = set(m.lower() for m in METH_ALL)
+        coroutines |= {
+            name for cls in bases for name in dir(cls) if iscoroutinefunction(getattr(cls, name))
+        }
 
         cls = super().__new__(mcs, name, bases, params)
 
@@ -73,7 +72,7 @@ class HandlerMeta(type):
         cls.methods = [method.upper() for method in cls.methods]
 
         # Ensure that coroutine methods is coroutines
-        for name in mcs._coroutines:
+        for name in coroutines:
             method = getattr(cls, name, None)
             if not method:
                 continue
@@ -89,6 +88,8 @@ class Handler(object, metaclass=HandlerMeta):
     app = None
     name = None
     methods = None
+
+    __coroutines__ = None
 
     @classmethod
     def from_view(cls, view, *methods, name=None):
