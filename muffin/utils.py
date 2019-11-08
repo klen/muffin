@@ -5,7 +5,7 @@ import pkgutil
 import random
 import sys
 import threading
-from asyncio import coroutine, iscoroutinefunction, Task, get_event_loop
+from asyncio import coroutine, iscoroutinefunction, current_task, get_event_loop
 
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -145,7 +145,7 @@ class local:
     @property
     def __curtask__(self):
         """ Create namespace in current task. """
-        task = Task.current_task(loop=self._loop)
+        task = current_task(loop=self._loop)
         if not task:
             raise RuntimeError('No task is currently running')
 
