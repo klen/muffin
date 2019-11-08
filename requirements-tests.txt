@@ -1,6 +1,7 @@
 -r requirements.txt
 -e .
 
+attrs               >= 17.4.0
+mock                >= 3.0.5
 pytest              >= 3.9.1
 pytest-sugar        >= 0.9.1
-attrs               >= 17.4.0
