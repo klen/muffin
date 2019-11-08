@@ -5,7 +5,14 @@ import pkgutil
 import random
 import sys
 import threading
-from asyncio import coroutine, iscoroutinefunction, current_task, get_event_loop
+
+from asyncio import coroutine, iscoroutinefunction, get_event_loop
+
+try:
+    # Python 3.7
+    from asyncio import current_task
+except ImportError:
+    current_task = Task.current_task
 
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
