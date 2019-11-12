@@ -4,7 +4,7 @@ import os
 from importlib import import_module
 from inspect import isfunction, isclass, ismethod
 import types
-import ujson as json
+import rapidjson as json
 
 from aiohttp import web, log
 from aiohttp.hdrs import METH_ANY

@@ -12,7 +12,9 @@ try:
     # Python 3.7
     from asyncio import current_task
 except ImportError:
-    current_task = Task.current_task
+    from asyncio import Task
+
+    current_task = Task.current_task  # noqa
 
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
