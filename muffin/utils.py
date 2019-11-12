@@ -21,8 +21,6 @@ try:
 except ImportError:
     import json
 
-assert json
-
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
 
@@ -203,5 +201,14 @@ def import_submodules(package_name, *submodules):
         for _, name, _ in pkgutil.walk_packages(package.__path__)
         if not submodules or name in submodules
     }
+
+
+def dumps(obj, skipkeys=True, default=str, **params):
+    """Serialize the given object into JSON."""
+    try:
+        return json.dumps(obj, skipkeys=skipkeys, default=default, **params)
+    except (TypeError, ValueError):
+        return default(obj)
+
 
 #  pylama:ignore=W0212
