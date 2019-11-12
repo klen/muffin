@@ -3,7 +3,7 @@ import functools
 import inspect
 from asyncio import coroutine, iscoroutine, iscoroutinefunction
 
-import ujson as json
+import rapidjson as json
 from aiohttp.hdrs import METH_ANY, METH_ALL
 from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
 
