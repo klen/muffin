@@ -3,12 +3,11 @@ import functools
 import inspect
 from asyncio import coroutine, iscoroutine, iscoroutinefunction
 
-import rapidjson as json
 from aiohttp.hdrs import METH_ANY, METH_ALL
 from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
 
 from muffin.urls import routes_register
-from muffin.utils import to_coroutine
+from muffin.utils import to_coroutine, json
 
 
 ROUTE_PARAMS_ATTR = '_route_params'
