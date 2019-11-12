@@ -7,7 +7,7 @@ from aiohttp.hdrs import METH_ANY, METH_ALL
 from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
 
 from muffin.urls import routes_register
-from muffin.utils import to_coroutine, json
+from muffin.utils import to_coroutine, dumps
 
 
 ROUTE_PARAMS_ATTR = '_route_params'
@@ -166,11 +166,7 @@ class Handler(object, metaclass=HandlerMeta):
         if isinstance(response, bytes):
             return Response(body=response, content_type='text/html')
 
-        try:
-            return Response(
-                text=json.dumps(response, skipkeys=True), content_type='application/json')
-        except (TypeError, ValueError):
-            return Response(text=str(response), content_type='plain/text')
+        return Response(text=dumps(response), content_type='application/json')
 
     async def parse(self, request):
         """Return a coroutine which parses data from request depends on content-type.
