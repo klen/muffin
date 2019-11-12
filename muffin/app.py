@@ -4,7 +4,6 @@ import os
 from importlib import import_module
 from inspect import isfunction, isclass, ismethod
 import types
-import rapidjson as json
 
 from aiohttp import web, log
 from aiohttp.hdrs import METH_ANY
@@ -13,7 +12,7 @@ from cached_property import cached_property
 from . import CONFIGURATION_ENVIRON_VARIABLE
 from .handler import Handler
 from .manage import Manager
-from .utils import LStruct, to_coroutine
+from .utils import LStruct, to_coroutine, json
 from .urls import SafeStaticResource
 
 

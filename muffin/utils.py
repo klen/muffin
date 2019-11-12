@@ -16,6 +16,12 @@ except ImportError:
 
     current_task = Task.current_task  # noqa
 
+try:
+    import rapidjson as json
+except ImportError:
+    import json
+
+assert json
 
 SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
