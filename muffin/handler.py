@@ -166,7 +166,11 @@ class Handler(object, metaclass=HandlerMeta):
         if isinstance(response, bytes):
             return Response(body=response, content_type='text/html')
 
-        return Response(text=json.dumps(response), content_type='application/json')
+        try:
+            return Response(
+                text=json.dumps(response, skipkeys=True), content_type='application/json')
+        except (TypeError, ValueError):
+            return Response(text=str(response), content_type='plain/text')
 
     async def parse(self, request):
         """Return a coroutine which parses data from request depends on content-type.
