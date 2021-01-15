@@ -2,6 +2,6 @@ aiofile
 anyio
 asgi-lifespan
 pytest
-trio
+trio==0.18.0
 
 -e .
