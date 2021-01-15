@@ -1,5 +1,5 @@
 aiofile
-anyio
+anyio==2.0.2
 asgi-lifespan
 pytest
 trio
