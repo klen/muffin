@@ -45,24 +45,39 @@ Example "Hello User" with the Muffin:
     app = muffin.Application('example')
 
 
-    @app.register('/', '/hello/{name}')
-    def hello(request):
-        name = request.match_info.get('name', 'anonymous')
-        return 'Hello %s!' % name
-
-    if __name__ == '__main__':
-        app.manage()
+    @app.route('/', '/hello/{name}')
+    async def hello(request):
+        name = request.path_params.get('name', 'anonymous')
+        return f'Hello {name.title()}!'
 
 
-Save the script as `example.py` and run it: ::
+Save the script as `example.py` and run it using Uvicorn (or another ASGI server): ::
 
-    $ python3 example.py run
+    $ uvicorn example:app
 
 Open http://localhost:5000, http://localhost:5000/hello/username in your browser. Enjoy!
+
+For a more complete example, see https://github.com/klen/muffin-example
 
 .. _contents:
 
 .. contents::
+
+.. _requirements:
+
+Requirements
+=============
+
+- python >= 3.8
+
+.. _installation:
+
+Installation
+=============
+
+**The Muffin** should be installed using pip: ::
+
+    pip install muffin
 
 .. _plugins:
 
@@ -225,27 +240,12 @@ The list of some Muffin plugins (please make PR if you want to provide more):
   .. image:: https://img.shields.io/github/issues-raw/klen/muffin-session.svg?style=flat-square
      :target: https://github.com/klen/muffin-session/issues
 
-
-.. _requirements:
-
-Requirements
-=============
-
-- python >= 3.5.3
-
-.. _installation:
+.. _benchmarks:
 
 Benchmarks
 ==========
 
 You could find some tests here: http://klen.github.io/py-frameworks-bench/
-
-Installation
-=============
-
-**The Muffin** should be installed using pip: ::
-
-    pip install muffin
 
 .. _usage:
 

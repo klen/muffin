@@ -1,10 +1,10 @@
 import pytest
-import mock
+from unittest import mock
 
 
 def test_command(app):
 
-    @app.manage.command
+    @app.manage
     def cmd1(name, lower=False):
         pass
 
@@ -12,7 +12,7 @@ def test_command(app):
     ns = cmd1.parser.parse_args(['test'])
     assert dict(ns._get_kwargs()) == {'name': 'test', 'lower': False}
 
-    @app.manage.command
+    @app.manage
     def cmd2(*names, lower=False):
         pass
 
@@ -22,31 +22,33 @@ def test_command(app):
 
 def test_manage(app, capsys, monkeypatch):
 
-    def startup(*args):
-        raise Exception('must not be called')
+    app.on_startup(start := mock.MagicMock())
+    app.on_shutdown(finish := mock.MagicMock())
 
-    monkeypatch.setattr(app, 'startup', startup)
-
-    @app.manage.command(init=False)
+    @app.manage(lifespan=True)
     def hello(name, lower=False):
         if lower:
             name = name.lower()
         print("hello " + name)
 
     with pytest.raises(SystemExit):
-        app.manage(*'hello'.split())
+        app.manage.run(*'hello')
 
     out, err = capsys.readouterr()
     assert not out
     assert err
 
     with pytest.raises(SystemExit):
-        app.manage(*'hello Mike'.split())
+        app.manage.run(*'hello Mike'.split())
+
+    assert start.called
+    assert finish.called
+
     out, err = capsys.readouterr()
     assert "hello Mike\n" == out
 
     with pytest.raises(SystemExit):
-        app.manage(*'hello Sam --lower'.split())
+        app.manage.run(*'hello Sam --lower'.split())
+
     out, err = capsys.readouterr()
     assert "hello sam\n" == out
-

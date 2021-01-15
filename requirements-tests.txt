@@ -1,7 +1,7 @@
--r requirements.txt
--e .
+aiofile
+anyio
+asgi-lifespan
+pytest
+trio
 
-attrs               >= 17.4.0
-mock                >= 3.0.5
-pytest              >= 3.9.1
-pytest-sugar        >= 0.9.1
+-e .

@@ -1,42 +1,8 @@
-"""Base handler class."""
-import functools
+"""Muffin Handlers."""
+
+from asgi_tools.app import HTTPView, HTTP_METHODS
+from asgi_tools.utils import is_awaitable
 import inspect
-from asyncio import coroutine, iscoroutine, iscoroutinefunction
-
-from aiohttp.hdrs import METH_ANY, METH_ALL
-from aiohttp.web import StreamResponse, HTTPMethodNotAllowed, Response
-
-from muffin.urls import routes_register
-from muffin.utils import to_coroutine, dumps
-
-
-ROUTE_PARAMS_ATTR = '_route_params'
-
-
-def register(*paths, methods=None, name=None, handler=None):
-    """Mark Handler.method to aiohttp handler.
-
-    It uses when registration of the handler with application is postponed.
-
-    ::
-        class AwesomeHandler(Handler):
-
-            def get(self, request):
-                return "I'm awesome!"
-
-            @register('/awesome/best')
-            def best(self, request):
-                return "I'm best!"
-
-    """
-    def wrapper(method):
-        """Store route params into method."""
-        method = to_coroutine(method)
-        setattr(method, ROUTE_PARAMS_ATTR, (paths, methods, name))
-        if handler and not hasattr(handler, method.__name__):
-            setattr(handler, method.__name__, method)
-        return method
-    return wrapper
 
 
 class HandlerMeta(type):
@@ -44,143 +10,55 @@ class HandlerMeta(type):
     """Prepare handlers."""
 
     def __new__(mcs, name, bases, params):
-        """Prepare a Handler Class.
-
-        Ensure that the Handler class has a name.
-        Ensure that required methods are coroutines.
-        Fix the Handler params.
-        """
-        # Set name
-        params['name'] = params.get('name', name.lower())
-
-        # Define new coroutines
-        coroutines = set(m.lower() for m in METH_ALL)
-        coroutines |= {
-            name for cls in bases for name in dir(cls) if iscoroutinefunction(getattr(cls, name))
-        }
-
+        """Prepare a Handler Class."""
         cls = super().__new__(mcs, name, bases, params)
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:
-            cls.methods = set(method for method in METH_ALL if method.lower() in cls.__dict__)
+            cls.methods = set(method for method in HTTP_METHODS if method.lower() in cls.__dict__)
 
         elif isinstance(cls.methods, str):
             cls.methods = [cls.methods]
 
         cls.methods = [method.upper() for method in cls.methods]
 
-        # Ensure that coroutine methods is coroutines
-        for name in coroutines:
-            method = getattr(cls, name, None)
-            if not method:
-                continue
-            setattr(cls, name, to_coroutine(method))
+        for m in cls.methods:
+            method = getattr(cls, m.lower(), None)
+            if method and not is_awaitable(method):
+                raise TypeError("The method '%s' has to be awaitable" % method)
 
         return cls
 
 
-class Handler(object, metaclass=HandlerMeta):
+class Handler(HTTPView, metaclass=HandlerMeta):
 
-    """Handle request."""
+    """Supports custom routing."""
 
-    app = None
-    name = None
     methods = None
 
-    __coroutines__ = None
-
     @classmethod
-    def from_view(cls, view, *methods, name=None):
-        """Create a handler class from function or coroutine."""
-        docs = getattr(view, '__doc__', None)
-        view = to_coroutine(view)
-        methods = methods or ['GET']
+    def __route__(cls, router, *paths, **params):
+        """Check for registered methods."""
+        params.setdefault('methods', cls.methods)
+        router.route(*paths, **params)(cls)
+        for _, method in inspect.getmembers(cls, lambda m: hasattr(m, '__route__')):
+            cpaths, cparams = method.__route__
+            router.route(*cpaths, __meth__=method.__name__, **cparams)(cls)
 
-        if METH_ANY in methods:
-            methods = METH_ALL
+        return cls
 
-        def proxy(self, *args, **kwargs):
-            return view(*args, **kwargs)
+    def __call__(self, request, __meth__=None):
+        """Dispatch the given request by HTTP method."""
+        method = getattr(self, __meth__ or request.method.lower())
+        return method(request)
 
-        params = {m.lower(): proxy for m in methods}
-        params['methods'] = methods
-        if docs:
-            params['__doc__'] = docs
+    @staticmethod
+    def route(*paths, **params):
+        """Route custom methods for Handlers."""
 
-        return type(name or view.__name__, (cls,), params)
+        def wrapper(method):
+            """Wrap a method."""
+            method.__route__ = paths, params
+            return method
 
-    @classmethod
-    def bind(cls, app, *paths, methods=None, name=None, router=None, view=None):
-        """Bind to the given application."""
-        cls.app = app
-        if cls.app is not None:
-            for _, m in inspect.getmembers(cls, predicate=inspect.isfunction):
-                if not hasattr(m, ROUTE_PARAMS_ATTR):
-                    continue
-                paths_, methods_, name_ = getattr(m, ROUTE_PARAMS_ATTR)
-                name_ = name_ or ("%s.%s" % (cls.name, m.__name__))
-                delattr(m, ROUTE_PARAMS_ATTR)
-                cls.app.register(*paths_, methods=methods_, name=name_, handler=cls)(m)
-
-        @coroutine
-        @functools.wraps(cls)
-        def handler(request):
-            return cls().dispatch(request, view=view)
-
-        if not paths:
-            paths = ["/%s" % cls.__name__]
-
-        return routes_register(
-            app, handler, *paths, methods=methods, router=router, name=name or cls.name)
-
-    @classmethod
-    def register(cls, *args, **kwargs):
-        """Register view to handler."""
-        if cls.app is None:
-            return register(*args, handler=cls, **kwargs)
-        return cls.app.register(*args, handler=cls, **kwargs)
-
-    async def dispatch(self, request, view=None, **kwargs):
-        """Dispatch request."""
-        if view is None and request.method not in self.methods:
-            raise HTTPMethodNotAllowed(request.method, self.methods)
-
-        method = getattr(self, view or request.method.lower())
-        response = await method(request, **kwargs)
-        return await self.make_response(request, response)
-
-    __iter__ = dispatch
-
-    async def make_response(self, request, response):
-        """Convert a handler result to web response."""
-        while iscoroutine(response):
-            response = await response
-
-        if isinstance(response, StreamResponse):
-            return response
-
-        if isinstance(response, str):
-            return Response(text=response, content_type='text/html')
-
-        if isinstance(response, bytes):
-            return Response(body=response, content_type='text/html')
-
-        return Response(text=dumps(response), content_type='application/json')
-
-    async def parse(self, request):
-        """Return a coroutine which parses data from request depends on content-type.
-
-        Usage: ::
-
-            def post(self, request):
-                data = await self.parse(request)
-                # ...
-        """
-        if request.content_type in {'application/x-www-form-urlencoded', 'multipart/form-data'}:
-            return await request.post()
-
-        if request.content_type == 'application/json':
-            return await request.json()
-
-        return await request.text()
+        return wrapper

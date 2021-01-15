@@ -1,20 +1,29 @@
 import pytest
+from asgi_tools.tests import TestClient
 
 import muffin
 
 
+@pytest.fixture(params=[
+    pytest.param('asyncio'),
+    pytest.param('trio'),
+])
+def anyio_backend(request):
+    return request.param
+
+
 @pytest.fixture
 def app():
-    app = muffin.Application(
-        'muffin',
+    """Simple basic app for testing."""
+    app = muffin.Application('muffin', DEBUG=True)
 
-        STATIC_FOLDERS=(
-            'tests/static1',
-            'tests/static2',
-        ))
-
-    @app.register('/')
-    def index(request):
+    @app.route('/')
+    async def index(request):
         return 'OK'
 
     return app
+
+
+@pytest.fixture
+def client(app, anyio_backend):
+    return TestClient(app)

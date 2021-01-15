@@ -1,196 +1,32 @@
-import hashlib
-import hmac
+"""The Muffin Utils."""
+
+import asyncio as aio
 import importlib
 import pkgutil
-import random
 import sys
-import threading
 
-from asyncio import coroutine, iscoroutinefunction, get_event_loop
 
 try:
-    # Python 3.7
-    from asyncio import current_task
+    import trio
 except ImportError:
-    from asyncio import Task
-
-    current_task = Task.current_task  # noqa
-
-try:
-    import rapidjson as json
-except ImportError:
-    import json
-
-SALT_CHARS = 'bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    trio = None
 
 
-class MuffinException(Exception):
-
-    """ Implement a Muffin's exception. """
-
-    pass
-
-
-def to_coroutine(func):
-    """ Ensure that the function is coroutine.
-
-    If not convert to coroutine.
-
-    """
-    if not iscoroutinefunction(func):
-        func = coroutine(func)
-    return func
+__all__ = (
+    'aio_lib', 'aio_run', 'import_submodules', 'current_async_library',
+    'is_awaitable', 'to_awaitable'
+)
 
 
-def create_signature(secret, value, digestmod='sha256', encoding='utf-8'):
-    """ Create HMAC Signature from secret for value. """
-    if isinstance(secret, str):
-        secret = secret.encode(encoding)
-
-    if isinstance(value, str):
-        value = value.encode(encoding)
-
-    if isinstance(digestmod, str):
-        digestmod = getattr(hashlib, digestmod, hashlib.sha1)
-
-    hm = hmac.new(secret, digestmod=digestmod)
-    hm.update(value)
-    return hm.hexdigest()
+def aio_lib():
+    """Return current async library."""
+    return trio or aio
 
 
-def check_signature(signature, *args, **kwargs):
-    """ Check for the signature is correct. """
-    return hmac.compare_digest(signature, create_signature(*args, **kwargs))
-
-
-def generate_password_hash(password, digestmod='sha256', salt_length=8):
-    """ Hash a password with given method and salt length. """
-
-    salt = ''.join(random.sample(SALT_CHARS, salt_length))
-    signature = create_signature(salt, password, digestmod=digestmod)
-    return '$'.join((digestmod, salt, signature))
-
-
-def check_password_hash(password, pwhash):
-    if pwhash.count('$') < 2:
-        return False
-    digestmod, salt, signature = pwhash.split('$', 2)
-    return check_signature(signature, salt, password, digestmod=digestmod)
-
-
-class Struct(dict):
-
-    """ `Attribute` dictionary. Use attributes as keys. """
-
-    def __getattr__(self, name):
-        try:
-            return self[name]
-        except KeyError:
-            raise AttributeError("Attribute '%s' doesn't exists. " % name)
-
-    def __setattr__(self, name, value):
-        self[name] = value
-
-
-class LStruct(Struct):
-
-    """ Frosen structure. Used as application/plugins settings.
-
-    Going to be immutable after application is started.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        object.__setattr__(self, 'frozen', False)
-        super().__init__(*args, **kwargs)
-
-    def freeze(self):
-        object.__setattr__(self, 'frozen', True)
-
-    def __setitem__(self, name, value):
-        if self.frozen:
-            raise RuntimeError('`%s` is frozen.' % type(self))
-        super().__setitem__(name, value)
-
-
-class local_storage:
-    pass
-
-
-class local:
-
-    """ coroutine.local storage is simular to python's threading.local.
-
-    Usage: ::
-
-        local = muffin.local(loop)
-        local.value = 42
-
-    """
-
-    __slots__ = '_loop',
-    __loops__ = {}
-
-    def __new__(cls, loop=None):
-        """ The local is singleton per loop. """
-        key = "%s%s" % (cls, id(loop))
-        if key not in cls.__loops__:
-            cls.__loops__[key] = object.__new__(cls)
-        return cls.__loops__[key]
-
-    def __init__(self, loop=None):
-        """ Bind loop to self. """
-        object.__setattr__(self, '_loop', loop or get_event_loop())
-
-    def __getattribute__(self, name):
-        """ Get attribute from current task's space. """
-        if name in ('__setattr__', '__getattr__', '__delattr__', '_loop', '__curtask__'):
-            return object.__getattribute__(self, name)
-        return getattr(self.__curtask__, name)
-
-    def __setattr__(self, name, value):
-        """ Set attribute to current task's space. """
-        self.__curtask__.__dict__[name] = value
-
-    def __delattr__(self, name):
-        delattr(self.__curtask__, name)
-
-    @property
-    def __curtask__(self):
-        """ Create namespace in current task. """
-        task = current_task(loop=self._loop)
-        if not task:
-            raise RuntimeError('No task is currently running')
-
-        if not hasattr(task, '_locals'):
-            task._locals = local_storage()
-        return task._locals
-
-
-tlocals = threading.local()
-
-
-class slocal(local):
-
-    """ Fail silently to threading.local if curent loop is not running. """
-
-    __loops__ = {}
-
-    def __getattribute__(self, name):
-        """ Get attribute from current task's space. """
-        if name in ('__setattr__', '__getattr__', '__delattr__', '_loop', '__curtask__'):
-            return object.__getattribute__(self, name)
-
-        if self._loop.is_running():
-            return getattr(self.__curtask__, name)
-        return getattr(tlocals, name)
-
-    def __setattr__(self, name, value):
-        """ Set attribute to current task's space. """
-        if self._loop.is_running():
-            super().__setattr__(name, value)
-        else:
-            setattr(tlocals, name, value)
+def aio_run(coro):
+    """Run the given coroutine with current async library."""
+    lib = aio_lib()
+    return lib.run(coro)
 
 
 def import_submodules(package_name, *submodules):
@@ -203,12 +39,12 @@ def import_submodules(package_name, *submodules):
     }
 
 
-def dumps(obj, skipkeys=True, default=str, **params):
-    """Serialize the given object into JSON."""
-    try:
-        return json.dumps(obj, skipkeys=skipkeys, default=default, **params)
-    except (TypeError, ValueError):
-        return default(obj)
+def import_app(app: str):
+    """Import application by the given string (python.path.to.module:app_name)."""
+    mod, _, name = app.partition(':')
+    mod = importlib.import_module(mod)
+    return getattr(mod, name, None) or getattr(mod, 'app', None) or getattr(mod, 'application')
 
 
-#  pylama:ignore=W0212
+from sniffio import current_async_library               # noqa
+from asgi_tools.utils import is_awaitable, to_awaitable # noqa
