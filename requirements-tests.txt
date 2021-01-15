@@ -1,4 +1,4 @@
-aiofile
+aiofile==3.3.3
 anyio
 asgi-lifespan
 pytest
