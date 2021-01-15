@@ -23,8 +23,8 @@ clean:
 VERSION?=minor
 # target: release - Bump version
 release:
-	@$(VIRTUAL_ENV)/bin/pip install bumpversion
-	@$(VIRTUAL_ENV)/bin/bumpversion $(VERSION)
+	@$(VIRTUAL_ENV)/bin/pip install bump2version
+	@$(VIRTUAL_ENV)/bin/bump2version $(VERSION)
 	@git checkout master
 	@git merge develop
 	@git checkout develop
@@ -55,17 +55,15 @@ register:
 # target: upload - Upload module on PyPi
 upload: clean
 	@$(VIRTUAL_ENV)/bin/pip install twine wheel
-	@$(VIRTUAL_ENV)/bin/python setup.py sdist bdist_wheel
-	@$(VIRTUAL_ENV)/bin/twine upload dist/*.tar.gz || true
-	@$(VIRTUAL_ENV)/bin/twine upload dist/*.whl || true
-	@$(VIRTUAL_ENV)/bin/pip install -e $(CURDIR)
+	@$(VIRTUAL_ENV)/bin/python setup.py bdist_wheel
+	@$(VIRTUAL_ENV)/bin/twine upload dist/*
 
 # =============
 #  Development
 # =============
 
-$(VIRTUAL_ENV): requirements.txt
-	@[ -d $(VIRTUAL_ENV) ] || virtualenv --python=python3 $(VIRTUAL_ENV)
+$(VIRTUAL_ENV): requirements.txt setup.cfg
+	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/pip install -r requirements.txt
 	@touch $(VIRTUAL_ENV)
 
@@ -73,40 +71,10 @@ $(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV) requirements-tests.txt
 	@$(VIRTUAL_ENV)/bin/pip install -r requirements-tests.txt
 	@touch $(VIRTUAL_ENV)/bin/py.test
 
-.PHONY: test
+.PHONY: t test
 # target: test - Run tests
-test: $(VIRTUAL_ENV)/bin/py.test
+t test: $(VIRTUAL_ENV)/bin/py.test
 	@$(VIRTUAL_ENV)/bin/py.test tests
-
-.PHONY: t
-t: test
-
-.PHONY: tp
-tp:
-	@echo 'Test Muffin-Jinja2'
-	make -C $(CURDIR)/plugins/muffin-jinja2 t
-	@echo 'Test Muffin-Peewee'
-	make -C $(CURDIR)/plugins/muffin-peewee t
-	@echo 'Test Muffin-Session'
-	make -C $(CURDIR)/plugins/muffin-session t
-	@echo 'Test Muffin-Admin'
-	make -C $(CURDIR)/plugins/muffin-admin t
-	@echo 'Test Muffin-OAuth'
-	make -C $(CURDIR)/plugins/muffin-oauth t
-	@echo 'Test Muffin-REST'
-	make -C $(CURDIR)/plugins/muffin-rest t
-	@echo 'Test Muffin-Redis'
-	make -C $(CURDIR)/plugins/muffin-redis t
-	@echo 'Test Muffin-Sentry'
-	make -C $(CURDIR)/plugins/muffin-sentry t
-	# @echo 'Test Muffin-DebugToolbar'
-	# make -C $(CURDIR)/plugins/muffin-debugtoolbar t
-	# @echo 'Test Muffin-Jade'
-	# make -C $(CURDIR)/plugins/muffin-jade t
-	# @echo 'Test Muffin-Metrics'
-	# make -C $(CURDIR)/plugins/muffin-metrics t
-	# @echo 'Test Muffin-Mongo'
-	# make -C $(CURDIR)/plugins/muffin-mongo t
 
 .PHONY: doc
 doc: docs $(VIRTUAL_ENV)
@@ -123,3 +91,4 @@ run:
 .PHONY: shell
 shell:
 	make -C $(CURDIR)/example shell
+

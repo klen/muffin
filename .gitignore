@@ -45,11 +45,13 @@ output/*/index.html
 docs/_build
 
 # Other
-/env
+/.pytest_cache
 /.python-version
 /.ropeproject
 /_
 /db.sqlite
+/env
+/example.py
 /libs
 /ops
 /peewee.db
@@ -58,4 +60,3 @@ docs/_build
 /settings
 /test.py
 /todo.txt
-/.pytest_cache

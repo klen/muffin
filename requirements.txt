@@ -1,7 +1,2 @@
-aiohttp             >= 3.4.4
-
-cached_property     >= 1.5.1
-gunicorn            >= 19.9.0
-python-rapidjson    >= 0.8.0
-
--e .
+asgi-tools      >= 0.14
+modconfig       >= 0.4.2
