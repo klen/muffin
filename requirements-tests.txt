@@ -1,6 +1,6 @@
 aiofile
 anyio
-asgi-lifespan
+asgi-lifespan==1.0.1
 pytest
 trio
 
