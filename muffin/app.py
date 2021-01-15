@@ -49,7 +49,7 @@ class Application(BaseApp):
         self.name = name
 
         # Setup the configuration
-        self.cfg = Config(prefix="%s_" % name.upper(),  **self.defaults)
+        self.cfg = Config(prefix="%s_" % name.upper(), ignore_case=True, **self.defaults)
         self.cfg.update(CONFIG=CONFIG, **options)
         self.cfg.update_from_modules(self.cfg.CONFIG)
         self.cfg.update_from_env()
