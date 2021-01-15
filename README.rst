@@ -8,12 +8,13 @@ The Muffin
 
 .. _badges:
 
-.. image:: http://img.shields.io/travis/klen/muffin.svg?style=flat-square
-    :target: http://travis-ci.org/klen/muffin
-    :alt: Build Status
+.. image:: https://github.com/klen/muffin/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin/actions
+    :alt: Tests Status
 
-.. image:: http://img.shields.io/pypi/v/muffin.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/muffin
+.. image:: https://img.shields.io/pypi/v/muffin
+    :target: https://pypi.org/project/muffin/
+    :alt: PYPI Version
 
 .. _important:
 
@@ -27,7 +28,7 @@ The Muffin
 
 .. _description:
 
-    The Muffin -- A web framework based on Asyncio_ stack ``(depricated)``
+    **Muffin** -- A web framework based on Asyncio_ stack ``(depricated)``
     Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
 
 .. _documentation:
