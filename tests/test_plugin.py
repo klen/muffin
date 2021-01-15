@@ -18,8 +18,8 @@ async def test_plugin(app, client):
 
         name = 'plugin'
         defaults = {
-            'DEBUG': True,
-            'OPTION': 42,
+            'debug': True,
+            'option': 42,
         }
 
         async def middleware(self, handler, request, receive, send):
@@ -35,12 +35,14 @@ async def test_plugin(app, client):
 
     plugin = Plugin(DEBUG=False)
     assert plugin.cfg
-    assert plugin.cfg.DEBUG is False
+    assert plugin.cfg.debug is False
 
     app = Application('muffin', DEBUG=True, PLUGIN_DEBUG=True)
-    plugin.init(app, OPTION=43)
-    assert plugin.cfg.DEBUG is True
-    assert plugin.cfg.OPTION == 43
+    plugin.init(app, option=43)
+
+    assert plugin.cfg.debug is True
+    assert plugin.cfg.option == 43
+
     assert app.lifespan._startup
 
     @app.route('/')

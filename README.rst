@@ -87,6 +87,16 @@ Plugins
 
 The list of some Muffin plugins (please make PR if you want to provide more):
 
+* `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
+
+.. image:: https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-jinja2/actions
+    :alt: Tests Status
+
+.. image:: https://img.shields.io/pypi/v/muffin-jinja2
+    :target: https://pypi.org/project/muffin-jinja2/
+    :alt: PYPI Version
+
 * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
   .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
@@ -130,17 +140,6 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
   .. image:: https://img.shields.io/github/issues-raw/klen/muffin-jade.svg?style=flat-square
      :target: https://github.com/klen/muffin-jade/issues
-
-* `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
-
-  .. image:: http://img.shields.io/travis/klen/muffin-jinja2.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-jinja2
-
-  .. image:: http://img.shields.io/pypi/v/muffin-jinja2.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-jinja2
-
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-jinja2.svg?style=flat-square
-     :target: https://github.com/klen/muffin-jinja2/issues
 
 * `Muffin-Metrics <https://github.com/klen/muffin-metrics>`_ -- Send metrics to Graphite/Statsd
 
