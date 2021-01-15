@@ -1,7 +1,7 @@
 aiofile
 anyio
 asgi-lifespan
-pytest
+pytest==6.2.1
 trio
 
 -e .
