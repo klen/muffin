@@ -67,14 +67,11 @@ class Application(BaseApp):
             ch.setFormatter(logging.Formatter(self.cfg.LOG_FORMAT, self.cfg.LOG_DATE_FORMAT))
             self.logger.addHandler(ch)
 
-        # Debug mode
-        if self.cfg.DEBUG:
-            self.exception_handlers[Exception] = None
-
         # Setup CLI
         self.manage = Manager(self)
 
         super(Application, self).__init__(
+            debug=self.cfg.DEBUG,
             logger=self.logger,
             trim_last_slash=self.cfg.TRIM_LAST_SLASH,
             static_folders=self.cfg.STATIC_FOLDERS,
