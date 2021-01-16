@@ -39,6 +39,8 @@ async def test_plugin(app, client):
 
     app = Application('muffin', DEBUG=True, PLUGIN_DEBUG=True)
     plugin.init(app, option=43)
+    assert plugin.app is app
+    assert app.plugins['plugin'] is plugin
 
     assert plugin.cfg.debug is True
     assert plugin.cfg.option == 43
