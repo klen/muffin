@@ -4,7 +4,7 @@ from pathlib import Path
 from unittest import mock
 
 from asgi_lifespan import LifespanManager
-from asgi_tools.tests import TestClient as Client
+from asgi_tools.tests import ASGITestClient
 
 
 def test_imports():
@@ -204,7 +204,7 @@ async def test_lifespan(app, anyio_backend):
         assert start.called
         assert not finish.called
 
-        client = Client(app)
+        client = ASGITestClient(app)
         res = await client.get('/')
         assert res.status_code == 200
 
@@ -237,7 +237,7 @@ async def test_static_folders(anyio_backend):
     async def index(request):
         return 'OK'
 
-    client = Client(app)
+    client = ASGITestClient(app)
     res = await client.get('/')
     assert res.status_code == 200
 
