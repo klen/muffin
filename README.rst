@@ -89,13 +89,23 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
 * `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
 
-.. image:: https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-jinja2/actions
-    :alt: Tests Status
+    .. image:: https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg
+        :target: https://github.com/klen/muffin-jinja2/actions
+        :alt: Tests Status
 
-.. image:: https://img.shields.io/pypi/v/muffin-jinja2
-    :target: https://pypi.org/project/muffin-jinja2/
-    :alt: PYPI Version
+    .. image:: https://img.shields.io/pypi/v/muffin-jinja2
+        :target: https://pypi.org/project/muffin-jinja2/
+        :alt: PYPI Version
+
+* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- Signed Cookie-Based HTTP sessions
+
+    .. image:: https://github.com/klen/muffin-session/workflows/tests/badge.svg
+        :target: https://github.com/klen/muffin-session/actions
+        :alt: Tests Status
+
+    .. image:: https://img.shields.io/pypi/v/muffin-session
+        :target: https://pypi.org/project/muffin-session/
+        :alt: PYPI Version
 
 * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
@@ -228,17 +238,6 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
   .. image:: https://img.shields.io/github/issues-raw/klen/muffin-sentry.svg?style=flat-square
      :target: https://github.com/klen/muffin-sentry/issues
-
-* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- User session (auth)
-
-  .. image:: http://img.shields.io/travis/klen/muffin-session.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-session
-
-  .. image:: http://img.shields.io/pypi/v/muffin-session.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-session
-
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-session.svg?style=flat-square
-     :target: https://github.com/klen/muffin-session/issues
 
 .. _benchmarks:
 
