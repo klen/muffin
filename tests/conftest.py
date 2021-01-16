@@ -1,5 +1,5 @@
 import pytest
-from asgi_tools.tests import TestClient
+from asgi_tools.tests import ASGITestClient
 
 import muffin
 
@@ -26,4 +26,4 @@ def app():
 
 @pytest.fixture
 def client(app, anyio_backend):
-    return TestClient(app)
+    return ASGITestClient(app)

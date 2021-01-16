@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 from asgi_lifespan import LifespanManager
-from asgi_tools.tests import TestClient as Client
+from asgi_tools.tests import ASGITestClient
 
 
 async def test_plugin(app, client):
@@ -57,7 +57,7 @@ async def test_plugin(app, client):
         assert start.called
         assert not finish.called
 
-        client = Client(app)
+        client = ASGITestClient(app)
 
         res = await client.get('/')
         assert res.status_code == 200

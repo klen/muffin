@@ -4,6 +4,8 @@ import pytest
 import os
 import logging
 
+from asgi_tools.tests import ASGITestClient
+
 
 def pytest_addoption(parser):
     """Append pytest options for testing Muffin apps."""
@@ -49,6 +51,4 @@ def app(pytestconfig, request):
 @pytest.fixture
 async def client(app):
     """Generate a test client for the app."""
-    from asgi_tools.tests import TestClient
-
-    return TestClient(app)
+    return ASGITestClient(app)
