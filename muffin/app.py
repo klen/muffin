@@ -47,6 +47,7 @@ class Application(BaseApp):
     def __init__(self, name, /, CONFIG='env:%s' % CONFIG_ENV_VARIABLE, **options):
         """Initialize the application."""
         self.name = name
+        self.plugins = dict()
 
         # Setup the configuration
         self.cfg = Config(prefix="%s_" % name.upper(), ignore_case=True, **self.defaults)

@@ -40,6 +40,7 @@ class BasePlugin(ABC):
     def init(self, app, **options):
         """Bind app and update the plugin's configuration."""
         self.app = app
+        self.app.plugins[self.name] = self
 
         # Update configuration
         self.cfg.update_from_dict(app.cfg.__dict__, prefix=self.cfg._prefix, exist_only=True)
