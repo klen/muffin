@@ -117,6 +117,16 @@ The list of some Muffin plugins (please make PR if you want to provide more):
       :target: https://pypi.org/project/muffin-oauth/
       :alt: PYPI Version
 
+* `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
+
+  .. image:: https://github.com/klen/muffin-sentry/workflows/tests/badge.svg
+      :target: https://github.com/klen/muffin-sentry/actions
+      :alt: Tests Status
+
+  .. image:: https://img.shields.io/pypi/v/muffin-sentry
+      :target: https://pypi.org/project/muffin-sentry/
+      :alt: PYPI Version
+
 * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
   .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
@@ -226,17 +236,6 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
   .. image:: https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square
      :target: https://github.com/klen/muffin-redis/issues
-
-* `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
-
-  .. image:: http://img.shields.io/travis/klen/muffin-sentry.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-sentry
-
-  .. image:: http://img.shields.io/pypi/v/muffin-sentry.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-sentry
-
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-sentry.svg?style=flat-square
-     :target: https://github.com/klen/muffin-sentry/issues
 
 .. _benchmarks:
 
