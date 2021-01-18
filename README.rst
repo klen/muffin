@@ -107,6 +107,16 @@ The list of some Muffin plugins (please make PR if you want to provide more):
       :target: https://pypi.org/project/muffin-session/
       :alt: PYPI Version
 
+* `Muffin-OAuth <https://github.com/klen/muffin-oauth>`_  -- Work with OAuth (authorization, resources loading)
+
+  .. image:: https://github.com/klen/muffin-oauth/workflows/tests/badge.svg
+      :target: https://github.com/klen/muffin-oauth/actions
+      :alt: Tests Status
+
+  .. image:: https://img.shields.io/pypi/v/muffin-oauth
+      :target: https://pypi.org/project/muffin-oauth/
+      :alt: PYPI Version
+
 * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
   .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
@@ -183,17 +193,6 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
   .. image:: https://img.shields.io/github/issues-raw/drgarcia1986/muffin-motor.svg?style=flat-square
      :target: https://github.com/drgarcia1986/muffin-motor/issues
-
-* `Muffin-OAuth   <https://github.com/klen/muffin-oauth>`_   -- OAuth client
-
-  .. image:: http://img.shields.io/travis/klen/muffin-oauth.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-oauth
-
-  .. image:: http://img.shields.io/pypi/v/muffin-oauth.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-oauth
-
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-oauth.svg?style=flat-square
-     :target: https://github.com/klen/muffin-oauth/issues
 
 * `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
 
