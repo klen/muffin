@@ -62,24 +62,18 @@ upload: clean
 #  Development
 # =============
 
-$(VIRTUAL_ENV): requirements.txt setup.cfg
+$(VIRTUAL_ENV): setup.cfg
 	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install -r requirements.txt
+	@$(VIRTUAL_ENV)/bin/pip install -e .[tests,docs]
 	@touch $(VIRTUAL_ENV)
-
-$(VIRTUAL_ENV)/bin/py.test: $(VIRTUAL_ENV) requirements-tests.txt
-	@$(VIRTUAL_ENV)/bin/pip install -r requirements-tests.txt
-	@touch $(VIRTUAL_ENV)/bin/py.test
 
 .PHONY: t test
 # target: test - Run tests
-t test: $(VIRTUAL_ENV)/bin/py.test
+t test: $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/py.test tests
 
 .PHONY: doc
 doc: docs $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install sphinx
-	@$(VIRTUAL_ENV)/bin/pip install sphinx-pypi-upload
 	@$(VIRTUAL_ENV)/bin/python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
 	# @$(VIRTUAL_ENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 
