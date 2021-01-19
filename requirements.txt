@@ -1,2 +1,0 @@
-asgi-tools      >= 0.16.2
-modconfig       >= 0.6
