@@ -38,14 +38,13 @@ def app(pytestconfig, request):
     """Provide an example application."""
     from muffin.utils import import_app
 
-    if pytestconfig.app:
-        return import_app(pytestconfig.app)
+    if not pytestconfig.app:
+        logging.warning(
+            'Improperly configured. Please set ``muffin_app`` in your pytest config. '
+            'Or use ``--muffin-app`` command option.')
+        return
 
-    logging.warn(
-        'Improperly configured. Please set ``muffin_app`` in your pytest config. '
-        'Or use ``--muffin-app`` command option.')
-
-    return None
+    return import_app(pytestconfig.app)
 
 
 @pytest.fixture
