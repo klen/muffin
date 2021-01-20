@@ -57,3 +57,7 @@ class BasePlugin(ABC):
         # Register shutdown
         if self.shutdown:
             self.app.on_shutdown(self.shutdown)
+
+    async def conftest(self):
+        """Configure tests."""
+        pass
