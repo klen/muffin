@@ -3,7 +3,7 @@
 # Package information
 # ===================
 
-__version__ = "0.41.12"
+__version__ = "0.41.13"
 __project__ = "muffin"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "MIT"
