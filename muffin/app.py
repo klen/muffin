@@ -44,15 +44,15 @@ class Application(BaseApp):
 
     )
 
-    def __init__(self, name, *cfg_sources, **options):
+    def __init__(self, name, *configs, **options):
         """Initialize the application."""
         self.name = name
         self.plugins = dict()
 
         # Setup the configuration
         self.cfg = Config(prefix="%s_" % name.upper(), ignore_case=True, **self.defaults)
-        cfgmod = self.cfg.update_from_modules(*cfg_sources, 'env:%s' % CONFIG_ENV_VARIABLE)
-        self.cfg.update(CONFIG=cfgmod, **options)
+        options['CONFIG'] = self.cfg.update_from_modules(*configs, 'env:%s' % CONFIG_ENV_VARIABLE)
+        self.cfg.update(**options)
         self.cfg.update_from_env()
 
         # Setup logging

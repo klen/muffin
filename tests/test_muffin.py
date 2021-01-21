@@ -35,7 +35,7 @@ def test_app_config():
 
     os.environ['TEST_DEBUG'] = 'true'
 
-    app = muffin.Application('test', 'tests.appcfg')
+    app = muffin.Application('test', 'tests.appcfg', CONFIG='unknown')
     assert app.cfg
     assert app.cfg.STATIC_URL_PREFIX == '/static'
     assert app.cfg.CONFIG == 'tests.appcfg'
