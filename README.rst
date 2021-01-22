@@ -127,6 +127,16 @@ The list of some Muffin plugins (please make PR if you want to provide more):
       :target: https://pypi.org/project/muffin-sentry/
       :alt: PYPI Version
 
+* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
+
+  .. image:: https://github.com/klen/muffin-peewee/workflows/tests/badge.svg
+      :target: https://github.com/klen/muffin-peewee/actions
+      :alt: Tests Status
+
+  .. image:: https://img.shields.io/pypi/v/muffin-peewee
+      :target: https://pypi.org/project/muffin-peewee/
+      :alt: PYPI Version
+
 * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
   .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
@@ -203,17 +213,6 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
   .. image:: https://img.shields.io/github/issues-raw/drgarcia1986/muffin-motor.svg?style=flat-square
      :target: https://github.com/drgarcia1986/muffin-motor/issues
-
-* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
-
-  .. image:: http://img.shields.io/travis/klen/muffin-peewee.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-peewee
-
-  .. image:: http://img.shields.io/pypi/v/muffin-peewee.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-peewee
-
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-peewee.svg?style=flat-square
-     :target: https://github.com/klen/muffin-peewee/issues
 
 * `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
 

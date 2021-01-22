@@ -34,7 +34,7 @@ def pytest_load_initial_conftests(early_config, parser, args):
 
 
 @pytest.fixture(scope='session')
-def app(pytestconfig, request):
+async def app(pytestconfig, request):
     """Provide an example application."""
     from muffin.utils import import_app
 
@@ -44,7 +44,14 @@ def app(pytestconfig, request):
             'Or use ``--muffin-app`` command option.')
         return
 
-    return import_app(pytestconfig.app)
+    app = import_app(pytestconfig.app)
+
+    # Setup plugins
+    for plugin in app.plugins.values():
+        if hasattr(plugin, 'conftest'):
+            await plugin.conftest()
+
+    return app
 
 
 @pytest.fixture
