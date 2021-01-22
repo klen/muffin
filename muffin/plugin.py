@@ -35,9 +35,9 @@ class BasePlugin(ABC):
         self.cfg.update(**options)
 
         if app is not None:
-            self.init(app)
+            self.setup(app)
 
-    def init(self, app, **options):
+    def setup(self, app, **options):
         """Bind app and update the plugin's configuration."""
         self.app = app
         self.app.plugins[self.name] = self
@@ -46,15 +46,15 @@ class BasePlugin(ABC):
         self.cfg.update_from_dict(app.cfg.__dict__, prefix=self.cfg._prefix, exist_only=True)
         self.cfg.update_from_dict(options)
 
-        # Init middleware
+        # Bind middleware
         if self.middleware:
             self.app.middleware(to_awaitable(self.middleware))
 
-        # Register startup
+        # Bind startup
         if self.startup:
             self.app.on_startup(self.startup)
 
-        # Register shutdown
+        # Bind shutdown
         if self.shutdown:
             self.app.on_shutdown(self.shutdown)
 
