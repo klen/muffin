@@ -3,7 +3,7 @@
 # Package information
 # ===================
 
-__version__ = "0.43.0"
+__version__ = "0.43.1"
 __project__ = "muffin"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "MIT"
@@ -12,6 +12,7 @@ from asgi_tools import (  # noqa
     Request, Response, ResponseText, ResponseHTML, ResponseJSON, ResponseError,
     ResponseFile, ResponseRedirect, ResponseStream, ResponseWebSocket,
     ASGIMethodNotAllowed, ASGINotFound, ASGIConnectionClosed, ASGIError)
+from asgi_tools.tests import ASGITestClient as TestClient  # noqa
 
 
 class MuffinException(ASGIError):

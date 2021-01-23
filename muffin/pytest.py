@@ -4,7 +4,7 @@ import pytest
 import os
 import logging
 
-from asgi_tools.tests import ASGITestClient
+from . import TestClient
 
 
 def pytest_addoption(parser):
@@ -57,4 +57,4 @@ async def app(pytestconfig, request):
 @pytest.fixture
 async def client(app):
     """Generate a test client for the app."""
-    return ASGITestClient(app)
+    return TestClient(app)
