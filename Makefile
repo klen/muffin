@@ -72,6 +72,11 @@ $(VIRTUAL_ENV): setup.cfg
 t test: $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/py.test tests
 
+.PHONY: mypy
+# target: test - Run tests
+mypy: $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/mypy muffin
+
 .PHONY: doc
 doc: docs $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
