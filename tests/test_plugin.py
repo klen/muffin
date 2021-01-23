@@ -2,17 +2,19 @@ from unittest import mock
 
 import pytest
 from asgi_lifespan import LifespanManager
-from asgi_tools.tests import ASGITestClient
 
 
 async def test_plugin(app, client):
-    from muffin import BasePlugin, Application
+    from muffin import BasePlugin, Application, TestClient
 
     with pytest.raises(TypeError):
         BasePlugin()
 
     start = mock.MagicMock()
     finish = mock.MagicMock()
+    assert BasePlugin.middleware is None
+    assert BasePlugin.startup is None
+    assert BasePlugin.shutdown is None
 
     class Plugin(BasePlugin):
 
@@ -59,7 +61,7 @@ async def test_plugin(app, client):
         assert start.called
         assert not finish.called
 
-        client = ASGITestClient(app)
+        client = TestClient(app)
 
         res = await client.get('/')
         assert res.status_code == 200

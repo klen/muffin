@@ -12,6 +12,7 @@ from asgi_tools import (  # noqa
     Request, Response, ResponseText, ResponseHTML, ResponseJSON, ResponseError,
     ResponseFile, ResponseRedirect, ResponseStream, ResponseWebSocket,
     ASGIMethodNotAllowed, ASGINotFound, ASGIConnectionClosed, ASGIError)
+from asgi_tools.tests import ASGITestClient as TestClient  # noqa
 
 
 class MuffinException(ASGIError):

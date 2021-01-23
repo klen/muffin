@@ -21,9 +21,9 @@ class BasePlugin(ABC):
 
     # Plugin options with default values
     defaults: t.Dict[str, t.Any] = {}
-    middleware: t.Optional[t.Callable]
-    startup: t.Optional[t.Callable]
-    shutdown: t.Optional[t.Callable]
+    middleware: t.Optional[t.Callable] = None
+    startup: t.Optional[t.Callable] = None
+    shutdown: t.Optional[t.Callable] = None
 
     @property
     @abstractmethod
