@@ -1,8 +1,12 @@
 """Muffin Handlers."""
 
+import inspect
+import typing as t
+
+from http_router import Router
+from asgi_tools import Request
 from asgi_tools.app import HTTPView, HTTP_METHODS
 from asgi_tools.utils import is_awaitable
-import inspect
 
 
 class HandlerMeta(type):
@@ -34,10 +38,10 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     """Supports custom routing."""
 
-    methods = None
+    methods: t.Optional[t.List[str]] = None
 
     @classmethod
-    def __route__(cls, router, *paths, **params):
+    def __route__(cls, router: Router, *paths: str, **params):
         """Check for registered methods."""
         params.setdefault('methods', cls.methods)
         router.route(*paths, **params)(cls)
@@ -47,13 +51,13 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
         return cls
 
-    def __call__(self, request, __meth__=None):
+    def __call__(self, request: Request, **path_params) -> t.Awaitable:
         """Dispatch the given request by HTTP method."""
-        method = getattr(self, __meth__ or request.method.lower())
+        method = getattr(self, path_params.get('__meth__') or request.method.lower())
         return method(request)
 
     @staticmethod
-    def route(*paths, **params):
+    def route(*paths: str, **params) -> t.Callable:
         """Route custom methods for Handlers."""
 
         def wrapper(method):

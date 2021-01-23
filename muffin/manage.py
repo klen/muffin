@@ -6,12 +6,15 @@ import logging
 import os
 import re
 import sys
+import typing as t
 
 from . import __version__, CONFIG_ENV_VARIABLE
+from .app import Application
 from .utils import aio_run, is_awaitable, import_app
 
 
 PARAM_RE = re.compile(r'^\s+:param (\w+): (.+)$', re.M)
+F = t.TypeVar('F', bound=t.Callable[..., t.Any])
 
 
 class Manager:
@@ -43,14 +46,14 @@ class Manager:
 
     """
 
-    def __init__(self, app):
+    def __init__(self, app: Application):
         """Initialize the manager."""
         self.app = app
         self.parser = argparse.ArgumentParser(description="Manage %s" % app.name.capitalize())
         self.subparsers = self.parser.add_subparsers(dest='subparser')
-        self.commands = dict()
+        self.commands: t.Dict[str, t.Callable] = dict()
 
-        app.cfg.MANAGE_SHELL = getattr(
+        app.cfg.MANAGE_SHELL = getattr(  # type: ignore
             app.cfg, 'MANAGE_SHELL', lambda: {'app': app, 'run': aio_run})
 
         @self(lifespan=True)
@@ -61,13 +64,13 @@ class Manager:
             """
             banner = 'Interactive Muffin %s Shell' % __version__
             banner = '\n' + banner + '\n' + '-' * len(banner) + '\n\n'
-            namespace = app.cfg.MANAGE_SHELL
+            namespace = app.cfg.MANAGE_SHELL  # type: ignore
             if callable(namespace):
                 namespace = namespace()
             banner += "Loaded objects: %s" % list(namespace.keys())
             if ipython:
                 try:
-                    from IPython.terminal.embed import InteractiveShellEmbed
+                    from IPython.terminal.embed import InteractiveShellEmbed  # type: ignore
                     sh = InteractiveShellEmbed(banner1=banner)
                 except ImportError:
                     pass
@@ -78,7 +81,7 @@ class Manager:
             from code import interact
             interact(banner, local=namespace)
 
-    def __call__(self, lifespan=False):
+    def __call__(self, lifespan: t.Union[bool, t.Callable] = False) -> t.Callable[[F], F]:
         """Register a command."""
 
         def wrapper(fn):
@@ -128,7 +131,7 @@ class Manager:
             return fn
 
         if callable(lifespan):
-            lifespan.__lifespan = False
+            lifespan.__lifespan = False  # type: ignore
             return wrapper(lifespan)
 
         def decorator(fn):
@@ -137,13 +140,13 @@ class Manager:
 
         return decorator
 
-    def run(self, *args, prog=False):
+    def run(self, *args: str, prog: str = None):
         """Parse the arguments and run a command."""
         if prog:
             self.parser.prog = prog
 
         if not args:
-            args = sys.argv[1:]
+            args = tuple(sys.argv[1:])
 
         ns, _ = self.parser.parse_known_args(args)
         kwargs = dict(ns._get_kwargs())
@@ -161,7 +164,7 @@ class Manager:
             for fn in self.app.lifespan._shutdown:
                 await fn()
 
-        if command.__lifespan:
+        if command.__lifespan:  # type: ignore
             aio_run(startup)
 
         args = kwargs.pop('*', [])
@@ -178,7 +181,7 @@ class Manager:
             sys.exit(exc)
 
         finally:
-            if command.__lifespan:
+            if command.__lifespan:  # type: ignore
                 aio_run(shutdown)
 
 
