@@ -54,7 +54,7 @@ class Manager:
         self.commands: t.Dict[str, t.Callable] = dict()
 
         app.cfg.MANAGE_SHELL = getattr(  # type: ignore
-            app.cfg, 'MANAGE_SHELL', lambda: {'app': app, 'run': aio_run})
+            app.cfg, 'MANAGE_SHELL', lambda: dict(app=app, run=aio_run, **app.plugins))
 
         @self(lifespan=True)
         def shell(ipython: bool = True):
