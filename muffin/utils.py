@@ -7,7 +7,7 @@ import sys
 import typing as t
 from types import ModuleType
 
-from asgi_tools.types import ASGIApp
+from asgi_tools.middleware import ASGIApp
 
 
 try:
@@ -41,7 +41,7 @@ def import_submodules(package_name: str, *submodules: str) -> t.Dict[str, Module
     package = sys.modules[package_name]
     return {
         name: importlib.import_module(package_name + '.' + name)
-        for _, name, _ in pkgutil.walk_packages(package.__path__)  # type: ignore
+        for _, name, _ in pkgutil.walk_packages(package.__path__)  # type: ignore # mypy #1422
         if not submodules or name in submodules
     }
 
