@@ -11,7 +11,7 @@ from asgi_tools.types import ASGIApp
 
 
 try:
-    import trio  # type: ignore
+    import trio
 except ImportError:
     trio = None
 

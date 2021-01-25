@@ -52,7 +52,7 @@ class Application(BaseApp):
         self.plugins: t.Dict[str, BasePlugin] = dict()
 
         # Setup the configuration
-        self.cfg = Config(prefix="%s_" % name.upper(), ignore_case=True, **self.defaults)
+        self.cfg = Config(prefix="%s_" % name.upper(), **self.defaults)
         options['CONFIG'] = self.cfg.update_from_modules(*configs, 'env:%s' % CONFIG_ENV_VARIABLE)
         self.cfg.update(**options)
         self.cfg.update_from_env()
@@ -68,20 +68,20 @@ class Application(BaseApp):
             logging.config.dictConfig(LOG_CONFIG)  # type: ignore
 
         self.logger = logging.getLogger('muffin')
-        self.logger.setLevel(self.cfg.LOG_LEVEL)  # type: ignore
+        self.logger.setLevel(self.cfg.LOG_LEVEL)
         self.logger.propagate = False
         if not self.logger.handlers:
             ch = logging.StreamHandler()
             ch.setFormatter(logging.Formatter(
-                self.cfg.LOG_FORMAT, self.cfg.LOG_DATE_FORMAT))  # type: ignore
+                self.cfg.LOG_FORMAT, self.cfg.LOG_DATE_FORMAT))
             self.logger.addHandler(ch)
 
         super(Application, self).__init__(
-            debug=self.cfg.DEBUG,                           # type: ignore
+            debug=self.cfg.DEBUG,
             logger=self.logger,
-            trim_last_slash=self.cfg.TRIM_LAST_SLASH,       # type: ignore
-            static_folders=self.cfg.STATIC_FOLDERS,         # type: ignore
-            static_url_prefix=self.cfg.STATIC_URL_PREFIX,   # type: ignore
+            trim_last_slash=self.cfg.TRIM_LAST_SLASH,
+            static_folders=self.cfg.STATIC_FOLDERS,
+            static_url_prefix=self.cfg.STATIC_URL_PREFIX,
         )
 
     def __repr__(self) -> str:

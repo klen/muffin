@@ -33,8 +33,7 @@ class BasePlugin(ABC):
 
     def __init__(self, app: Application = None, **options):
         """Save application and create he plugin's configuration."""
-        self.cfg = Config(prefix="%s_" % self.name.upper(),
-                          update_from_env=False, ignore_case=True, **self.defaults)
+        self.cfg = Config(prefix="%s_" % self.name.upper(), update_from_env=False, **self.defaults)
         self.cfg.update(**options)
 
         if app is not None:
@@ -46,7 +45,7 @@ class BasePlugin(ABC):
         self.app.plugins[self.name] = self
 
         # Update configuration
-        self.cfg.update_from_dict(app.cfg.__dict__, prefix=self.cfg._prefix, exist_only=True)
+        self.cfg.update_from_dict(dict(app.cfg), prefix=self.cfg.prefix, exist_only=True)
         self.cfg.update_from_dict(options)
 
         # Bind middleware
