@@ -53,8 +53,9 @@ class Manager:
         self.subparsers = self.parser.add_subparsers(dest='subparser')
         self.commands: t.Dict[str, t.Callable] = dict()
 
-        app.cfg.MANAGE_SHELL = getattr(  # type: ignore
-            app.cfg, 'MANAGE_SHELL', lambda: dict(app=app, run=aio_run, **app.plugins))
+        app.cfg.update(MANAGE_SHELL=getattr(
+            app.cfg, 'MANAGE_SHELL', lambda: dict(app=app, run=aio_run, **app.plugins)
+        ))
 
         @self(lifespan=True)
         def shell(ipython: bool = True):
@@ -64,13 +65,13 @@ class Manager:
             """
             banner = 'Interactive Muffin %s Shell' % __version__
             banner = '\n' + banner + '\n' + '-' * len(banner) + '\n\n'
-            namespace = app.cfg.MANAGE_SHELL  # type: ignore
+            namespace = app.cfg.MANAGE_SHELL
             if callable(namespace):
                 namespace = namespace()
             banner += "Loaded objects: %s" % list(namespace.keys())
             if ipython:
                 try:
-                    from IPython.terminal.embed import InteractiveShellEmbed  # type: ignore
+                    from IPython.terminal.embed import InteractiveShellEmbed
                     sh = InteractiveShellEmbed(banner1=banner)
                 except ImportError:
                     pass
