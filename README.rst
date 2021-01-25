@@ -137,6 +137,16 @@ The list of some Muffin plugins (please make PR if you want to provide more):
       :target: https://pypi.org/project/muffin-peewee/
       :alt: PYPI Version
 
+* `Muffin-Babel   <https://github.com/klen/muffin-babel>`_   -- Localization support
+
+  .. image:: https://github.com/klen/muffin-babel/workflows/tests/badge.svg
+      :target: https://github.com/klen/muffin-babel/actions
+      :alt: Tests Status
+
+  .. image:: https://img.shields.io/pypi/v/muffin-babel
+      :target: https://pypi.org/project/muffin-babel/
+      :alt: PYPI Version
+
 * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
   .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
@@ -147,17 +157,6 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
   .. image:: https://img.shields.io/github/issues-raw/klen/muffin-admin.svg?style=flat-square
      :target: https://github.com/klen/muffin-admin/issues
-
-* `Muffin-Babel   <https://github.com/klen/muffin-babel>`_   -- Localization support
-
-  .. image:: http://img.shields.io/travis/klen/muffin-babel.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-babel
-
-  .. image:: http://img.shields.io/pypi/v/muffin-babel.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-babel
-
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-babel.svg?style=flat-square
-     :target: https://github.com/klen/muffin-babel/issues
 
 * `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
 
