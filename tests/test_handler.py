@@ -28,30 +28,30 @@ async def test_handler(app, client):
 
     res = await client.get('/handler')
     assert res.status_code == 200
-    assert res.text == 'ok'
+    assert await res.text() == 'ok'
 
     res = await client.get('/handler/123')
     assert res.status_code == 200
-    assert res.json() == {'res': '123'}
+    assert await res.json() == {'res': '123'}
 
     res = await client.post('/handler', json={'test': 'passed'})
     assert res.status_code == 200
-    assert res.json() == {'test': 'passed'}
+    assert await res.json() == {'test': 'passed'}
 
     res = await client.put('/handler')
     assert res.status_code == 405
-    assert res.text == 'Specified method is invalid for this resource'
+    assert await res.text() == 'Specified method is invalid for this resource'
 
     res = await client.put('/custom1')
     assert res.status_code == 200
-    assert res.text == 'Index'
+    assert await res.text() == 'Index'
 
     res = await client.get('/custom1')
     assert res.status_code == 405
 
     res = await client.get('/custom2')
     assert res.status_code == 200
-    assert res.text == 'CUSTOM2'
+    assert await res.text() == 'CUSTOM2'
 
 
 async def test_deffered(app, client):
@@ -80,8 +80,8 @@ async def test_deffered(app, client):
 
     res = await client.post('/resource')
     assert res.status_code == 200
-    assert res.text == 'Resource is here'
+    assert await res.text() == 'Resource is here'
 
     res = await client.post('/resource/custom')
     assert res.status_code == 200
-    assert res.text == 'Resource Custom is here'
+    assert await res.text() == 'Resource Custom is here'

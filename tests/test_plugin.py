@@ -65,8 +65,8 @@ async def test_plugin(app, client):
 
         res = await client.get('/')
         assert res.status_code == 200
-        assert res.text == 'OK'
         assert res.headers['x-plugin'] == '42'
+        assert await res.text() == 'OK'
 
     assert finish.called
 
