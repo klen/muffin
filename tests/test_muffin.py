@@ -55,7 +55,7 @@ async def test_routing(app, client):
 
     res = await client.get('/simple')
     assert res.status_code == 200
-    assert res.text == 'simple'
+    assert await res.text() == 'simple'
 
     res = await client.post('/404')
     assert res.status_code == 404
@@ -65,19 +65,19 @@ async def test_routing(app, client):
 
     res = await client.get('/simple/a')
     assert res.status_code == 200
-    assert res.text == 'simple'
+    assert await res.text() == 'simple'
 
     res = await client.get('/simple/b/')
     assert res.status_code == 200
-    assert res.text == 'simple'
+    assert await res.text() == 'simple'
 
     res = await client.get('/parameters/42')
     assert res.status_code == 200
-    assert res.json() == {'param1': '42', 'param2': ''}
+    assert await res.json() == {'param1': '42', 'param2': ''}
 
     res = await client.get('/parameters/42/33')
     assert res.status_code == 200
-    assert res.json() == {'param1': '42', 'param2': '33'}
+    assert await res.json() == {'param1': '42', 'param2': '33'}
 
 
 async def test_responses(app, client):
@@ -105,27 +105,27 @@ async def test_responses(app, client):
     res = await client.get('/none')
     assert res.status_code == 200
     assert res.headers['content-type'] == 'application/json'
-    assert res.json() is None
+    assert await res.json() is None
 
     res = await client.get('/bool')
     assert res.status_code == 200
     assert res.headers['content-type'] == 'application/json'
-    assert res.json() is False
+    assert await res.json() is False
 
     res = await client.get('/str')
     assert res.status_code == 200
     assert res.headers['content-type'] == 'text/html; charset=utf-8'
-    assert res.text == 'str'
+    assert await res.text() == 'str'
 
     res = await client.get('/bytes')
     assert res.status_code == 200
     assert res.headers['content-type'] == 'text/html; charset=utf-8'
-    assert res.text == 'bytes'
+    assert await res.text() == 'bytes'
 
     res = await client.get('/json')
     assert res.status_code == 200
     assert res.headers['content-type'] == 'application/json'
-    assert res.json() == {'test': 'passed'}
+    assert await res.json() == {'test': 'passed'}
 
 
 async def test_websockets(app, client):
@@ -244,7 +244,8 @@ async def test_static_folders(anyio_backend):
 
     res = await client.get('/assets/test_muffin.py')
     assert res.status_code == 200
-    assert res.text.startswith('"""Base Tests."""')
+    text = await res.text()
+    assert text.startswith('"""Base Tests."""')
 
     res = await client.get('/assets/setup.cfg')
     assert res.status_code == 200
@@ -277,12 +278,12 @@ async def test_error_handlers(client, app):
 
     res = await client.get('/unhandled')
     assert res.status_code == 200
-    assert res.text == 'Custom Unhandled'
+    assert await res.text() == 'Custom Unhandled'
 
     res = await client.get('/500')
     assert res.status_code == 200
-    assert res.text == 'Custom Server Error'
+    assert await res.text() == 'Custom Server Error'
 
     res = await client.get('/404')
     assert res.status_code == 200
-    assert res.text == 'Custom 404'
+    assert await res.text() == 'Custom 404'
