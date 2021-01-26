@@ -4,6 +4,7 @@ import argparse
 import inspect
 import logging
 import os
+import code
 import re
 import sys
 import typing as t
@@ -65,22 +66,19 @@ class Manager:
             """
             banner = 'Interactive Muffin %s Shell' % __version__
             banner = '\n' + banner + '\n' + '-' * len(banner) + '\n\n'
-            namespace = app.cfg.MANAGE_SHELL
-            if callable(namespace):
-                namespace = namespace()
-            banner += "Loaded objects: %s" % list(namespace.keys())
+            ctx = app.cfg.MANAGE_SHELL
+            if callable(ctx):
+                ctx = ctx()
+            banner += "Loaded objects: %s" % list(ctx.keys())
             if ipython:
                 try:
                     from IPython.terminal.embed import InteractiveShellEmbed
-                    sh = InteractiveShellEmbed(banner1=banner)
+                    sh = InteractiveShellEmbed(banner1=banner, user_ns=ctx)
+                    return sh()
                 except ImportError:
                     pass
-                else:
-                    sh(local_ns=namespace)
-                    return
 
-            from code import interact
-            interact(banner, local=namespace)
+            code.interact(banner, local=ctx)
 
     def __call__(self, lifespan: t.Union[bool, t.Callable] = False) -> t.Callable[[F], F]:
         """Register a command."""
