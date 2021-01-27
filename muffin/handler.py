@@ -3,7 +3,7 @@
 import inspect
 import typing as t
 
-from http_router import Router
+from http_router import Router, TYPE_METHODS
 from asgi_tools import Request
 from asgi_tools.app import HTTPView, HTTP_METHODS
 from asgi_tools.utils import is_awaitable
@@ -38,16 +38,15 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     """Supports custom routing."""
 
-    methods: t.Optional[t.List[str]] = None
+    methods: t.Optional[t.Sequence[str]] = None
 
     @classmethod
-    def __route__(cls, router: Router, *paths: str, **params):
+    def __route__(cls, router: Router, *paths: str, methods: TYPE_METHODS = None, **params):
         """Check for registered methods."""
-        params.setdefault('methods', cls.methods)
-        router.route(*paths, **params)(cls)
+        router.bind(cls, *paths, methods=methods or cls.methods, **params)
         for _, method in inspect.getmembers(cls, lambda m: hasattr(m, '__route__')):
             cpaths, cparams = method.__route__
-            router.route(*cpaths, __meth__=method.__name__, **cparams)(cls)
+            router.bind(cls, *cpaths, __meth__=method.__name__, **cparams)
 
         return cls
 
