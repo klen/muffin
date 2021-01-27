@@ -71,7 +71,7 @@ async def test_deffered(app, client):
         async def custom(self, request):
             return 'Resource Custom is here'
 
-    assert Resource.methods == ['POST']
+    assert Resource.methods == {'POST'}
 
     app.route('/resource')(Resource)
 
