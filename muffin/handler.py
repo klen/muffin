@@ -24,8 +24,7 @@ class HandlerMeta(type):
         elif isinstance(cls.methods, str):
             cls.methods = [cls.methods]
 
-        cls.methods = [method.upper() for method in cls.methods]
-
+        cls.methods = set(method.upper() for method in cls.methods)
         for m in cls.methods:
             method = getattr(cls, m.lower(), None)
             if method and not is_awaitable(method):
