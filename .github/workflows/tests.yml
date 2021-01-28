@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.7,3.8, 3.9]
 
     steps:
     - name: Checkout changes
@@ -36,15 +36,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('setup.cfg') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('setup.cfg') }}-{{ matrix.python-version }}
 
     - name: Install dependencies
       run: |
         python -m pip install .[tests]
-
-    - name: Type checking
-      run: |
-        mypy muffin
 
     - name: Test with pytest
       run: |
