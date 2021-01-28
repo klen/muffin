@@ -22,8 +22,11 @@ def test_command(app):
 
 def test_manage(app, capsys, monkeypatch):
 
-    app.on_startup(start := mock.MagicMock())
-    app.on_shutdown(finish := mock.MagicMock())
+    start = mock.MagicMock()
+    app.on_startup(start)
+
+    finish = mock.MagicMock()
+    app.on_shutdown(finish)
 
     @app.manage(lifespan=True)
     def hello(name, lower=False):

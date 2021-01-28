@@ -1,6 +1,6 @@
 """The Muffin Utils."""
 
-import asyncio as aio
+import asyncio
 import importlib
 import pkgutil
 import sys
@@ -24,14 +24,15 @@ __all__ = (
 
 def aio_lib() -> ModuleType:
     """Return current async library."""
-    return trio or aio
+    return trio or asyncio
 
 
 def aio_run(corofn: t.Callable, *args, **kwargs) -> t.Any:
     """Run the given coroutine with current async library."""
     lib = aio_lib()
-    if lib is aio:
-        return aio.run(corofn(*args, **kwargs))
+    if lib is asyncio:
+        loop = asyncio.get_event_loop()
+        return loop.run_until_complete(corofn(*args, **kwargs))
 
     return trio.run(corofn, *args, **kwargs)
 
