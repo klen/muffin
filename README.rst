@@ -16,6 +16,10 @@ The Muffin
     :target: https://pypi.org/project/muffin/
     :alt: PYPI Version
 
+.. image:: https://img.shields.io/pypi/pyversions/muffin
+    :target: https://pypi.org/project/muffin/
+    :alt: Python Versions
+
 .. _important:
 
     The framework has been created in 2015 when asyncio/aiohttp stack was very
