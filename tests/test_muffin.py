@@ -266,7 +266,7 @@ async def test_error_handlers(client, app):
     async def handler(exc):
         return 'Custom Server Error'
 
-    @app.on_exception(muffin.ASGINotFound)
+    @app.on_exception(404)
     async def handler_404(exc):
         return 'Custom 404'
 
