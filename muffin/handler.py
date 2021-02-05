@@ -49,9 +49,9 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
         return cls
 
-    def __call__(self, request: Request, **path_params) -> t.Awaitable:
+    def __call__(self, request: Request, *args, **opts) -> t.Awaitable:
         """Dispatch the given request by HTTP method."""
-        method = getattr(self, path_params.get('__meth__') or request.method.lower())
+        method = getattr(self, opts.get('__meth__') or request.method.lower())
         return method(request)
 
     @staticmethod
