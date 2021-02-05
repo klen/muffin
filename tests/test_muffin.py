@@ -159,13 +159,13 @@ async def test_middlewares(app, client):
 
     @app.middleware
     def classic_middleware(app):
-        async def middleware(request, receive, send):
-            response = await app(request, receive, send)
+        async def middleware(scope, receive, send):
+            async def custom_send(msg):
+                if scope['path'] == '/md/classic' and msg['type'] == 'http.response.start':
+                    msg['headers'].append((b'x-classic', b'passed'))
+                await send(msg)
 
-            if request['path'] == '/md/classic':
-                response.headers['x-classic'] = 'passed'
-
-            return response
+            await app(scope, receive, custom_send)
 
         return middleware
 
