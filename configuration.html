@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Configuration &mdash; Muffin 0.50.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CLI integration" href="cli.html" />
+    <link rel="prev" title="Welcome to Muffin’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Muffin
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.50.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#base-application-options">Base application options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuring-logging">Configuring logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#config-example">Config example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Muffin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Muffin gets configuration options from python files. You have to specify
+default configuration module name in your app initialization:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;myapp&#39;</span><span class="p">,</span> <span class="n">CONFIG</span><span class="o">=</span><span class="s1">&#39;config.debug&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This name could be overriden by <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code> environment variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ MUFFIN_CONFIG=settings_local muffin example run
+</pre></div>
+</div>
+<p>Which in its turn could be overriden by <code class="docutils literal notranslate"><span class="pre">--config</span></code> param of <code class="docutils literal notranslate"><span class="pre">muffin</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ muffin --config=config.debug example run
+</pre></div>
+</div>
+<p>Also you can define default config parameter values while initializing your application:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;myapp&#39;</span><span class="p">,</span> <span class="n">DEBUG</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ANY_OPTION</span><span class="o">=</span><span class="s1">&#39;Here&#39;</span><span class="p">,</span> <span class="n">ONE_MORE</span><span class="o">=</span><span class="s1">&#39;Yes&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="base-application-options">
+<h2>Base application options<a class="headerlink" href="#base-application-options" title="Permalink to this headline">¶</a></h2>
+<p>Base Muffin options and default values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configuration module</span>
+<span class="s1">&#39;CONFIG&#39;</span><span class="p">:</span> <span class="s1">&#39;config&#39;</span>
+
+<span class="c1"># Enable debug mode</span>
+<span class="s1">&#39;DEBUG&#39;</span><span class="p">:</span> <span class="kc">False</span>
+
+<span class="c1"># Logging options</span>
+<span class="s1">&#39;ACCESS_LOG&#39;</span><span class="p">:</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>  <span class="c1"># File path to access log, - to stderr</span>
+<span class="s1">&#39;ACCESS_LOG_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %l </span><span class="si">%u</span><span class="s1"> %t &quot;</span><span class="si">%r</span><span class="s1">&quot; </span><span class="si">%s</span><span class="s1"> %b &quot;%</span><span class="si">{Referrer}</span><span class="s1">i&quot; &quot;%{User-Agent}i&quot;&#39;</span><span class="p">,</span>
+<span class="s1">&#39;LOG_LEVEL&#39;</span><span class="p">:</span> <span class="s1">&#39;WARNING&#39;</span>
+<span class="s1">&#39;LOG_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(process)d</span><span class="s1">] [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+<span class="s1">&#39;LOG_DATE_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;[%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S %z]&#39;</span>
+
+<span class="c1"># Setup static files in development</span>
+<span class="s1">&#39;STATIC_PREFIX&#39;</span><span class="p">:</span> <span class="s1">&#39;/static&#39;</span>
+<span class="s1">&#39;STATIC_FOLDERS&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-logging">
+<h2>Configuring logging<a class="headerlink" href="#configuring-logging" title="Permalink to this headline">¶</a></h2>
+<p>You can define your logging configurations with <a class="reference external" href="https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema">Python dictConfig format</a> and place in <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> conf:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;formatters&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(name)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;logfile&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;logging.handlers.RotatingFileHandler&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;my_log.log&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maxBytes&#39;</span><span class="p">:</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
+            <span class="s1">&#39;backupCount&#39;</span><span class="p">:</span> <span class="mi">10</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;loggers&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;logfile&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;ERROR&#39;</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;propagate&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To use just get logger with <code class="docutils literal notranslate"><span class="pre">logging.getLogger()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="config-example">
+<h2>Config example<a class="headerlink" href="#config-example" title="Permalink to this headline">¶</a></h2>
+<p>Example has been taken from <a class="reference external" href="https://github.com/klen/muffin-example">example application</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Basic Muffin configuration</span>
+<span class="c1"># ==========================</span>
+
+<span class="n">STATIC_FOLDERS</span> <span class="o">=</span> <span class="s1">&#39;example/static&#39;</span><span class="p">,</span>
+
+<span class="c1"># Plugin options</span>
+<span class="c1"># ==============</span>
+
+<span class="n">SESSION_SECRET</span> <span class="o">=</span> <span class="s1">&#39;SecretHere&#39;</span>
+
+<span class="n">JINJA2_TEMPLATE_FOLDERS</span> <span class="o">=</span> <span class="s1">&#39;example/templates&#39;</span><span class="p">,</span>
+
+<span class="n">OAUTH_CLIENTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;github&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="s1">&#39;b212c829c357ea0bd950&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;client_secret&#39;</span><span class="p">:</span> <span class="s1">&#39;e2bdda59f9da853ec39d0d1e07baade595f50202&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">OAUTH_REDIRECT_URI</span> <span class="o">=</span> <span class="s1">&#39;https://muffin-py.herokuapp.com/oauth/github&#39;</span>
+
+<span class="n">PEEWEE_MIGRATIONS_PATH</span> <span class="o">=</span> <span class="s1">&#39;example/migrations&#39;</span>
+<span class="n">PEEWEE_CONNECTION</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DATABASE_URL&#39;</span><span class="p">,</span> <span class="s1">&#39;sqlite:///example.sqlite&#39;</span><span class="p">)</span>
+
+<span class="n">DEBUGTOOLBAR_EXCLUDE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/static&#39;</span><span class="p">]</span>
+<span class="n">DEBUGTOOLBAR_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0.0.0.0/0&#39;</span><span class="p">]</span>
+<span class="n">DEBUGTOOLBAR_INTERCEPT_REDIRECTS</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">DEBUGTOOLBAR_ADDITIONAL_PANELS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;muffin_peewee&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;muffin_jinja2&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="cli.html" class="btn btn-neutral float-right" title="CLI integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Muffin’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2015, Kirill Klenov.
+      <span class="lastupdated">
+        Last updated on Feb 09, 2021.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

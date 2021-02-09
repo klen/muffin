@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>CLI integration &mdash; Muffin 0.50.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing" href="testing.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Muffin
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.50.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CLI integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-commands">Built-in commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#shell">shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run">run</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#write-a-custom-command">Write a custom command</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Muffin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>CLI integration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/cli.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cli-integration">
+<h1>CLI integration<a class="headerlink" href="#cli-integration" title="Permalink to this headline">¶</a></h1>
+<p>Run in your shell:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>muffin path.to.your.module:app_object_name --help
+</pre></div>
+</div>
+<p>You’ll see commands available for your application.</p>
+<div class="section" id="built-in-commands">
+<h2>Built-in commands<a class="headerlink" href="#built-in-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="shell">
+<h3>shell<a class="headerlink" href="#shell" title="Permalink to this headline">¶</a></h3>
+<p>Usage:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>muffin shell <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--no-ipython<span class="o">]</span>
+</pre></div>
+</div>
+<p>Run the application shell.</p>
+<dl>
+<dt>Optional arguments:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>Show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--no-ipython</span></kbd></dt>
+<dd><p>Disable use ipython as shell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="run">
+<h3>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<p>Usage:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>muffin run <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--bind SOCKET<span class="o">]</span> <span class="o">[</span>--daemon<span class="o">]</span> <span class="o">[</span>--pid PID<span class="o">]</span> <span class="o">[</span>--no-reload<span class="o">]</span>
+<span class="go">           [--timeout TIMEOUT] [--name NAME]</span>
+<span class="go">           [--worker-class WORKER_CLASS] [--workers WORKERS]</span>
+<span class="go">           [--log-file LOG_FILE] [--access-logfile ACCESS_LOGFILE]</span>
+</pre></div>
+</div>
+<p>Run the application.</p>
+<dl>
+<dt>Optional arguments:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--bind <var>SOCKET</var></span></kbd></dt>
+<dd><p>The socket to bind [‘127.0.0.1:5000’]</p>
+</dd>
+<dt><kbd><span class="option">--daemon</span></kbd></dt>
+<dd><p>Enable daemonize the program</p>
+</dd>
+<dt><kbd><span class="option">--pid <var>PID</var></span></kbd></dt>
+<dd><p>A filename to use for the PID file [None]</p>
+</dd>
+<dt><kbd><span class="option">--no-reload</span></kbd></dt>
+<dd><p>Disable restart workers when code changes</p>
+</dd>
+<dt><kbd><span class="option">--timeout <var>SEC</var></span></kbd></dt>
+<dd><p>Workers silent for more than this many seconds
+are killed and restarted [30]</p>
+</dd>
+<dt><kbd><span class="option">--name <var>NAME</var></span></kbd></dt>
+<dd><p>A base to use with setproctitle for process naming [‘app’]</p>
+</dd>
+<dt><kbd><span class="option">--worker-class <var>CLASS</var></span></kbd></dt>
+<dd><p>The type of workers to use [‘muffin.worker.GunicornWorker’]</p>
+</dd>
+<dt><kbd><span class="option">--workers <var>NUM</var></span></kbd></dt>
+<dd><p>The number of worker processes for handling requests [1]</p>
+</dd>
+<dt><kbd><span class="option">--log-file <var>FILE</var></span></kbd></dt>
+<dd><p>The error log file to write to [None]</p>
+</dd>
+<dt><kbd><span class="option">--access-logfile <var>FILE</var></span></kbd></dt>
+<dd><p>The access log file to write to [‘-‘]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="write-a-custom-command">
+<h2>Write a custom command<a class="headerlink" href="#write-a-custom-command" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">manage</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Write command help text here.</span>
+
+<span class="sd">    :param name:  Write your name</span>
+<span class="sd">    :param upper: Use uppercase</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">greetings</span> <span class="o">=</span> <span class="s1">&#39;Hello </span><span class="si">%s</span><span class="s1">!&#39;</span> <span class="o">%</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">upper</span><span class="p">:</span>
+        <span class="n">greetings</span> <span class="o">=</span> <span class="n">greetings</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">greetings</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>muffin example hello --help
+
+<span class="go">    Write command help text here.</span>
+
+<span class="go">    positional arguments:</span>
+<span class="go">    name        Write your name</span>
+
+<span class="go">    optional arguments:</span>
+<span class="go">    -h, --help  show this help message and exit</span>
+<span class="go">    --upper     Enable use uppercase</span>
+<span class="go">    --no-upper  Disable use uppercase</span>
+
+<span class="gp">$ </span>muffin example hello mike --upper
+
+<span class="go">    HELLO MIKE!</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="testing.html" class="btn btn-neutral float-right" title="Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2015, Kirill Klenov.
+      <span class="lastupdated">
+        Last updated on Feb 09, 2021.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

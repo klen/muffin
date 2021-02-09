@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Welcome to Muffin’s documentation! &mdash; Muffin 0.50.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Muffin
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.50.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Muffin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Welcome to Muffin’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-muffin-s-documentation">
+<h1>Welcome to Muffin’s documentation!<a class="headerlink" href="#welcome-to-muffin-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p id="description"><strong>Muffin</strong> – is a fast, lightweight and asyncronous <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> web-framework for <a class="reference external" href="http://python.org">Python</a> 3.</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin/actions" id="badges"><img alt="Tests Status" src="https://github.com/klen/muffin/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://klen.github.io/muffin"><img alt="Documentation Status" src="https://github.com/klen/muffin/workflows/docs/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin/"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/muffin" /></a>
+<hr class="docutils" />
+<div class="section" id="features">
+<span id="id1"></span><h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> compatible;</p></li>
+<li><p>Support <a class="reference external" href="https://docs.python.org/3/library/asyncio.html">Asyncio</a> and <a class="reference external" href="https://trio.readthedocs.io/en/stable/index.html">Trio</a> libraries;</p></li>
+<li><p>Parse ASGI scope, get url, headers, cookies, read a request’s data/json/form-data</p></li>
+<li><p>Send HTTP (text, html, json, stream, file, http errors) responses</p></li>
+<li><p>Work with WebSockets</p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<span id="id2"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>The Muffin</strong> should be installed using pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">muffin</span>
+</pre></div>
+</div>
+<p>We recommend using the latest version of Python. <strong>Muffin</strong> supports Python 3.7
+and newer.</p>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>These distributions will be installed automatically when installing <strong>Muffin</strong>.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://klen.github.io/asgi-tools/">ASGI-Tools</a> - <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> Toolkit</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/modconfig/">Modconfig</a>  - Simple hierarchic configuration manager</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="quickstart">
+<span id="id3"></span><h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<p>Example “Hello User” with the Muffin:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">muffin</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;/hello/</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;world&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Hello </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1">!&#39;</span>
+</pre></div>
+</div>
+<p>What did that code do?</p>
+<ol class="arabic simple">
+<li><p>First we imported the <code class="docutils literal notranslate"><span class="pre">muffin.Application</span></code> class.  An instance of
+this class will be our application.</p></li>
+<li><p>Next we create an instance of this class. The first argument is the name of
+the application.</p></li>
+<li><p>We then use the <code class="docutils literal notranslate"><span class="pre">muffin.Application.route</span></code> decorator to tell Muffin
+what URLs should trigger our handler function.</p></li>
+<li><p>The function returns the message we want to display in the user’s browser.</p></li>
+</ol>
+<p>Save the script as <cite>example.py</cite> and run it using Uvicorn (or another <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> server):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ uvicorn example:app
+</pre></div>
+</div>
+<p>Open <a class="reference external" href="http://localhost:8000">http://localhost:8000</a>, <a class="reference external" href="http://localhost:8000/hello/username">http://localhost:8000/hello/username</a> in your browser. Enjoy!</p>
+</div>
+</div>
+<div class="section" id="table-of-contents">
+<h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#base-application-options">Base application options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuring-logging">Configuring logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#config-example">Config example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#built-in-commands">Built-in commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#shell">shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#run">run</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#write-a-custom-command">Write a custom command</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#setup-tests">Setup tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#testing-application">Testing application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2015, Kirill Klenov.
+      <span class="lastupdated">
+        Last updated on Feb 09, 2021.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
