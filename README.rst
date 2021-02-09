@@ -265,7 +265,7 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 .. _benchmarks:
 
 Benchmarks
-==========
+-----------
 
 You could find some tests here: http://klen.github.io/py-frameworks-bench/
 
@@ -474,7 +474,7 @@ You could find some tests here: http://klen.github.io/py-frameworks-bench/
 .. _bugtracker:
 
 Bug tracker
-===========
+-----------
 
 If you have any suggestions, bug reports or
 annoyances please report them to the issue tracker
@@ -483,13 +483,13 @@ at https://github.com/klen/muffin/issues
 .. _contributing:
 
 Contributing
-============
+------------
 
 Development of The Muffin happens at: https://github.com/klen/muffin
 
 
 Contributors
-=============
+-------------
 
 Muffin > 0.40 (completelly rewriten from scratch)
 
@@ -504,7 +504,7 @@ Muffin < 0.40 (based on AIOHTTP_)
 .. _license:
 
 License
-========
+--------
 
 Licensed under a MIT license (See LICENSE)
 
