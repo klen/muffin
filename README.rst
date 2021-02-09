@@ -46,17 +46,17 @@ Example "Hello User" with the Muffin:
     app = muffin.Application('example')
 
 
-    @app.route('/', '/{name}')
+    @app.route('/', '/hello/{name}')
     async def hello(request):
         name = request.path_params.get('name', 'world')
         return f'Hello {name.title()}!'
 
 
-Save the script as `example.py` and run it using Uvicorn (or another ASGI server): ::
+Save the script as `example.py` and run it using Uvicorn (or another ASGI_ server): ::
 
     $ uvicorn example:app
 
-Open http://localhost:5000, http://localhost:5000/username in your browser. Enjoy!
+Open http://localhost:8000, http://localhost:8000/hello/username in your browser. Enjoy!
 
 .. TODO: Finish the general example
 .. For a more complete example, see https://github.com/klen/muffin-example
@@ -469,7 +469,7 @@ Muffin > 0.40 (completelly rewriten from scratch)
 
 * `Kirill Klenov <https://github.com/klen>`_
 
-Muffin < 0.40 (completelly rewriten from scratch)
+Muffin < 0.40 (based on AIOHTTP_)
 
 * `Kirill Klenov <https://github.com/klen>`_
 * `Andrew Grigorev <https://github.com/ei-grad>`_
@@ -484,6 +484,7 @@ Licensed under a MIT license (See LICENSE)
 
 .. _links:
 
+.. _AIOHTTP: https://docs.aiohttp.org/en/stable/
 .. _ASGI: https://asgi.readthedocs.io/en/latest/
 .. _Asyncio: https://docs.python.org/3/library/asyncio.html
 .. _Python: http://python.org
