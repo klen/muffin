@@ -22,8 +22,7 @@ clean:
 .PHONY: release
 VERSION?=minor
 # target: release - Bump version
-release:
-	@$(VIRTUAL_ENV)/bin/pip install bump2version
+release: $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/bump2version $(VERSION)
 	@git checkout master
 	@git merge develop
@@ -46,15 +45,9 @@ major:
 #  Build package
 # ===============
 
-.PHONY: register
-# target: register - Register module on PyPi
-register:
-	@$(VIRTUAL_ENV)/bin/python setup.py register
-
 .PHONY: upload
 # target: upload - Upload module on PyPi
-upload: clean
-	@$(VIRTUAL_ENV)/bin/pip install twine wheel
+upload: $(VIRTUAL_ENV) clean
 	@$(VIRTUAL_ENV)/bin/python setup.py bdist_wheel
 	@$(VIRTUAL_ENV)/bin/twine upload dist/*
 
@@ -64,7 +57,7 @@ upload: clean
 
 $(VIRTUAL_ENV): setup.cfg
 	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/pip install -e .[tests,docs]
+	@$(VIRTUAL_ENV)/bin/pip install -e .[tests,docs,build]
 	@touch $(VIRTUAL_ENV)
 
 .PHONY: t test
@@ -73,7 +66,7 @@ t test: $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/py.test tests
 
 .PHONY: mypy
-# target: test - Run tests
+# target: mypy - Run typechecking
 mypy: $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/mypy muffin
 
@@ -90,4 +83,3 @@ run:
 .PHONY: shell
 shell:
 	make -C $(CURDIR)/example shell
-
