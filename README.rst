@@ -11,6 +11,10 @@
     :target: https://github.com/klen/muffin/actions
     :alt: Tests Status
 
+.. image:: https://github.com/klen/muffin/workflows/docs/badge.svg
+    :target: https://klen.github.io/muffin
+    :alt: Documentation Status
+
 .. image:: https://img.shields.io/pypi/v/muffin
     :target: https://pypi.org/project/muffin/
     :alt: PYPI Version

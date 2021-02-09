@@ -1,0 +1,16 @@
+name: docs
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: seanzhengw/sphinx-pages@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        create_readme: true
+        source_dir: docs
+
