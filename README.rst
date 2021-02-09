@@ -38,7 +38,7 @@ Features
 
 .. _documentation:
 
-**Docs are available at https://muffin.readthedocs.org/. Pull requests
+**Docs are available at https://klen.github.io/muffin/. Pull requests
 with documentation enhancements and/or fixes are awesome and most welcome.**
 
 .. _contents:
