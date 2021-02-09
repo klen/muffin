@@ -1,10 +1,9 @@
-.. image:: https://raw.github.com/klen/muffin/develop/docs/static/logo.png
+.. image:: https://raw.github.com/klen/muffin/develop/docs/static/logo-h100.png
    :height: 100px
-   :width: 100px
 
+.. _description:
 
-The Muffin
-##########
+    **Muffin** -- is a fast, lightweight and asyncronous ASGI_ web-framework for Python_ 3.
 
 .. _badges:
 
@@ -20,20 +19,17 @@ The Muffin
     :target: https://pypi.org/project/muffin/
     :alt: Python Versions
 
-.. _important:
+----------
 
-    The framework has been created in 2015 when asyncio/aiohttp stack was very
-    young and small. It was an attempt to build a foundation for asyncio web
-    based project with all required tools (plugins system, admin interfaces,
-    REST API and etc). For current moment (2018) aiohttp stack is quite good
-    and the Muffin is depricated. It can be supported because some projects
-    still use it but if you are planning to start a new project I would
-    recomend to have a look on something else.
+.. _features:
 
-.. _description:
+**Features**
 
-    **Muffin** -- A web framework based on Asyncio_ stack ``(depricated)``
-    Muffin is a fast, simple and asyncronous web-framework for Python_ 3.
+- ASGI_ compatible;
+- Support `Asyncio`_ and `Trio`_ libraries;
+- Parse ASGI scope, get url, headers, cookies, read a request's data/json/form-data
+- Send HTTP (text, html, json, stream, file, http errors) responses
+- Work with WebSockets
 
 .. _documentation:
 
@@ -50,9 +46,9 @@ Example "Hello User" with the Muffin:
     app = muffin.Application('example')
 
 
-    @app.route('/', '/hello/{name}')
+    @app.route('/', '/{name}')
     async def hello(request):
-        name = request.path_params.get('name', 'anonymous')
+        name = request.path_params.get('name', 'world')
         return f'Hello {name.title()}!'
 
 
@@ -60,9 +56,10 @@ Save the script as `example.py` and run it using Uvicorn (or another ASGI server
 
     $ uvicorn example:app
 
-Open http://localhost:5000, http://localhost:5000/hello/username in your browser. Enjoy!
+Open http://localhost:5000, http://localhost:5000/username in your browser. Enjoy!
 
-For a more complete example, see https://github.com/klen/muffin-example
+.. TODO: Finish the general example
+.. For a more complete example, see https://github.com/klen/muffin-example
 
 .. _contents:
 
@@ -151,93 +148,93 @@ The list of some Muffin plugins (please make PR if you want to provide more):
       :target: https://pypi.org/project/muffin-babel/
       :alt: PYPI Version
 
-* `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
+.. * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
-  .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-admin
+  .. .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-admin
 
-  .. image:: http://img.shields.io/pypi/v/muffin-admin.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-admin
+  .. .. image:: http://img.shields.io/pypi/v/muffin-admin.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-admin
 
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-admin.svg?style=flat-square
-     :target: https://github.com/klen/muffin-admin/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-admin.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-admin/issues
 
-* `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
+.. * `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
 
-  .. image:: http://img.shields.io/travis/klen/muffin-debugtoolbar.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-debugtoolbar
+  .. .. image:: http://img.shields.io/travis/klen/muffin-debugtoolbar.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-debugtoolbar
 
-  .. image:: http://img.shields.io/pypi/v/muffin-debugtoolbar.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-debugtoolbar
+  .. .. image:: http://img.shields.io/pypi/v/muffin-debugtoolbar.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-debugtoolbar
 
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-debugtoolbar.svg?style=flat-square
-     :target: https://github.com/klen/muffin-debugtoolbar/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-debugtoolbar.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-debugtoolbar/issues
 
-* `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
+.. * `Muffin-Jade    <https://github.com/klen/muffin-jade>`_    -- Jade templates
 
-  .. image:: http://img.shields.io/travis/klen/muffin-jade.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-jade
+  .. .. image:: http://img.shields.io/travis/klen/muffin-jade.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-jade
 
-  .. image:: http://img.shields.io/pypi/v/muffin-jade.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-jade
+  .. .. image:: http://img.shields.io/pypi/v/muffin-jade.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-jade
 
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-jade.svg?style=flat-square
-     :target: https://github.com/klen/muffin-jade/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-jade.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-jade/issues
 
-* `Muffin-Metrics <https://github.com/klen/muffin-metrics>`_ -- Send metrics to Graphite/Statsd
+.. * `Muffin-Metrics <https://github.com/klen/muffin-metrics>`_ -- Send metrics to Graphite/Statsd
 
-  .. image:: http://img.shields.io/travis/klen/muffin-metrics.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-metrics
+  .. .. image:: http://img.shields.io/travis/klen/muffin-metrics.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-metrics
 
-  .. image:: http://img.shields.io/pypi/v/muffin-metrics.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-metrics
+  .. .. image:: http://img.shields.io/pypi/v/muffin-metrics.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-metrics
 
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-metrics.svg?style=flat-square
-     :target: https://github.com/klen/muffin-metrics/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-metrics.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-metrics/issues
 
-* `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
+.. * `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
 
-  .. image:: http://img.shields.io/travis/klen/muffin-mongo.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-mongo
+  .. .. image:: http://img.shields.io/travis/klen/muffin-mongo.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-mongo
 
-  .. image:: http://img.shields.io/pypi/v/muffin-mongo.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-mongo
+  .. .. image:: http://img.shields.io/pypi/v/muffin-mongo.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-mongo
 
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-mongo.svg?style=flat-square
-     :target: https://github.com/klen/muffin-mongo/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-mongo.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-mongo/issues
 
-* `Muffin-Motor   <https://github.com/drgarcia1986/muffin-motor>`_   -- MongoDB (motor) support
+.. * `Muffin-Motor   <https://github.com/drgarcia1986/muffin-motor>`_   -- MongoDB (motor) support
 
-  .. image:: http://img.shields.io/travis/drgarcia1986/muffin-motor.svg?style=flat-square
-     :target: http://travis-ci.org/drgarcia1986/muffin-motor
+  .. .. image:: http://img.shields.io/travis/drgarcia1986/muffin-motor.svg?style=flat-square
+     .. :target: http://travis-ci.org/drgarcia1986/muffin-motor
 
-  .. image:: http://img.shields.io/pypi/v/muffin-motor.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-motor
+  .. .. image:: http://img.shields.io/pypi/v/muffin-motor.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-motor
 
-  .. image:: https://img.shields.io/github/issues-raw/drgarcia1986/muffin-motor.svg?style=flat-square
-     :target: https://github.com/drgarcia1986/muffin-motor/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/drgarcia1986/muffin-motor.svg?style=flat-square
+     .. :target: https://github.com/drgarcia1986/muffin-motor/issues
 
-* `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
+.. * `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
 
-  .. image:: http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-rest
+  .. .. image:: http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-rest
 
-  .. image:: http://img.shields.io/pypi/v/muffin-rest.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-rest
+  .. .. image:: http://img.shields.io/pypi/v/muffin-rest.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-rest
 
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-rest.svg?style=flat-square
-     :target: https://github.com/klen/muffin-rest/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-rest.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-rest/issues
 
-* `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
+.. * `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
 
-  .. image:: http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square
-     :target: http://travis-ci.org/klen/muffin-redis
+  .. .. image:: http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-redis
 
-  .. image:: http://img.shields.io/pypi/v/muffin-redis.svg?style=flat-square
-     :target: https://pypi.python.org/pypi/muffin-redis
+  .. .. image:: http://img.shields.io/pypi/v/muffin-redis.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-redis
 
-  .. image:: https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square
-     :target: https://github.com/klen/muffin-redis/issues
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-redis/issues
 
 .. _benchmarks:
 
@@ -248,204 +245,205 @@ You could find some tests here: http://klen.github.io/py-frameworks-bench/
 
 .. _usage:
 
-Usage
-=====
+.. Usage
+.. =====
 
-See more in the example application sources. The application is deployed on Heroku:
-https://muffin-py.herokuapp.com
+.. See more in the example application sources. The application is deployed on Heroku:
+.. https://muffin-py.herokuapp.com
 
-Run example server locally: ::
+.. Run example server locally: ::
 
-    $ make -C example run
+    .. $ make -C example run
 
-And open http://fuf.me:5000 in your browser.
+.. And open http://fuf.me:5000 in your browser.
 
-Configuration
--------------
+.. TODO: move to docs
+.. Configuration
+.. -------------
 
-Muffin gets configuration options from python files. You have to specify
-default configuration module name in your app initialization:
+.. Muffin gets configuration options from python files. You have to specify
+.. default configuration module name in your app initialization:
 
-.. code-block:: python
+.. .. code-block:: python
 
-  app = muffin.Application('myapp', CONFIG='config.debug')
+    .. app = muffin.Application('myapp', CONFIG='config.debug')
 
-This name could be overriden by ``MUFFIN_CONFIG`` environment variable: ::
+.. This name could be overriden by ``MUFFIN_CONFIG`` environment variable: ::
 
-  $ MUFFIN_CONFIG=settings_local muffin example run
+  .. $ MUFFIN_CONFIG=settings_local muffin example run
 
-Which in its turn could be overriden by ``--config`` param of ``muffin`` command: ::
+.. Which in its turn could be overriden by ``--config`` param of ``muffin`` command: ::
 
-  $ muffin --config=config.debug example run
+  .. $ muffin --config=config.debug example run
 
-Also you can define default config parameter values while initializing your application:
+.. Also you can define default config parameter values while initializing your application:
 
-.. code-block:: python
+.. .. code-block:: python
 
-  app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
+  .. app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
 
-Base application options
-^^^^^^^^^^^^^^^^^^^^^^^^
+.. Base application options
+.. ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Base Muffin options and default values:
+.. Base Muffin options and default values:
 
-.. code-block:: python
+.. .. code-block:: python
 
-        # Configuration module
-        'CONFIG': 'config'
+        .. # Configuration module
+        .. 'CONFIG': 'config'
 
-        # Enable debug mode
-        'DEBUG': ...
+        .. # Enable debug mode
+        .. 'DEBUG': ...
 
-        # Logging options
-        'ACCESS_LOG': '-',  # File path to access log, - to stderr
-        'ACCESS_LOG_FORMAT': '%a %l %u %t "%r" %s %b "%{Referrer}i" "%{User-Agent}i"',
-        'LOG_LEVEL': 'WARNING'
-        'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s'
-        'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]'
+        .. # Logging options
+        .. 'ACCESS_LOG': '-',  # File path to access log, - to stderr
+        .. 'ACCESS_LOG_FORMAT': '%a %l %u %t "%r" %s %b "%{Referrer}i" "%{User-Agent}i"',
+        .. 'LOG_LEVEL': 'WARNING'
+        .. 'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s'
+        .. 'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]'
 
-        # Setup static files in development
-        'STATIC_PREFIX': '/static'
-        'STATIC_FOLDERS': ['static']
+        .. # Setup static files in development
+        .. 'STATIC_PREFIX': '/static'
+        .. 'STATIC_FOLDERS': ['static']
 
 
-Configuring logging
-^^^^^^^^^^^^^^^^^^^
-You can define your logging configurations with `Python dictConfig format  <https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema>`_ and place in ``LOGGING`` conf:
+.. Configuring logging
+.. ^^^^^^^^^^^^^^^^^^^
+.. You can define your logging configurations with `Python dictConfig format  <https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema>`_ and place in ``LOGGING`` conf:
 
-.. code-block:: python
+.. .. code-block:: python
 
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'default': {
-                'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
-            },
-        },
-        'handlers': {
-            'logfile': {
-                'level': 'DEBUG',
-                'class': 'logging.handlers.RotatingFileHandler',
-                'filename': 'my_log.log',
-                'maxBytes': 50 * 1024 * 1024,
-                'backupCount': 10
-            },
-        },
-        'loggers': {
-            '': {
-                'handlers': ['logfile'],
-                'level': 'ERROR'
-            },
-            'project': {
-                'level': 'INFO',
-                'propagate': True,
-            },
-        }
-    }
+    .. LOGGING = {
+        .. 'version': 1,
+        .. 'disable_existing_loggers': False,
+        .. 'formatters': {
+            .. 'default': {
+                .. 'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
+            .. },
+        .. },
+        .. 'handlers': {
+            .. 'logfile': {
+                .. 'level': 'DEBUG',
+                .. 'class': 'logging.handlers.RotatingFileHandler',
+                .. 'filename': 'my_log.log',
+                .. 'maxBytes': 50 * 1024 * 1024,
+                .. 'backupCount': 10
+            .. },
+        .. },
+        .. 'loggers': {
+            .. '': {
+                .. 'handlers': ['logfile'],
+                .. 'level': 'ERROR'
+            .. },
+            .. 'project': {
+                .. 'level': 'INFO',
+                .. 'propagate': True,
+            .. },
+        .. }
+    .. }
 
-To use just get logger with ``logging.getLogger()``:
+.. To use just get logger with ``logging.getLogger()``:
 
-.. code-block:: python
+.. .. code-block:: python
 
-    import logging
-    logger = logging.getLogger('project')
+    .. import logging
+    .. logger = logging.getLogger('project')
 
-CLI integration
----------------
+.. CLI integration
+.. ---------------
 
-Run in your shell: ::
+.. Run in your shell: ::
 
-    $ muffin path.to.your.module:app_object_name --help
+    .. $ muffin path.to.your.module:app_object_name --help
 
-Write a custom command
-^^^^^^^^^^^^^^^^^^^^^^
+.. Write a custom command
+.. ^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: python
+.. .. code-block:: python
 
-    @app.manage.command
-    def hello(name, upper=False):
-        """ Write command help text here.
+    .. @app.manage.command
+    .. def hello(name, upper=False):
+        .. """ Write command help text here.
 
-        :param name:  Write your name
-        :param upper: Use uppercase
+        .. :param name:  Write your name
+        .. :param upper: Use uppercase
 
-        """
-        greetings = 'Hello %s!' % name
-        if upper:
-            greetings = greetings.upper()
-        print(greetings)
+        .. """
+        .. greetings = 'Hello %s!' % name
+        .. if upper:
+            .. greetings = greetings.upper()
+        .. print(greetings)
 
-::
+.. ::
 
-    $ muffin example hello --help
+    .. $ muffin example hello --help
 
-        Write command help text here.
+        .. Write command help text here.
 
-        positional arguments:
-        name        Write your name
+        .. positional arguments:
+        .. name        Write your name
 
-        optional arguments:
-        -h, --help  show this help message and exit
-        --upper     Enable use uppercase
-        --no-upper  Disable use uppercase
+        .. optional arguments:
+        .. -h, --help  show this help message and exit
+        .. --upper     Enable use uppercase
+        .. --no-upper  Disable use uppercase
 
-    $ muffin example hello mike --upper
+    .. $ muffin example hello mike --upper
 
-        HELLO MIKE!
+        .. HELLO MIKE!
 
-.. _testing:
+.. .. _testing:
 
-Testing
-========
+.. Testing
+.. ========
 
-Setup tests
------------
+.. Setup tests
+.. -----------
 
-Set module path to your Muffin Application in pytest configuration file or use
-command line option ``--muffin-app``.
+.. Set module path to your Muffin Application in pytest configuration file or use
+.. command line option ``--muffin-app``.
 
-Example: ::
+.. Example: ::
 
-    $ py.test -xs --muffin-app example
+    .. $ py.test -xs --muffin-app example
 
-Testing application
--------------------
+.. Testing application
+.. -------------------
 
-See examples:
+.. See examples:
 
-.. code-block:: python
+.. .. code-block:: python
 
-    async def test_async_code():
-        async def coro():
-            return True
+    .. async def test_async_code():
+        .. async def coro():
+            .. return True
 
-        assert await coro()
+        .. assert await coro()
 
-    def test_app(app):
-        """ Get your app in your tests as fixture. """
-        assert app.name == 'my app name'
-        assert app.cfg.MYOPTION == 'develop'
+    .. def test_app(app):
+        .. """ Get your app in your tests as fixture. """
+        .. assert app.name == 'my app name'
+        .. assert app.cfg.MYOPTION == 'develop'
 
-    async def test_view(client):
-        """ Make HTTP request to your application. """
-        async with client.get('/my-handler') as resp:
-            text = await resp.text()
-            assert 'mydata' in text
+    .. async def test_view(client):
+        .. """ Make HTTP request to your application. """
+        .. async with client.get('/my-handler') as resp:
+            .. text = await resp.text()
+            .. assert 'mydata' in text
 
-Also please check `aiohttp testing documentation <https://docs.aiohttp.org/en/stable/testing.html>`_.
+.. Also please check `aiohttp testing documentation <https://docs.aiohttp.org/en/stable/testing.html>`_.
 
 
-.. _deployment:
+.. .. _deployment:
 
-Deployment
-==========
+.. Deployment
+.. ==========
 
-Use ``muffin`` command. By example: ::
+.. Use ``muffin`` command. By example: ::
 
-    $ muffin example run --workers=4
+    .. $ muffin example run --workers=4
 
-See ``muffin {APP} run --help`` for more info.
+.. See ``muffin {APP} run --help`` for more info.
 
 .. _bugtracker:
 
@@ -467,9 +465,15 @@ Development of The Muffin happens at: https://github.com/klen/muffin
 Contributors
 =============
 
+Muffin > 0.40 (completelly rewriten from scratch)
+
+* `Kirill Klenov <https://github.com/klen>`_
+
+Muffin < 0.40 (completelly rewriten from scratch)
+
+* `Kirill Klenov <https://github.com/klen>`_
 * `Andrew Grigorev <https://github.com/ei-grad>`_
 * `Diego Garcia <https://github.com/drgarcia1986>`_
-* `Kirill Klenov <https://github.com/klen>`_
 
 .. _license:
 
@@ -480,6 +484,8 @@ Licensed under a MIT license (See LICENSE)
 
 .. _links:
 
-.. _klen: https://github.com/klen
+.. _ASGI: https://asgi.readthedocs.io/en/latest/
 .. _Asyncio: https://docs.python.org/3/library/asyncio.html
 .. _Python: http://python.org
+.. _Trio: https://trio.readthedocs.io/en/stable/index.html
+.. _klen: https://github.com/klen
