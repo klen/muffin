@@ -70,8 +70,8 @@ t test: $(VIRTUAL_ENV)
 mypy: $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/mypy muffin
 
-.PHONY: doc
-doc: docs $(VIRTUAL_ENV)
+.PHONY: docs
+docs: docs $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
 	# @$(VIRTUAL_ENV)/bin/python setup.py upload_sphinx --upload-dir=docs/_build/html
 

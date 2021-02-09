@@ -3,7 +3,7 @@
 
 .. _description:
 
-    **Muffin** -- is a fast, lightweight and asyncronous ASGI_ web-framework for Python_ 3.
+**Muffin** -- is a fast, lightweight and asyncronous ASGI_ web-framework for Python_ 3.
 
 .. _badges:
 
@@ -23,7 +23,8 @@
 
 .. _features:
 
-**Features**
+Features
+--------
 
 - ASGI_ compatible;
 - Support `Asyncio`_ and `Trio`_ libraries;
@@ -35,6 +36,40 @@
 
 **Docs are available at https://muffin.readthedocs.org/. Pull requests
 with documentation enhancements and/or fixes are awesome and most welcome.**
+
+.. _contents:
+
+.. contents::
+
+.. _requirements:
+
+.. _installation:
+
+Installation
+------------
+
+**The Muffin** should be installed using pip: ::
+
+    pip install muffin
+
+We recommend using the latest version of Python. **Muffin** supports Python 3.7
+and newer.
+
+Dependencies
+````````````
+
+These distributions will be installed automatically when installing **Muffin**.
+
+* `ASGI-Tools`_ - ASGI_ Toolkit
+* `Modconfig`_  - Simple hierarchic configuration manager
+
+.. _ASGI-Tools: https://klen.github.io/asgi-tools/
+.. _Modconfig: https://pypi.org/project/modconfig/
+
+.. _quickstart:
+
+Quickstart
+----------
 
 Example "Hello User" with the Muffin:
 
@@ -52,6 +87,17 @@ Example "Hello User" with the Muffin:
         return f'Hello {name.title()}!'
 
 
+What did that code do?
+
+1. First we imported the :class:`~muffin.Application` class.  An instance of
+   this class will be our application.
+2. Next we create an instance of this class. The first argument is the name of
+   the application.
+3. We then use the :meth:`~muffin.Application.route` decorator to tell Muffin
+   what URLs should trigger our handler function.
+4. The function returns the message we want to display in the user's browser.
+
+
 Save the script as `example.py` and run it using Uvicorn (or another ASGI_ server): ::
 
     $ uvicorn example:app
@@ -61,30 +107,10 @@ Open http://localhost:8000, http://localhost:8000/hello/username in your browser
 .. TODO: Finish the general example
 .. For a more complete example, see https://github.com/klen/muffin-example
 
-.. _contents:
-
-.. contents::
-
-.. _requirements:
-
-Requirements
-=============
-
-- python >= 3.7
-
-.. _installation:
-
-Installation
-=============
-
-**The Muffin** should be installed using pip: ::
-
-    pip install muffin
-
 .. _plugins:
 
 Plugins
-========
+--------
 
 The list of some Muffin plugins (please make PR if you want to provide more):
 

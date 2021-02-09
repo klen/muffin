@@ -47,8 +47,8 @@ exclude_patterns = ['_build']
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
-html_theme = 'muffin'
-html_theme = 'default'
+html_theme = 'sphinx_rtd_theme'
+html_logo = 'static/logo.png'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -62,12 +62,13 @@ html_theme_path = ['_themes']
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = "muffin-favicon.ico"
+#  html_favicon = "muffin-favicon.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['static']
+html_css_files = ['theme.css']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -176,33 +177,10 @@ latex_additional_files = [
 # epub_tocdepth = 3
 
 intersphinx_mapping = {
-    'https://docs.python.org/dev': None,
-    'http://www.sqlalchemy.org/docs/': None,
-    'https://wtforms.readthedocs.org/en/latest/': None,
-    'http://aiohttp.readthedocs.org/en/stable/': None,
+    "python": ("http://docs.python.org/3", None),
+    "multidict": ("https://multidict.readthedocs.io/en/stable/", None),
+    "yarl": ("https://yarl.readthedocs.io/en/stable/", None),
+    "asgi_tools": ("https://klen.github.io/asgi-tools/", None),
 }
 
-pygments_style = 'tango'
-
-
-# unwrap decorators
-def unwrap_decorators():
-    import sphinx.util.inspect as inspect
-    import functools
-
-    old_getargspec = inspect.getargspec
-
-    def getargspec(x):
-        return old_getargspec(getattr(x, '_original_function', x))
-    inspect.getargspec = getargspec
-
-    old_update_wrapper = functools.update_wrapper
-
-    def update_wrapper(wrapper, wrapped, *a, **kw):
-        rv = old_update_wrapper(wrapper, wrapped, *a, **kw)
-        rv._original_function = wrapped
-        return rv
-    functools.update_wrapper = update_wrapper
-
-unwrap_decorators()
-del unwrap_decorators
+pygments_style = 'monokai'
