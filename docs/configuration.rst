@@ -53,6 +53,9 @@ Base Muffin options and default values:
         'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S]',
         'LOG_CONFIG': None,
 
+        # Muffin shell context
+        'MANAGE_SHELL': lambda: {'app': app, 'run': aio_run, **app.plugins},
+
 
 Environment variables
 ---------------------
