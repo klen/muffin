@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Configuration &mdash; Muffin 0.50.1 documentation</title>
+  <title>Configuration &mdash; Muffin 0.50.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.50.1
+                0.50.2
               </div>
             
           
@@ -94,9 +94,10 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#base-application-options">Base application options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-application-options">Default Application Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-precedence">Configuration precedence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuring-logging">Configuring logging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#config-example">Config example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
@@ -187,16 +188,22 @@ default configuration module name in your app initialization:</p>
 <span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;myapp&#39;</span><span class="p">,</span> <span class="s1">&#39;config.local&#39;</span><span class="p">,</span> <span class="s1">&#39;config.production&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This configuration module could be overriden by <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code> environment variable:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ MUFFIN_CONFIG=settings_local uvicorn your_project:app
+<p>This configuration module path could be overriden by <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code>
+environment variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ MUFFIN_CONFIG=settings.local uvicorn your_project:app
 </pre></div>
 </div>
 <p>Also you can define default config parameter values while initializing your application:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;myapp&#39;</span><span class="p">,</span> <span class="n">DEBUG</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ANY_OPTION</span><span class="o">=</span><span class="s1">&#39;Here&#39;</span><span class="p">,</span> <span class="n">ONE_MORE</span><span class="o">=</span><span class="s1">&#39;Yes&#39;</span><span class="p">)</span>
+<p>Configuration will be available through <code class="xref py py-attr docutils literal notranslate"><span class="pre">app.cfg</span></code> attribute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;myapp&#39;</span><span class="p">,</span> <span class="n">DEBUG</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ANY_OPTION</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">ONE_MORE</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">DEBUG</span> <span class="ow">is</span> <span class="kc">True</span>
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ANY_OPTION</span>  <span class="o">==</span> <span class="s1">&#39;value&#39;</span>
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ANY_OPTION</span>  <span class="o">==</span> <span class="s1">&#39;value2&#39;</span>
 </pre></div>
 </div>
-<div class="section" id="base-application-options">
-<h2>Base application options<a class="headerlink" href="#base-application-options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="default-application-options">
+<h2>Default Application Options<a class="headerlink" href="#default-application-options" title="Permalink to this headline">¶</a></h2>
 <p>Base Muffin options and default values:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configuration module</span>
 <span class="s1">&#39;CONFIG&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -219,10 +226,45 @@ default configuration module name in your app initialization:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="environment-variables">
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>Muffin reads configuration values from the current environment’s variables
+using the form: <code class="docutils literal notranslate"><span class="pre">{app.name}_{option_name}</span></code>. By default Muffin parses env
+values as a JSON.</p>
+<p>Consider the options file <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">DB_PARAMS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pool&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+<span class="n">TOKEN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TOKEN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>  <span class="c1"># simple strings supported as well</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;false&#39;</span>  <span class="c1"># json boolean value</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_PARAMS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;{&quot;pool&quot;: 50}&#39;</span> <span class="c1"># json too</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Muffin</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">DEBUG</span> <span class="ow">is</span> <span class="kc">False</span>
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">DB_PARAMS</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;pool&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">TOKEN</span> <span class="o">==</span> <span class="s1">&#39;value&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration-precedence">
+<h2>Configuration precedence<a class="headerlink" href="#configuration-precedence" title="Permalink to this headline">¶</a></h2>
+<p>The order in which configuration values are read is:</p>
+<ul class="simple">
+<li><p>From default config;</p></li>
+<li><p>From the given python modules;</p></li>
+<li><p>From environment variables;</p></li>
+<li><p>From the given paramenters when initializing the app;</p></li>
+</ul>
+</div>
 <div class="section" id="configuring-logging">
 <h2>Configuring logging<a class="headerlink" href="#configuring-logging" title="Permalink to this headline">¶</a></h2>
-<p>You can define your logging configurations with <a class="reference external" href="https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema">Python dictConfig format</a> and place in <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> conf:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+<p>You can define your logging configurations with
+<a class="reference external" href="https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema">Python dictConfig format</a>
+and place in <code class="docutils literal notranslate"><span class="pre">LOG_CONFIG</span></code> option:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LOG_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s1">&#39;formatters&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -250,49 +292,6 @@ default configuration module name in your app initialization:</p>
         <span class="p">},</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-</div>
-<p>To use just get logger with <code class="docutils literal notranslate"><span class="pre">logging.getLogger()</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="config-example">
-<h2>Config example<a class="headerlink" href="#config-example" title="Permalink to this headline">¶</a></h2>
-<p>Example has been taken from <a class="reference external" href="https://github.com/klen/muffin-example">example application</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-
-<span class="c1"># Basic Muffin configuration</span>
-<span class="c1"># ==========================</span>
-
-<span class="n">STATIC_FOLDERS</span> <span class="o">=</span> <span class="s1">&#39;example/static&#39;</span><span class="p">,</span>
-
-<span class="c1"># Plugin options</span>
-<span class="c1"># ==============</span>
-
-<span class="n">SESSION_SECRET</span> <span class="o">=</span> <span class="s1">&#39;SecretHere&#39;</span>
-
-<span class="n">JINJA2_TEMPLATE_FOLDERS</span> <span class="o">=</span> <span class="s1">&#39;example/templates&#39;</span><span class="p">,</span>
-
-<span class="n">OAUTH_CLIENTS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;github&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="s1">&#39;b212c829c357ea0bd950&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;client_secret&#39;</span><span class="p">:</span> <span class="s1">&#39;e2bdda59f9da853ec39d0d1e07baade595f50202&#39;</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="n">OAUTH_REDIRECT_URI</span> <span class="o">=</span> <span class="s1">&#39;https://muffin-py.herokuapp.com/oauth/github&#39;</span>
-
-<span class="n">PEEWEE_MIGRATIONS_PATH</span> <span class="o">=</span> <span class="s1">&#39;example/migrations&#39;</span>
-<span class="n">PEEWEE_CONNECTION</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DATABASE_URL&#39;</span><span class="p">,</span> <span class="s1">&#39;sqlite:///example.sqlite&#39;</span><span class="p">)</span>
-
-<span class="n">DEBUGTOOLBAR_EXCLUDE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/static&#39;</span><span class="p">]</span>
-<span class="n">DEBUGTOOLBAR_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0.0.0.0/0&#39;</span><span class="p">]</span>
-<span class="n">DEBUGTOOLBAR_INTERCEPT_REDIRECTS</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">DEBUGTOOLBAR_ADDITIONAL_PANELS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;muffin_peewee&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;muffin_jinja2&#39;</span><span class="p">,</span>
-<span class="p">]</span>
 </pre></div>
 </div>
 </div>

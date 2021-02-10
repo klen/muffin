@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Testing &mdash; Muffin 0.50.1 documentation</title>
+  <title>Testing &mdash; Muffin 0.50.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.50.1
+                0.50.2
               </div>
             
           
@@ -96,9 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-tests">Setup tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#testing-application">Testing application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testclient">TestClient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pytest-support">Pytest Support</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -181,42 +180,48 @@
             
   <div class="section" id="testing">
 <h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>You should have the WebTest package installed.</p>
+<div class="section" id="testclient">
+<h2>TestClient<a class="headerlink" href="#testclient" title="Permalink to this headline">¶</a></h2>
+<p>The test client allows you to make requests against your ASGI application.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">TestClient</span><span class="p">,</span> <span class="n">ResponseWebSocket</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+
+<span class="c1"># Test HTTP requests</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;OK&quot;</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+<span class="k">assert</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;OK&#39;</span>
+
+<span class="c1"># Test Websockets</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/ws&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">socket</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">ResponseWebSocket</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">ws</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="s1">&#39;ping&#39;</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;pong&#39;</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">websocket</span><span class="p">(</span><span class="s1">&#39;/ws&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ws</span><span class="p">:</span>
+    <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;ping&#39;</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s1">&#39;pong&#39;</span>
+</pre></div>
 </div>
-<div class="section" id="setup-tests">
-<h2>Setup tests<a class="headerlink" href="#setup-tests" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pytest-support">
+<h2>Pytest Support<a class="headerlink" href="#pytest-support" title="Permalink to this headline">¶</a></h2>
 <p>Set module path to your Muffin Application in pytest configuration file or use
 command line option <code class="docutils literal notranslate"><span class="pre">--muffin-app</span></code>.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ py.test -xs --muffin-app example
 </pre></div>
 </div>
-</div>
-<div class="section" id="testing-application">
-<h2>Testing application<a class="headerlink" href="#testing-application" title="Permalink to this headline">¶</a></h2>
-<p>See examples:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
-
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="k">async</span>
-<span class="k">def</span> <span class="nf">test_async_code</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">request</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">request</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;http://google.com&#39;</span><span class="p">)</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="s1">&#39;html&#39;</span> <span class="ow">in</span> <span class="n">text</span>
-
-<span class="k">def</span> <span class="nf">test_app</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Get your app in your tests as fixture. &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;my app name&#39;</span>
-    <span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MYOPTION</span> <span class="o">==</span> <span class="s1">&#39;develop&#39;</span>
-
-<span class="k">def</span> <span class="nf">test_view</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Make HTTP request to your application. &quot;&quot;&quot;</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/my-handler&#39;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="s1">&#39;mydata&#39;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
-</pre></div>
-</div>
+<p>After that the fixtures <code class="docutils literal notranslate"><span class="pre">app</span></code>, <code class="docutils literal notranslate"><span class="pre">client</span></code> will be available for your tests.</p>
 </div>
 </div>
 
