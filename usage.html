@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Usage &mdash; Muffin 0.50.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+    <link rel="canonical" href="https://klen.github.io/muffin/usage.html"/>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="Welcome to Muffin’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+            <a href="index.html"><img src="_static/logo.png" class="logo" alt="Logo"/></a>
+
+          
+            
+            
+              <div class="version">
+                0.50.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+            <p style="margin: 1rem 0 0">
+                <iframe src="https://ghbtns.com/github-btn.html?user=klen&repo=muffin&type=star&count=true&size=large&v=2"
+                allowtransparency="false" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+            </p>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-request-object">The Request Object</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cookies">Cookies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-uploads">File Uploads</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#routing">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dynamic-urls">Dynamic URLs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#variable-rules">Variable Rules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#static-files">Static Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#redirects-and-errors">Redirects and Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#about-responses">About Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
+</ul>
+
+            
+          
+
+
+        <div style="padding-top: 1rem; margin-top: 1rem;border-top: 1px solid #ccc">
+            <a class="reference external image-reference" href="https://pypi.org/project/muffin/"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/muffin"></a>
+            <a class="reference external image-reference" href="https://github.com/klen/muffin/actions" id="badges"><img alt="Tests Status" src="https://github.com/klen/muffin/workflows/tests/badge.svg"></a>
+            <a class="reference external image-reference" href="https://klen.github.io/muffin"><img alt="Documentation Status" src="https://github.com/klen/muffin/workflows/docs/badge.svg"></a>
+            <a class="reference external image-reference" href="https://pypi.org/project/muffin/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin"></a>
+        </div>
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Muffin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Usage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="c1"># Create the muffin&#39;s application with name &quot;hello&quot;</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create view and bind it to http path &quot;/&quot;</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;&lt;p&gt;Hello, World!&lt;/p&gt;&quot;</span>
+</pre></div>
+</div>
+<p>Save it as <code class="file docutils literal notranslate"><span class="pre">hello.py</span></code> or something similar.</p>
+<p>To run the application, run the command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">uvicorn</span> <span class="n">hello</span><span class="p">:</span><span class="n">app</span>
+</pre></div>
+</div>
+<p>This launches a very simple builtin server, which is good enough for
+testing but probably not what you want to use in production.</p>
+<p>Now head over to <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a>, and you should see your hello
+world greeting.</p>
+</div>
+<div class="section" id="the-request-object">
+<h2>The Request Object<a class="headerlink" href="#the-request-object" title="Permalink to this headline">¶</a></h2>
+<p>Every view should accept a request object.  The request object is
+documented in the API section and we will not cover it here in detail (see
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>). Here is a broad overview of some of the most
+common operations.</p>
+<p>The current request method is available by using the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">method</span></code> attribute.  To access form data (data
+transmitted in a <code class="docutils literal notranslate"><span class="pre">POST</span></code> or <code class="docutils literal notranslate"><span class="pre">PUT</span></code> request) you can use the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">form</span></code> attribute.  Here is a full example of the two
+attributes mentioned above:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
+ <span class="k">async</span> <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+     <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+         <span class="n">formdata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+         <span class="k">if</span> <span class="n">valid_login</span><span class="p">(</span><span class="n">formdata</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">formdata</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]):</span>
+             <span class="k">return</span> <span class="n">log_the_user_in</span><span class="p">(</span><span class="n">formdata</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
+
+         <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Invalid username/password&#39;</span>
+
+     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;login.html&#39;</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To access parameters submitted in the URL (<code class="docutils literal notranslate"><span class="pre">?key=value</span></code>) you can use the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">url</span></code> attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We recommend accessing URL parameters with <cite>get</cite> or by catching the
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> because users might change the URL and presenting them a 400
+bad request page in that case is not user friendly.</p>
+<p>For a full list of methods and attributes of the request object, head over
+to the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> documentation.</p>
+<div class="section" id="cookies">
+<h3>Cookies<a class="headerlink" href="#cookies" title="Permalink to this headline">¶</a></h3>
+<p>Cookies are exposed as a regular dictionary interface through <code class="xref py py-attr docutils literal notranslate"><span class="pre">cookies</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="file-uploads">
+<h3>File Uploads<a class="headerlink" href="#file-uploads" title="Permalink to this headline">¶</a></h3>
+<p>Request files are normally sent as multipart form data (<cite>multipart/form-data</cite>).
+The uploaded files are available in <code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">formdata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="routing">
+<h2>Routing<a class="headerlink" href="#routing" title="Permalink to this headline">¶</a></h2>
+<p>Modern web applications use meaningful URLs to help users. Users are more
+likely to like a page and come back if the page uses a meaningful URL they can
+remember and use to directly visit a page.</p>
+<p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">route()</span></code> decorator to bind a function to a URL.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Index Page&#39;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">,</span> <span class="s1">&#39;/hello/world&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello, World&#39;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/only-post&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">only_post</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span>
+</pre></div>
+</div>
+<p>You can do more! You can make parts of the URL dynamic.
+The everh routed callback should be awaitable and accept a <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p>
+</div>
+<div class="section" id="dynamic-urls">
+<h2>Dynamic URLs<a class="headerlink" href="#dynamic-urls" title="Permalink to this headline">¶</a></h2>
+<p>All the URLs support regexp. You can use any regular expression to customize your URLs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/reg/(a|b|c)/?&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">regexp</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+</pre></div>
+</div>
+<div class="section" id="variable-rules">
+<h3>Variable Rules<a class="headerlink" href="#variable-rules" title="Permalink to this headline">¶</a></h3>
+<p>You can add variable sections to a URL by marking sections with
+<code class="docutils literal notranslate"><span class="pre">{variable_name}</span></code>. Your function then receives the <code class="docutils literal notranslate"><span class="pre">{variable_name}</span></code> from
+<code class="docutils literal notranslate"><span class="pre">request.path_params</span></code>. Optionally, you can use a regexp to specify the
+type of the argument like <code class="docutils literal notranslate"><span class="pre">/path/{</span> <span class="pre">variable_name:regexp</span> <span class="pre">}/</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/user/</span><span class="si">{username}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_user_profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;User </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">&#39;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post/{post_id:\d+}&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">show_post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;post_id&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Post </span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="static-files">
+<h2>Static Files<a class="headerlink" href="#static-files" title="Permalink to this headline">¶</a></h2>
+<p>Set static url prefix and directories when initializing your app:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="n">static_url_prefix</span><span class="o">=</span><span class="s1">&#39;/assets&#39;</span><span class="p">,</span> <span class="n">static_folders</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>And your static files will be available at url <code class="docutils literal notranslate"><span class="pre">/static/{file}</span></code>.</p>
+</div>
+<div class="section" id="redirects-and-errors">
+<h2>Redirects and Errors<a class="headerlink" href="#redirects-and-errors" title="Permalink to this headline">¶</a></h2>
+<p>To redirect a user to another endpoint, use the <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseRedirect</span></code>
+class; to abort a request early with an error code, use the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">ResponseError()</span></code> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseRedirect</span><span class="p">,</span> <span class="n">ResponseError</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
+    <span class="n">this_is_never_executed</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is a rather pointless example because a user will be redirected from
+the index to a page they cannot access (401 means access denied) but it
+shows how that works.</p>
+<p>By default only description is shown for each error code.  If you want to
+customize the error page, you can use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">on_error()</span></code>
+decorator:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;page_not_found.html&#39;</span><span class="p">),</span> <span class="mi">404</span>
+</pre></div>
+</div>
+<p>It’s possible to bind the handlers not only for status codes, but for the
+exceptions themself:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="ne">TimeoutError</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;Something bad happens&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="about-responses">
+<span id="id1"></span><h2>About Responses<a class="headerlink" href="#about-responses" title="Permalink to this headline">¶</a></h2>
+<p>The return value from a view function is automatically converted into a
+response object for you. If the return value is a string it’s converted into a
+response object with the string as response body, a <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> status code and
+a <em class="mimetype">text/html</em> mimetype. If the return value is a dict or list,
+<a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a> is called to produce a response.  The logic that Muffin
+applies to converting return values into response objects is as follows:</p>
+<ol class="arabic simple">
+<li><p>If a result is response <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> it’s directly
+returned from the view.</p></li>
+<li><p>If it’s a string, a response <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseHTML</span></code> is created with
+that data and the default parameters.</p></li>
+<li><p>If it’s a dict/list/bool/None, a response <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseJSON</span></code>
+is created</p></li>
+<li><p>If a tuple is returned the items in the tuple can provide extra
+information. Such tuples have to be in the form <code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">response</span>
+<span class="pre">content)</span></code>, <code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">response</span> <span class="pre">content,</span> <span class="pre">headers)</span></code>.  The
+<code class="docutils literal notranslate"><span class="pre">status</span></code>:<code class="docutils literal notranslate"><span class="pre">int</span></code> value will override the status code and
+<code class="docutils literal notranslate"><span class="pre">headers</span></code>:<code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code> a list or dictionary of additional header
+values.</p></li>
+<li><p>If none of that works, Muffin will convert the return value to a string
+and return as html.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/html&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">html</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;b&gt;HTML is here&lt;/b&gt;&#39;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/json&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="s1">&#39;here&#39;</span><span class="p">}</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/text&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">ResponseText</span><span class="p">(</span><span class="s1">&#39;response is here&#39;</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-custom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s1">&#39;x-custom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/short-form&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">short_form</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">418</span><span class="p">,</span> <span class="s1">&#39;Im a teapot&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Muffin’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2015, Kirill Klenov.
+      <span class="lastupdated">
+        Last updated on Feb 10, 2021.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

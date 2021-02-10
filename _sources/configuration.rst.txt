@@ -6,15 +6,12 @@ default configuration module name in your app initialization:
 
 .. code-block:: python
 
-  app = muffin.Application('myapp', CONFIG='config.debug')
+    # the first argument is the app's name, the second a is [configuration module, the third is a reserved module
+    app = muffin.Application('myapp', 'config.local', 'config.production')
 
-This name could be overriden by ``MUFFIN_CONFIG`` environment variable: ::
+This configuration module could be overriden by ``MUFFIN_CONFIG`` environment variable: ::
 
-  $ MUFFIN_CONFIG=settings_local muffin example run
-
-Which in its turn could be overriden by ``--config`` param of ``muffin`` command: ::
-
-  $ muffin --config=config.debug example run
+  $ MUFFIN_CONFIG=settings_local uvicorn your_project:app
 
 Also you can define default config parameter values while initializing your application:
 
@@ -30,21 +27,23 @@ Base Muffin options and default values:
 .. code-block:: python
 
         # Configuration module
-        'CONFIG': 'config'
+        'CONFIG': None,
 
         # Enable debug mode
         'DEBUG': False
 
-        # Logging options
-        'ACCESS_LOG': '-',  # File path to access log, - to stderr
-        'ACCESS_LOG_FORMAT': '%a %l %u %t "%r" %s %b "%{Referrer}i" "%{User-Agent}i"',
-        'LOG_LEVEL': 'WARNING'
-        'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s'
-        'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S %z]'
+        # Routing options
+        'TRIM_LAST_SLASH': True,
 
-        # Setup static files in development
-        'STATIC_PREFIX': '/static'
-        'STATIC_FOLDERS': ['static']
+        # Static files options
+        'STATIC_URL_PREFIX': '/static',
+        'STATIC_FOLDERS': [],
+
+        # Logging options
+        'LOG_LEVEL': 'WARNING',
+        'LOG_FORMAT': '%(asctime)s [%(process)d] [%(levelname)s] %(message)s',
+        'LOG_DATE_FORMAT': '[%Y-%m-%d %H:%M:%S]',
+        'LOG_CONFIG': None,
 
 
 Configuring logging

@@ -20,6 +20,8 @@
 
   
   
+    <link rel="canonical" href="https://klen.github.io/muffin/index.html"/>
+  
 
   
 
@@ -39,7 +41,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Configuration" href="configuration.html" /> 
+    <link rel="next" title="Usage" href="usage.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -52,15 +54,7 @@
         <div class="wy-side-nav-search" >
           
 
-          
-            <a href="#" class="icon icon-home"> Muffin
-          
-
-          
-            
-            <img src="_static/logo.png" class="logo" alt="Logo"/>
-          
-          </a>
+            <a href="#"><img src="_static/logo.png" class="logo" alt="Logo"/></a>
 
           
             
@@ -80,6 +74,11 @@
   </form>
 </div>
 
+            <p style="margin: 1rem 0 0">
+                <iframe src="https://ghbtns.com/github-btn.html?user=klen&repo=muffin&type=star&count=true&size=large&v=2"
+                allowtransparency="false" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+            </p>
+
           
         </div>
 
@@ -92,14 +91,25 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
 </ul>
 
             
           
+
+
+        <div style="padding-top: 1rem; margin-top: 1rem;border-top: 1px solid #ccc">
+            <a class="reference external image-reference" href="https://pypi.org/project/muffin/"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/muffin"></a>
+            <a class="reference external image-reference" href="https://github.com/klen/muffin/actions" id="badges"><img alt="Tests Status" src="https://github.com/klen/muffin/workflows/tests/badge.svg"></a>
+            <a class="reference external image-reference" href="https://klen.github.io/muffin"><img alt="Documentation Status" src="https://github.com/klen/muffin/workflows/docs/badge.svg"></a>
+            <a class="reference external image-reference" href="https://pypi.org/project/muffin/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin"></a>
+        </div>
+
         </div>
         
       </div>
@@ -234,6 +244,23 @@ what URLs should trigger our handler function.</p></li>
 <h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#the-request-object">The Request Object</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#cookies">Cookies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#file-uploads">File Uploads</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#routing">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#dynamic-urls">Dynamic URLs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#variable-rules">Variable Rules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#static-files">Static Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#redirects-and-errors">Redirects and Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#about-responses">About Responses</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#base-application-options">Base application options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#configuring-logging">Configuring logging</a></li>
@@ -255,6 +282,7 @@ what URLs should trigger our handler function.</p></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html#testing-application">Testing application</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
 </ul>
 </div>
@@ -266,7 +294,7 @@ what URLs should trigger our handler function.</p></li>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -275,7 +303,7 @@ what URLs should trigger our handler function.</p></li>
     <p>
         &#169; Copyright 2015, Kirill Klenov.
       <span class="lastupdated">
-        Last updated on Feb 09, 2021.
+        Last updated on Feb 10, 2021.
       </span>
 
     </p>

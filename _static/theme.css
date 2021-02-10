@@ -4,6 +4,7 @@ body, .rst-content .toctree-wrapper>p.caption, h1, h2, h3, h4, h5, h6, legend {
 
 .wy-side-nav-search {
     background: none;
+    margin-bottom: 0;
 }
 
 .wy-nav-content, div.body {
