@@ -41,6 +41,7 @@ def test_app_config():
     assert app.cfg.CONFIG == 'tests.appcfg'
     assert app.cfg.CONFIG_VARIABLE == 42
     assert app.cfg.DEBUG is True
+    assert app.cfg.MANAGE_SHELL
 
 
 async def test_routing(app, client):
