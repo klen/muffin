@@ -1,13 +1,44 @@
 Testing
 ========
 
-Requirements
-------------
+TestClient
+----------
 
-You should have the WebTest package installed.
+The test client allows you to make requests against your ASGI application.
 
-Setup tests
------------
+.. code-block:: python
+
+    from muffin import Application, TestClient, ResponseWebSocket
+
+    app = Application('test')
+
+    # Test HTTP requests
+    @app.route('/')
+    async def home(request):
+        return "OK"
+
+    client = TestClient(app)
+    response = await client.get('/')
+    assert response.status_code == 200
+    assert await response.text() == 'OK'
+
+    # Test Websockets
+    @app.route('/ws')
+    async def socket(request):
+        ws = ResponseWebSocket(request)
+        async with ws:
+            msg = await ws.receive()
+            if msg == 'ping':
+                await ws.send('pong')
+
+    async with client.websocket('/ws') as ws:
+        await ws.send('ping')
+        msg = await ws.receive()
+        assert msg == 'pong'
+
+
+Pytest Support
+--------------
 
 Set module path to your Muffin Application in pytest configuration file or use
 command line option ``--muffin-app``.
@@ -16,28 +47,4 @@ Example: ::
 
     $ py.test -xs --muffin-app example
 
-Testing application
--------------------
-
-See examples:
-
-.. code-block:: python
-
-    import pytest
-
-    @pytest.mark.async
-    def test_async_code():
-        from aiohttp import request
-        response = yield from request('GET', 'http://google.com')
-        text = yield from response.text()
-        assert 'html' in text
-
-    def test_app(app):
-        """ Get your app in your tests as fixture. """
-        assert app.name == 'my app name'
-        assert app.cfg.MYOPTION == 'develop'
-
-    def test_view(client):
-        """ Make HTTP request to your application. """
-        response = client.get('/my-handler')
-        assert 'mydata' in response.text
+After that the fixtures ``app``, ``client`` will be available for your tests.

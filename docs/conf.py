@@ -57,14 +57,6 @@ html_logo = 'static/logo.png'
 html_theme_options = {
     'logo_only': True,
     'canonical_url': "https://klen.github.io/muffin/",
-    'github_user': 'klen',
-    'github_repo': 'muffin',
-    'github_button': True,
-    'github_type': 'star',
-    'github_banner': True,
-    'badges': [
-
-    ]
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -195,3 +187,6 @@ intersphinx_mapping = {
 }
 
 pygments_style = 'monokai'
+
+autodoc_member_order = 'bysource'
+autodoc_typehints = 'description'
