@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Configuration &mdash; Muffin 0.50.4 documentation</title>
+  <title>Configuration &mdash; Muffin 0.50.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.50.4
+                0.50.5
               </div>
             
           
@@ -223,6 +223,9 @@ environment variable:</p>
 <span class="s1">&#39;LOG_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(process)d</span><span class="s1">] [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
 <span class="s1">&#39;LOG_DATE_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;[%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S]&#39;</span><span class="p">,</span>
 <span class="s1">&#39;LOG_CONFIG&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+
+<span class="c1"># Muffin shell context</span>
+<span class="s1">&#39;MANAGE_SHELL&#39;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="n">app</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">:</span> <span class="n">aio_run</span><span class="p">,</span> <span class="o">**</span><span class="n">app</span><span class="o">.</span><span class="n">plugins</span><span class="p">},</span>
 </pre></div>
 </div>
 </div>
