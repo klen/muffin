@@ -1,5 +1,5 @@
 Configuration
--------------
+=============
 
 Muffin gets configuration options from python files. You have to specify
 default configuration module name in your app initialization:
@@ -9,18 +9,26 @@ default configuration module name in your app initialization:
     # the first argument is the app's name, the second a is [configuration module, the third is a reserved module
     app = muffin.Application('myapp', 'config.local', 'config.production')
 
-This configuration module could be overriden by ``MUFFIN_CONFIG`` environment variable: ::
+This configuration module path could be overriden by ``MUFFIN_CONFIG``
+environment variable: ::
 
-  $ MUFFIN_CONFIG=settings_local uvicorn your_project:app
+  $ MUFFIN_CONFIG=settings.local uvicorn your_project:app
 
 Also you can define default config parameter values while initializing your application:
 
+Configuration will be available through :attr:`app.cfg` attribute.
+
 .. code-block:: python
 
-  app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='Here', ONE_MORE='Yes')
+  app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='value', ONE_MORE='value2')
 
-Base application options
-^^^^^^^^^^^^^^^^^^^^^^^^
+  assert app.cfg.DEBUG is True
+  assert app.cfg.ANY_OPTION  == 'value'
+  assert app.cfg.ANY_OPTION  == 'value2'
+
+
+Default Application Options
+---------------------------
 
 Base Muffin options and default values:
 
@@ -46,13 +54,54 @@ Base Muffin options and default values:
         'LOG_CONFIG': None,
 
 
-Configuring logging
-^^^^^^^^^^^^^^^^^^^
-You can define your logging configurations with `Python dictConfig format  <https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema>`_ and place in ``LOGGING`` conf:
+Environment variables
+---------------------
+
+Muffin reads configuration values from the current environment's variables
+using the form: ``{app.name}_{option_name}``. By default Muffin parses env
+values as a JSON.
+
+Consider the options file ``settings.py``:
 
 .. code-block:: python
 
-    LOGGING = {
+   DEBUG = True
+   DB_PARAMS = {"pool": 10}
+   TOKEN: str = None
+
+.. code-block:: python
+
+   os.environ['TOKEN'] = 'value'  # simple strings supported as well
+   os.environ['DEBUG'] = 'false'  # json boolean value
+   os.environ['DB_PARAMS'] = '{"pool": 50}' # json too
+
+   app = Muffin('app', 'settings')
+
+   assert app.cfg.DEBUG is False
+   assert app.cfg.DB_PARAMS == {'pool': 50}
+   assert app.cfg.TOKEN == 'value'
+
+Configuration precedence
+------------------------
+
+The order in which configuration values are read is:
+
+* From default config;
+* From the given python modules;
+* From environment variables;
+* From the given paramenters when initializing the app;
+
+
+Configuring logging
+-------------------
+
+You can define your logging configurations with
+`Python dictConfig format <https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema>`_
+and place in ``LOG_CONFIG`` option:
+
+.. code-block:: python
+
+    LOG_CONFIG = {
         'version': 1,
         'disable_existing_loggers': False,
         'formatters': {
@@ -80,51 +129,3 @@ You can define your logging configurations with `Python dictConfig format  <http
             },
         }
     }
-
-To use just get logger with ``logging.getLogger()``:
-
-.. code-block:: python
-
-    import logging
-    logger = logging.getLogger('project')
-
-
-Config example
-^^^^^^^^^^^^^^
-
-Example has been taken from `example application <https://github.com/klen/muffin-example>`_.
-
-.. code-block:: python
-
-  import os
-
-  # Basic Muffin configuration
-  # ==========================
-
-  STATIC_FOLDERS = 'example/static',
-
-  # Plugin options
-  # ==============
-
-  SESSION_SECRET = 'SecretHere'
-
-  JINJA2_TEMPLATE_FOLDERS = 'example/templates',
-
-  OAUTH_CLIENTS = {
-      'github': {
-          'client_id': 'b212c829c357ea0bd950',
-          'client_secret': 'e2bdda59f9da853ec39d0d1e07baade595f50202',
-      }
-  }
-  OAUTH_REDIRECT_URI = 'https://muffin-py.herokuapp.com/oauth/github'
-
-  PEEWEE_MIGRATIONS_PATH = 'example/migrations'
-  PEEWEE_CONNECTION = os.environ.get('DATABASE_URL', 'sqlite:///example.sqlite')
-
-  DEBUGTOOLBAR_EXCLUDE = ['/static']
-  DEBUGTOOLBAR_HOSTS = ['0.0.0.0/0']
-  DEBUGTOOLBAR_INTERCEPT_REDIRECTS = False
-  DEBUGTOOLBAR_ADDITIONAL_PANELS = [
-      'muffin_peewee',
-      'muffin_jinja2',
-  ]
