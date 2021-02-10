@@ -37,10 +37,12 @@ Table of Contents
         
 .. toctree::
    
-   configuration
-   cli
-   testing
-   plugins
+    usage
+    configuration
+    cli
+    testing
+    api
+    plugins
 
 .. _links:
 

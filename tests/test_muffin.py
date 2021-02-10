@@ -229,8 +229,8 @@ async def test_static_folders(anyio_backend):
 
     app = muffin.Application(
         'test',
-        STATIC_FOLDERS=['tests', Path('__file__').parent.parent],
-        STATIC_URL_PREFIX='/assets')
+        static_folders=['tests', Path('__file__').parent.parent],
+        static_url_prefix='/assets')
     assert app.cfg.STATIC_FOLDERS
     assert app.cfg.STATIC_URL_PREFIX == '/assets'
 

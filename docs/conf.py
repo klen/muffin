@@ -14,7 +14,7 @@ sys.path.append(os.path.abspath('.'))
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ['templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -48,13 +48,24 @@ exclude_patterns = ['_build']
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
 html_theme = 'sphinx_rtd_theme'
+#  html_theme = 'aiohttp_theme'
 html_logo = 'static/logo.png'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {'touch_icon':   'touch-icon.png'}
-html_theme_options = {}
+html_theme_options = {
+    'logo_only': True,
+    'canonical_url': "https://klen.github.io/muffin/",
+    'github_user': 'klen',
+    'github_repo': 'muffin',
+    'github_button': True,
+    'github_type': 'star',
+    'github_banner': True,
+    'badges': [
+
+    ]
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = ['_themes']

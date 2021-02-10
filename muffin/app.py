@@ -29,8 +29,8 @@ class Application(BaseApp):
         # Enable debug mode (optional)
         DEBUG=False,
 
-        # Router options
-        TRIM_LAST_SLASH='/',
+        # Routing options
+        TRIM_LAST_SLASH=True,
 
         # Static files options
         STATIC_URL_PREFIX='/static',
