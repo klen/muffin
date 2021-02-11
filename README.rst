@@ -113,70 +113,105 @@ Open http://localhost:8000, http://localhost:8000/hello/username in your browser
 
 .. _plugins:
 
-Plugins
---------
-
 The list of some Muffin plugins (please make PR if you want to provide more):
 
-* `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_  -- Jinja2 templates
+`Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_ 
+``````````````````````````````````````````````````````````
 
-  .. image:: https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg
-      :target: https://github.com/klen/muffin-jinja2/actions
-      :alt: Tests Status
+`Jinja2 <https://jinja.palletsprojects.com/en/2.11.x/>`_ templates (asyncio/trio)
 
-  .. image:: https://img.shields.io/pypi/v/muffin-jinja2
-      :target: https://pypi.org/project/muffin-jinja2/
-      :alt: PYPI Version
+.. image:: https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-jinja2/actions
+    :alt: Tests Status
 
-* `Muffin-Session <https://github.com/klen/muffin-session>`_ -- Signed Cookie-Based HTTP sessions
+.. image:: https://img.shields.io/pypi/v/muffin-jinja2
+    :target: https://pypi.org/project/muffin-jinja2/
+    :alt: PYPI Version
 
-  .. image:: https://github.com/klen/muffin-session/workflows/tests/badge.svg
-      :target: https://github.com/klen/muffin-session/actions
-      :alt: Tests Status
 
-  .. image:: https://img.shields.io/pypi/v/muffin-session
-      :target: https://pypi.org/project/muffin-session/
-      :alt: PYPI Version
 
-* `Muffin-OAuth <https://github.com/klen/muffin-oauth>`_  -- Work with OAuth (authorization, resources loading)
+`Muffin-Session <https://github.com/klen/muffin-session>`_ 
+```````````````````````````````````````````````````````````
 
-  .. image:: https://github.com/klen/muffin-oauth/workflows/tests/badge.svg
-      :target: https://github.com/klen/muffin-oauth/actions
-      :alt: Tests Status
+Signed Cookie-Based HTTP sessions (asyncio/trio)
 
-  .. image:: https://img.shields.io/pypi/v/muffin-oauth
-      :target: https://pypi.org/project/muffin-oauth/
-      :alt: PYPI Version
+.. image:: https://github.com/klen/muffin-session/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-session/actions
+    :alt: Tests Status
 
-* `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_  -- Sentry integration
+.. image:: https://img.shields.io/pypi/v/muffin-session
+    :target: https://pypi.org/project/muffin-session/
+    :alt: PYPI Version
 
-  .. image:: https://github.com/klen/muffin-sentry/workflows/tests/badge.svg
-      :target: https://github.com/klen/muffin-sentry/actions
-      :alt: Tests Status
 
-  .. image:: https://img.shields.io/pypi/v/muffin-sentry
-      :target: https://pypi.org/project/muffin-sentry/
-      :alt: PYPI Version
+`Muffin-OAuth <https://github.com/klen/muffin-oauth>`_ 
+```````````````````````````````````````````````````````
 
-* `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_  -- Peewee support (SQL, ORM)
+Work with OAuth (authorization, resources loading) (asyncio/trio)
 
-  .. image:: https://github.com/klen/muffin-peewee/workflows/tests/badge.svg
-      :target: https://github.com/klen/muffin-peewee/actions
-      :alt: Tests Status
+.. image:: https://github.com/klen/muffin-oauth/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-oauth/actions
+    :alt: Tests Status
 
-  .. image:: https://img.shields.io/pypi/v/muffin-peewee
-      :target: https://pypi.org/project/muffin-peewee/
-      :alt: PYPI Version
+.. image:: https://img.shields.io/pypi/v/muffin-oauth
+    :target: https://pypi.org/project/muffin-oauth/
+    :alt: PYPI Version
 
-* `Muffin-Babel   <https://github.com/klen/muffin-babel>`_   -- Localization support
 
-  .. image:: https://github.com/klen/muffin-babel/workflows/tests/badge.svg
-      :target: https://github.com/klen/muffin-babel/actions
-      :alt: Tests Status
+`Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_
+`````````````````````````````````````````````````````````
 
-  .. image:: https://img.shields.io/pypi/v/muffin-babel
-      :target: https://pypi.org/project/muffin-babel/
-      :alt: PYPI Version
+Sentry integration (asyncio/trio)
+
+.. image:: https://github.com/klen/muffin-sentry/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-sentry/actions
+    :alt: Tests Status
+
+.. image:: https://img.shields.io/pypi/v/muffin-sentry
+    :target: https://pypi.org/project/muffin-sentry/
+    :alt: PYPI Version
+
+
+`Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_ 
+``````````````````````````````````````````````````````````
+
+Peewee support (SQL, ORM) (asyncio/trio)
+
+.. image:: https://github.com/klen/muffin-peewee/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-peewee/actions
+    :alt: Tests Status
+
+.. image:: https://img.shields.io/pypi/v/muffin-peewee
+    :target: https://pypi.org/project/muffin-peewee/
+    :alt: PYPI Version
+
+
+`Muffin-Babel   <https://github.com/klen/muffin-babel>`_
+````````````````````````````````````````````````````````
+
+Localization support (asyncio/trio)
+
+.. image:: https://github.com/klen/muffin-babel/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-babel/actions
+    :alt: Tests Status
+
+.. image:: https://img.shields.io/pypi/v/muffin-babel
+    :target: https://pypi.org/project/muffin-babel/
+    :alt: PYPI Version
+
+
+`Muffin-Databases   <https://github.com/klen/muffin-databases>`_
+`````````````````````````````````````````````````````````````````
+
+Work with SQL databases (asyncio only)
+
+.. image:: https://github.com/klen/muffin-databases/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-databases/actions
+    :alt: Tests Status
+
+.. image:: https://img.shields.io/pypi/v/muffin-databases
+    :target: https://pypi.org/project/muffin-databases/
+    :alt: PYPI Version
 
 .. * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
