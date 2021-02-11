@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Plugins overview &mdash; Muffin 0.50.5 documentation</title>
+  <title>Plugins overview &mdash; Muffin 0.50.6 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.50.5
+                0.50.6
               </div>
             
           
@@ -96,7 +96,16 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Plugins overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plugins overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Muffin-Jinja2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Muffin-Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Muffin-OAuth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Muffin-Sentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Muffin-Peewee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">Muffin-Babel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Muffin-Databases</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -176,73 +185,48 @@
   <div class="section" id="plugins-overview">
 <h1>Plugins overview<a class="headerlink" href="#plugins-overview" title="Permalink to this headline">¶</a></h1>
 <p>The list of some Muffin plugins (please make PR if you want to provide more):</p>
-<ul>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-admin">Muffin-Admin</a>   – Basic Admin interface</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-admin"><img alt="http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-admin"><img alt="http://img.shields.io/pypi/v/muffin-admin.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-admin.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-admin/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-admin.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-admin.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-babel">Muffin-Babel</a>   – Localization support</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-babel"><img alt="http://img.shields.io/travis/klen/muffin-babel.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-babel.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-babel"><img alt="http://img.shields.io/pypi/v/muffin-babel.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-babel.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-babel/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-babel.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-babel.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-debugtoolbar">Muffin-DebugToolbar</a> – Debug Toolbar</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-debugtoolbar"><img alt="http://img.shields.io/travis/klen/muffin-debugtoolbar.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-debugtoolbar.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-debugtoolbar"><img alt="http://img.shields.io/pypi/v/muffin-debugtoolbar.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-debugtoolbar.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-debugtoolbar/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-debugtoolbar.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-debugtoolbar.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-jade">Muffin-Jade</a>    – Jade templates</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-jade"><img alt="http://img.shields.io/travis/klen/muffin-jade.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-jade.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-jade"><img alt="http://img.shields.io/pypi/v/muffin-jade.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-jade.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-jade/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-jade.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-jade.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-jinja2">Muffin-Jinja2</a>  – Jinja2 templates</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-jinja2"><img alt="http://img.shields.io/travis/klen/muffin-jinja2.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-jinja2.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-jinja2"><img alt="http://img.shields.io/pypi/v/muffin-jinja2.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-jinja2.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-jinja2/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-jinja2.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-jinja2.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-metrics">Muffin-Metrics</a> – Send metrics to Graphite/Statsd</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-metrics"><img alt="http://img.shields.io/travis/klen/muffin-metrics.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-metrics.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-metrics"><img alt="http://img.shields.io/pypi/v/muffin-metrics.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-metrics.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-metrics/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-metrics.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-metrics.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-mongo">Muffin-Mongo</a>   – MongoDB (pymongo) support</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-mongo"><img alt="http://img.shields.io/travis/klen/muffin-mongo.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-mongo.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-mongo"><img alt="http://img.shields.io/pypi/v/muffin-mongo.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-mongo.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-mongo/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-mongo.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-mongo.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-oauth">Muffin-OAuth</a>   – OAuth client</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-oauth"><img alt="http://img.shields.io/travis/klen/muffin-oauth.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-oauth.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-oauth"><img alt="http://img.shields.io/pypi/v/muffin-oauth.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-oauth.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-oauth/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-oauth.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-oauth.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-peewee">Muffin-Peewee</a>  – Peewee support (SQL, ORM)</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-peewee"><img alt="http://img.shields.io/travis/klen/muffin-peewee.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-peewee.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-peewee"><img alt="http://img.shields.io/pypi/v/muffin-peewee.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-peewee.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-peewee/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-peewee.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-peewee.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-rest">Muffin-REST</a>    – Helpers for building REST API</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-rest"><img alt="http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-rest"><img alt="http://img.shields.io/pypi/v/muffin-rest.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-rest.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-rest/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-rest.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-rest.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-redis">Muffin-Redis</a>   – Redis support</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-redis"><img alt="http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-redis"><img alt="http://img.shields.io/pypi/v/muffin-redis.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-redis.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-redis/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-sentry">Muffin-Sentry</a>  – Sentry integration</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-sentry"><img alt="http://img.shields.io/travis/klen/muffin-sentry.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-sentry.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-sentry"><img alt="http://img.shields.io/pypi/v/muffin-sentry.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-sentry.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-sentry/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-sentry.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-sentry.svg?style=flat-square" /></a>
-</li>
-<li><p><a class="reference external" href="https://github.com/klen/muffin-session">Muffin-Session</a> – User session (auth)</p>
-<a class="reference external image-reference" href="http://travis-ci.org/klen/muffin-session"><img alt="http://img.shields.io/travis/klen/muffin-session.svg?style=flat-square" src="http://img.shields.io/travis/klen/muffin-session.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/muffin-session"><img alt="http://img.shields.io/pypi/v/muffin-session.svg?style=flat-square" src="http://img.shields.io/pypi/v/muffin-session.svg?style=flat-square" /></a>
-<a class="reference external image-reference" href="https://github.com/klen/muffin-session/issues"><img alt="https://img.shields.io/github/issues-raw/klen/muffin-session.svg?style=flat-square" src="https://img.shields.io/github/issues-raw/klen/muffin-session.svg?style=flat-square" /></a>
-</li>
-</ul>
+<div class="section" id="id1">
+<h2><a class="reference external" href="https://github.com/klen/muffin-jinja2">Muffin-Jinja2</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://jinja.palletsprojects.com/en/2.11.x/">Jinja2</a> templates (asyncio/trio)</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin-jinja2/actions"><img alt="Tests Status" src="https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin-jinja2/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin-jinja2" /></a>
+</div>
+<div class="section" id="id2">
+<h2><a class="reference external" href="https://github.com/klen/muffin-session">Muffin-Session</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Signed Cookie-Based HTTP sessions (asyncio/trio)</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin-session/actions"><img alt="Tests Status" src="https://github.com/klen/muffin-session/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin-session/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin-session" /></a>
+</div>
+<div class="section" id="id3">
+<h2><a class="reference external" href="https://github.com/klen/muffin-oauth">Muffin-OAuth</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>Work with OAuth (authorization, resources loading) (asyncio/trio)</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin-oauth/actions"><img alt="Tests Status" src="https://github.com/klen/muffin-oauth/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin-oauth/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin-oauth" /></a>
+</div>
+<div class="section" id="id4">
+<h2><a class="reference external" href="https://github.com/klen/muffin-sentry">Muffin-Sentry</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>Sentry integration (asyncio/trio)</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin-sentry/actions"><img alt="Tests Status" src="https://github.com/klen/muffin-sentry/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin-sentry/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin-sentry" /></a>
+</div>
+<div class="section" id="id5">
+<h2><a class="reference external" href="https://github.com/klen/muffin-peewee">Muffin-Peewee</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>Peewee support (SQL, ORM) (asyncio/trio)</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin-peewee/actions"><img alt="Tests Status" src="https://github.com/klen/muffin-peewee/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin-peewee/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin-peewee" /></a>
+</div>
+<div class="section" id="id6">
+<h2><a class="reference external" href="https://github.com/klen/muffin-babel">Muffin-Babel</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<p>Localization support (asyncio/trio)</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin-babel/actions"><img alt="Tests Status" src="https://github.com/klen/muffin-babel/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin-babel/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin-babel" /></a>
+</div>
+<div class="section" id="id7">
+<h2><a class="reference external" href="https://github.com/klen/muffin-databases">Muffin-Databases</a><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<p>Work with SQL databases (asyncio only)</p>
+<a class="reference external image-reference" href="https://github.com/klen/muffin-databases/actions"><img alt="Tests Status" src="https://github.com/klen/muffin-databases/workflows/tests/badge.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/muffin-databases/"><img alt="PYPI Version" src="https://img.shields.io/pypi/v/muffin-databases" /></a>
+</div>
 </div>
 
 
@@ -260,7 +244,7 @@
     <p>
         &#169; Copyright 2015, Kirill Klenov.
       <span class="lastupdated">
-        Last updated on Feb 10, 2021.
+        Last updated on Feb 11, 2021.
       </span>
 
     </p>
