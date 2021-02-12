@@ -46,8 +46,6 @@ async def test_plugin(app, client):
     assert plugin.cfg.debug is True
     assert plugin.cfg.option == 43
 
-    assert app.lifespan._startup
-
     @app.route('/')
     async def index(request):
         return 'OK'

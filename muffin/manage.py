@@ -156,7 +156,7 @@ class Manager:
             sys.exit(1)
 
         if command.__lifespan:  # type: ignore
-            aio_run(self.app.lifespan.__startup__)
+            aio_run(self.app.lifespan.run, 'startup')
 
         args = kwargs.pop('*', [])
 
@@ -173,7 +173,7 @@ class Manager:
 
         finally:
             if command.__lifespan:  # type: ignore
-                aio_run(self.app.lifespan.__shutdown__)
+                aio_run(self.app.lifespan.run, 'shutdown')
 
 
 def cli():
