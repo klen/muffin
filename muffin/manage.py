@@ -155,16 +155,8 @@ class Manager:
             self.parser.print_help()
             sys.exit(1)
 
-        async def startup():
-            for fn in self.app.lifespan._startup:
-                await fn()
-
-        async def shutdown():
-            for fn in self.app.lifespan._shutdown:
-                await fn()
-
         if command.__lifespan:  # type: ignore
-            aio_run(startup)
+            aio_run(self.app.lifespan.__startup__)
 
         args = kwargs.pop('*', [])
 
@@ -181,7 +173,7 @@ class Manager:
 
         finally:
             if command.__lifespan:  # type: ignore
-                aio_run(shutdown)
+                aio_run(self.app.lifespan.__shutdown__)
 
 
 def cli():
