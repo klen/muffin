@@ -113,6 +113,9 @@ Open http://localhost:8000, http://localhost:8000/hello/username in your browser
 
 .. _plugins:
 
+Plugins overview
+----------------
+
 The list of some Muffin plugins (please make PR if you want to provide more):
 
 `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_ 

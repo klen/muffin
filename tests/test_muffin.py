@@ -3,8 +3,6 @@
 from pathlib import Path
 from unittest import mock
 
-from asgi_lifespan import LifespanManager
-
 
 def test_imports():
     import muffin
@@ -202,11 +200,11 @@ async def test_lifespan(app, anyio_backend):
     app.on_startup(start)
     app.on_shutdown(finish)
 
-    async with LifespanManager(app):
+    client = muffin.TestClient(app)
+    async with client.lifespan():
         assert start.called
         assert not finish.called
 
-        client = muffin.TestClient(app)
         res = await client.get('/')
         assert res.status_code == 200
 
