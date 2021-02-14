@@ -216,6 +216,20 @@ Work with SQL databases (asyncio only)
     :target: https://pypi.org/project/muffin-databases/
     :alt: PYPI Version
 
+
+`Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_
+`````````````````````````````````````````````````````````
+
+Work with Mongo DB (asyncio only)
+
+.. image:: https://github.com/klen/muffin-mongo/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-mongo/actions
+    :alt: Tests Status
+
+.. image:: https://img.shields.io/pypi/v/muffin-mongo
+    :target: https://pypi.org/project/muffin-mongo/
+    :alt: PYPI Version
+
 .. * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
   .. .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
@@ -259,17 +273,6 @@ Work with SQL databases (asyncio only)
 
   .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-metrics.svg?style=flat-square
      .. :target: https://github.com/klen/muffin-metrics/issues
-
-.. * `Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_   -- MongoDB (pymongo) support
-
-  .. .. image:: http://img.shields.io/travis/klen/muffin-mongo.svg?style=flat-square
-     .. :target: http://travis-ci.org/klen/muffin-mongo
-
-  .. .. image:: http://img.shields.io/pypi/v/muffin-mongo.svg?style=flat-square
-     .. :target: https://pypi.python.org/pypi/muffin-mongo
-
-  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-mongo.svg?style=flat-square
-     .. :target: https://github.com/klen/muffin-mongo/issues
 
 .. * `Muffin-Motor   <https://github.com/drgarcia1986/muffin-motor>`_   -- MongoDB (motor) support
 
