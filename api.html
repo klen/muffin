@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>API &mdash; Muffin 0.51.3 documentation</title>
+  <title>API &mdash; Muffin 0.52.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.51.3
+                0.52.0
               </div>
             
           
@@ -494,7 +494,7 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <h3>ResponseText (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsetext-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="muffin.ResponseText">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">ResponseText</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseText" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">ResponseText</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseText" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return plain text responses (text/plain).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseText</span>
 
@@ -510,7 +510,7 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <h3>ResponseHTML (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsehtml-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="muffin.ResponseHTML">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">ResponseHTML</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseHTML" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">ResponseHTML</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseHTML" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return HTML responses (text/html).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseHTML</span>
 
@@ -531,7 +531,7 @@ will be converted into HTML Response</p>
 <h3>ResponseJSON (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsejson-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="muffin.ResponseJSON">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">ResponseJSON</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseJSON" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">ResponseJSON</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseJSON" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return JSON responses (application/json).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseJSON</span>
 
@@ -711,7 +711,7 @@ will be converted into HTML Response</p>
     <p>
         &#169; Copyright 2015, Kirill Klenov.
       <span class="lastupdated">
-        Last updated on Feb 17, 2021.
+        Last updated on Feb 18, 2021.
       </span>
 
     </p>
