@@ -43,12 +43,13 @@ def test_app_config():
 
 
 async def test_routing(app, client):
+    import re
 
-    @app.route('/simple', '/simple/(a|b|c)/?', methods=['GET'])
+    @app.route('/simple', re.compile('/simple/(a|b|c)/?$'), methods=['GET'])
     async def test(request):
         return 200, 'simple'
 
-    @app.route('/parameters/{param1}(/{param2})?')
+    @app.route(r'/parameters/<param1>/<param2>')
     async def test(request):
         return 200, request.path_params
 
@@ -69,10 +70,6 @@ async def test_routing(app, client):
     res = await client.get('/simple/b/')
     assert res.status_code == 200
     assert await res.text() == 'simple'
-
-    res = await client.get('/parameters/42')
-    assert res.status_code == 200
-    assert await res.json() == {'param1': '42', 'param2': ''}
 
     res = await client.get('/parameters/42/33')
     assert res.status_code == 200
