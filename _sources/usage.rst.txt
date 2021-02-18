@@ -124,7 +124,9 @@ All the URLs support regexp. You can use any regular expression to customize you
 
 .. code-block:: python
 
-    @app.route(r'/reg/(a|b|c)/?')
+   import re
+
+    @app.route(re.compile(r'/reg/(a|b|c)/?'))
     async def regexp(request):
         return request.path
 
@@ -132,22 +134,48 @@ Variable Rules
 ``````````````
 
 You can add variable sections to a URL by marking sections with
-``{variable_name}``. Your function then receives the ``{variable_name}`` from
-``request.path_params``. Optionally, you can use a regexp to specify the
-type of the argument like ``/path/{ variable_name:regexp }/``:
-
+``<variable_name>``. Your function then receives the ``<variable_name>`` from
+``request.path_params``.
 
 .. code-block:: python
 
-    @app.route('/user/{username}')
+    @app.route('/user/<username>')
     async def show_user_profile(request):
         username = request.path_params['username']
         return f'User {username}'
 
-    @app.route('/post/{post_id:\d+}')
+By default this will capture characters up to the end of the path or the next /.
+
+Optionally, you can use a converter to specify the type of the argument like
+``<variable_name:converter>``.
+
+Converter types:
+
+========= ====================================
+``str``   (default) accepts any text without a slash
+``int``   accepts positive integers
+``float`` accepts positive floating point values
+``path``  like string but also accepts slashes
+``uuid``  accepts UUID strings
+========= ====================================
+
+Convertors are used by prefixing them with a colon, like so:
+
+.. code-block:: python
+
+    @app.route('/post/<post_id:int>')
     async def show_post(request):
-        username = request.path_params['post_id']
-        return f'Post {post_id}'
+        post_id = request.path_params['post_id']
+        return f'Post # {post_id}'
+
+Any unknown convertor will be parsed as a regex:
+
+.. code:: python
+
+    @app.route('/orders/<order_id:\d{3}>')
+    async def orders(request):
+        order_id = request.path_params['order_id']
+        return f'Order # {order_id}'
 
 
 Static Files

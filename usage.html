@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Usage &mdash; Muffin 0.52.0 documentation</title>
+  <title>Usage &mdash; Muffin 0.53.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.52.0
+                0.53.0
               </div>
             
           
@@ -290,26 +290,63 @@ The everh routed callback should be awaitable and accept a <a class="reference i
 <div class="section" id="dynamic-urls">
 <h2>Dynamic URLs<a class="headerlink" href="#dynamic-urls" title="Permalink to this headline">¶</a></h2>
 <p>All the URLs support regexp. You can use any regular expression to customize your URLs:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/reg/(a|b|c)/?&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">regexp</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+ <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/reg/(a|b|c)/?&#39;</span><span class="p">))</span>
+ <span class="k">async</span> <span class="k">def</span> <span class="nf">regexp</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+     <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
 </pre></div>
 </div>
 <div class="section" id="variable-rules">
 <h3>Variable Rules<a class="headerlink" href="#variable-rules" title="Permalink to this headline">¶</a></h3>
 <p>You can add variable sections to a URL by marking sections with
-<code class="docutils literal notranslate"><span class="pre">{variable_name}</span></code>. Your function then receives the <code class="docutils literal notranslate"><span class="pre">{variable_name}</span></code> from
-<code class="docutils literal notranslate"><span class="pre">request.path_params</span></code>. Optionally, you can use a regexp to specify the
-type of the argument like <code class="docutils literal notranslate"><span class="pre">/path/{</span> <span class="pre">variable_name:regexp</span> <span class="pre">}/</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/user/</span><span class="si">{username}</span><span class="s1">&#39;</span><span class="p">)</span>
+<code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;</span></code>. Your function then receives the <code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;</span></code> from
+<code class="docutils literal notranslate"><span class="pre">request.path_params</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/user/&lt;username&gt;&#39;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_user_profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;User </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">&#39;</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post/{post_id:\d+}&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default this will capture characters up to the end of the path or the next /.</p>
+<p>Optionally, you can use a converter to specify the type of the argument like
+<code class="docutils literal notranslate"><span class="pre">&lt;variable_name:converter&gt;</span></code>.</p>
+<p>Converter types:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 82%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>(default) accepts any text without a slash</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>accepts positive integers</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>accepts positive floating point values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">path</span></code></p></td>
+<td><p>like string but also accepts slashes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">uuid</span></code></p></td>
+<td><p>accepts UUID strings</p></td>
+</tr>
+</tbody>
+</table>
+<p>Convertors are used by prefixing them with a colon, like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post/&lt;post_id:int&gt;&#39;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">show_post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;post_id&#39;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Post </span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">post_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;post_id&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Post # </span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+<p>Any unknown convertor will be parsed as a regex:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/orders/&lt;order_id:\d</span><span class="si">{3}</span><span class="s1">&gt;&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">orders</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">order_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;order_id&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Order # </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
 </div>
