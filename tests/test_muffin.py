@@ -49,7 +49,7 @@ async def test_routing(app, client):
     async def test(request):
         return 200, 'simple'
 
-    @app.route(r'/parameters/<param1>/<param2>')
+    @app.route(r'/parameters/{param1}/{param2}')
     async def test(request):
         return 200, request.path_params
 
