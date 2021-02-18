@@ -6,7 +6,7 @@ async def test_handler(app, client):
 
     assert Handler
 
-    @app.route('/handler', '/handler/<res>')
+    @app.route('/handler', '/handler/{res}')
     class Index(Handler):
 
         async def get(self, request):
