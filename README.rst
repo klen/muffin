@@ -31,7 +31,7 @@ Features
 --------
 
 - ASGI_ compatible;
-- Support `Asyncio`_ and `Trio`_ libraries;
+- Support Asyncio_, Trio_ and Curio_ python async libraries;
 - Parse ASGI scope, get url, headers, cookies, read a request's data/json/form-data
 - Send HTTP (text, html, json, stream, file, http errors) responses
 - Work with WebSockets
@@ -558,6 +558,7 @@ Licensed under a MIT license (See LICENSE)
 .. _AIOHTTP: https://docs.aiohttp.org/en/stable/
 .. _ASGI: https://asgi.readthedocs.io/en/latest/
 .. _Asyncio: https://docs.python.org/3/library/asyncio.html
+.. _Curio: https://curio.readthedocs.io/en/latest/
 .. _Python: http://python.org
 .. _Trio: https://trio.readthedocs.io/en/stable/index.html
 .. _klen: https://github.com/klen
