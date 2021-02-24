@@ -6,6 +6,7 @@ import muffin
 @pytest.fixture(params=[
     pytest.param('asyncio'),
     pytest.param('trio'),
+    pytest.param('curio'),
 ])
 def anyio_backend(request):
     return request.param
