@@ -121,7 +121,7 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 `Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_ 
 ``````````````````````````````````````````````````````````
 
-`Jinja2 <https://jinja.palletsprojects.com/en/2.11.x/>`_ templates (asyncio/trio)
+`Jinja2 <https://jinja.palletsprojects.com/en/2.11.x/>`_ templates (asyncio/trio/curio)
 
 .. image:: https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin-jinja2/actions
@@ -136,7 +136,7 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 `Muffin-Session <https://github.com/klen/muffin-session>`_ 
 ```````````````````````````````````````````````````````````
 
-Signed Cookie-Based HTTP sessions (asyncio/trio)
+Signed Cookie-Based HTTP sessions (asyncio/trio/curio)
 
 .. image:: https://github.com/klen/muffin-session/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin-session/actions
@@ -150,7 +150,7 @@ Signed Cookie-Based HTTP sessions (asyncio/trio)
 `Muffin-OAuth <https://github.com/klen/muffin-oauth>`_ 
 ```````````````````````````````````````````````````````
 
-Work with OAuth (authorization, resources loading) (asyncio/trio)
+Work with OAuth (authorization, resources loading) (asyncio/trio/curio)
 
 .. image:: https://github.com/klen/muffin-oauth/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin-oauth/actions
@@ -164,7 +164,7 @@ Work with OAuth (authorization, resources loading) (asyncio/trio)
 `Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_
 `````````````````````````````````````````````````````````
 
-Sentry integration (asyncio/trio)
+Sentry integration (asyncio/trio/curio)
 
 .. image:: https://github.com/klen/muffin-sentry/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin-sentry/actions
@@ -178,7 +178,7 @@ Sentry integration (asyncio/trio)
 `Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_ 
 ``````````````````````````````````````````````````````````
 
-Peewee support (SQL, ORM) (asyncio/trio)
+Peewee support (SQL, ORM) (asyncio/trio/curio)
 
 .. image:: https://github.com/klen/muffin-peewee/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin-peewee/actions
@@ -192,7 +192,7 @@ Peewee support (SQL, ORM) (asyncio/trio)
 `Muffin-Babel   <https://github.com/klen/muffin-babel>`_
 ````````````````````````````````````````````````````````
 
-Localization support (asyncio/trio)
+Localization support (asyncio/trio/curio)
 
 .. image:: https://github.com/klen/muffin-babel/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin-babel/actions
@@ -229,6 +229,28 @@ Work with Mongo DB (asyncio only)
 .. image:: https://img.shields.io/pypi/v/muffin-mongo
     :target: https://pypi.org/project/muffin-mongo/
     :alt: PYPI Version
+
+.. * `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
+
+  .. .. image:: http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-redis
+
+  .. .. image:: http://img.shields.io/pypi/v/muffin-redis.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-redis
+
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-redis/issues
+
+.. * `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
+
+  .. .. image:: http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square
+     .. :target: http://travis-ci.org/klen/muffin-rest
+
+  .. .. image:: http://img.shields.io/pypi/v/muffin-rest.svg?style=flat-square
+     .. :target: https://pypi.python.org/pypi/muffin-rest
+
+  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-rest.svg?style=flat-square
+     .. :target: https://github.com/klen/muffin-rest/issues
 
 .. * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
@@ -273,39 +295,6 @@ Work with Mongo DB (asyncio only)
 
   .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-metrics.svg?style=flat-square
      .. :target: https://github.com/klen/muffin-metrics/issues
-
-.. * `Muffin-Motor   <https://github.com/drgarcia1986/muffin-motor>`_   -- MongoDB (motor) support
-
-  .. .. image:: http://img.shields.io/travis/drgarcia1986/muffin-motor.svg?style=flat-square
-     .. :target: http://travis-ci.org/drgarcia1986/muffin-motor
-
-  .. .. image:: http://img.shields.io/pypi/v/muffin-motor.svg?style=flat-square
-     .. :target: https://pypi.python.org/pypi/muffin-motor
-
-  .. .. image:: https://img.shields.io/github/issues-raw/drgarcia1986/muffin-motor.svg?style=flat-square
-     .. :target: https://github.com/drgarcia1986/muffin-motor/issues
-
-.. * `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
-
-  .. .. image:: http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square
-     .. :target: http://travis-ci.org/klen/muffin-rest
-
-  .. .. image:: http://img.shields.io/pypi/v/muffin-rest.svg?style=flat-square
-     .. :target: https://pypi.python.org/pypi/muffin-rest
-
-  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-rest.svg?style=flat-square
-     .. :target: https://github.com/klen/muffin-rest/issues
-
-.. * `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
-
-  .. .. image:: http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square
-     .. :target: http://travis-ci.org/klen/muffin-redis
-
-  .. .. image:: http://img.shields.io/pypi/v/muffin-redis.svg?style=flat-square
-     .. :target: https://pypi.python.org/pypi/muffin-redis
-
-  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square
-     .. :target: https://github.com/klen/muffin-redis/issues
 
 .. _benchmarks:
 
