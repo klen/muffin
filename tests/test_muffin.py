@@ -189,7 +189,7 @@ async def test_middlewares(app, client):
     assert res.headers['x-classic'] == 'passed'
 
 
-async def test_lifespan(app, anyio_backend):
+async def test_lifespan(app):
     import muffin
 
     start, finish = mock.MagicMock(), mock.MagicMock()
@@ -220,7 +220,7 @@ def test_configure_logging():
     mocked.assert_called_once_with(dummy)
 
 
-async def test_static_folders(anyio_backend):
+async def test_static_folders():
     import muffin
 
     app = muffin.Application(
