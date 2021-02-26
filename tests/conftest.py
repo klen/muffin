@@ -4,11 +4,11 @@ import muffin
 
 
 @pytest.fixture(params=[
-    pytest.param('asyncio'),
-    pytest.param('trio'),
-    pytest.param('curio'),
+    pytest.param(('asyncio', {'use_uvloop': False}), id='asyncio'),
+    pytest.param(('asyncio', {'use_uvloop': True}), id='asyncio+uvloop'),
+    'trio', 'curio'
 ])
-def anyio_backend(request):
+def aiolib(request):
     return request.param
 
 
@@ -25,5 +25,5 @@ def app():
 
 
 @pytest.fixture
-def client(app, anyio_backend):
+def client(app, aiolib):
     return muffin.TestClient(app)
