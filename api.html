@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>API &mdash; Muffin 0.57.2 documentation</title>
+  <title>API &mdash; Muffin 0.58.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.57.2
+                0.58.0
               </div>
             
           
@@ -396,12 +396,19 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 
 <dl class="py method">
 <dt id="muffin.Request.form">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">form</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.form" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">form</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_memory_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.form" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and return the request’s multipart formdata as a multidict.</p>
 <p><cite>formdata = await request.form()</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>multidict._multidict.MultiDict</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_size</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>upload_to</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>file_memory_limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>multidict._multidict.MultiDict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -689,7 +696,7 @@ will be converted into HTML Response</p>
 <dl class="py attribute">
 <dt id="muffin.TestClient">
 <code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">TestClient</span></code><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.38.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.39.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </div>
@@ -711,7 +718,7 @@ will be converted into HTML Response</p>
     <p>
         &#169; Copyright 2015, Kirill Klenov.
       <span class="lastupdated">
-        Last updated on Feb 26, 2021.
+        Last updated on Feb 27, 2021.
       </span>
 
     </p>
