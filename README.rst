@@ -243,18 +243,18 @@ The package provides enhanced support for writing REST APIs (asyncio/trio/curio)
     :target: https://pypi.org/project/muffin-rest/
     :alt: PYPI Version
 
+`Muffin-Redis   <https://github.com/klen/muffin-redis>`_
+`````````````````````````````````````````````````````````
 
-.. * `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
+Redis support
 
-  .. .. image:: http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square
-     .. :target: http://travis-ci.org/klen/muffin-redis
+.. image:: https://github.com/klen/muffin-redis/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-redis/actions
+    :alt: Tests Status
 
-  .. .. image:: http://img.shields.io/pypi/v/muffin-redis.svg?style=flat-square
-     .. :target: https://pypi.python.org/pypi/muffin-redis
-
-  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square
-     .. :target: https://github.com/klen/muffin-redis/issues
-
+.. image:: https://img.shields.io/pypi/v/muffin-redis
+    :target: https://pypi.org/project/muffin-redis/
+    :alt: PYPI Version
 
 .. * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
