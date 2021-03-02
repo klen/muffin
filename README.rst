@@ -230,6 +230,20 @@ Work with Mongo DB (asyncio only)
     :target: https://pypi.org/project/muffin-mongo/
     :alt: PYPI Version
 
+`Muffin-REST    <https://github.com/klen/muffin-rest>`_ 
+````````````````````````````````````````````````````````
+
+The package provides enhanced support for writing REST APIs (asyncio/trio/curio)
+
+.. image:: https://github.com/klen/muffin-rest/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-rest/actions
+    :alt: Tests Status
+
+.. image:: https://img.shields.io/pypi/v/muffin-rest
+    :target: https://pypi.org/project/muffin-rest/
+    :alt: PYPI Version
+
+
 .. * `Muffin-Redis   <https://github.com/klen/muffin-redis>`_   -- Redis support
 
   .. .. image:: http://img.shields.io/travis/klen/muffin-redis.svg?style=flat-square
@@ -241,16 +255,6 @@ Work with Mongo DB (asyncio only)
   .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-redis.svg?style=flat-square
      .. :target: https://github.com/klen/muffin-redis/issues
 
-.. * `Muffin-REST    <https://github.com/klen/muffin-rest>`_    -- Helpers for building REST API
-
-  .. .. image:: http://img.shields.io/travis/klen/muffin-rest.svg?style=flat-square
-     .. :target: http://travis-ci.org/klen/muffin-rest
-
-  .. .. image:: http://img.shields.io/pypi/v/muffin-rest.svg?style=flat-square
-     .. :target: https://pypi.python.org/pypi/muffin-rest
-
-  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-rest.svg?style=flat-square
-     .. :target: https://github.com/klen/muffin-rest/issues
 
 .. * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
 
