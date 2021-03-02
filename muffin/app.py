@@ -52,7 +52,7 @@ class Application(BaseApp):
         self.plugins: t.Dict[str, BasePlugin] = dict()
 
         # Setup the configuration
-        self.cfg = Config(prefix="%s_" % name.upper(), **self.defaults)
+        self.cfg = Config(config_prefix="%s_" % name.upper(), **self.defaults)
         options['CONFIG'] = self.cfg.update_from_modules(*configs, 'env:%s' % CONFIG_ENV_VARIABLE)
         self.cfg.update(**options)
         self.cfg.update_from_env()
