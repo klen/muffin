@@ -85,16 +85,16 @@ class Manager:
 
         def wrapper(fn):
             description = '\n'.join([s for s in (fn.__doc__ or '').split('\n')
-                                     if not s.strip().startswith(':')])
+                                     if not s.strip().startswith(':')]).strip()
             parser = self.subparsers.add_parser(fn.__name__, description=description)
             args, vargs, kw, defs, kwargs, kwdefs, anns = inspect.getfullargspec(fn)
             defs = defs or []
             kwargs_ = dict(zip(args[-len(defs):], defs))
-            docs = dict(PARAM_RE.findall(fn.__doc__ or ""))
+            docs = dict(PARAM_RE.findall(fn.__doc__ or ''))
 
             def process_arg(name, *, value=..., **opts):
                 argname = name.lower()
-                arghelp = docs.get(vargs, '')
+                arghelp = docs.get(name, '')
                 if value is ...:
                     return parser.add_argument(argname, help=arghelp, **opts)
 
@@ -103,11 +103,11 @@ class Manager:
                     if value:
                         return parser.add_argument(
                             "--no-" + argname, dest=name, action="store_false",
-                            help="Disable %s" % (arghelp or name).lower())
+                            help=arghelp or f"Disable { name }")
 
                     return parser.add_argument(
                         "--" + argname, dest=name, action="store_true",
-                        help="Enable %s" % (arghelp or name).lower())
+                        help=arghelp or f"Enable { name }")
 
                 if isinstance(value, list):
                     return parser.add_argument(
