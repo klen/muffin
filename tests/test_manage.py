@@ -55,3 +55,19 @@ def test_manage(app, capsys, monkeypatch):
 
     out, err = capsys.readouterr()
     assert "hello sam\n" == out
+
+
+def test_manage_async(app):
+
+    EVENTS = {}
+
+    @app.manage
+    async def command():
+        EVENTS['command'] = True
+
+    with pytest.raises(SystemExit) as excinfo:
+        app.manage.run('command')
+
+    assert excinfo.value.code == 0
+    assert EVENTS['command']
+
