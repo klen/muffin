@@ -11,7 +11,8 @@ import typing as t
 
 from . import __version__, CONFIG_ENV_VARIABLE
 from .app import Application
-from .utils import aio_run, is_awaitable, import_app
+from .utils import aio_lib, aio_run, import_app, AIOLIBS, AIOLIB
+from contextlib import AsyncExitStack
 
 
 PARAM_RE = re.compile(r'^\s+:param (\w+): (.+)$', re.M)
@@ -51,6 +52,10 @@ class Manager:
         """Initialize the manager."""
         self.app = app
         self.parser = argparse.ArgumentParser(description="Manage %s" % app.name.capitalize())
+        self.parser.add_argument(
+            '--aiolib', type=str, choices=list(AIOLIBS.keys()), default=aio_lib(),
+            help='Select an asyncio library to run commands.')
+
         self.subparsers = self.parser.add_subparsers(dest='subparser')
         self.commands: t.Dict[str, t.Callable] = dict()
 
@@ -150,33 +155,25 @@ class Manager:
 
         ns, _ = self.parser.parse_known_args(args)
         kwargs = dict(ns._get_kwargs())
-
-        command = self.commands.get(kwargs.pop('subparser'))
-        if not command:
+        fn = self.commands.get(kwargs.pop('subparser'))
+        AIOLIB.current = kwargs.pop('aiolib')
+        if not fn:
             self.parser.print_help()
             sys.exit(1)
 
-        if command.__lifespan:  # type: ignore
-            aio_run(self.app.lifespan.run, 'startup')
+        ctx: t.AsyncContextManager = AsyncExitStack()
+        if fn.__lifespan:  # type: ignore
+            ctx = self.app.lifespan
 
-        args = kwargs.pop('*', [])
+        aio_run(run_fn, ctx, fn, args=kwargs.pop('*', []), kwargs=kwargs)
 
-        try:
 
-            if is_awaitable(command):
-                aio_run(command, *args, **kwargs)
-
-            else:
-                command(*args, **kwargs)
-
-            sys.exit(0)
-
-        except Exception as exc:
-            sys.exit(exc)
-
-        finally:
-            if command.__lifespan:  # type: ignore
-                aio_run(self.app.lifespan.run, 'shutdown')
+async def run_fn(ctx, fn, args=(), kwargs={}):
+    """Run the given function with the given async context."""
+    async with ctx:
+        res = fn(*args, **kwargs)
+        if inspect.isawaitable(res):
+            await res
 
 
 def cli():
@@ -196,8 +193,10 @@ def cli():
     try:
         app = import_app(args_.app)
         app.logger.info('Application is loaded: %s' % app.name)
+        app.manage.run(*subargs_, prog='muffin %s' % args_.app)
+
     except Exception as exc:
         logging.exception(exc)
         raise sys.exit(1)
 
-    app.manage.run(*subargs_, prog='muffin %s' % args_.app)
+    sys.exit(0)

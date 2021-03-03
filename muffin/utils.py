@@ -4,16 +4,14 @@ import asyncio
 import importlib
 import pkgutil
 import sys
+import os
 import typing as t
 from types import ModuleType
+import threading
+from collections import OrderedDict
 
 from asgi_tools.middleware import ASGIApp
-
-
-try:
-    import trio
-except ImportError:
-    trio = None
+from asgi_tools._compat import trio, curio
 
 
 __all__ = (
@@ -21,20 +19,39 @@ __all__ = (
     'is_awaitable', 'to_awaitable'
 )
 
+AIOLIBS: t.Dict[str, ModuleType] = OrderedDict([
+    ('curio', curio),
+    ('trio', trio),
+    ('asyncio', asyncio),
+])
+AIOLIB = threading.local()
+AIOLIB.current = None
 
-def aio_lib() -> ModuleType:
-    """Return current async library."""
-    return trio or asyncio
+
+def aio_lib() -> str:
+    """Return first available async library."""
+    aiolib = os.environ.get('MUFFIN_AIOLIB', 'asyncio')
+    if aiolib:
+        return aiolib
+
+    for name, module in AIOLIBS.items():
+        if module is not None:
+            return module
+
+    return asyncio
 
 
-def aio_run(corofn: t.Callable, *args, **kwargs) -> t.Any:
+def aio_run(corofn: t.Callable[..., t.Awaitable], *args, **kwargs) -> t.Any:
     """Run the given coroutine with current async library."""
-    lib = aio_lib()
-    if lib is asyncio:
+    AIOLIB.current = aiolib = AIOLIB.current or aio_lib()
+    if aiolib == 'asyncio':
         loop = asyncio.get_event_loop()
         return loop.run_until_complete(corofn(*args, **kwargs))
 
-    return trio.run(corofn, *args, **kwargs)
+    if aiolib == 'trio':
+        return trio.run(lambda: corofn(*args, **kwargs))
+
+    return curio.run(lambda: corofn(*args, **kwargs))
 
 
 def import_submodules(package_name: str, *submodules: str) -> t.Dict[str, ModuleType]:

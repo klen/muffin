@@ -2,6 +2,11 @@ import pytest
 from unittest import mock
 
 
+@pytest.fixture(params=['curio', 'trio', 'asyncio'])
+def cmd_aiolib(request):
+    return request.param
+
+
 def test_command(app):
 
     @app.manage
@@ -47,8 +52,7 @@ def test_manage(app, capsys, monkeypatch):
     assert not out
     assert err
 
-    with pytest.raises(SystemExit):
-        app.manage.run(*'hello Mike'.split())
+    app.manage.run(*'hello Mike'.split())
 
     assert start.called
     assert finish.called
@@ -56,24 +60,22 @@ def test_manage(app, capsys, monkeypatch):
     out, err = capsys.readouterr()
     assert "hello Mike\n" == out
 
-    with pytest.raises(SystemExit):
-        app.manage.run(*'hello Sam --lower'.split())
+    app.manage.run(*'hello Sam --lower'.split())
 
     out, err = capsys.readouterr()
     assert "hello sam\n" == out
 
 
-def test_manage_async(app):
+def test_manage_async(app, cmd_aiolib):
+    from muffin.utils import current_async_library
 
     EVENTS = {}
 
     @app.manage
     async def command():
         EVENTS['command'] = True
+        assert current_async_library() == cmd_aiolib
 
-    with pytest.raises(SystemExit) as excinfo:
-        app.manage.run('command')
-
-    assert excinfo.value.code == 0
+    app.manage.run(*f"--aiolib={cmd_aiolib} command".split())
     assert EVENTS['command']
 
