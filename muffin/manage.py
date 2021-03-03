@@ -163,9 +163,11 @@ class Manager:
 
         try:
 
-            res = command(*args, **kwargs)
-            if is_awaitable(res):
-                aio_run(res)
+            if is_awaitable(command):
+                aio_run(command, *args, **kwargs)
+
+            else:
+                command(*args, **kwargs)
 
             sys.exit(0)
 
