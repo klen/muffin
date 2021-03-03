@@ -6,9 +6,15 @@ def test_command(app):
 
     @app.manage
     def cmd1(name, lower=False):
+        """Custom description.
+
+        :param name: help for name
+        """
         pass
 
     assert cmd1.parser
+    assert cmd1.parser.description == 'Custom description.'
+    assert cmd1.parser._actions[1].help == 'help for name'
     ns = cmd1.parser.parse_args(['test'])
     assert dict(ns._get_kwargs()) == {'name': 'test', 'lower': False}
 
