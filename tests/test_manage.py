@@ -29,10 +29,10 @@ def test_manage(app, capsys, monkeypatch):
     app.on_shutdown(finish)
 
     @app.manage(lifespan=True)
-    def hello(name, lower=False):
+    def hello(user_name, lower=False):
         if lower:
-            name = name.lower()
-        print("hello " + name)
+            user_name = user_name.lower()
+        print("hello " + user_name)
 
     with pytest.raises(SystemExit):
         app.manage.run(*'hello')
