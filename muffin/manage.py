@@ -93,11 +93,12 @@ class Manager:
             docs = dict(PARAM_RE.findall(fn.__doc__ or ""))
 
             def process_arg(name, *, value=..., **opts):
-                argname = name.replace('_', '-').lower()
+                argname = name.lower()
                 arghelp = docs.get(vargs, '')
                 if value is ...:
                     return parser.add_argument(argname, help=arghelp, **opts)
 
+                argname = argname.replace('_', '-')
                 if isinstance(value, bool):
                     if value:
                         return parser.add_argument(
