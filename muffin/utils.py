@@ -45,13 +45,9 @@ def aio_run(corofn: t.Callable[..., t.Awaitable], *args, **kwargs) -> t.Any:
     """Run the given coroutine with current async library."""
     AIOLIB.current = aiolib = AIOLIB.current or aio_lib()
     if aiolib == 'asyncio':
-        loop = asyncio.get_event_loop()
-        return loop.run_until_complete(corofn(*args, **kwargs))
+        return asyncio.run(corofn(*args, **kwargs))
 
-    if aiolib == 'trio':
-        return trio.run(lambda: corofn(*args, **kwargs))
-
-    return curio.run(lambda: corofn(*args, **kwargs))
+    return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))
 
 
 def import_submodules(package_name: str, *submodules: str) -> t.Dict[str, ModuleType]:
