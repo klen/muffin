@@ -67,15 +67,16 @@ def test_manage(app, capsys, monkeypatch):
 
 
 def test_manage_async(app, cmd_aiolib):
+    import typing as t
     from muffin.utils import current_async_library
 
     EVENTS = {}
 
     @app.manage
-    async def command():
-        EVENTS['command'] = True
+    async def command(name: t.Union[str, int]):
+        EVENTS['command'] = name
         assert current_async_library() == cmd_aiolib
 
-    app.manage.run(*f"--aiolib={cmd_aiolib} command".split())
-    assert EVENTS['command']
+    app.manage.run(*f"--aiolib={cmd_aiolib} command test".split())
+    assert EVENTS['command'] == 'test'
 

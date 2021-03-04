@@ -36,9 +36,9 @@ def aio_lib() -> str:
 
     for name, module in AIOLIBS.items():
         if module is not None:
-            return module
+            return name
 
-    return asyncio
+    return 'asyncio'
 
 
 def aio_run(corofn: t.Callable[..., t.Awaitable], *args, **kwargs) -> t.Any:
@@ -47,7 +47,7 @@ def aio_run(corofn: t.Callable[..., t.Awaitable], *args, **kwargs) -> t.Any:
     if aiolib == 'asyncio':
         return asyncio.run(corofn(*args, **kwargs))
 
-    return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))
+    return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))  # type: ignore
 
 
 def import_submodules(package_name: str, *submodules: str) -> t.Dict[str, ModuleType]:
