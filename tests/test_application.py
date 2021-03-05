@@ -23,7 +23,7 @@ def test_imports():
 
 def test_app(app):
     assert app
-    assert app.name == 'muffin'
+    assert app.cfg.name == 'muffin'
     assert repr(app) == '<muffin.Application: muffin>'
 
 
@@ -33,13 +33,13 @@ def test_app_config():
 
     os.environ['TEST_DEBUG'] = 'true'
 
-    app = muffin.Application('test', 'tests.appcfg', CONFIG='unknown')
+    app = muffin.Application('tests.appcfg', config='unknown', name='test')
     assert app.cfg
-    assert app.cfg.STATIC_URL_PREFIX == '/static'
     assert app.cfg.CONFIG == 'tests.appcfg'
     assert app.cfg.CONFIG_VARIABLE == 42
     assert app.cfg.DEBUG is True
     assert app.cfg.MANAGE_SHELL
+    assert app.cfg.STATIC_URL_PREFIX == '/static'
 
 
 async def test_routing(app, client):
@@ -224,8 +224,7 @@ async def test_static_folders():
     import muffin
 
     app = muffin.Application(
-        'test',
-        static_folders=['tests', Path('__file__').parent.parent],
+        static_folders=['tests', Path(__file__).parent.parent],
         static_url_prefix='/assets')
     assert app.cfg.STATIC_FOLDERS
     assert app.cfg.STATIC_URL_PREFIX == '/assets'
@@ -238,7 +237,7 @@ async def test_static_folders():
     res = await client.get('/')
     assert res.status_code == 200
 
-    res = await client.get('/assets/test_muffin.py')
+    res = await client.get('/assets/test_application.py')
     assert res.status_code == 200
     text = await res.text()
     assert text.startswith('"""Base Tests."""')

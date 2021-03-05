@@ -82,7 +82,7 @@ Example "Hello User" with the Muffin:
     import muffin
 
 
-    app = muffin.Application('example')
+    app = muffin.Application()
 
 
     @app.route('/', '/hello/{name}')

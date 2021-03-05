@@ -51,7 +51,7 @@ class Manager:
     def __init__(self, app: Application):
         """Initialize the manager."""
         self.app = app
-        self.parser = argparse.ArgumentParser(description="Manage %s" % app.name.capitalize())
+        self.parser = argparse.ArgumentParser(description="Manage %s" % app.cfg.name.capitalize())
         self.parser.add_argument(
             '--aiolib', type=str, choices=list(AIOLIBS.keys()), default=aio_lib(),
             help='Select an asyncio library to run commands.')
@@ -192,7 +192,7 @@ def cli():
 
     try:
         app = import_app(args_.app)
-        app.logger.info('Application is loaded: %s' % app.name)
+        app.logger.info('Application is loaded: %s' % app.cfg.name)
         app.manage.run(*subargs_, prog='muffin %s' % args_.app)
 
     except Exception as exc:

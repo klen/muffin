@@ -10,7 +10,7 @@ The test client allows you to make requests against your ASGI application.
 
     from muffin import Application, TestClient, ResponseWebSocket
 
-    app = Application('test')
+    app = Application()
 
     # Test HTTP requests
     @app.route('/')
