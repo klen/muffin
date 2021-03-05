@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Usage &mdash; Muffin 0.61.7 documentation</title>
+  <title>Usage &mdash; Muffin 0.62.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.61.7
+                0.62.0
               </div>
             
           
@@ -196,8 +196,8 @@
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
 
-<span class="c1"># Create the muffin&#39;s application with name &quot;hello&quot;</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="c1"># Create the muffin&#39;s application</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
 
 <span class="c1"># Create view and bind it to http path &quot;/&quot;</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
@@ -356,7 +356,7 @@ The everh routed callback should be awaitable and accept a <a class="reference i
 <p>Set static url prefix and directories when initializing your app:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="n">static_url_prefix</span><span class="o">=</span><span class="s1">&#39;/assets&#39;</span><span class="p">,</span> <span class="n">static_folders</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">])</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">static_url_prefix</span><span class="o">=</span><span class="s1">&#39;/assets&#39;</span><span class="p">,</span> <span class="n">static_folders</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>And your static files will be available at url <code class="docutils literal notranslate"><span class="pre">/static/{file}</span></code>.</p>

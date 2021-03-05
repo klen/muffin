@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Configuration &mdash; Muffin 0.61.7 documentation</title>
+  <title>Configuration &mdash; Muffin 0.62.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.61.7
+                0.62.0
               </div>
             
           
@@ -184,8 +184,8 @@
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
 <p>Muffin gets configuration options from python files. You have to specify
 default configuration module name in your app initialization:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the first argument is the app&#39;s name, the second a is [configuration module, the third is a reserved module</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;myapp&#39;</span><span class="p">,</span> <span class="s1">&#39;config.local&#39;</span><span class="p">,</span> <span class="s1">&#39;config.production&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Application arguments are configuration modules, first available will be used</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;config.local&#39;</span><span class="p">,</span> <span class="s1">&#39;config.production&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This configuration module path could be overriden by <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code>
@@ -193,9 +193,9 @@ environment variable:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ MUFFIN_CONFIG=settings.local uvicorn your_project:app
 </pre></div>
 </div>
-<p>Also you can define default config parameter values while initializing your application:</p>
+<p>Also you can redefine config parameters while initializing your application:</p>
 <p>Configuration will be available through <code class="xref py py-attr docutils literal notranslate"><span class="pre">app.cfg</span></code> attribute.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;myapp&#39;</span><span class="p">,</span> <span class="n">DEBUG</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ANY_OPTION</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">ONE_MORE</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="n">DEBUG</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ANY_OPTION</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">ONE_MORE</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>
 
 <span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">DEBUG</span> <span class="ow">is</span> <span class="kc">True</span>
 <span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ANY_OPTION</span>  <span class="o">==</span> <span class="s1">&#39;value&#39;</span>
@@ -205,7 +205,10 @@ environment variable:</p>
 <div class="section" id="default-application-options">
 <h2>Default Application Options<a class="headerlink" href="#default-application-options" title="Permalink to this headline">¶</a></h2>
 <p>Base Muffin options and default values:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configuration module</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Application name (used as prefix for env variables, for logging, for plugins)</span>
+<span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;muffin&#39;</span><span class="p">,</span>
+
+<span class="c1"># Configuration module</span>
 <span class="s1">&#39;CONFIG&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 
 <span class="c1"># Enable debug mode</span>
