@@ -33,12 +33,15 @@ class BasePlugin(ABC):
 
     def __init__(self, app: Application = None, **options):
         """Save application and create he plugin's configuration."""
-        self.cfg = Config(
-            config_prefix="%s_" % self.name.upper(), config_update_from_env=False, **self.defaults)
+        self.cfg = Config(config_config={'update_from_env': False}, **self.defaults)
         self.cfg.update(**options)
 
         if app is not None:
             self.setup(app)
+
+    def __repr__(self) -> str:
+        """Human readable representation."""
+        return f"<muffin.Plugin: { self.name }>"
 
     def setup(self, app: Application, **options):
         """Bind app and update the plugin's configuration."""
@@ -46,7 +49,7 @@ class BasePlugin(ABC):
         self.app.plugins[self.name] = self
 
         # Update configuration
-        self.cfg.update_from_dict(dict(app.cfg), config_prefix=self.cfg._prefix, exist_only=True)
+        self.cfg.update_from_dict(dict(app.cfg), prefix=f"{self.name}_", exist_only=True)
         self.cfg.update_from_dict(options)
 
         # Bind middleware

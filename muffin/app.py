@@ -1,6 +1,7 @@
 """Implement Muffin Application."""
 
 import typing as t
+from types import ModuleType
 import logging
 
 from asgi_tools import App as BaseApp
@@ -23,6 +24,9 @@ class Application(BaseApp):
     # Default configuration values
     defaults: t.Dict = dict(
 
+        # The application's name
+        NAME='muffin',
+
         # Path to configuration module
         CONFIG=None,
 
@@ -44,18 +48,22 @@ class Application(BaseApp):
 
     )
 
-    def __init__(self, name: str, *configs: str, **options):
-        """Initialize the application."""
+    def __init__(self, *cfg_mods: t.Union[str, ModuleType], **options):
+        """Initialize the application.
+
+        :param *cfg_mods: modules to import application's config
+        :param **options: Configuration options
+
+        """
         from .plugin import BasePlugin
 
-        self.name = name
         self.plugins: t.Dict[str, BasePlugin] = dict()
 
         # Setup the configuration
-        self.cfg = Config(config_prefix="%s_" % name.upper(), **self.defaults)
-        options['CONFIG'] = self.cfg.update_from_modules(*configs, 'env:%s' % CONFIG_ENV_VARIABLE)
+        self.cfg = Config(**self.defaults, config_config=dict(update_from_env=False))
+        options['CONFIG'] = self.cfg.update_from_modules(*cfg_mods, 'env:%s' % CONFIG_ENV_VARIABLE)
         self.cfg.update(**options)
-        self.cfg.update_from_env()
+        self.cfg.update_from_env(prefix=f"{ self.cfg.name }_")
 
         # Setup CLI
         from .manage import Manager
@@ -86,4 +94,4 @@ class Application(BaseApp):
 
     def __repr__(self) -> str:
         """Human readable representation."""
-        return "<muffin.Application: %s>" % self.name
+        return f"<muffin.Application: { self.cfg.name }>"

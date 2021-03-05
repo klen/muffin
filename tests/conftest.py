@@ -15,7 +15,7 @@ def aiolib(request):
 @pytest.fixture
 def app():
     """Simple basic app for testing."""
-    app = muffin.Application('muffin', DEBUG=True)
+    app = muffin.Application(debug=True)
 
     @app.route('/')
     async def index(request):

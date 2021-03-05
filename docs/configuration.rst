@@ -6,21 +6,21 @@ default configuration module name in your app initialization:
 
 .. code-block:: python
 
-    # the first argument is the app's name, the second a is [configuration module, the third is a reserved module
-    app = muffin.Application('myapp', 'config.local', 'config.production')
+    # Application arguments are configuration modules, first available will be used
+    app = muffin.Application('config.local', 'config.production')
 
 This configuration module path could be overriden by ``MUFFIN_CONFIG``
 environment variable: ::
 
   $ MUFFIN_CONFIG=settings.local uvicorn your_project:app
 
-Also you can define default config parameter values while initializing your application:
+Also you can redefine config parameters while initializing your application:
 
 Configuration will be available through :attr:`app.cfg` attribute.
 
 .. code-block:: python
 
-  app = muffin.Application('myapp', DEBUG=True, ANY_OPTION='value', ONE_MORE='value2')
+  app = muffin.Application(DEBUG=True, ANY_OPTION='value', ONE_MORE='value2')
 
   assert app.cfg.DEBUG is True
   assert app.cfg.ANY_OPTION  == 'value'
@@ -33,6 +33,9 @@ Default Application Options
 Base Muffin options and default values:
 
 .. code-block:: python
+
+        # Application name (used as prefix for env variables, for logging, for plugins)
+        'NAME': 'muffin',
 
         # Configuration module
         'CONFIG': None,

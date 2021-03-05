@@ -8,8 +8,8 @@ Quickstart
 
     from muffin import Application
 
-    # Create the muffin's application with name "hello"
-    app = App('hello')
+    # Create the muffin's application
+    app = Application()
 
     # Create view and bind it to http path "/"
     @app.route("/")
@@ -187,7 +187,7 @@ Set static url prefix and directories when initializing your app:
 
     from muffin import Application
 
-    app = Application('app', static_url_prefix='/assets', static_folders=['static'])
+    app = Application(static_url_prefix='/assets', static_folders=['static'])
 
 And your static files will be available at url ``/static/{file}``.
 
