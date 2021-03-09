@@ -3,6 +3,30 @@ from unittest import mock
 import pytest
 
 
+async def test_plugin_config(app, client):
+    from muffin import Application, BasePlugin
+
+    class Plugin(BasePlugin):
+
+        name = 'plugin'
+        defaults = {
+            'debug': True,
+            'option': 11,
+        }
+
+    plugin = Plugin(debug=False)
+    assert plugin.cfg
+    assert plugin.cfg.debug is False
+
+    app = Application('tests.appcfg')
+
+    plugin = Plugin(app)
+    assert plugin.cfg.option == 42  # from application config
+
+    plugin = Plugin(app, option=22)
+    assert plugin.cfg.option == 22
+
+
 async def test_plugin(app, client):
     from muffin import BasePlugin, Application, TestClient
 
