@@ -34,10 +34,11 @@ class BasePlugin(ABC):
     def __init__(self, app: Application = None, **options):
         """Save application and create he plugin's configuration."""
         self.cfg = Config(config_config={'update_from_env': False}, **self.defaults)
-        self.cfg.update(**options)
 
         if app is not None:
             self.setup(app)
+
+        self.cfg.update_from_dict(options, exist_only=True)
 
     def __repr__(self) -> str:
         """Human readable representation."""
