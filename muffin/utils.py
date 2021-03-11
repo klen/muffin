@@ -19,13 +19,17 @@ __all__ = (
     'is_awaitable', 'to_awaitable'
 )
 
-AIOLIBS: t.Dict[str, ModuleType] = OrderedDict([
-    ('curio', curio),
-    ('trio', trio),
-    ('asyncio', asyncio),
-])
 AIOLIB = threading.local()
 AIOLIB.current = None
+AIOLIBS: t.Dict[str, ModuleType] = OrderedDict()
+
+if curio:
+    AIOLIBS['curio'] = curio
+
+if trio:
+    AIOLIBS['trio'] = trio
+
+AIOLIBS['asyncio'] = asyncio
 
 
 def aio_lib() -> str:

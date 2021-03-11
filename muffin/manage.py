@@ -52,9 +52,11 @@ class Manager:
         """Initialize the manager."""
         self.app = app
         self.parser = argparse.ArgumentParser(description="Manage %s" % app.cfg.name.capitalize())
-        self.parser.add_argument(
-            '--aiolib', type=str, choices=list(AIOLIBS.keys()), default=aio_lib(),
-            help='Select an asyncio library to run commands.')
+
+        if len(AIOLIBS) > 1:
+            self.parser.add_argument(
+                '--aiolib', type=str, choices=list(AIOLIBS.keys()), default=aio_lib(),
+                help='Select an asyncio library to run commands.')
 
         self.subparsers = self.parser.add_subparsers(dest='subparser')
         self.commands: t.Dict[str, t.Callable] = dict()
@@ -156,7 +158,9 @@ class Manager:
         ns, _ = self.parser.parse_known_args(args)
         kwargs = dict(ns._get_kwargs())
         fn = self.commands.get(kwargs.pop('subparser'))
-        AIOLIB.current = kwargs.pop('aiolib')
+        if 'aiolib' in kwargs:
+            AIOLIB.current = kwargs.pop('aiolib')
+
         if not fn:
             self.parser.print_help()
             sys.exit(1)
