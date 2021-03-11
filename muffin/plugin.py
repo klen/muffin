@@ -36,9 +36,9 @@ class BasePlugin(ABC):
         self.cfg = Config(config_config={'update_from_env': False}, **self.defaults)
 
         if app is not None:
-            self.setup(app)
-
-        self.cfg.update_from_dict(options, exist_only=True)
+            self.setup(app, **options)
+        else:
+            self.cfg.update_from_dict(options, exist_only=True)
 
     def __repr__(self) -> str:
         """Human readable representation."""
