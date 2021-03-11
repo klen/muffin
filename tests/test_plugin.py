@@ -14,6 +14,12 @@ async def test_plugin_config(app, client):
             'option': 11,
         }
 
+        after_setup = True
+
+        def setup(self, app, **options):
+            super(Plugin, self).setup(app, **options)
+            self.after_setup = self.cfg.option
+
     plugin = Plugin(debug=False)
     assert plugin.cfg
     assert plugin.cfg.debug is False
@@ -25,6 +31,7 @@ async def test_plugin_config(app, client):
 
     plugin = Plugin(app, option=22)
     assert plugin.cfg.option == 22
+    assert plugin.after_setup == 22
 
 
 async def test_plugin(app, client):
