@@ -33,13 +33,7 @@ def test_command(app):
 
 def test_manage(app, capsys, monkeypatch):
 
-    start = mock.MagicMock()
-    app.on_startup(start)
-
-    finish = mock.MagicMock()
-    app.on_shutdown(finish)
-
-    @app.manage(lifespan=True)
+    @app.manage
     def hello(user_name, lower=False):
         if lower:
             user_name = user_name.lower()
@@ -54,9 +48,6 @@ def test_manage(app, capsys, monkeypatch):
 
     app.manage.run(*'hello Mike'.split())
 
-    assert start.called
-    assert finish.called
-
     out, err = capsys.readouterr()
     assert "hello Mike\n" == out
 
@@ -70,13 +61,23 @@ def test_manage_async(app, cmd_aiolib):
     import typing as t
     from muffin.utils import current_async_library
 
-    EVENTS = {}
+    start = mock.MagicMock()
+    app.on_startup(start)
 
-    @app.manage
+    finish = mock.MagicMock()
+    app.on_shutdown(finish)
+
+    run = mock.MagicMock()
+
+    @app.manage(lifespan=True)
     async def command(name: t.Union[str, int]):
-        EVENTS['command'] = name
+        run(name)
         assert current_async_library() == cmd_aiolib
 
     app.manage.run(*f"--aiolib={cmd_aiolib} command test".split())
-    assert EVENTS['command'] == 'test'
+    assert run.called
+    args, _ = run.call_args
+    assert args == ('test',)
+    assert start.called
+    assert finish.called
 

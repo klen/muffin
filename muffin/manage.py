@@ -62,21 +62,23 @@ class Manager:
         self.commands: t.Dict[str, t.Callable] = dict()
 
         app.cfg.update(MANAGE_SHELL=getattr(
-            app.cfg, 'MANAGE_SHELL', lambda: dict(app=app, run=aio_run, **app.plugins)
+            app.cfg, 'MANAGE_SHELL', lambda: dict(
+                app=app, run=aio_run, lifespan=app.lifespan, **app.plugins)
         ))
 
-        @self(lifespan=True)
+        # We have to use sync mode here because of eventloop conflict with ipython/promt-toolkit
+        @self
         def shell(ipython: bool = True):
             """Run the application shell.
 
             :param ipython: Use IPython as a shell
             """
-            banner = 'Interactive Muffin %s Shell' % __version__
-            banner = '\n' + banner + '\n' + '-' * len(banner) + '\n\n'
+            banner = f"Interactive Muffin {__version__} Shell"
+            banner = f"\n{banner}\n{'-' * len(banner)}\nPython: {sys.version}\n\n"
             ctx = app.cfg.MANAGE_SHELL
             if callable(ctx):
                 ctx = ctx()
-            banner += "Loaded objects: %s" % list(ctx.keys())
+            banner += f"Loaded globals: {list(ctx.keys())}\n"
             if ipython:
                 try:
                     from IPython.terminal.embed import InteractiveShellEmbed
@@ -87,10 +89,23 @@ class Manager:
 
             code.interact(banner, local=ctx)
 
-    def __call__(self, lifespan: t.Union[bool, t.Callable] = False) -> t.Callable[[F], F]:
+    @t.overload
+    def __call__(self, fn: F) -> F:
+        ...
+
+    @t.overload
+    def __call__(self, *, lifespan: bool = False) -> t.Callable[[F], F]:
+        ...
+
+    def __call__(self, fn=None, lifespan=False):
         """Register a command."""
 
         def wrapper(fn):
+            if not inspect.iscoroutinefunction(fn) and lifespan:
+                raise ValueError('Muffin manage lifespan supported only for async functions.')
+
+            fn.__lifespan = lifespan
+
             description = '\n'.join([s for s in (fn.__doc__ or '').split('\n')
                                      if not s.strip().startswith(':')]).strip()
             parser = self.subparsers.add_parser(fn.__name__, description=description)
@@ -137,15 +152,10 @@ class Manager:
             fn.parser = parser
             return fn
 
-        if callable(lifespan):
-            lifespan.__lifespan = False  # type: ignore
-            return wrapper(lifespan)
-
-        def decorator(fn):
-            fn.__lifespan = bool(lifespan)
+        if fn:
             return wrapper(fn)
 
-        return decorator
+        return wrapper
 
     def run(self, *args: str, prog: str = None):
         """Parse the arguments and run a command."""
@@ -164,6 +174,11 @@ class Manager:
         if not fn:
             self.parser.print_help()
             sys.exit(1)
+
+        args, kwargs = kwargs.pop('*', []), kwargs
+
+        if not inspect.iscoroutinefunction(fn):
+            return fn(*args, **kwargs)
 
         ctx: t.AsyncContextManager = AsyncExitStack()
         if fn.__lifespan:  # type: ignore
@@ -204,3 +219,6 @@ def cli():
         raise sys.exit(1)
 
     sys.exit(0)
+
+
+# pylama: ignore=W0404,D
