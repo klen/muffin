@@ -1,1 +1,2 @@
-git+https://github.com/klen/muffin[docs]
+pydata-sphinx-theme
+git+https://github.com/klen/muffin
