@@ -81,3 +81,12 @@ def test_manage_async(app, cmd_aiolib):
     assert start.called
     assert finish.called
 
+
+def test_shell_context(app):
+    assert app.cfg.MANAGE_SHELL
+
+    @app.manage.shell
+    def custom_context():
+        return {"custom": True}
+
+    assert app.cfg.MANAGE_SHELL is custom_context
