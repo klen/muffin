@@ -47,7 +47,8 @@ exclude_patterns = ['_build']
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
+#  html_theme = 'sphinx_rtd_theme'
 #  html_theme = 'aiohttp_theme'
 html_logo = 'static/logo.png'
 
@@ -55,12 +56,25 @@ html_logo = 'static/logo.png'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    'logo_only': True,
-    'canonical_url': "https://klen.github.io/muffin/",
+    #  'logo_link': 'https://github.com/klen/muffin',
+    'github_url': 'https://github.com/klen/muffin',
+    'icon_links': [
+        {
+            'name': 'PyPI',
+            'url': 'https://pypi.org/project/muffin',
+            'icon': 'fas fa-box',
+        }
+    ],
+    #  'logo_only': True,
+    #  'canonical_url': "https://klen.github.io/muffin/",
+}
+
+html_sidebars = {
+    "**": ["sidebar-search-bs.html", "custom-sidebar.html"],
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ['_themes']
+#  html_theme_path = ['_themes']
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -70,8 +84,8 @@ html_theme_path = ['_themes']
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['static']
-html_css_files = ['theme.css']
+#  html_static_path = ['static']
+#  html_css_files = ['theme.css']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -186,7 +200,7 @@ intersphinx_mapping = {
     "asgi_tools": ("https://klen.github.io/asgi-tools/", None),
 }
 
-pygments_style = 'monokai'
+#  pygments_style = 'tango'
 
 autodoc_member_order = 'bysource'
 autodoc_typehints = 'description'

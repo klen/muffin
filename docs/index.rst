@@ -33,9 +33,10 @@ Welcome to Muffin's documentation!
 
 
 Table of Contents
-=================
+-----------------
         
 .. toctree::
+    :maxdepth: 1
    
     usage
     configuration

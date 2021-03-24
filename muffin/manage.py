@@ -61,9 +61,8 @@ class Manager:
         self.subparsers = self.parser.add_subparsers(dest='subparser')
         self.commands: t.Dict[str, t.Callable] = dict()
 
-        app.cfg.update(MANAGE_SHELL=getattr(
-            app.cfg, 'MANAGE_SHELL', lambda: dict(
-                app=app, run=aio_run, lifespan=app.lifespan, **app.plugins)
+        self.shell(getattr(app.cfg, 'MANAGE_SHELL', lambda: dict(
+            app=app, run=aio_run, lifespan=app.lifespan, **app.plugins)
         ))
 
         # We have to use sync mode here because of eventloop conflict with ipython/promt-toolkit
@@ -88,6 +87,11 @@ class Manager:
                     pass
 
             code.interact(banner, local=ctx)
+
+    def shell(self, ctx: t.Any) -> t.Any:
+        """Set shell context. The method could be used as a decorator."""
+        self.app.cfg.update(MANAGE_SHELL=ctx)
+        return ctx
 
     @t.overload
     def __call__(self, fn: F) -> F:
