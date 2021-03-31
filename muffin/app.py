@@ -3,11 +3,13 @@
 import typing as t
 from types import ModuleType
 import logging
+import inspect
 
 from asgi_tools import App as BaseApp
 from modconfig import Config
 
 from . import CONFIG_ENV_VARIABLE
+from .utils import import_submodules
 
 
 class MuffinException(Exception):
@@ -95,3 +97,9 @@ class Application(BaseApp):
     def __repr__(self) -> str:
         """Human readable representation."""
         return f"<muffin.Application: { self.cfg.name }>"
+
+    def import_submodules(self, *submodules: str) -> t.Dict[str, ModuleType]:
+        """Import application components."""
+        parent_frame = inspect.stack()[1][0]
+        package_name = parent_frame.f_locals['__name__']
+        return import_submodules(package_name)
