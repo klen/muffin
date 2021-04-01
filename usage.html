@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Usage &#8212; Muffin 0.64.7 documentation</title>
+    <title>Usage &#8212; Muffin 0.64.8 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
@@ -126,7 +126,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form>
 <div class="sidebar-message pl-3">
-    Version: 0.64.7
+    Version: 0.64.8
 </div>
             </div>
             
@@ -193,6 +193,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#about-responses">
    About Responses
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#debug-mode">
+   Debug Mode
   </a>
  </li>
 </ul>
@@ -461,6 +466,16 @@ and return as html.</p></li>
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/short-form&#39;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">short_form</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="mi">418</span><span class="p">,</span> <span class="s1">&#39;Im a teapot&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debug-mode">
+<h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Permalink to this headline">¶</a></h2>
+<p>Sometime there are errors in your code. If any exception happens when Muffin
+processing a request, the library returns HTTP 500 page (the page is
+customisible). If you want to see the errors in console, you are able to start
+an application in debug mode.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># as other options, this one could be defined in configuration modules</span>
 </pre></div>
 </div>
 </div>

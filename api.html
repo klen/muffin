@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API &#8212; Muffin 0.64.7 documentation</title>
+    <title>API &#8212; Muffin 0.64.8 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
@@ -126,7 +126,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form>
 <div class="sidebar-message pl-3">
-    Version: 0.64.7
+    Version: 0.64.8
 </div>
             </div>
             
@@ -432,6 +432,11 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <dt id="muffin.Request.stream">
 <code class="sig-name descname"><span class="pre">stream</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stream the request’s body.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You can only read stream once. Second call raises an error. Save a readed stream into a
+variable if you need.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/repeater&#39;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">repeater</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">body</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
@@ -774,7 +779,7 @@ will be converted into HTML Response</p>
 <dl class="py attribute">
 <dt id="muffin.TestClient">
 <code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">TestClient</span></code><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.41.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.42.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </div>
