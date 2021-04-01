@@ -19,6 +19,8 @@ class BasePlugin(ABC):
 
     """Base class for Muffin plugins."""
 
+    app: t.Optional[Application] = None
+
     # Plugin options with default values
     defaults: t.Dict[str, t.Any] = {}
     middleware: t.Optional[t.Callable] = None
@@ -43,6 +45,11 @@ class BasePlugin(ABC):
     def __repr__(self) -> str:
         """Human readable representation."""
         return f"<muffin.Plugin: { self.name }>"
+
+    @property
+    def installed(self):
+        """Check the plugin is installed to an app."""
+        return bool(self.app)
 
     def setup(self, app: Application, **options):
         """Bind app and update the plugin's configuration."""
