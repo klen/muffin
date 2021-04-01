@@ -283,3 +283,16 @@ applies to converting return values into response objects is as follows:
     @app.route('/short-form')
     async def short_form(request):
         return 418, 'Im a teapot'
+
+Debug Mode
+----------
+
+Sometime there are errors in your code. If any exception happens when Muffin
+processing a request, the library returns HTTP 500 page (the page is
+customisible). If you want to see the errors in console, you are able to start
+an application in debug mode.
+
+.. code-block:: python
+
+   app = Application(debug=True)  # as other options, this one could be defined in configuration modules
+
