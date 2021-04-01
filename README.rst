@@ -256,16 +256,18 @@ Redis support
     :target: https://pypi.org/project/muffin-redis/
     :alt: PYPI Version
 
-.. * `Muffin-Admin   <https://github.com/klen/muffin-admin>`_   -- Basic Admin interface
+`Muffin-Admin   <https://github.com/klen/muffin-admin>`_
+`````````````````````````````````````````````````````````
 
-  .. .. image:: http://img.shields.io/travis/klen/muffin-admin.svg?style=flat-square
-     .. :target: http://travis-ci.org/klen/muffin-admin
+Automatically build Admin UI
 
-  .. .. image:: http://img.shields.io/pypi/v/muffin-admin.svg?style=flat-square
-     .. :target: https://pypi.python.org/pypi/muffin-admin
+.. image:: https://github.com/klen/muffin-admin/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-admin/actions
+    :alt: Tests Status
 
-  .. .. image:: https://img.shields.io/github/issues-raw/klen/muffin-admin.svg?style=flat-square
-     .. :target: https://github.com/klen/muffin-admin/issues
+.. image:: https://img.shields.io/pypi/v/muffin-admin
+    :target: https://pypi.org/project/muffin-admin/
+    :alt: PYPI Version
 
 .. * `Muffin-DebugToolbar <https://github.com/klen/muffin-debugtoolbar>`_ -- Debug Toolbar
 
