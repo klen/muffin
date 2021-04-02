@@ -75,6 +75,14 @@ async def test_routing(app, client):
     assert res.status_code == 200
     assert await res.json() == {'param1': '42', 'param2': '33'}
 
+    @app.route('/trim/last/slash/')
+    async def test(request):
+        return 'OK'
+
+    res = await client.get('/trim/last/slash/')
+    assert res.status_code == 200
+    assert await res.text() == 'OK'
+
 
 async def test_responses(app, client):
 
