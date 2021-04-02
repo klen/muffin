@@ -58,5 +58,5 @@ docs/_build
 /plugins
 /probe.py
 /settings
-/test.py
+/test*.py
 /todo.txt

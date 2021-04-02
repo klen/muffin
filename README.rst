@@ -52,12 +52,21 @@ with documentation enhancements and/or fixes are awesome and most welcome.**
 Installation
 ------------
 
-**The Muffin** should be installed using pip: ::
+We recommend using the latest version of Python. The library supports Python
+3.7 and newer.
+
+Muffin should be installed using pip: ::
 
     pip install muffin
 
-We recommend using the latest version of Python. **Muffin** supports Python 3.7
-and newer.
+The command will install minimal configuration.
+
+To install Muffin with `gunicorn`, `uvicorn`, `uvloop`, `httptools` use the
+command:
+
+.. code-block:: console
+
+  $ pip install muffin[standard]
 
 Dependencies
 ````````````
