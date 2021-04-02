@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API &#8212; Muffin 0.64.8 documentation</title>
+    <title>API &#8212; Muffin 0.64.9 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
@@ -126,7 +126,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form>
 <div class="sidebar-message pl-3">
-    Version: 0.64.8
+    Version: 0.64.9
 </div>
             </div>
             
@@ -432,6 +432,9 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <dt id="muffin.Request.stream">
 <code class="sig-name descname"><span class="pre">stream</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stream the request’s body.</p>
+<p>The method provides byte chunks without storing the entire body to memory.
+Any subsequent calls to <a class="reference internal" href="#muffin.Request.body" title="muffin.Request.body"><code class="xref py py-meth docutils literal notranslate"><span class="pre">body()</span></code></a>, <a class="reference internal" href="#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code></a>, <a class="reference internal" href="#muffin.Request.json" title="muffin.Request.json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code></a>
+or <a class="reference internal" href="#muffin.Request.data" title="muffin.Request.data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data()</span></code></a> will raise an error.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>You can only read stream once. Second call raises an error. Save a readed stream into a
@@ -481,6 +484,8 @@ variable if you need.</p>
 <dt id="muffin.Request.form">
 <em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">form</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_memory_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.form" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and return the request’s multipart formdata as a multidict.</p>
+<p>The method reads the request’s stream stright into memory formdata.
+Any subsequent calls to <a class="reference internal" href="#muffin.Request.body" title="muffin.Request.body"><code class="xref py py-meth docutils literal notranslate"><span class="pre">body()</span></code></a>, <a class="reference internal" href="#muffin.Request.json" title="muffin.Request.json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code></a> will raise an error.</p>
 <p><cite>formdata = await request.form()</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -497,11 +502,24 @@ variable if you need.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="muffin.Request.json">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">json</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read and return the request’s body as a JSON.</p>
+<p><cite>json = await request.json()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Any], List[Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="muffin.Request.data">
 <code class="sig-name descname"><span class="pre">data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>The method checks <cite>request.content_type</cite> and parse the request’s body automatically.</p>
+<dd><p>The method checks Content-Type Header and parse the request’s data automatically.</p>
 <p><cite>data = await request.data()</cite></p>
-<p>Returns JSON for <cite>application/json</cite>, formdata for forms and text otherwise.</p>
+<p>Returns data from <a class="reference internal" href="#muffin.Request.json" title="muffin.Request.json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code></a> for <cite>application/json</cite>, <a class="reference internal" href="#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code></a> for
+<cite>application/x-www-form-urlencoded</cite>,  <cite>multipart/form-data</cite> and <a class="reference internal" href="#muffin.Request.text" title="muffin.Request.text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">text()</span></code></a> otherwise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Awaitable[Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Any], List[Any], multidict._multidict.MultiDict]]</p>
@@ -779,7 +797,7 @@ will be converted into HTML Response</p>
 <dl class="py attribute">
 <dt id="muffin.TestClient">
 <code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">TestClient</span></code><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.42.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.42.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </div>
@@ -810,7 +828,7 @@ will be converted into HTML Response</p>
   <div class="container">
     <p>
           &copy; Copyright 2015, Kirill Klenov.<br/>
-        Last updated on Apr 01, 2021.<br/>
+        Last updated on Apr 02, 2021.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>
