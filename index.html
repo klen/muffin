@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to Muffin’s documentation! &#8212; Muffin 0.64.9 documentation</title>
+    <title>Welcome to Muffin’s documentation! &#8212; Muffin 0.64.10 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
@@ -125,7 +125,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form>
 <div class="sidebar-message pl-3">
-    Version: 0.64.9
+    Version: 0.64.10
 </div>
             </div>
             
@@ -204,12 +204,18 @@
 </div>
 <div class="section" id="installation">
 <span id="id2"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p><strong>The Muffin</strong> should be installed using pip:</p>
+<p>We recommend using the latest version of Python. The library supports Python
+3.7 and newer.</p>
+<p>Muffin should be installed using pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">muffin</span>
 </pre></div>
 </div>
-<p>We recommend using the latest version of Python. <strong>Muffin</strong> supports Python 3.7
-and newer.</p>
+<p>The command will install minimal configuration.</p>
+<p>To install Muffin with <cite>gunicorn</cite>, <cite>uvicorn</cite>, <cite>uvloop</cite>, <cite>httptools</cite> use the
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install muffin<span class="o">[</span>standard<span class="o">]</span>
+</pre></div>
+</div>
 <div class="section" id="dependencies">
 <h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
 <p>These distributions will be installed automatically when installing <strong>Muffin</strong>.</p>
