@@ -293,6 +293,16 @@ ResponseWebSocket (:class:`Response`)
                 assert msg == 'ping'
                 await ws.send('pong')
 
+    .. automethod:: accept
+
+    .. automethod:: close
+
+    .. automethod:: send
+
+    .. automethod:: send_json
+
+    .. automethod:: receive
+
 Test Client
 -----------
 
