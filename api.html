@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API &#8212; Muffin 0.64.11 documentation</title>
+    <title>API &#8212; Muffin 0.65.0 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
@@ -126,7 +126,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form>
 <div class="sidebar-message pl-3">
-    Version: 0.64.11
+    Version: 0.65.0
 </div>
             </div>
             
@@ -788,6 +788,70 @@ will be converted into HTML Response</p>
         <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;pong&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="py method">
+<dt id="muffin.ResponseWebSocket.accept">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">accept</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.accept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accept a websocket connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="muffin.ResponseWebSocket.close">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sent by the application to tell the server to close the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="muffin.ResponseWebSocket.send">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">send</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'websocket.send'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the given message to a client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>Union</em><em>[</em><em>Dict</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="muffin.ResponseWebSocket.send_json">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">send_json</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize the given data to JSON and send to a client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="muffin.ResponseWebSocket.receive">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">receive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.receive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive messages from a client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Receive messages as is.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Union[MutableMapping[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, Any], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -797,7 +861,7 @@ will be converted into HTML Response</p>
 <dl class="py attribute">
 <dt id="muffin.TestClient">
 <code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">TestClient</span></code><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.42.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.43.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </div>
@@ -828,7 +892,7 @@ will be converted into HTML Response</p>
   <div class="container">
     <p>
           &copy; Copyright 2015, Kirill Klenov.<br/>
-        Last updated on Apr 02, 2021.<br/>
+        Last updated on Apr 07, 2021.<br/>
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>
