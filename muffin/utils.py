@@ -64,11 +64,17 @@ def import_submodules(package_name: str, *submodules: str) -> t.Dict[str, Module
     }
 
 
-def import_app(app: str) -> t.Optional[ASGIApp]:
+def import_app(app_uri: str, reload: bool = False) -> t.Optional[ASGIApp]:
     """Import application by the given string (python.path.to.module:app_name)."""
-    mod_name, _, app_name = app.partition(':')
+    mod_name, _, app_name = app_uri.partition(':')
     mod = importlib.import_module(mod_name)
-    return getattr(mod, app_name, None) or getattr(mod, 'app', None) or getattr(mod, 'application')
+    if reload:
+        importlib.reload(mod)
+
+    try:
+        return getattr(mod, app_name or 'app', None) or getattr(mod, 'application')
+    except AttributeError:
+        raise ImportError(f"Application {app_uri} not found.")
 
 
 from sniffio import current_async_library               # noqa
