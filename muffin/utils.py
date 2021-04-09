@@ -10,8 +10,8 @@ from types import ModuleType
 import threading
 from collections import OrderedDict
 
-from asgi_tools.middleware import ASGIApp
 from asgi_tools._compat import trio, curio
+from asgi_tools._types import ASGIApp
 
 
 __all__ = (
