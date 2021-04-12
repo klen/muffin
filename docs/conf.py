@@ -70,7 +70,7 @@ html_theme_options = {
 }
 
 html_sidebars = {
-    "**": ["sidebar-search-bs.html", "custom-sidebar.html"],
+    "**": ["search-field.html", "sidebar-nav-bs.html", "custom-sidebar.html"],
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
