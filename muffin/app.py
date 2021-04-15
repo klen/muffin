@@ -102,4 +102,4 @@ class Application(BaseApp):
         """Import application components."""
         parent_frame = inspect.stack()[1][0]
         package_name = parent_frame.f_locals['__name__']
-        return import_submodules(package_name)
+        return import_submodules(package_name, *submodules)
