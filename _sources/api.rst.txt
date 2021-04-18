@@ -151,8 +151,8 @@ ResponseHTML (:class:`Response`)
         async def example(request):
             return ResponseHTML('<h1>Hello, world!</h1>')
 
-    .. note:: If your view function returns a string/byte-string as a result it
-                will be converted into HTML Response
+    .. note:: If your view function returns a string/byte-string the
+                result will be converted into a HTML Response
 
 
 ResponseJSON (:class:`Response`)
@@ -168,8 +168,8 @@ ResponseJSON (:class:`Response`)
         async def example(request):
             return ResponseJSON({'hello': 'world'})
 
-    .. note:: If your view function returns a dictionary/list/boolean as a result it
-                will be converted into HTML Response
+    .. note:: If your view function returns a dictionary/list/boolean the
+                result will be converted into a JSON Response
 
 
 ResponseRedirect (:class:`Response`)
