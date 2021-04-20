@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API &#8212; Muffin 0.66.1 documentation</title>
+    <title>API &#8212; Muffin 0.66.2 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -148,7 +148,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.66.1
+    Version: 0.66.2
 </div>
             </div>
             
@@ -401,12 +401,6 @@ request.</p>
 </pre></div>
 </div>
 <dl class="py attribute">
-<dt id="muffin.Request.method">
-<code class="sig-name descname"><span class="pre">method</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#muffin.Request.method" title="Permalink to this definition">¶</a></dt>
-<dd><p>Contains the request’s HTTP method</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt id="muffin.Request.url">
 <code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#muffin.Request.url" title="Permalink to this definition">¶</a></dt>
 <dd><p>A lazy property that parses the current URL and returns <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> object.</p>
@@ -586,7 +580,7 @@ Any subsequent calls to <a class="reference internal" href="#muffin.Request.body
 </div>
 <dl class="py attribute">
 <dt id="muffin.Response.headers">
-<code class="sig-name descname"><span class="pre">headers</span></code><em class="property"><span class="pre">:</span> <span class="pre">multidict._multidict.CIMultiDict</span></em><a class="headerlink" href="#muffin.Response.headers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">headers</span></code><em class="property"><span class="pre">:</span> <span class="pre">multidict._multidict.MultiDict</span></em><a class="headerlink" href="#muffin.Response.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multidict of response’s headers</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Response</span>
 
@@ -892,7 +886,7 @@ result will be converted into a JSON Response</p>
 <dl class="py attribute">
 <dt id="muffin.TestClient">
 <code class="sig-prename descclassname"><span class="pre">muffin.</span></code><code class="sig-name descname"><span class="pre">TestClient</span></code><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.44.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.46.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </div>
