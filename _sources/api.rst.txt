@@ -47,7 +47,11 @@ Request
 
         # and etc
 
-    .. autoattribute:: method
+        # ASGI Scope keys also are available as Request attrubutes.
+
+        assert request.version == scope['version']
+        assert request.method == scope['method']
+        assert request.scheme == scope['scheme']
 
     .. autoattribute:: url
 
@@ -261,6 +265,33 @@ ResponseStream (:class:`Response`)
         async def example(request):
             generator = stream_response()
             return ResponseStream(generator, content_type='plain/text')
+
+
+ResponseSSE (:class:`Response`)
+```````````````````````````````
+
+.. autoclass:: ResponseSSE
+
+    .. code-block:: python
+
+        from muffin import ResponseSSE
+
+        async def stream_response():
+            for number in range(10):
+                await aio_sleep(1)
+                # The response support messages as text
+                yield "data: message text"
+
+                # And as dictionaties as weel
+                yield {
+                    "event": "ping",
+                    "data": time.time(),
+                }
+
+        @app.route('/example')
+        async def example(request):
+            generator = stream_response()
+            return ResponseSSE(generator, content_type='plain/text')
 
 
 ResponseFile (:class:`Response`)
