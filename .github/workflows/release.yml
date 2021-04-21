@@ -1,4 +1,4 @@
-name: publish
+name: release
 
 on:
   workflow_run:
@@ -32,7 +32,7 @@ jobs:
         name: dist
         path: dist
 
-  publish:
+  release:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
