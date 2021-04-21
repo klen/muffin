@@ -31,10 +31,10 @@ Features
 --------
 
 - ASGI_ compatible;
-- Support Asyncio_, Trio_ and Curio_ python async libraries;
-- Parse ASGI scope, get url, headers, cookies, read a request's data/json/form-data
+- Competitive Performance;
+- All popular async python libraries are supported (Asyncio_, Trio_, Curio_);
 - Send HTTP (text, html, json, stream, file, http errors) responses
-- Work with WebSockets
+- Support WebSockets, Server Side Events
 
 .. _documentation:
 

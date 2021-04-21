@@ -10,7 +10,7 @@ __license__ = "MIT"
 
 from asgi_tools import (  # noqa
     Request, Response, ResponseText, ResponseHTML, ResponseJSON, ResponseError,
-    ResponseFile, ResponseRedirect, ResponseStream, ResponseWebSocket,
+    ResponseFile, ResponseRedirect, ResponseStream, ResponseSSE, ResponseWebSocket,
     ASGIMethodNotAllowed, ASGINotFound, ASGIConnectionClosed, ASGIError)
 from asgi_tools.tests import ASGITestClient as TestClient  # noqa
 
