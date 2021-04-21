@@ -4,7 +4,7 @@ import inspect
 import typing as t
 
 from http_router import Router
-from http_router._types import TYPE_METHODS
+from http_router.typing import TYPE_METHODS
 from asgi_tools import Request
 from asgi_tools.app import HTTPView, HTTP_METHODS
 from asgi_tools.utils import is_awaitable

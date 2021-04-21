@@ -11,7 +11,7 @@ import threading
 from collections import OrderedDict
 
 from asgi_tools._compat import trio, curio
-from asgi_tools._types import ASGIApp
+from asgi_tools.typing import ASGIApp
 
 
 __all__ = (
