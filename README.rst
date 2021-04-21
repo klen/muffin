@@ -53,7 +53,7 @@ Installation
 ------------
 
 We recommend using the latest version of Python. The library supports Python
-3.7 and newer.
+3.7 and newer (PyPy-3.7 are supported too).
 
 Muffin should be installed using pip: ::
 

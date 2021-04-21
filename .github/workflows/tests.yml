@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9, pypy-3.7]
 
     steps:
     - name: Checkout changes
@@ -41,6 +41,10 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install .[tests]
+
+    - name: Check typing
+      run: mypy muffin
+      if: matrix.python-version != 'pypy-3.7'
 
     - name: Test with pytest
       run: |
