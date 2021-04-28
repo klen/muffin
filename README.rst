@@ -31,8 +31,8 @@ Features
 --------
 
 - ASGI_ compatible;
-- Competitive Performance;
-- All popular async python libraries are supported (Asyncio_, Trio_, Curio_);
+- `Competitive Performance <http://klen.github.io/py-frameworks-bench/>`_;
+- All async python libraries are supported (Asyncio_, Trio_, Curio_);
 - Send HTTP (text, html, json, stream, file, http errors) responses
 - Support WebSockets, Server Side Events
 
