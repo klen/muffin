@@ -36,6 +36,8 @@ The test client allows you to make requests against your ASGI application.
         msg = await ws.receive()
         assert msg == 'pong'
 
+Check the TestClient API Reference: :class:`~muffin.TestClient`
+
 
 Pytest Support
 --------------
@@ -48,3 +50,8 @@ Example: ::
     $ py.test -xs --muffin-app example
 
 After that the fixtures ``app``, ``client`` will be available for your tests.
+
+.. warning::
+
+   if you get a warning from pytest: ``"PytestCollectionWarning: cannot collect test class 'ASGITestClient'``
+   change TestClient import ``from muffin import TestClient as Client``
