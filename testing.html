@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Testing &#8212; Muffin 0.70.0 documentation</title>
+    <title>Testing &#8212; Muffin 0.70.1 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -148,7 +148,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.70.0
+    Version: 0.70.1
 </div>
             </div>
             
@@ -231,6 +231,7 @@
     <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s1">&#39;pong&#39;</span>
 </pre></div>
 </div>
+<p>Check the TestClient API Reference: <a class="reference internal" href="api.html#muffin.TestClient" title="muffin.TestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestClient</span></code></a></p>
 </div>
 <div class="section" id="pytest-support">
 <h2>Pytest Support<a class="headerlink" href="#pytest-support" title="Permalink to this headline">¶</a></h2>
@@ -241,6 +242,11 @@ command line option <code class="docutils literal notranslate"><span class="pre"
 </pre></div>
 </div>
 <p>After that the fixtures <code class="docutils literal notranslate"><span class="pre">app</span></code>, <code class="docutils literal notranslate"><span class="pre">client</span></code> will be available for your tests.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>if you get a warning from pytest: <code class="docutils literal notranslate"><span class="pre">&quot;PytestCollectionWarning:</span> <span class="pre">cannot</span> <span class="pre">collect</span> <span class="pre">test</span> <span class="pre">class</span> <span class="pre">'ASGITestClient'</span></code>
+change TestClient import <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">muffin</span> <span class="pre">import</span> <span class="pre">TestClient</span> <span class="pre">as</span> <span class="pre">Client</span></code></p>
+</div>
 </div>
 </div>
 
