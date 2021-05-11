@@ -117,6 +117,8 @@ Use the :meth:`~muffin.Application.route` decorator to bind a function to a URL.
 You can do more! You can make parts of the URL dynamic.
 The everh routed callback should be awaitable and accept a :class:`~muffin.Request`.
 
+See also: :py:class:`~muffin.Handler`.
+
 Dynamic URLs
 ------------
 

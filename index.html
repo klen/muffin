@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to Muffin’s documentation! &#8212; Muffin 0.70.1 documentation</title>
+    <title>Welcome to Muffin’s documentation! &#8212; Muffin 0.71.0 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -22,12 +22,12 @@
       
 
     
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
     
   <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -147,7 +147,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.70.1
+    Version: 0.71.0
 </div>
             </div>
             
@@ -191,6 +191,8 @@
   <a class="reference internal nav-link" href="#table-of-contents">
    Table of Contents
   </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
  </li>
 </ul>
 
@@ -289,11 +291,46 @@ what URLs should trigger our handler function.</p></li>
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#the-request-object">The Request Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#routing">Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#dynamic-urls">Dynamic URLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#static-files">Static Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#redirects-and-errors">Redirects and Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#about-responses">About Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#debug-mode">Debug Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-application-options">Default Application Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-precedence">Configuration precedence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuring-logging">Configuring logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#built-in-commands">Built-in commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#write-a-custom-command">Write a custom command</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#testclient">TestClient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#pytest-support">Pytest Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#application">Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#class-based-handlers">Class Based Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#request">Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#responses">Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#test-client">Test Client</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins overview</a></li>
 </ul>
 </div>
@@ -329,7 +366,7 @@ what URLs should trigger our handler function.</p></li>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
 </p>
     </div>
     

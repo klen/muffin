@@ -20,6 +20,12 @@ Application
 
    .. automethod:: middleware
 
+
+Class Based Handlers
+--------------------
+
+.. autoclass:: Handler
+
 Request
 -------
 
