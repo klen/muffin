@@ -59,11 +59,11 @@ attributes mentioned above:
         return render_template('login.html', error=error)
 
 To access parameters submitted in the URL (``?key=value``) you can use the
-:attr:`~muffin.Request.url` attribute:
+:attr:`~muffin.Request.query` attribute:
 
 .. code-block:: python
 
-    search = request.url.query.get('search', '')
+    search = request.query.get('search', '')
 
 We recommend accessing URL parameters with `get` or by catching the
 :exc:`KeyError` because users might change the URL and presenting them a 400

@@ -59,7 +59,7 @@ Request
         assert request.method == scope['method']
         assert request.scheme == scope['scheme']
 
-    .. autoattribute:: url
+    .. autoattribute:: query
 
     .. autoattribute:: headers
 
@@ -68,6 +68,8 @@ Request
     .. autoattribute:: charset
 
     .. autoattribute:: content_type
+
+    .. autoattribute:: url
 
     .. automethod:: stream
 
