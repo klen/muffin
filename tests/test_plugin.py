@@ -4,7 +4,8 @@ import pytest
 
 
 async def test_plugin_config(app, client):
-    from muffin import Application, BasePlugin
+    from muffin import Application
+    from muffin.plugins import BasePlugin
 
     class Plugin(BasePlugin):
 
@@ -35,7 +36,8 @@ async def test_plugin_config(app, client):
 
 
 async def test_plugin(app, client):
-    from muffin import BasePlugin, Application, TestClient
+    from muffin import Application, TestClient
+    from muffin.plugins import BasePlugin
 
     with pytest.raises(TypeError):
         BasePlugin()
@@ -97,4 +99,3 @@ async def test_plugin(app, client):
         assert await res.text() == 'OK'
 
     assert finish.called
-

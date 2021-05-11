@@ -36,7 +36,43 @@ class HandlerMeta(type):
 
 class Handler(HTTPView, metaclass=HandlerMeta):
 
-    """Supports custom routing."""
+    """Class-based view pattern for handling HTTP method dispatching.
+
+    .. code-block:: python
+
+        @app.route('/hello', '/hello/{name}')
+        class HelloHandler(Handler):
+
+            async def get(self, request):
+                name = request.patch_params.get('name') or 'all'
+                return "GET: Hello f{name}"
+
+            async def post(self, request):
+                name = request.patch_params.get('name') or 'all'
+                return "POST: Hello f{name}"
+
+            @Handler.route('/hello/custom')
+            async def custom(self, request):
+                return 'Custom HELLO'
+
+        # ...
+        async def test_my_endpoint(client):
+            response = await client.get('/hello')
+            assert await response.text() == 'GET: Hello all'
+
+            response = await client.get('/hello/john')
+            assert await response.text() == 'GET: Hello john'
+
+            response = await client.post('/hello')
+            assert await response.text() == 'POST: Hello all'
+
+            response = await client.get('/hello/custom')
+            assert await response.text() == 'Custom HELLO'
+
+            response = await client.delete('/hello')
+            assert response.status_code == 405
+
+    """
 
     methods: t.Optional[t.Sequence[str]] = None
 

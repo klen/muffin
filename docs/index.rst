@@ -36,13 +36,17 @@ Table of Contents
 -----------------
         
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
    
     usage
     configuration
     cli
     testing
     api
+
+.. toctree::
+    :maxdepth: 1
+
     plugins
 
 .. _links:

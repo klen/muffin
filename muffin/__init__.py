@@ -27,4 +27,3 @@ CONFIG_ENV_VARIABLE = 'MUFFIN_CONFIG'
 
 from .app import Application    # noqa
 from .handler import Handler    # noqa
-from .plugin import BasePlugin  # noqa

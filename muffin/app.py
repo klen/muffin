@@ -57,7 +57,7 @@ class Application(BaseApp):
         :param **options: Configuration options
 
         """
-        from .plugin import BasePlugin
+        from .plugins import BasePlugin
 
         self.plugins: t.Dict[str, BasePlugin] = dict()
 
