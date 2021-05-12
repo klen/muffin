@@ -83,6 +83,14 @@ async def test_routing(app, client):
     assert res.status_code == 200
     assert await res.text() == 'OK'
 
+    @app.route('/sync')
+    def sync(request):
+        return 'Sync OK'
+
+    res = await client.get('/sync')
+    assert res.status_code == 200
+    assert await res.text() == 'Sync OK'
+
 
 async def test_responses(app, client):
 
