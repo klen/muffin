@@ -8,6 +8,7 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 * `app.register` -> `app.route`
 * `app.on_exception` -> `app.on_error`
 * `request.match_info` -> `request.path_params`
+* `request.path_qs` -> `request.url.path_qs`
 * `muffin.HTTPFound` -> `muffin.ResponseRedirect`
 * `muffin.HTTPError` -> `muffin.ResponseError`
 * `muffin.FileResponse` -> `muffin.ResponseFile`

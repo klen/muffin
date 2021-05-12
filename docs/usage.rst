@@ -114,8 +114,8 @@ Use the :meth:`~muffin.Application.route` decorator to bind a function to a URL.
     async def only_post():
         return request.method
 
-You can do more! You can make parts of the URL dynamic.
-The everh routed callback should be awaitable and accept a :class:`~muffin.Request`.
+You can do more! You can make parts of the URL dynamic.  The every routed
+callback should be callable and accepts a :class:`~muffin.Request`.
 
 See also: :py:class:`~muffin.Handler`.
 
