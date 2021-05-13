@@ -27,21 +27,22 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Cache pip
+    - name: Cache env
       uses: actions/cache@v2.1.5
       with:
-        path: ~/.cache/pip
-        key: ${{ hashFiles('setup.cfg') }}
+        path: env
+        key: env-${{ matrix.python-version }}-${{ hashFiles('setup.cfg') }}
 
     - name: Install dependencies
       run: |
-        python -m pip install .[tests]
+        python -m venv env
+        env/bin/pip install .[tests]
+      if: steps.cache-env.outputs.cache-hit != 'true'
 
     - name: Check typing
-      run: mypy muffin
+      run: env/bin/mypy muffin
       if: matrix.python-version != 'pypy-3.7'
 
     - name: Test with pytest
-      run: |
-        pytest tests
+      run: env/bin/pytest tests
 
