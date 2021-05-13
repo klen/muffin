@@ -99,3 +99,22 @@ async def test_plugin(app, client):
         assert await res.text() == 'OK'
 
     assert finish.called
+
+
+def test_multi_plugins(app):
+    from muffin.plugins import BasePlugin
+
+    class Plugin(BasePlugin):
+
+        name = 'plugin'
+
+    p1 = Plugin(app, name='plugin1')
+    p2 = Plugin(app, name='plugin2')
+
+    assert p1.name == 'plugin1'
+    assert p2.name == 'plugin2'
+
+    assert app.plugins == {
+        'plugin1': p1,
+        'plugin2': p2,
+    }

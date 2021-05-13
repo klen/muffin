@@ -51,8 +51,9 @@ class BasePlugin(ABC):
         """Check the plugin is installed to an app."""
         return bool(self.app)
 
-    def setup(self, app: Application, **options):
+    def setup(self, app: Application, *, name: str = None, **options):
         """Bind app and update the plugin's configuration."""
+        self.name = name or self.name
         self.app = app
         self.app.plugins[self.name] = self
 
