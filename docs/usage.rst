@@ -313,8 +313,8 @@ define a chain of functions that handles every web requests.
         app = Application()
         app.middleware(SentryMiddleware)
 
-3. For custom middlewares it's possible to use simpler interface which one
-   accepts a request and can return responses.
+3. Internal middlewares. For middlewares it's possible to use simpler interface
+   which one accepts a request and can return responses.
 
    .. code-block:: python
 
@@ -331,6 +331,38 @@ define a chain of functions that handles every web requests.
                 return response
             except RuntimeError:
                 return ResponseHTML('Middleware Exception')
+
+Nested applications
+-------------------
+
+Sub applications are designed for solving the problem of the big monolithic
+code base.
+
+.. code-block:: python
+
+    from muffin import Application
+
+    # Main application
+    app = Application()
+
+    @app.route('/')
+    def index(request):
+        return 'OK'
+
+    # Sub application
+    subapp = Application()
+
+    @subapp.route('/route')
+    def subpage(request):
+        return 'OK from subapp'
+
+    # Connect the subapplication with an URL prefix
+    app.route('/sub')(subapp)
+
+    # await client.get('/sub/route').text() == 'OK from subapp'
+
+Middlewares from app and subapp are chained (only internal middlewares are
+supported for nested apps).
 
 Debug Mode
 ----------

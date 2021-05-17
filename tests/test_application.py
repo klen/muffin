@@ -298,3 +298,33 @@ async def test_error_handlers(client, app):
     res = await client.get('/404')
     assert res.status_code == 200
     assert await res.text() == 'Custom 404'
+
+
+async def test_nested(client, app):
+    @app.middleware
+    async def mid(app, req, receive, send):
+        response = await app(req, receive, send)
+        response.headers['x-app'] = 'OK'
+        return response
+
+    from muffin import Application
+
+    subapp = Application()
+
+    @subapp.route('/route')
+    def subroute(request):
+        return 'OK from subroute'
+
+    @subapp.middleware
+    async def mid(app, req, receive, send):
+        response = await app(req, receive, send)
+        response.headers['x-subapp'] = 'OK'
+        return response
+
+    app.route('/sub')(subapp)
+
+    res = await client.get('/sub/route')
+    assert res.status_code == 200
+    assert await res.text() == 'OK from subroute'
+    assert res.headers['x-app'] == 'OK'
+    assert res.headers['x-subapp'] == 'OK'
