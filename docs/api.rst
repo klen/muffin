@@ -20,6 +20,35 @@ Application
 
    .. automethod:: middleware
 
+        Register any ASGI middleware
+
+        .. code-block:: python
+
+                from muffin import Application
+                from sentry_asgi import SentryMiddleware
+
+                app = Application()
+
+                app.middleware(SentryMiddleware)
+
+        Register a custom middleware
+
+        .. code-block:: python
+
+                from muffin import Application
+
+
+                app = Application()
+
+                @app.middleware
+                async def simple_md(app, request, receive, send):
+                    try:
+                        response = await app(request, receive, send)
+                        response.headers['x-simple-md'] = 'passed'
+                        return response
+                    except RuntimeError:
+                        return ResponseHTML('Middleware Exception')
+
 
 Class Based Handlers
 --------------------

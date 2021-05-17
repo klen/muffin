@@ -286,6 +286,52 @@ applies to converting return values into response objects is as follows:
     async def short_form(request):
         return 418, 'Im a teapot'
 
+Middlewares
+-----------
+
+A Muffin application supports middlewares, which provide a flexible way to
+define a chain of functions that handles every web requests.
+
+1. As an ASGI_ application :py:class:`~muffin.Application` can be proxied with
+   any ASGI_ middleware:
+
+   .. code-block:: python
+
+        from muffin import Application
+        from sentry_asgi import SentryMiddleware
+
+        app = Application()
+        app = SentryMiddleware(app)
+
+2. Alternatively you can decorate any ASGI_ middleware to connect it to an app:
+
+   .. code-block:: python
+
+        from muffin import Application
+        from sentry_asgi import SentryMiddleware
+
+        app = Application()
+        app.middleware(SentryMiddleware)
+
+3. For custom middlewares it's possible to use simpler interface which one
+   accepts a request and can return responses.
+
+   .. code-block:: python
+
+        from muffin import Application
+
+
+        app = Application()
+
+        @app.middleware
+        async def simple_md(app, request, receive, send):
+            try:
+                response = await app(request, receive, send)
+                response.headers['x-simple-md'] = 'passed'
+                return response
+            except RuntimeError:
+                return ResponseHTML('Middleware Exception')
+
 Debug Mode
 ----------
 
@@ -297,4 +343,7 @@ an application in debug mode.
 .. code-block:: python
 
    app = Application(debug=True)  # as other options, this one could be defined in configuration modules
+
+
+.. _ASGI: https://asgi.readthedocs.io/en/latest/
 
