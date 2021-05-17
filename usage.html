@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Usage &#8212; Muffin 0.74.1 documentation</title>
+    <title>Usage &#8212; Muffin 0.75.0 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -148,7 +148,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.74.1
+    Version: 0.75.0
 </div>
             </div>
             
@@ -218,6 +218,16 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#about-responses">
    About Responses
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#middlewares">
+   Middlewares
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nested-applications">
+   Nested applications
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -498,6 +508,79 @@ and return as html.</p></li>
     <span class="k">return</span> <span class="mi">418</span><span class="p">,</span> <span class="s1">&#39;Im a teapot&#39;</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="middlewares">
+<h2>Middlewares<a class="headerlink" href="#middlewares" title="Permalink to this headline">¶</a></h2>
+<p>A Muffin application supports middlewares, which provide a flexible way to
+define a chain of functions that handles every web requests.</p>
+<ol class="arabic">
+<li><p>As an <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> application <a class="reference internal" href="api.html#muffin.Application" title="muffin.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> can be proxied with
+any <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> middleware:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+<span class="kn">from</span> <span class="nn">sentry_asgi</span> <span class="kn">import</span> <span class="n">SentryMiddleware</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">SentryMiddleware</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Alternatively you can decorate any <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> middleware to connect it to an app:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+<span class="kn">from</span> <span class="nn">sentry_asgi</span> <span class="kn">import</span> <span class="n">SentryMiddleware</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="n">SentryMiddleware</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Internal middlewares. For middlewares it’s possible to use simpler interface
+which one accepts a request and can return responses.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">simple_md</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-simple-md&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;passed&#39;</span>
+        <span class="k">return</span> <span class="n">response</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ResponseHTML</span><span class="p">(</span><span class="s1">&#39;Middleware Exception&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="nested-applications">
+<h2>Nested applications<a class="headerlink" href="#nested-applications" title="Permalink to this headline">¶</a></h2>
+<p>Sub applications are designed for solving the problem of the big monolithic
+code base.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="c1"># Main application</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;OK&#39;</span>
+
+<span class="c1"># Sub application</span>
+<span class="n">subapp</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@subapp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/route&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">subpage</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;OK from subapp&#39;</span>
+
+<span class="c1"># Connect the subapplication with an URL prefix</span>
+<span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/sub&#39;</span><span class="p">)(</span><span class="n">subapp</span><span class="p">)</span>
+
+<span class="c1"># await client.get(&#39;/sub/route&#39;).text() == &#39;OK from subapp&#39;</span>
+</pre></div>
+</div>
+<p>Middlewares from app and subapp are chained (only internal middlewares are
+supported for nested apps).</p>
 </div>
 <div class="section" id="debug-mode">
 <h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Permalink to this headline">¶</a></h2>

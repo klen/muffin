@@ -286,6 +286,84 @@ applies to converting return values into response objects is as follows:
     async def short_form(request):
         return 418, 'Im a teapot'
 
+Middlewares
+-----------
+
+A Muffin application supports middlewares, which provide a flexible way to
+define a chain of functions that handles every web requests.
+
+1. As an ASGI_ application :py:class:`~muffin.Application` can be proxied with
+   any ASGI_ middleware:
+
+   .. code-block:: python
+
+        from muffin import Application
+        from sentry_asgi import SentryMiddleware
+
+        app = Application()
+        app = SentryMiddleware(app)
+
+2. Alternatively you can decorate any ASGI_ middleware to connect it to an app:
+
+   .. code-block:: python
+
+        from muffin import Application
+        from sentry_asgi import SentryMiddleware
+
+        app = Application()
+        app.middleware(SentryMiddleware)
+
+3. Internal middlewares. For middlewares it's possible to use simpler interface
+   which one accepts a request and can return responses.
+
+   .. code-block:: python
+
+        from muffin import Application
+
+
+        app = Application()
+
+        @app.middleware
+        async def simple_md(app, request, receive, send):
+            try:
+                response = await app(request, receive, send)
+                response.headers['x-simple-md'] = 'passed'
+                return response
+            except RuntimeError:
+                return ResponseHTML('Middleware Exception')
+
+Nested applications
+-------------------
+
+Sub applications are designed for solving the problem of the big monolithic
+code base.
+
+.. code-block:: python
+
+    from muffin import Application
+
+    # Main application
+    app = Application()
+
+    @app.route('/')
+    def index(request):
+        return 'OK'
+
+    # Sub application
+    subapp = Application()
+
+    @subapp.route('/route')
+    def subpage(request):
+        return 'OK from subapp'
+
+    # Connect the subapplication with an URL prefix
+    app.route('/sub')(subapp)
+
+    # await client.get('/sub/route').text() == 'OK from subapp'
+
+Middlewares from app and subapp are chained (only internal middlewares are
+supported for nested apps).
+
 Debug Mode
 ----------
 
@@ -297,4 +375,7 @@ an application in debug mode.
 .. code-block:: python
 
    app = Application(debug=True)  # as other options, this one could be defined in configuration modules
+
+
+.. _ASGI: https://asgi.readthedocs.io/en/latest/
 
