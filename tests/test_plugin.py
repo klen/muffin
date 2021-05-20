@@ -3,6 +3,13 @@ from unittest import mock
 import pytest
 
 
+@pytest.fixture
+def app():
+    from muffin import Application
+
+    return Application()
+
+
 async def test_plugin_config(app, client):
     from muffin import Application
     from muffin.plugins import BasePlugin

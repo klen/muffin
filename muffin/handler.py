@@ -29,7 +29,7 @@ class HandlerMeta(type):
         for m in cls.methods:
             method = getattr(cls, m.lower(), None)
             if method and not is_awaitable(method):
-                raise TypeError("The method '%s' has to be awaitable" % method)
+                raise TypeError(f"The method '{method.__qualname__}' has to be awaitable")
 
         return cls
 

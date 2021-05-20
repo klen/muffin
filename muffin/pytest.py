@@ -3,6 +3,7 @@
 import pytest
 import os
 import logging
+from asgi_tools.tests import manage_lifespan
 
 from . import TestClient
 
@@ -35,23 +36,24 @@ def pytest_load_initial_conftests(early_config, parser, args):
 
 @pytest.fixture(scope='session')
 async def app(pytestconfig, request):
-    """Provide an example application."""
-    from muffin.utils import import_app
-
+    """Load an application, run lifespan events, prepare plugins."""
     if not pytestconfig.app:
         logging.warning(
             'Improperly configured. Please set ``muffin_app`` in your pytest config. '
             'Or use ``--muffin-app`` command option.')
         return
 
+    from muffin.utils import import_app
+
     app = import_app(pytestconfig.app)
+    async with manage_lifespan(app):
 
-    # Setup plugins
-    for plugin in app.plugins.values():
-        if hasattr(plugin, 'conftest'):
-            await plugin.conftest()
+        # Setup plugins
+        for plugin in app.plugins.values():
+            if hasattr(plugin, 'conftest'):
+                await plugin.conftest()
 
-    return app
+        yield app
 
 
 @pytest.fixture

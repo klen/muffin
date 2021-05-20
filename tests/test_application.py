@@ -21,7 +21,7 @@ def test_imports():
     assert muffin.TestClient
 
 
-def test_app(app):
+async def test_app(app):
     assert app
     assert app.cfg.name == 'muffin'
     assert repr(app) == '<muffin.Application: muffin>'
@@ -298,6 +298,9 @@ async def test_error_handlers(client, app):
     res = await client.get('/404')
     assert res.status_code == 200
     assert await res.text() == 'Custom 404'
+
+    del app.exception_handlers[404]
+    del app.exception_handlers[muffin.ResponseError]
 
 
 async def test_nested(client, app):

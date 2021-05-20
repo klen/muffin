@@ -7,6 +7,13 @@ def cmd_aiolib(request):
     return request.param
 
 
+@pytest.fixture
+def app():
+    from muffin import Application
+
+    return Application()
+
+
 def test_command(app):
 
     @app.manage

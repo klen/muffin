@@ -5,14 +5,24 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 
 * `muffin.Application(name, *configs)` -> `muffin.Application(*configs, name=name)`
 * `muffin.import_submodules(__name__)` -> `muffin.utils.import_submodules(__name__)`
+* `app.ps.name` -> `app.plugins['name']`
 * `app.register` -> `app.route`
 * `app.on_exception` -> `app.on_error`
 * `request.match_info` -> `request.path_params`
 * `request.path_qs` -> `request.url.path_qs`
+* `request.query_string` -> `request.url.query_string`
+* `response.set_cookie(name, value)` -> `response.cookies[name] = value`
 * `muffin.HTTPFound` -> `muffin.ResponseRedirect`
-* `muffin.HTTPError` -> `muffin.ResponseError`
+* `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, ...) -> `muffin.ResponseError`
 * `muffin.FileResponse` -> `muffin.ResponseFile`
 * `plug = app.install(Plugin)` -> `plug = Plugin(app)`
+* `async def middleware(request, handler)` -> `async def middleware(handler, request, receive, send)`
+
+
+Muffin-Session
+--------------
+
+* `await session.load(request)` -> `session.load_from_request(request)`
 
 
 Muffin-Rest
@@ -20,3 +30,5 @@ Muffin-Rest
 
 * `Api("/prefix")` -> `API(prefix="/prefix")`
 * `RESTError` -> `APIError`
+* `api.register` -> `api.route`
+* `RestHandler.get_many` -> `RestHandler.prepare_collection`
