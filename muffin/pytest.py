@@ -35,7 +35,7 @@ def pytest_load_initial_conftests(early_config, parser, args):
 
 
 @pytest.fixture(scope='session')
-async def app(pytestconfig, request):
+def app(pytestconfig, request):
     """Load an application, run lifespan events, prepare plugins."""
     if not pytestconfig.app:
         logging.warning(
@@ -45,7 +45,18 @@ async def app(pytestconfig, request):
 
     from muffin.utils import import_app
 
-    app = import_app(pytestconfig.app)
+    return import_app(pytestconfig.app)
+
+
+@pytest.fixture
+def client(app):
+    """Generate a test client for the app."""
+    return TestClient(app)
+
+
+@pytest.fixture(scope='session')
+async def init_app(app):
+    """Run lifespan events, prepare plugins."""
     async with manage_lifespan(app):
 
         # Setup plugins
@@ -54,9 +65,3 @@ async def app(pytestconfig, request):
                 await plugin.conftest()
 
         yield app
-
-
-@pytest.fixture
-async def client(app):
-    """Generate a test client for the app."""
-    return TestClient(app)

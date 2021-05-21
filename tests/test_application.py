@@ -21,7 +21,7 @@ def test_imports():
     assert muffin.TestClient
 
 
-async def test_app(app):
+def test_app(app):
     assert app
     assert app.cfg.name == 'muffin'
     assert repr(app) == '<muffin.Application: muffin>'

@@ -11,6 +11,7 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 * `request.match_info` -> `request.path_params`
 * `request.path_qs` -> `request.url.path_qs`
 * `request.query_string` -> `request.url.query_string`
+* `request.post` -> `request.form`
 * `response.set_cookie(name, value)` -> `response.cookies[name] = value`
 * `muffin.HTTPFound` -> `muffin.ResponseRedirect`
 * `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, ...) -> `muffin.ResponseError`
