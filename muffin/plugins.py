@@ -23,9 +23,18 @@ class BasePlugin(ABC):
 
     # Plugin options with default values
     defaults: t.Dict[str, t.Any] = {}
+
+    # Optional middleware method
     middleware: t.Optional[t.Callable] = None
+
+    # Optional startup method
     startup: t.Optional[t.Callable] = None
+
+    # Optional shutdown method
     shutdown: t.Optional[t.Callable] = None
+
+    # Optional conftest method
+    conftest: t.Optional[t.Callable] = None
 
     @property
     @abstractmethod
@@ -73,7 +82,3 @@ class BasePlugin(ABC):
         # Bind shutdown
         if self.shutdown:
             self.app.on_shutdown(self.shutdown)
-
-    async def conftest(self):
-        """Configure tests."""
-        pass

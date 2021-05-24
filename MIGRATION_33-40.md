@@ -33,3 +33,7 @@ Muffin-Rest
 * `RESTError` -> `APIError`
 * `api.register` -> `api.route`
 * `RestHandler.get_many` -> `RestHandler.prepare_collection`
+* `RestHandler.get_one` -> `RestHandler.prepare_resource`
+* `RestHandler.to_simple` -> `RestHandler.dump`
+* `RestHandler.parse(request)` -> `request.data()`
+* `def RestHandler.get_schema` -> `async def RestHandler.get_schema`

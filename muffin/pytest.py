@@ -46,12 +46,17 @@ async def app(pytestconfig, request, aiolib):
     from muffin.utils import import_app
 
     app = import_app(pytestconfig.app)
+    msg = f"Setup application '{app.cfg.name}'"
+    if app.cfg.config:
+        msg += f"with config '{app.cfg.config}'"
+    app.logger.info(msg)
 
     async with manage_lifespan(app):
 
         # Setup plugins
         for plugin in app.plugins.values():
-            if hasattr(plugin, 'conftest'):
+            if hasattr(plugin, 'conftest') and plugin.conftest is not None:
+                app.logger.info(f"Setup plugin '{plugin.name}'")
                 await plugin.conftest()
 
         yield app
