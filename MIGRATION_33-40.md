@@ -36,4 +36,8 @@ Muffin-Rest
 * `RestHandler.get_one` -> `RestHandler.prepare_resource`
 * `RestHandler.to_simple` -> `RestHandler.dump`
 * `RestHandler.parse(request)` -> `request.data()`
+* `RestHandler.name` -> `RestHandler.Meta.name`
+* `RestHandler.Schema` -> `RestHandler.Meta.Schema`
+* `RestHandler.Meta.per_Page` -> `RestHandler.Meta.limit`
+* `RestHandler.Meta.schema` -> `RestHandler.Meta.schema_fields`
 * `def RestHandler.get_schema` -> `async def RestHandler.get_schema`
