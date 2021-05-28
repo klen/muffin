@@ -28,7 +28,7 @@ jobs:
 
     - name: Cache env
       id: cache-env
-      uses: actions/cache@v2.1.5
+      uses: actions/cache@v2.1.6
       with:
         path: env
         key: env-${{ matrix.python-version }}-${{ hashFiles('setup.cfg') }}
