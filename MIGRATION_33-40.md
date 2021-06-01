@@ -41,3 +41,9 @@ Muffin-Rest
 * `RestHandler.Meta.per_Page` -> `RestHandler.Meta.limit`
 * `RestHandler.Meta.schema` -> `RestHandler.Meta.schema_fields`
 * `def RestHandler.get_schema` -> `async def RestHandler.get_schema`
+
+Marshmallow
+~~~~~~~~~~~
+
+* `Field(load_from)` -> `Field(data_key)`
+

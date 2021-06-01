@@ -225,7 +225,7 @@ decorator:
 .. code-block:: python
 
     @app.on_error(404)
-    async def page_not_found(error):
+    async def page_not_found(request, error):
         return render_template('page_not_found.html'), 404
 
 It's possible to bind the handlers not only for status codes, but for the
@@ -234,7 +234,7 @@ exceptions themself:
 .. code-block:: python
 
     @app.on_error(TimeoutError)
-    async def timeout(error):
+    async def timeout(request, error):
         return 'Something bad happens'
 
 .. _about-responses:
