@@ -274,15 +274,15 @@ async def test_error_handlers(client, app):
         raise Exception()
 
     @app.on_error(muffin.ResponseError)
-    async def handler(exc):
+    async def handler(request, exc):
         return 'Custom Server Error'
 
     @app.on_error(404)
-    async def handler_404(exc):
+    async def handler_404(request, exc):
         return 'Custom 404'
 
     @app.on_error(Exception)
-    async def handle_exception(exc):
+    async def handle_exception(request, exc):
         return 'Custom Unhandled'
 
     assert app.exception_handlers
