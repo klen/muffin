@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Usage &#8212; Muffin 0.78.0 documentation</title>
+    <title>Usage &#8212; Muffin 0.79.0 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -148,7 +148,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.78.0
+    Version: 0.79.0
 </div>
             </div>
             
@@ -452,14 +452,14 @@ shows how that works.</p>
 customize the error page, you can use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">on_error()</span></code>
 decorator:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;page_not_found.html&#39;</span><span class="p">),</span> <span class="mi">404</span>
 </pre></div>
 </div>
 <p>It’s possible to bind the handlers not only for status codes, but for the
 exceptions themself:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="ne">TimeoutError</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
     <span class="k">return</span> <span class="s1">&#39;Something bad happens&#39;</span>
 </pre></div>
 </div>
