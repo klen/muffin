@@ -43,6 +43,7 @@ Table of Contents
     cli
     testing
     api
+    deploy
 
 .. toctree::
     :maxdepth: 1
