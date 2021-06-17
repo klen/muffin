@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deployment &#8212; Muffin 0.80.0 documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Plugins overview" href="plugins.html" />
+    <link rel="prev" title="API" href="api.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="index.html">
+  <img src="_static/logo.png" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="usage.html">
+  Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="configuration.html">
+  Configuration
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="cli.html">
+  CLI integration
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="testing.html">
+  Testing
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Deployment
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="plugins.html">
+  Plugins overview
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/klen/muffin" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/muffin" rel="noopener" target="_blank" title="PyPI">
+            <span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav><div class="sidebar-message pl-3">
+    Version: 0.80.0
+</div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#deploy-with-docker">
+   Deploy with Docker
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-dockerfile">
+     Create a Dockerfile
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-the-application-code">
+     Create the application code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-the-docker-image">
+     Build the Docker image
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#start-the-docker-container">
+     Start the Docker container
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#deploy-behind-nginx">
+   Deploy behind NGINX
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nginx-configuration">
+     Nginx configuration
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="deployment">
+<h1>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="deploy-with-docker">
+<h2>Deploy with Docker<a class="headerlink" href="#deploy-with-docker" title="Permalink to this headline">¶</a></h2>
+<p>You can use Docker for deployment. It has several advantages like security,
+replicability, development simplicity, etc.</p>
+<p>If you are using Docker, you can use the official Docker images:</p>
+<p><a class="reference external" href="https://hub.docker.com/r/horneds/muffin">Muffin-Docker</a></p>
+<div class="section" id="create-a-dockerfile">
+<h3>Create a Dockerfile<a class="headerlink" href="#create-a-dockerfile" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Go to your project directory</p></li>
+<li><p>Create a <cite>Dockerfile</cite> with:</p></li>
+</ul>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="s">horneds/muffin:latest</span>
+
+<span class="c"># Copy whole application</span>
+<span class="k">COPY</span> . /app
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-application-code">
+<h3>Create the application code<a class="headerlink" href="#create-the-application-code" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Create an <cite>app.py</cite> file with:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello World!&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-the-docker-image">
+<h3>Build the Docker image<a class="headerlink" href="#build-the-docker-image" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Build your application image</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker build -t myimage .
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-the-docker-container">
+<h3>Start the Docker container<a class="headerlink" href="#start-the-docker-container" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Run a container based on your image:</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker run -d --name mycontainer -p <span class="m">80</span>:80 myimage
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Check it: <a class="reference external" href="http://localhost">http://localhost</a>, <a class="reference external" href="http://127.0.0.1">http://127.0.0.1</a>, etc</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="deploy-behind-nginx">
+<h2>Deploy behind NGINX<a class="headerlink" href="#deploy-behind-nginx" title="Permalink to this headline">¶</a></h2>
+<p>Running muffin apps behind nginx makes several advantages.</p>
+<p>At first, nginx is the perfect frontend server. It may prevent many attacks
+based on malformed http protocol etc.</p>
+<p>Second, running several muffin instances behind nginx allows to utilize all CPU
+cores.</p>
+<p>Third, nginx serves static files much faster than built-in muffin static file
+support.</p>
+<p>But this way requires more complex configuration.</p>
+<div class="section" id="nginx-configuration">
+<h3>Nginx configuration<a class="headerlink" href="#nginx-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Here is short extraction about writing Nginx configuration file. It does not
+cover all available Nginx options.</p>
+<p>For full reference read <cite>Nginx tutorial
+&lt;https://www.nginx.com/resources/admin-guide/&gt;</cite> and official <cite>Nginx
+documentation &lt;http://nginx.org/en/docs/http/ngx_http_proxy_module.html&gt;</cite>.</p>
+<p>First configure HTTP server itself:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http {
+    server {
+        listen 80;
+        client_max_body_size 4G;
+
+        server_name example.com;
+
+        location / {
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_redirect off;
+            proxy_buffering off;
+            proxy_pass http://muffin;
+        }
+
+        location /static {
+            # path for static files
+            root /path/to/app/static;
+        }
+
+    }
+}
+</pre></div>
+</div>
+<p>This config listens on port 80 for server named example.com and redirects
+everything to muffin backend group.</p>
+<p>Also it serves static files from <cite>/path/to/app/static</cite> path as
+example.com/static.</p>
+<p>Next we need to configure muffin upstream group:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span> <span class="p">{</span>
+    <span class="n">upstream</span> <span class="n">muffin</span> <span class="p">{</span>
+        <span class="c1"># fail_timeout=0 means we always retry an upstream even if it failed</span>
+        <span class="c1"># to return a good HTTP response</span>
+
+        <span class="c1"># Unix domain servers</span>
+        <span class="n">server</span> <span class="n">unix</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">example_1</span><span class="o">.</span><span class="n">sock</span> <span class="n">fail_timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">server</span> <span class="n">unix</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">example_2</span><span class="o">.</span><span class="n">sock</span> <span class="n">fail_timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">server</span> <span class="n">unix</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">example_3</span><span class="o">.</span><span class="n">sock</span> <span class="n">fail_timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">server</span> <span class="n">unix</span><span class="p">:</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">example_4</span><span class="o">.</span><span class="n">sock</span> <span class="n">fail_timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+        <span class="c1"># Unix domain sockets are used in this example due to their high performance,</span>
+        <span class="c1"># but TCP/IP sockets could be used instead:</span>
+        <span class="c1"># server 127.0.0.1:8081 fail_timeout=0;</span>
+        <span class="c1"># server 127.0.0.1:8082 fail_timeout=0;</span>
+        <span class="c1"># server 127.0.0.1:8083 fail_timeout=0;</span>
+        <span class="c1"># server 127.0.0.1:8084 fail_timeout=0;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>All HTTP requests for <a class="reference external" href="http://example.com">http://example.com</a> except ones for
+<a class="reference external" href="http://example.com/static">http://example.com/static</a> will be redirected to example1.sock, example2.sock,
+example3.sock or example4.sock backend servers. By default, Nginx uses
+round-robin algorithm for backend selection.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Nginx is not the only existing reverse proxy server but the most
+popular one. Alternatives like HAProxy may be used as well.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="api.html" title="previous page">API</a>
+    <a class='right-next' id="next-link" href="plugins.html" title="next page">Plugins overview</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2015, Kirill Klenov.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>
