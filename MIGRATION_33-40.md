@@ -5,6 +5,7 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 
 * `muffin.Application(name, *configs)` -> `muffin.Application(*configs, name=name)`
 * `muffin.import_submodules(__name__)` -> `muffin.utils.import_submodules(__name__)`
+* `plug = app.install(Plugin)` -> `plug = Plugin(app)`
 * `app.ps.name` -> `app.plugins['name']`
 * `app.register` -> `app.route`
 * `app.on_exception` -> `app.on_error`
@@ -14,9 +15,8 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 * `request.post` -> `request.form`
 * `response.set_cookie(name, value)` -> `response.cookies[name] = value`
 * `muffin.HTTPFound` -> `muffin.ResponseRedirect`
-* `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, ...) -> `muffin.ResponseError`
+* `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, HTTPNotFound, ...) -> `muffin.ResponseError`
 * `muffin.FileResponse` -> `muffin.ResponseFile`
-* `plug = app.install(Plugin)` -> `plug = Plugin(app)`
 * `async def middleware(request, handler)` -> `async def middleware(handler, request, receive, send)`
 
 
@@ -41,6 +41,11 @@ Muffin-Rest
 * `RestHandler.Meta.per_Page` -> `RestHandler.Meta.limit`
 * `RestHandler.Meta.schema` -> `RestHandler.Meta.schema_fields`
 * `def RestHandler.get_schema` -> `async def RestHandler.get_schema`
+
+Muffin-Sentry
+-------------
+
+* `muffin_sentry.Processor` -> `@plugin.processor`
 
 Marshmallow
 ~~~~~~~~~~~

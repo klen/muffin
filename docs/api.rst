@@ -340,9 +340,13 @@ ResponseFile (:class:`Response`)
 
         from muffin import ResponseFile
 
-        @app.route('/example')
-        async def example(request):
+        @app.route('/selfie')
+        async def view_my_selfie(request):
             return ResponseFile('/storage/my_best_selfie.jpeg')
+
+        @app.route('/download')
+        async def download_movie(request):
+            return ResponseFile('/storage/video.mp4', filename='movie-2020-01-01.mp4')
 
 
 ResponseWebSocket (:class:`Response`)
