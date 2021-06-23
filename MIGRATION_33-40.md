@@ -18,6 +18,9 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 * `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, HTTPNotFound, ...) -> `muffin.ResponseError`
 * `muffin.FileResponse` -> `muffin.ResponseFile`
 * `async def middleware(request, handler)` -> `async def middleware(handler, request, receive, send)`
+* `app.middlewares.append` -> `@app.middleware`
+* `@app.manage.command` -> `@app.manage`
+* `@app.manage.command(init=True)` -> `@app.manage(lifespan=True)`
 
 
 Muffin-Session
@@ -30,6 +33,7 @@ Muffin-Rest
 -----------
 
 * `Api("/prefix")` -> `API(prefix="/prefix")`
+* `Api.bind(app)` -> `API.setup(app)`
 * `RESTError` -> `APIError`
 * `api.register` -> `api.route`
 * `RestHandler.get_many` -> `RestHandler.prepare_collection`
