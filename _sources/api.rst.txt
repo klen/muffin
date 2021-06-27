@@ -31,7 +31,10 @@ Application
 
                 app.middleware(SentryMiddleware)
 
-        Register a custom middleware
+                # as an alternative method
+                app = SentryMiddleware(app)
+
+        Register a custom (internal) middleware
 
         .. code-block:: python
 

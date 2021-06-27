@@ -1,3 +1,3 @@
 GitHub Pages of [klen/muffin](https://github.com/klen/muffin.git)
 ===
-Sphinx html documentation of [8d088edf](https://github.com/klen/muffin/tree/8d088edf1d0070a1219d8f672eed23d7852b28ca)
+Sphinx html documentation of [c54672b8](https://github.com/klen/muffin/tree/c54672b886948677501f184f0ac51e3c3b101276)
