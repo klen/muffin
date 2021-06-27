@@ -13,6 +13,9 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 * `request.path_qs` -> `request.url.path_qs`
 * `request.query_string` -> `request.url.query_string`
 * `request.post` -> `request.form`
+* `request.host` -> `request.url.host`
+* `request.scheme` -> `request.url.scheme`
+* `request.GET` -> `request.query`
 * `response.set_cookie(name, value)` -> `response.cookies[name] = value`
 * `muffin.HTTPFound` -> `muffin.ResponseRedirect`
 * `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, HTTPNotFound, ...) -> `muffin.ResponseError`
@@ -50,6 +53,11 @@ Muffin-Sentry
 -------------
 
 * `muffin_sentry.Processor` -> `@plugin.processor`
+
+Muffin-Jinja2
+-------------
+
+* `jsonify` -> `to_json`
 
 Marshmallow
 ~~~~~~~~~~~

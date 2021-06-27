@@ -71,7 +71,7 @@ class BasePlugin(ABC):
         self.cfg.update_from_dict(dict(app.cfg), prefix=f"{self.name}_", exist_only=True)
         self.cfg.update_from_dict(options)
 
-        # Bind middleware
+        # Register a middleware
         if self.middleware:
             self.app.middleware(to_awaitable(self.middleware))
 
