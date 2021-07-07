@@ -18,8 +18,9 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 * `request.GET` -> `request.query`
 * `response.set_cookie(name, value)` -> `response.cookies[name] = value`
 * `muffin.HTTPFound` -> `muffin.ResponseRedirect`
-* `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, HTTPNotFound, ...) -> `muffin.ResponseError`
+* `muffin.HTTPError` (HTTPBadRequest, HTTPForbidden, HTTPMethodNotAllowed, HTTPNotFound, ...) -> `muffin.ResponseError`
 * `muffin.FileResponse` -> `muffin.ResponseFile`
+* `muffin.StreamResponse` -> `muffin.ResponseStream`
 * `async def middleware(request, handler)` -> `async def middleware(handler, request, receive, send)`
 * `app.middlewares.append` -> `@app.middleware`
 * `@app.manage.command` -> `@app.manage`
