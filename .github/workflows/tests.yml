@@ -33,11 +33,12 @@ jobs:
         path: env
         key: env-${{ matrix.python-version }}-${{ hashFiles('setup.cfg') }}
 
-    - name: Install dependencies
-      run: |
-        python -m venv env
-        env/bin/pip install .[tests]
+    - name: Initialize virtual env
+      run: python -m venv env
       if: steps.cache-env.outputs.cache-hit != 'true'
+
+    - name: Setup dependencies
+      run: env/bin/pip install .[tests]
 
     - name: Check typing
       run: env/bin/mypy muffin
