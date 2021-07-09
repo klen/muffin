@@ -34,6 +34,17 @@ class HandlerMeta(type):
         return cls
 
 
+def route_method(*paths: str, **params) -> t.Callable:
+    """Mark a method as a route."""
+
+    def wrapper(method):
+        """Wrap a method."""
+        method.__route__ = paths, params
+        return method
+
+    return wrapper
+
+
 class Handler(HTTPView, metaclass=HandlerMeta):
 
     """Class-based view pattern for handling HTTP method dispatching.
@@ -91,13 +102,4 @@ class Handler(HTTPView, metaclass=HandlerMeta):
         method = getattr(self, opts.get('__meth__') or request.method.lower())
         return method(request)
 
-    @staticmethod
-    def route(*paths: str, **params) -> t.Callable:
-        """Route custom methods for Handlers."""
-
-        def wrapper(method):
-            """Wrap a method."""
-            method.__route__ = paths, params
-            return method
-
-        return wrapper
+    route = route_method

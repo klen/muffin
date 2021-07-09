@@ -25,6 +25,7 @@ Muffin 0.40+ is a completelly rewriting of the framework.
 * `app.middlewares.append` -> `@app.middleware`
 * `@app.manage.command` -> `@app.manage`
 * `@app.manage.command(init=True)` -> `@app.manage(lifespan=True)`
+* `muffin.handler.register` -> `muffin.handler.route_method`
 
 
 Muffin-Session

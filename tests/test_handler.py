@@ -2,7 +2,7 @@ import pytest
 
 
 async def test_handler(app, client):
-    from muffin.handler import Handler
+    from muffin.handler import Handler, route_method
 
     assert Handler
 
@@ -20,7 +20,7 @@ async def test_handler(app, client):
         async def custom1(self, request):
             return self.__class__.__name__
 
-        @Handler.route('/custom2')
+        @route_method('/custom2')
         async def custom2(self, request):
             return 'CUSTOM2'
 
