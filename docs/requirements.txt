@@ -1,2 +1,3 @@
+sphinx-copybutton
 pydata-sphinx-theme
 git+https://github.com/klen/muffin
