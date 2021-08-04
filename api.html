@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API &#8212; Muffin 0.84.1 documentation</title>
+    <title>API &#8212; Muffin 0.84.3 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -24,6 +24,7 @@
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     
   <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
 
@@ -31,6 +32,8 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Deployment" href="deploy.html" />
@@ -154,7 +157,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.84.1
+    Version: 0.84.3
 </div>
             </div>
             
@@ -698,7 +701,7 @@ the request’s body would be returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>content</strong> (<em>str | bytes</em>) – A response’s body</p></li>
+<li><p><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><em>bytes</em></a>) – A response’s body</p></li>
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – An HTTP status code</p></li>
 <li><p><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – A dictionary of HTTP headers</p></li>
 <li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – A string with the content-type</p></li>
@@ -1006,7 +1009,7 @@ result will be converted into a JSON Response</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filepath</strong> (<em>str | Path</em>) – The filepath to the file</p></li>
+<li><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> | </em><em>Path</em>) – The filepath to the file</p></li>
 <li><p><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Default chunk size (32768)</p></li>
 <li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – If set, <cite>Content-Disposition</cite> header will be generated</p></li>
 <li><p><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Return only file headers</p></li>
@@ -1131,7 +1134,7 @@ result will be converted into a JSON Response</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.TestClient">
 <span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">TestClient</span></span><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.61.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.61.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </div>
@@ -1167,7 +1170,7 @@ result will be converted into a JSON Response</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
 </p>
     </div>
     

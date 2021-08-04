@@ -4,11 +4,13 @@ Testing
 TestClient
 ----------
 
-The test client allows you to make requests against your ASGI application.
+The test client allows you to test requests against your ASGI application.
+
+The application code:
 
 .. code-block:: python
 
-    from muffin import Application, TestClient, ResponseWebSocket
+    from muffin import Application
 
     app = Application()
 
@@ -17,12 +19,27 @@ The test client allows you to make requests against your ASGI application.
     async def home(request):
         return "OK"
 
+Tests:
+
+.. code-block:: python
+
+    from muffin import TestClient
+
     client = TestClient(app)
     response = await client.get('/')
     assert response.status_code == 200
     assert await response.text() == 'OK'
 
-    # Test Websockets
+
+Websockets:
+^^^^^^^^^^^
+
+.. code-block:: python
+
+    from muffin import Application, ResponseWebSocket
+
+    app = Application()
+
     @app.route('/ws')
     async def socket(request):
         ws = ResponseWebSocket(request)
@@ -31,10 +48,19 @@ The test client allows you to make requests against your ASGI application.
             if msg == 'ping':
                 await ws.send('pong')
 
+Test Websockets:
+
+.. code-block:: python
+
+    from muffin import TestClient
+
+    client = TestClient(app)
+
     async with client.websocket('/ws') as ws:
         await ws.send('ping')
         msg = await ws.receive()
         assert msg == 'pong'
+
 
 Check the TestClient API Reference: :class:`~muffin.TestClient`
 
