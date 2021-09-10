@@ -68,7 +68,7 @@ class Manager:
         # We have to use sync mode here because of eventloop conflict with ipython/promt-toolkit
         @self
         def shell(ipython: bool = True):
-            """Run the application shell.
+            """Start the application's shell.
 
             :param ipython: Use IPython as a shell
             """
@@ -87,6 +87,14 @@ class Manager:
                     pass
 
             code.interact(banner, local=ctx)
+
+        @self
+        def run(host: str = 'localhost', port: int = 5000):
+            """Start the application's server."""
+            from uvicorn.main import run as urun
+
+            cfg = self.app.cfg
+            return urun(self.app, host=host, port=port, debug=cfg.debug, log_config=cfg.LOG_CONFIG)
 
     def shell(self, ctx: t.Any) -> t.Any:
         """Set shell context. The method could be used as a decorator."""
