@@ -31,7 +31,7 @@ jobs:
       uses: actions/cache@main
       with:
         path: env
-        key: env-${{ matrix.python-version }}-${{ hashFiles('setup.cfg') }}
+        key: env-${{ matrix.python-version }}-${{ hashFiles('requirements/requirements.txt', 'requirements/requirements-tests.txt') }}
 
     - name: Initialize virtual env
       run: python -m venv env
