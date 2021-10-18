@@ -5,11 +5,11 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   # Maintain dependencies for Python
   - package-ecosystem: "pip"
-    directory: "/"
+    directory: "/requirements"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
