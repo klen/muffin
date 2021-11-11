@@ -14,24 +14,24 @@ class HandlerMeta(type):
 
     """Prepare handlers."""
 
-    def __new__(mcs, name, bases, params):
+    def __new__(cls, name, bases, params):
         """Prepare a Handler Class."""
-        cls = super().__new__(mcs, name, bases, params)
+        kls: Handler = super().__new__(cls, name, bases, params)  # type: ignore
 
         # Ensure that the class methods are exist and iterable
-        if not cls.methods:
-            cls.methods = set(method for method in HTTP_METHODS if method.lower() in cls.__dict__)
+        if not kls.methods:
+            kls.methods = [method for method in HTTP_METHODS if method.lower() in kls.__dict__]
 
-        elif isinstance(cls.methods, str):
-            cls.methods = [cls.methods]
+        elif isinstance(kls.methods, str):
+            kls.methods = [kls.methods]
 
-        cls.methods = set(method.upper() for method in cls.methods)
-        for m in cls.methods:
-            method = getattr(cls, m.lower(), None)
+        kls.methods = set(method.upper() for method in kls.methods)
+        for m in kls.methods:
+            method = getattr(kls, m.lower(), None)
             if method and not is_awaitable(method):
                 raise TypeError(f"The method '{method.__qualname__}' has to be awaitable")
 
-        return cls
+        return kls
 
 
 def route_method(*paths: str, **params) -> t.Callable:
@@ -85,7 +85,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     """
 
-    methods: t.Optional[t.Sequence[str]] = None
+    methods: t.Optional[t.Collection[str]] = None
 
     @classmethod
     def __route__(cls, router: Router, *paths: str, methods: TYPE_METHODS = None, **params):
@@ -97,7 +97,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
         return cls
 
-    def __call__(self, request: Request, *args, **opts) -> t.Awaitable:
+    def __call__(self, request: Request, **opts) -> t.Awaitable:
         """Dispatch the given request by HTTP method."""
         method = getattr(self, opts.get('__meth__') or request.method.lower())
         return method(request)

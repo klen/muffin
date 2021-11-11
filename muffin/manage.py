@@ -66,7 +66,6 @@ class Manager:
         ))
 
         # We have to use sync mode here because of eventloop conflict with ipython/promt-toolkit
-        @self
         def shell(ipython: bool = True):
             """Start the application's shell.
 
@@ -88,13 +87,16 @@ class Manager:
 
             code.interact(banner, local=ctx)
 
-        @self
+        self(shell)
+
         def run(host: str = 'localhost', port: int = 5000):
             """Start the application's server."""
             from uvicorn.main import run as urun
 
             cfg = self.app.cfg
             return urun(self.app, host=host, port=port, debug=cfg.debug, log_config=cfg.LOG_CONFIG)
+
+        self(run)
 
     def shell(self, ctx: t.Any) -> t.Any:
         """Set shell context. The method could be used as a decorator."""
@@ -120,12 +122,12 @@ class Manager:
             if not inspect.iscoroutinefunction(fn) and lifespan:
                 raise ValueError('Muffin manage lifespan supported only for async functions.')
 
-            fn.__lifespan = lifespan
+            fn.lifespan = lifespan
 
             description = '\n'.join([s for s in (fn.__doc__ or '').split('\n')
                                      if not s.strip().startswith(':')]).strip()
             parser = self.subparsers.add_parser(fn.__name__, description=description)
-            args, vargs, kw, defs, kwargs, kwdefs, anns = inspect.getfullargspec(fn)
+            args, vargs, _, defs, __, kwdefs, anns = inspect.getfullargspec(fn)
             defs = defs or []
             kwargs_ = dict(zip(args[-len(defs):], defs))
             docs = dict(PARAM_RE.findall(fn.__doc__ or ''))
@@ -178,10 +180,7 @@ class Manager:
         if prog:
             self.parser.prog = prog
 
-        if not args:
-            args = tuple(sys.argv[1:])
-
-        ns, _ = self.parser.parse_known_args(args)
+        ns, _ = self.parser.parse_known_args(args or sys.argv[1:])
         kwargs = dict(ns._get_kwargs())
         fn = self.commands.get(kwargs.pop('subparser'))
         if 'aiolib' in kwargs:
@@ -191,16 +190,16 @@ class Manager:
             self.parser.print_help()
             sys.exit(1)
 
-        args, kwargs = kwargs.pop('*', []), kwargs
+        pargs = kwargs.pop('*', [])
 
         if not inspect.iscoroutinefunction(fn):
-            return fn(*args, **kwargs)
+            return fn(*pargs, **kwargs)
 
         ctx: t.AsyncContextManager = AsyncExitStack()
-        if fn.__lifespan:  # type: ignore
+        if getattr(fn, 'lifespan', False):
             ctx = self.app.lifespan
 
-        aio_run(run_fn, ctx, fn, args=kwargs.pop('*', []), kwargs=kwargs)
+        aio_run(run_fn, ctx, fn, args=pargs, kwargs=kwargs)
 
 
 async def run_fn(ctx, fn, args=(), kwargs={}):
@@ -232,7 +231,7 @@ def cli():
 
     except Exception as exc:
         logging.exception(exc)
-        raise sys.exit(1)
+        return sys.exit(1)
 
     sys.exit(0)
 

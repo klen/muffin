@@ -64,7 +64,7 @@ def import_submodules(package_name: str, *submodules: str) -> t.Dict[str, Module
     }
 
 
-def import_app(app_uri: str, reload: bool = False) -> t.Optional[ASGIApp]:
+def import_app(app_uri: str, reload: bool = False) -> ASGIApp:
     """Import application by the given string (python.path.to.module:app_name)."""
     mod_name, _, app_name = app_uri.partition(':')
     mod = importlib.import_module(mod_name)

@@ -48,7 +48,7 @@ major:
 #  Development
 # =============
 
-$(VIRTUAL_ENV): setup.cfg
+$(VIRTUAL_ENV): setup.cfg requirements/requirements.txt requirements/requirements-tests.txt
 	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/pip install -e .[tests,docs,build]
 	@touch $(VIRTUAL_ENV)
