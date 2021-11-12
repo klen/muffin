@@ -19,6 +19,8 @@ class BasePlugin(ABC):
 
     """Base class for Muffin plugins."""
 
+    name: str
+
     app: t.Optional[Application] = None
 
     # Plugin options with default values
@@ -36,14 +38,11 @@ class BasePlugin(ABC):
     # Optional conftest method
     conftest: t.Optional[t.Callable] = None
 
-    @property
-    @abstractmethod
-    def name(self):
-        """Plugin has to have a name."""
-        raise NotImplementedError
-
     def __init__(self, app: Application = None, **options):
         """Save application and create he plugin's configuration."""
+        if getattr(self, 'name', None) is None:
+            raise TypeError('Plugin.name is required')
+
         self.cfg = Config(config_config={'update_from_env': False}, **self.defaults)
 
         if app is not None:
