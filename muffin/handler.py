@@ -3,35 +3,39 @@
 import inspect
 import typing as t
 
+from asgi_tools import Request
+from asgi_tools.app import HTTP_METHODS, HTTPView
+from asgi_tools.utils import is_awaitable
 from http_router import Router
 from http_router.typing import TYPE_METHODS
-from asgi_tools import Request
-from asgi_tools.app import HTTPView, HTTP_METHODS
-from asgi_tools.utils import is_awaitable
 
 
 class HandlerMeta(type):
 
     """Prepare handlers."""
 
-    def __new__(cls, name, bases, params):
+    def __new__(mcs, name, bases, params):
         """Prepare a Handler Class."""
-        kls: Handler = super().__new__(cls, name, bases, params)  # type: ignore
+        cls: Handler = super().__new__(mcs, name, bases, params)  # type: ignore
 
         # Ensure that the class methods are exist and iterable
-        if not kls.methods:
-            kls.methods = [method for method in HTTP_METHODS if method.lower() in kls.__dict__]
+        if not cls.methods:
+            cls.methods = [
+                method for method in HTTP_METHODS if method.lower() in cls.__dict__
+            ]
 
-        elif isinstance(kls.methods, str):
-            kls.methods = [kls.methods]
+        elif isinstance(cls.methods, str):
+            cls.methods = [cls.methods]
 
-        kls.methods = set(method.upper() for method in kls.methods)
-        for m in kls.methods:
-            method = getattr(kls, m.lower(), None)
+        cls.methods = set(method.upper() for method in cls.methods)
+        for m in cls.methods:
+            method = getattr(cls, m.lower(), None)
             if method and not is_awaitable(method):
-                raise TypeError(f"The method '{method.__qualname__}' has to be awaitable")
+                raise TypeError(
+                    f"The method '{method.__qualname__}' has to be awaitable"
+                )
 
-        return kls
+        return cls
 
 
 def route_method(*paths: str, **params) -> t.Callable:
@@ -88,10 +92,12 @@ class Handler(HTTPView, metaclass=HandlerMeta):
     methods: t.Optional[t.Collection[str]] = None
 
     @classmethod
-    def __route__(cls, router: Router, *paths: str, methods: TYPE_METHODS = None, **params):
+    def __route__(
+        cls, router: Router, *paths: str, methods: TYPE_METHODS = None, **params
+    ):
         """Check for registered methods."""
         router.bind(cls, *paths, methods=methods or cls.methods, **params)
-        for _, method in inspect.getmembers(cls, lambda m: hasattr(m, '__route__')):
+        for _, method in inspect.getmembers(cls, lambda m: hasattr(m, "__route__")):
             cpaths, cparams = method.__route__
             router.bind(cls, *cpaths, __meth__=method.__name__, **cparams)
 
@@ -99,7 +105,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     def __call__(self, request: Request, **opts) -> t.Awaitable:
         """Dispatch the given request by HTTP method."""
-        method = getattr(self, opts.get('__meth__') or request.method.lower())
+        method = getattr(self, opts.get("__meth__") or request.method.lower())
         return method(request)
 
     route = route_method

@@ -1,22 +1,21 @@
 """CLI Support is here."""
 
 import argparse
+import code
 import inspect
 import logging
 import os
-import code
 import re
 import sys
 import typing as t
-
-from . import __version__, CONFIG_ENV_VARIABLE
-from .app import Application
-from .utils import aio_lib, aio_run, import_app, AIOLIBS, AIOLIB
 from contextlib import AsyncExitStack
 
+from muffin import CONFIG_ENV_VARIABLE, __version__
+from muffin.app import Application
+from muffin.utils import AIOLIB, AIOLIBS, aio_lib, aio_run, import_app
 
-PARAM_RE = re.compile(r'^\s+:param (\w+): (.+)$', re.M)
-F = t.TypeVar('F', bound=t.Callable[..., t.Any])
+PARAM_RE = re.compile(r"^\s+:param (\w+): (.+)$", re.M)
+F = t.TypeVar("F", bound=t.Callable[..., t.Any])
 
 
 class Manager:
@@ -51,19 +50,31 @@ class Manager:
     def __init__(self, app: Application):
         """Initialize the manager."""
         self.app = app
-        self.parser = argparse.ArgumentParser(description="Manage %s" % app.cfg.name.capitalize())
+        self.parser = argparse.ArgumentParser(
+            description="Manage %s" % app.cfg.name.capitalize()
+        )
 
         if len(AIOLIBS) > 1:
             self.parser.add_argument(
-                '--aiolib', type=str, choices=list(AIOLIBS.keys()), default=aio_lib(),
-                help='Select an asyncio library to run commands.')
+                "--aiolib",
+                type=str,
+                choices=list(AIOLIBS.keys()),
+                default=aio_lib(),
+                help="Select an asyncio library to run commands.",
+            )
 
-        self.subparsers = self.parser.add_subparsers(dest='subparser')
+        self.subparsers = self.parser.add_subparsers(dest="subparser")
         self.commands: t.Dict[str, t.Callable] = dict()
 
-        self.shell(getattr(app.cfg, 'MANAGE_SHELL', lambda: dict(
-            app=app, run=aio_run, lifespan=app.lifespan, **app.plugins)
-        ))
+        self.shell(
+            getattr(
+                app.cfg,
+                "MANAGE_SHELL",
+                lambda: dict(
+                    app=app, run=aio_run, lifespan=app.lifespan, **app.plugins
+                ),
+            )
+        )
 
         # We have to use sync mode here because of eventloop conflict with ipython/promt-toolkit
         def shell(ipython: bool = True):
@@ -80,6 +91,7 @@ class Manager:
             if ipython:
                 try:
                     from IPython.terminal.embed import InteractiveShellEmbed
+
                     sh = InteractiveShellEmbed(banner1=banner, user_ns=ctx)
                     return sh()
                 except ImportError:
@@ -89,12 +101,18 @@ class Manager:
 
         self(shell)
 
-        def run(host: str = 'localhost', port: int = 5000):
+        def run(host: str = "localhost", port: int = 5000):
             """Start the application's server."""
             from uvicorn.main import run as urun
 
             cfg = self.app.cfg
-            return urun(self.app, host=host, port=port, debug=cfg.debug, log_config=cfg.LOG_CONFIG)
+            return urun(
+                self.app,
+                host=host,
+                port=port,
+                debug=cfg.debug,
+                log_config=cfg.LOG_CONFIG,
+            )
 
         self(run)
 
@@ -120,45 +138,62 @@ class Manager:
 
         def wrapper(fn):
             if not inspect.iscoroutinefunction(fn) and lifespan:
-                raise ValueError('Muffin manage lifespan supported only for async functions.')
+                raise ValueError(
+                    "Muffin manage lifespan supported only for async functions."
+                )
 
             fn.lifespan = lifespan
 
-            description = '\n'.join([s for s in (fn.__doc__ or '').split('\n')
-                                     if not s.strip().startswith(':')]).strip()
+            description = "\n".join(
+                [
+                    s
+                    for s in (fn.__doc__ or "").split("\n")
+                    if not s.strip().startswith(":")
+                ]
+            ).strip()
             parser = self.subparsers.add_parser(fn.__name__, description=description)
             args, vargs, _, defs, __, kwdefs, anns = inspect.getfullargspec(fn)
             defs = defs or []
-            kwargs_ = dict(zip(args[-len(defs):], defs))
-            docs = dict(PARAM_RE.findall(fn.__doc__ or ''))
+            kwargs_ = dict(zip(args[-len(defs) :], defs))
+            docs = dict(PARAM_RE.findall(fn.__doc__ or ""))
 
             def process_arg(name, *, value=..., **opts):
                 argname = name.lower()
-                arghelp = docs.get(name, '')
+                arghelp = docs.get(name, "")
                 if value is ...:
                     return parser.add_argument(argname, help=arghelp, **opts)
 
-                argname = argname.replace('_', '-')
+                argname = argname.replace("_", "-")
                 if isinstance(value, bool):
                     if value:
                         return parser.add_argument(
-                            "--no-" + argname, dest=name, action="store_false",
-                            help=arghelp or f"Disable { name }")
+                            "--no-" + argname,
+                            dest=name,
+                            action="store_false",
+                            help=arghelp or f"Disable { name }",
+                        )
 
                     return parser.add_argument(
-                        "--" + argname, dest=name, action="store_true",
-                        help=arghelp or f"Enable { name }")
+                        "--" + argname,
+                        dest=name,
+                        action="store_true",
+                        help=arghelp or f"Enable { name }",
+                    )
 
                 if isinstance(value, list):
                     return parser.add_argument(
-                        "--" + argname, action="append", default=value, help=arghelp)
+                        "--" + argname, action="append", default=value, help=arghelp
+                    )
 
                 return parser.add_argument(
-                    "--" + argname, type=anns.get(name, type(value)),
-                    default=value, help=arghelp + ' [%s]' % repr(value))
+                    "--" + argname,
+                    type=anns.get(name, type(value)),
+                    default=value,
+                    help=arghelp + " [%s]" % repr(value),
+                )
 
             if vargs:
-                process_arg('*', nargs="*", metavar=vargs)
+                process_arg("*", nargs="*", metavar=vargs)
 
             for name, value in (kwdefs or {}).items():
                 process_arg(name, value=value)
@@ -182,21 +217,21 @@ class Manager:
 
         ns, _ = self.parser.parse_known_args(args or sys.argv[1:])
         kwargs = dict(ns._get_kwargs())
-        fn = self.commands.get(kwargs.pop('subparser'))
-        if 'aiolib' in kwargs:
-            AIOLIB.current = kwargs.pop('aiolib')
+        fn = self.commands.get(kwargs.pop("subparser"))
+        if "aiolib" in kwargs:
+            AIOLIB.current = kwargs.pop("aiolib")
 
         if not fn:
             self.parser.print_help()
             sys.exit(1)
 
-        pargs = kwargs.pop('*', [])
+        pargs = kwargs.pop("*", [])
 
         if not inspect.iscoroutinefunction(fn):
             return fn(*pargs, **kwargs)
 
         ctx: t.AsyncContextManager = AsyncExitStack()
-        if getattr(fn, 'lifespan', False):
+        if getattr(fn, "lifespan", False):
             ctx = self.app.lifespan
 
         aio_run(run_fn, ctx, fn, args=pargs, kwargs=kwargs)
@@ -216,18 +251,17 @@ def cli():
     logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 
     parser = argparse.ArgumentParser(description="Manage Application", add_help=False)
-    parser.add_argument('app', metavar='app',
-                        type=str, help='Application module path')
-    parser.add_argument('--config', type=str, help='Path to configuration.')
-    parser.add_argument('--version', action="version", version=__version__)
+    parser.add_argument("app", metavar="app", type=str, help="Application module path")
+    parser.add_argument("--config", type=str, help="Path to configuration.")
+    parser.add_argument("--version", action="version", version=__version__)
     args_, subargs_ = parser.parse_known_args(sys.argv[1:])
     if args_.config:
         os.environ[CONFIG_ENV_VARIABLE] = args_.config
 
     try:
         app = import_app(args_.app)
-        app.logger.info('Application is loaded: %s' % app.cfg.name)
-        app.manage.run(*subargs_, prog='muffin %s' % args_.app)
+        app.logger.info("Application is loaded: %s" % app.cfg.name)
+        app.manage.run(*subargs_, prog="muffin %s" % args_.app)
 
     except Exception as exc:
         logging.exception(exc)

@@ -1,13 +1,13 @@
 """A helper to write Muffin Plugins."""
 
 import typing as t
-from abc import ABC, abstractmethod
+from abc import ABC
 
 from asgi_tools.utils import to_awaitable
 from modconfig import Config
 
-from . import MuffinException
-from .app import Application
+from muffin import MuffinException
+from muffin.app import Application
 
 
 class PluginException(MuffinException):
@@ -40,10 +40,10 @@ class BasePlugin(ABC):
 
     def __init__(self, app: Application = None, **options):
         """Save application and create he plugin's configuration."""
-        if getattr(self, 'name', None) is None:
-            raise TypeError('Plugin.name is required')
+        if getattr(self, "name", None) is None:
+            raise TypeError("Plugin.name is required")
 
-        self.cfg = Config(config_config={'update_from_env': False}, **self.defaults)
+        self.cfg = Config(config_config={"update_from_env": False}, **self.defaults)
 
         if app is not None:
             self.setup(app, **options)
@@ -67,7 +67,9 @@ class BasePlugin(ABC):
         self.app.plugins[self.name] = self
 
         # Update configuration
-        self.cfg.update_from_dict(dict(app.cfg), prefix=f"{self.name}_", exist_only=True)
+        self.cfg.update_from_dict(
+            dict(app.cfg), prefix=f"{self.name}_", exist_only=True
+        )
         self.cfg.update_from_dict(options)
 
         # Register a middleware
