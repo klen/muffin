@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>API &#8212; Muffin 0.86.2 documentation</title>
+    <title>API &#8212; Muffin 0.86.3 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -161,7 +161,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.86.2
+    Version: 0.86.3
 </div>
             </div>
             
@@ -333,7 +333,7 @@
 <h2>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Application">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cfg_mods</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cfg_mods</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Muffin Application.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -445,7 +445,7 @@
 <h2>Class Based Handlers<a class="headerlink" href="#class-based-handlers" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Handler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">opts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Handler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">opts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class-based view pattern for handling HTTP method dispatching.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">,</span> <span class="s1">&#39;/hello/</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">HelloHandler</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
@@ -492,7 +492,7 @@
 <h2>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Request">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represent a HTTP Request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -591,7 +591,7 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.stream">
-<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.stream" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stream the request’s body.</p>
 <p>The method provides byte chunks without storing the entire body to memory.
 Any subsequent calls to <a class="reference internal" href="#muffin.Request.body" title="muffin.Request.body"><code class="xref py py-meth docutils literal notranslate"><span class="pre">body()</span></code></a>, <a class="reference internal" href="#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code></a>, <a class="reference internal" href="#muffin.Request.json" title="muffin.Request.json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code></a>
@@ -619,7 +619,7 @@ variable if you need.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.body">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.body" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.body" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and return the request’s body as bytes.</p>
 <p><cite>body = await request.body()</cite></p>
 <dl class="field-list simple">
@@ -631,7 +631,7 @@ variable if you need.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.text">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.text" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and return the request’s body as a string.</p>
 <p><cite>text = await request.text()</cite></p>
 <dl class="field-list simple">
@@ -643,7 +643,7 @@ variable if you need.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.form">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_memory_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.form" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_memory_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.form" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and return the request’s multipart formdata as a multidict.</p>
 <p>The method reads the request’s stream stright into memory formdata.
 Any subsequent calls to <a class="reference internal" href="#muffin.Request.body" title="muffin.Request.body"><code class="xref py py-meth docutils literal notranslate"><span class="pre">body()</span></code></a>, <a class="reference internal" href="#muffin.Request.json" title="muffin.Request.json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code></a> will raise an error.</p>
@@ -664,7 +664,7 @@ Any subsequent calls to <a class="reference internal" href="#muffin.Request.body
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.json">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.json" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and return the request’s body as a JSON.</p>
 <p><cite>json = await request.json()</cite></p>
 <dl class="field-list simple">
@@ -676,7 +676,7 @@ Any subsequent calls to <a class="reference internal" href="#muffin.Request.body
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.data">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raise_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raise_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>The method checks Content-Type Header and parse the request’s data automatically.</p>
 <p><cite>data = await request.data()</cite></p>
 <p>If <cite>raise_errors</cite> is false (by default) and the given data is invalid (ex. invalid json)
@@ -700,7 +700,7 @@ the request’s body would be returned.</p>
 <h2>Responses<a class="headerlink" href="#responses" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Response">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Response" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Response" title="Permalink to this definition">¶</a></dt>
 <dd><p>A base class to make <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> responses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -723,7 +723,7 @@ the request’s body would be returned.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Response.headers">
-<span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="pre">:</span> <span class="pre">multidict._multidict.MultiDict</span></em><a class="headerlink" href="#muffin.Response.headers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">multidict._multidict.MultiDict</span></em><a class="headerlink" href="#muffin.Response.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multidict of response’s headers</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Response</span>
 
@@ -738,7 +738,7 @@ the request’s body would be returned.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Response.cookies">
-<span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.10)"><span class="pre">http.cookies.SimpleCookie</span></a></em><a class="headerlink" href="#muffin.Response.cookies" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.10)"><span class="pre">http.cookies.SimpleCookie</span></a></em><a class="headerlink" href="#muffin.Response.cookies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set/Update cookies</p>
 <ul class="simple">
 <li><p><cite>response.cookies[name] = value</cite> <code class="docutils literal notranslate"><span class="pre">str</span></code> – set a cookie’s value</p></li>
@@ -746,9 +746,12 @@ the request’s body would be returned.</p>
 <li><p><cite>response.cookies[name][‘expires’] = value</cite> <code class="docutils literal notranslate"><span class="pre">int</span></code> – set a cookie’s expire</p></li>
 <li><p><cite>response.cookies[name][‘domain’] = value</cite> <code class="docutils literal notranslate"><span class="pre">str</span></code> – set a cookie’s domain</p></li>
 <li><p><cite>response.cookies[name][‘max-age’] = value</cite> <code class="docutils literal notranslate"><span class="pre">int</span></code> – set a cookie’s max-age</p></li>
-<li><p><cite>response.cookies[name][‘secure’] = value</cite> <code class="docutils literal notranslate"><span class="pre">bool</span></code>– is the cookie should only be sent if request is SSL</p></li>
-<li><p><cite>response.cookies[name][‘httponly’] = value</cite> <code class="docutils literal notranslate"><span class="pre">bool</span></code> – is the cookie should be available through HTTP request only (not from JS)</p></li>
-<li><p><cite>response.cookies[name][‘samesite’] = value</cite> <code class="docutils literal notranslate"><span class="pre">str</span></code> – set a cookie’s strategy (‘lax’|’strict’|’none’)</p></li>
+<li><p><cite>response.cookies[name][‘secure’] = value</cite> <code class="docutils literal notranslate"><span class="pre">bool</span></code>– is the cookie
+should only be sent if request is SSL</p></li>
+<li><p><cite>response.cookies[name][‘httponly’] = value</cite> <code class="docutils literal notranslate"><span class="pre">bool</span></code> – is the cookie
+should be available through HTTP request only (not from JS)</p></li>
+<li><p><cite>response.cookies[name][‘samesite’] = value</cite> <code class="docutils literal notranslate"><span class="pre">str</span></code> – set a cookie’s
+strategy (‘lax’|’strict’|’none’)</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Response</span>
 
@@ -768,7 +771,7 @@ the request’s body would be returned.</p>
 <h3>ResponseText (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsetext-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseText">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseText" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseText" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return plain text responses (text/plain).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseText</span>
 
@@ -794,7 +797,7 @@ the request’s body would be returned.</p>
 <h3>ResponseHTML (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsehtml-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseHTML">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseHTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseHTML" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseHTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseHTML" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return HTML responses (text/html).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseHTML</span>
 
@@ -825,7 +828,7 @@ result will be converted into a HTML Response</p>
 <h3>ResponseJSON (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsejson-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseJSON">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseJSON" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseJSON" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return JSON responses (application/json).</p>
 <p>The class optionally supports <a class="reference external" href="https://pypi.org/project/ujson/">ujson</a> and <a class="reference external" href="https://pypi.org/project/orjson/">orjson</a> JSON libraries. Install one of them to use instead
 the standard library.</p>
@@ -858,7 +861,7 @@ result will be converted into a JSON Response</p>
 <h3>ResponseRedirect (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseredirect-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseRedirect">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseRedirect" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseRedirect" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return HTTP redirects. Uses a 307 status code by default.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -897,7 +900,7 @@ result will be converted into a JSON Response</p>
 <h3>ResponseError (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseerror-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseError">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseError" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to return HTTP errors. Uses a 500 status code by default.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -937,7 +940,7 @@ result will be converted into a JSON Response</p>
 <h3>ResponseStream (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsestream-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseStream">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseStream" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseStream" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to stream a response’s body.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -969,7 +972,7 @@ result will be converted into a JSON Response</p>
 <h3>ResponseSSE (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsesse-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseSSE">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseSSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseSSE" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseSSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseSSE" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to stream SSE (server side events).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1008,7 +1011,7 @@ result will be converted into a JSON Response</p>
 <h3>ResponseFile (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsefile-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseFile">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseFile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to stream files as a response body.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1041,7 +1044,7 @@ result will be converted into a JSON Response</p>
 <h3>ResponseWebSocket (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsewebsocket-response" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseWebSocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseWebSocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper to work with websockets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1067,7 +1070,7 @@ result will be converted into a JSON Response</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket.accept">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.accept" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.accept" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accept a websocket connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1078,7 +1081,7 @@ result will be converted into a JSON Response</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket.close">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.close" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sent by the application to tell the server to close the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1092,7 +1095,7 @@ result will be converted into a JSON Response</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket.send">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'websocket.send'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'websocket.send'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send the given message to a client.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1106,7 +1109,7 @@ result will be converted into a JSON Response</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket.send_json">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send_json" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serialize the given data to JSON and send to a client.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1117,7 +1120,7 @@ result will be converted into a JSON Response</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket.receive">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.receive" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.receive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Receive messages from a client.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1138,7 +1141,7 @@ result will be converted into a JSON Response</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.TestClient">
 <span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">TestClient</span></span><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.63.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.63.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </section>
@@ -1184,7 +1187,7 @@ result will be converted into a JSON Response</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.1.<br>
 </p>
     </div>
     
