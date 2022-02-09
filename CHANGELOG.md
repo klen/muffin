@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.87.0] - 2022-02-09
+
+### Changed
+
+- Follow asgi-tools 0.64.1
+
 ## [0.86.2] - 2021-12-14
 
 ### Changed
@@ -23,7 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-[unreleased]: https://github.com/klen/muffin/compare/0.86.2...HEAD
+[unreleased]: https://github.com/klen/muffin/compare/0.87.0...HEAD
+[0.87.0]: https://github.com/klen/muffin/compare/0.86.2...0.87.0
 [0.86.2]: https://github.com/klen/muffin/compare/0.1.0...0.86.2
 [0.1.0]: https://github.com/klen/muffin/compare/0.0.1...0.1.0
 [0.0.1]: https://github.com/klen/muffin/releases/tag/0.0.1
