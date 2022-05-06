@@ -6,29 +6,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Configuration &#8212; Muffin 0.87.0 documentation</title>
+    <title>Configuration &#8212; Muffin 0.87.1 documentation</title>
     
-    <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     
-    <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -46,7 +43,7 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -158,7 +155,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.87.0
+    Version: 0.87.1
 </div>
               </div>
               <div class="sidebar-end-items">
@@ -173,7 +170,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -221,7 +218,7 @@
               <div>
                 
   <section id="configuration">
-<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">#</a></h1>
 <p>Muffin gets configuration options from python files. You have to specify
 default configuration module name in your app initialization:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Application arguments are configuration modules, first available will be used</span>
@@ -243,7 +240,7 @@ environment variable:</p>
 </pre></div>
 </div>
 <section id="default-application-options">
-<h2>Default Application Options<a class="headerlink" href="#default-application-options" title="Permalink to this headline">¶</a></h2>
+<h2>Default Application Options<a class="headerlink" href="#default-application-options" title="Permalink to this headline">#</a></h2>
 <p>Base Muffin options and default values:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Application name (used as prefix for env variables, for logging, for plugins)</span>
 <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;muffin&#39;</span><span class="p">,</span>
@@ -273,7 +270,7 @@ environment variable:</p>
 </div>
 </section>
 <section id="environment-variables">
-<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">#</a></h2>
 <p>Muffin reads configuration values from the current environment’s variables
 using the form: <code class="docutils literal notranslate"><span class="pre">{app.name}_{option_name}</span></code>. By default Muffin parses env
 values as a JSON.</p>
@@ -296,7 +293,7 @@ values as a JSON.</p>
 </div>
 </section>
 <section id="configuration-precedence">
-<h2>Configuration precedence<a class="headerlink" href="#configuration-precedence" title="Permalink to this headline">¶</a></h2>
+<h2>Configuration precedence<a class="headerlink" href="#configuration-precedence" title="Permalink to this headline">#</a></h2>
 <p>The order in which configuration values are read is:</p>
 <ul class="simple">
 <li><p>From default config;</p></li>
@@ -306,7 +303,7 @@ values as a JSON.</p>
 </ul>
 </section>
 <section id="configuring-logging">
-<h2>Configuring logging<a class="headerlink" href="#configuring-logging" title="Permalink to this headline">¶</a></h2>
+<h2>Configuring logging<a class="headerlink" href="#configuring-logging" title="Permalink to this headline">#</a></h2>
 <p>You can define your logging configurations with
 <a class="reference external" href="https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema">Python dictConfig format</a>
 and place in <code class="docutils literal notranslate"><span class="pre">LOG_CONFIG</span></code> option:</p>
@@ -371,8 +368,9 @@ and place in <code class="docutils literal notranslate"><span class="pre">LOG_CO
       </div>
     </div>
   
-    <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -383,7 +381,7 @@ and place in <code class="docutils literal notranslate"><span class="pre">LOG_CO
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

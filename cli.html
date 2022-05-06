@@ -6,29 +6,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>CLI integration &#8212; Muffin 0.87.0 documentation</title>
+    <title>CLI integration &#8212; Muffin 0.87.1 documentation</title>
     
-    <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+
     
-    <link rel="stylesheet"
-      href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
-    
-      
-  
-    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     
-    <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -46,7 +43,7 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -158,7 +155,7 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.87.0
+    Version: 0.87.1
 </div>
               </div>
               <div class="sidebar-end-items">
@@ -173,7 +170,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -218,7 +215,7 @@
               <div>
                 
   <section id="cli-integration">
-<h1>CLI integration<a class="headerlink" href="#cli-integration" title="Permalink to this headline">¶</a></h1>
+<h1>CLI integration<a class="headerlink" href="#cli-integration" title="Permalink to this headline">#</a></h1>
 <p>Run in your shell:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>muffin path.to.your.module --help
 <span class="gp">$ </span>muffin path.to.your.module:app_object_name --help
@@ -226,9 +223,9 @@
 </div>
 <p>You’ll see commands available for your application.</p>
 <section id="built-in-commands">
-<h2>Built-in commands<a class="headerlink" href="#built-in-commands" title="Permalink to this headline">¶</a></h2>
+<h2>Built-in commands<a class="headerlink" href="#built-in-commands" title="Permalink to this headline">#</a></h2>
 <section id="shell">
-<h3>shell<a class="headerlink" href="#shell" title="Permalink to this headline">¶</a></h3>
+<h3>shell<a class="headerlink" href="#shell" title="Permalink to this headline">#</a></h3>
 <p>Usage:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>muffin shell <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--no-ipython<span class="o">]</span>
 </pre></div>
@@ -248,7 +245,7 @@
 </section>
 </section>
 <section id="write-a-custom-command">
-<h2>Write a custom command<a class="headerlink" href="#write-a-custom-command" title="Permalink to this headline">¶</a></h2>
+<h2>Write a custom command<a class="headerlink" href="#write-a-custom-command" title="Permalink to this headline">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">manage</span><span class="o">.</span><span class="n">command</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Write command help text here.</span>
@@ -311,8 +308,9 @@
       </div>
     </div>
   
-    <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -323,7 +321,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     
