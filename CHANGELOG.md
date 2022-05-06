@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.87.1] - 2022-04-06
+
+- Update modconfig 1.2.1
+
 ## [0.87.0] - 2022-02-09
 
 ### Changed
@@ -29,7 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-[unreleased]: https://github.com/klen/muffin/compare/0.87.0...HEAD
+[unreleased]: https://github.com/klen/muffin/compare/0.87.1...HEAD
+[0.87.1]: https://github.com/klen/muffin/compare/0.87.0...0.87.1
 [0.87.0]: https://github.com/klen/muffin/compare/0.86.2...0.87.0
 [0.86.2]: https://github.com/klen/muffin/compare/0.1.0...0.86.2
 [0.1.0]: https://github.com/klen/muffin/compare/0.0.1...0.1.0

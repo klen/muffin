@@ -16,4 +16,3 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         create_readme: true
         source_dir: docs
-
