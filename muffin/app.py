@@ -3,6 +3,7 @@
 import inspect
 import logging
 import typing as t
+from logging.config import dictConfig
 from types import ModuleType
 
 from asgi_tools import App as BaseApp
@@ -70,7 +71,7 @@ class Application(BaseApp):
         # Setup logging
         log_config = self.cfg.get("LOG_CONFIG")
         if log_config and isinstance(log_config, dict) and log_config.get("version"):
-            logging.config.dictConfig(log_config)  # type: ignore
+            dictConfig(log_config)  # type: ignore
 
         self.logger = logging.getLogger("muffin")
         self.logger.setLevel(self.cfg.LOG_LEVEL)
