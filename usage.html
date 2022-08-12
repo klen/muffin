@@ -1,18 +1,22 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Usage &#8212; Muffin 0.87.1 documentation</title>
-    
-  <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+    <title>Usage &#8212; Muffin 0.87.3 documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
 
-    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
   <link rel="stylesheet"
     href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
@@ -22,13 +26,14 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    
+
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
@@ -36,34 +41,41 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Configuration" href="configuration.html" />
     <link rel="prev" title="Welcome to Muffin’s documentation!" href="index.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
 
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
 
   <div id="navbar-start">
     
     
+  
 
-<a class="navbar-brand" href="index.html">
-  <img src="_static/logo.png" class="logo" alt="logo">
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
 </a>
-
-
     
   </div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="fas fa-bars"></span>
   </button>
 
   
@@ -123,6 +135,14 @@
     <div id="navbar-end">
       
       <div class="navbar-end-item">
+        <span id="theme-switch" class="btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/klen/muffin" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
@@ -141,13 +161,13 @@
     </nav>
     
 
-    <div class="container-xl">
-      <div class="row">
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -155,21 +175,22 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.87.1
+    Version: 0.87.3
 </div>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
-            </div>
-            
-          
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
 
           
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
 <div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
@@ -248,28 +269,26 @@
 </ul>
 
 </nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
-            
-          </div>
-          
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
 
           
           
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+          <div class="bd-content col-12 col-md-9 col-xl-7">
               
-              <div>
+              <article class="bd-article" role="main">
                 
   <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">#</a></h1>
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h1>
 <section id="quickstart">
-<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">#</a></h2>
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
 
 <span class="c1"># Create the muffin&#39;s application</span>
@@ -292,7 +311,7 @@ testing but probably not what you want to use in production.</p>
 world greeting.</p>
 </section>
 <section id="the-request-object">
-<h2>The Request Object<a class="headerlink" href="#the-request-object" title="Permalink to this headline">#</a></h2>
+<h2>The Request Object<a class="headerlink" href="#the-request-object" title="Permalink to this heading">#</a></h2>
 <p>Every view should accept a request object.  The request object is
 documented in the API section and we will not cover it here in detail (see
 <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>). Here is a broad overview of some of the most
@@ -326,14 +345,14 @@ bad request page in that case is not user friendly.</p>
 <p>For a full list of methods and attributes of the request object, head over
 to the <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> documentation.</p>
 <section id="cookies">
-<h3>Cookies<a class="headerlink" href="#cookies" title="Permalink to this headline">#</a></h3>
+<h3>Cookies<a class="headerlink" href="#cookies" title="Permalink to this heading">#</a></h3>
 <p>Cookies are exposed as a regular dictionary interface through <a class="reference internal" href="api.html#muffin.Request.cookies" title="muffin.Request.cookies"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cookies</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="file-uploads">
-<h3>File Uploads<a class="headerlink" href="#file-uploads" title="Permalink to this headline">#</a></h3>
+<h3>File Uploads<a class="headerlink" href="#file-uploads" title="Permalink to this heading">#</a></h3>
 <p>Request files are normally sent as multipart form data (<cite>multipart/form-data</cite>).
 The uploaded files are available in <a class="reference internal" href="api.html#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">formdata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
@@ -342,7 +361,7 @@ The uploaded files are available in <a class="reference internal" href="api.html
 </section>
 </section>
 <section id="routing">
-<h2>Routing<a class="headerlink" href="#routing" title="Permalink to this headline">#</a></h2>
+<h2>Routing<a class="headerlink" href="#routing" title="Permalink to this heading">#</a></h2>
 <p>Modern web applications use meaningful URLs to help users. Users are more
 likely to like a page and come back if the page uses a meaningful URL they can
 remember and use to directly visit a page.</p>
@@ -365,7 +384,7 @@ callback should be callable and accepts a <a class="reference internal" href="ap
 <p>See also: <a class="reference internal" href="api.html#muffin.Handler" title="muffin.Handler"><code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></a>.</p>
 </section>
 <section id="dynamic-urls">
-<h2>Dynamic URLs<a class="headerlink" href="#dynamic-urls" title="Permalink to this headline">#</a></h2>
+<h2>Dynamic URLs<a class="headerlink" href="#dynamic-urls" title="Permalink to this heading">#</a></h2>
 <p>All the URLs support regexp. You can use any regular expression to customize your URLs:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
 
@@ -375,7 +394,7 @@ callback should be callable and accepts a <a class="reference internal" href="ap
 </pre></div>
 </div>
 <section id="variable-rules">
-<h3>Variable Rules<a class="headerlink" href="#variable-rules" title="Permalink to this headline">#</a></h3>
+<h3>Variable Rules<a class="headerlink" href="#variable-rules" title="Permalink to this heading">#</a></h3>
 <p>You can add variable sections to a URL by marking sections with
 <code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;</span></code>. Your function then receives the <code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;</span></code> from
 <code class="docutils literal notranslate"><span class="pre">request.path_params</span></code>.</p>
@@ -429,7 +448,7 @@ callback should be callable and accepts a <a class="reference internal" href="ap
 </section>
 </section>
 <section id="static-files">
-<h2>Static Files<a class="headerlink" href="#static-files" title="Permalink to this headline">#</a></h2>
+<h2>Static Files<a class="headerlink" href="#static-files" title="Permalink to this heading">#</a></h2>
 <p>Set static url prefix and directories when initializing your app:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
 
@@ -439,7 +458,7 @@ callback should be callable and accepts a <a class="reference internal" href="ap
 <p>And your static files will be available at url <code class="docutils literal notranslate"><span class="pre">/static/{file}</span></code>.</p>
 </section>
 <section id="redirects-and-errors">
-<h2>Redirects and Errors<a class="headerlink" href="#redirects-and-errors" title="Permalink to this headline">#</a></h2>
+<h2>Redirects and Errors<a class="headerlink" href="#redirects-and-errors" title="Permalink to this heading">#</a></h2>
 <p>To redirect a user to another endpoint, use the <a class="reference internal" href="api.html#muffin.ResponseRedirect" title="muffin.ResponseRedirect"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseRedirect</span></code></a>
 class; to abort a request early with an error code, use the
 <a class="reference internal" href="api.html#muffin.ResponseError" title="muffin.ResponseError"><code class="xref py py-func docutils literal notranslate"><span class="pre">ResponseError()</span></code></a> class:</p>
@@ -475,7 +494,7 @@ exceptions themself:</p>
 </div>
 </section>
 <section id="about-responses">
-<span id="id1"></span><h2>About Responses<a class="headerlink" href="#about-responses" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>About Responses<a class="headerlink" href="#about-responses" title="Permalink to this heading">#</a></h2>
 <p>The return value from a view function is automatically converted into a
 response object for you. If the return value is a string it’s converted into a
 response object with the string as response body, a <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> status code and
@@ -520,7 +539,7 @@ and return as html.</p></li>
 </div>
 </section>
 <section id="middlewares">
-<h2>Middlewares<a class="headerlink" href="#middlewares" title="Permalink to this headline">#</a></h2>
+<h2>Middlewares<a class="headerlink" href="#middlewares" title="Permalink to this heading">#</a></h2>
 <p>A Muffin application supports middlewares, which provide a flexible way to
 define a chain of functions that handles every web requests.</p>
 <ol class="arabic">
@@ -564,7 +583,7 @@ which one accepts a request and can return responses.</p>
 </ol>
 </section>
 <section id="nested-applications">
-<h2>Nested applications<a class="headerlink" href="#nested-applications" title="Permalink to this headline">#</a></h2>
+<h2>Nested applications<a class="headerlink" href="#nested-applications" title="Permalink to this heading">#</a></h2>
 <p>Sub applications are designed for solving the problem of the big monolithic
 code base.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
@@ -593,7 +612,7 @@ code base.</p>
 supported for nested apps).</p>
 </section>
 <section id="debug-mode">
-<h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Permalink to this headline">#</a></h2>
+<h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Permalink to this heading">#</a></h2>
 <p>Sometime there are errors in your code. If any exception happens when Muffin
 processing a request, the library returns HTTP 500 page (the page is
 customisible). If you want to see the errors in console, you are able to start
@@ -605,51 +624,55 @@ an application in debug mode.</p>
 </section>
 
 
-              </div>
+              </article>
               
-              
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Welcome to Muffin’s documentation!</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="configuration.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configuration</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-              
-          </main>
-          
 
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Welcome to Muffin’s documentation!</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="configuration.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Configuration</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
       </div>
     </div>
+
+  
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
     &copy; Copyright 2015, Kirill Klenov.<br>
 </p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
-    </div>
-    
   </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.<br>
+</p>
+  </div>
+  
+</div>
 </footer>
   </body>
 </html>

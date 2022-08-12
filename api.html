@@ -1,18 +1,22 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>API &#8212; Muffin 0.87.1 documentation</title>
-    
-  <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+    <title>API &#8212; Muffin 0.87.3 documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
 
-    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
   <link rel="stylesheet"
     href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
@@ -22,13 +26,14 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    
+
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
@@ -36,34 +41,41 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Deployment" href="deploy.html" />
     <link rel="prev" title="Testing" href="testing.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
 
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
 
   <div id="navbar-start">
     
     
+  
 
-<a class="navbar-brand" href="index.html">
-  <img src="_static/logo.png" class="logo" alt="logo">
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
 </a>
-
-
     
   </div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="fas fa-bars"></span>
   </button>
 
   
@@ -123,6 +135,14 @@
     <div id="navbar-end">
       
       <div class="navbar-end-item">
+        <span id="theme-switch" class="btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/klen/muffin" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
@@ -141,13 +161,13 @@
     </nav>
     
 
-    <div class="container-xl">
-      <div class="row">
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -155,21 +175,22 @@
     
   </div>
 </nav><div class="sidebar-message pl-3">
-    Version: 0.87.1
+    Version: 0.87.3
 </div>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
-            </div>
-            
-          
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
 
           
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
 <div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
@@ -305,29 +326,27 @@
 </ul>
 
 </nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
-            
-          </div>
-          
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
 
           
           
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+          <div class="bd-content col-12 col-md-9 col-xl-7">
               
-              <div>
+              <article class="bd-article" role="main">
                 
   <section id="module-muffin">
-<span id="api"></span><h1>API<a class="headerlink" href="#module-muffin" title="Permalink to this headline">#</a></h1>
+<span id="api"></span><h1>API<a class="headerlink" href="#module-muffin" title="Permalink to this heading">#</a></h1>
 <p>This part of the documentation covers the interfaces of Muffin</p>
 <section id="application">
-<h2>Application<a class="headerlink" href="#application" title="Permalink to this headline">#</a></h2>
+<h2>Application<a class="headerlink" href="#application" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Application">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cfg_mods</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application" title="Permalink to this definition">#</a></dt>
@@ -425,12 +444,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>md</strong> (<em>asgi_tools.typing.F</em>) – </p></li>
+<li><p><strong>md</strong> (<em>F</em>) – </p></li>
 <li><p><strong>insert_first</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>asgi_tools.typing.F</p>
+<dd class="field-even"><p><em>F</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -439,7 +458,7 @@
 
 </section>
 <section id="class-based-handlers">
-<h2>Class Based Handlers<a class="headerlink" href="#class-based-handlers" title="Permalink to this headline">#</a></h2>
+<h2>Class Based Handlers<a class="headerlink" href="#class-based-handlers" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Handler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">opts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Handler" title="Permalink to this definition">#</a></dt>
@@ -479,14 +498,14 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<a class="reference internal" href="#muffin.Request" title="asgi_tools.request.Request"><em>asgi_tools.request.Request</em></a>) – </p>
+<dd class="field-odd"><p><strong>request</strong> (<a class="reference internal" href="#muffin.Request" title="asgi_tools.request.Request"><em>Request</em></a>) – </p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
 <section id="request">
-<h2>Request<a class="headerlink" href="#request" title="Permalink to this headline">#</a></h2>
+<h2>Request<a class="headerlink" href="#request" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Request">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request" title="Permalink to this definition">#</a></dt>
@@ -499,9 +518,6 @@
 receive event messages from the client</p></li>
 <li><p><strong>send</strong> (<em>Send</em>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <p>The Request object contains all the information about an incoming HTTP
@@ -574,7 +590,7 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Request.url">
 <span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#muffin.Request.url" title="Permalink to this definition">#</a></dt>
-<dd><p>A lazy property that parses the current URL and returns <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> object.</p>
+<dd><p>A lazy property that parses the current URL and returns <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
 <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;... the full http URL ..&#39;</span>
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">scheme</span>
@@ -583,7 +599,7 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">query_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </pre></div>
 </div>
-<p>See <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#module-yarl" title="(in yarl v1.7)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yarl</span></code></a> documentation for further reference.</p>
+<p>See <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#module-yarl" title="(in yarl v1.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yarl</span></code></a> documentation for further reference.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -654,7 +670,7 @@ Any subsequent calls to <a class="reference internal" href="#muffin.Request.body
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>multidict._multidict.MultiDict</p>
+<dd class="field-even"><p><em>MultiDict</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -685,7 +701,7 @@ the request’s body would be returned.</p>
 <dd class="field-odd"><p><strong>raise_errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><em>Union</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)">bytes</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a>, None, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>], multidict._multidict.MultiDict]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><em>Union</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)">bytes</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a>, None, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>], <em>MultiDict</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -694,7 +710,7 @@ the request’s body would be returned.</p>
 
 </section>
 <section id="responses">
-<h2>Responses<a class="headerlink" href="#responses" title="Permalink to this headline">#</a></h2>
+<h2>Responses<a class="headerlink" href="#responses" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Response">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Response" title="Permalink to this definition">#</a></dt>
@@ -720,7 +736,7 @@ the request’s body would be returned.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Response.headers">
-<span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">multidict._multidict.MultiDict</span></em><a class="headerlink" href="#muffin.Response.headers" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MultiDict</span></em><a class="headerlink" href="#muffin.Response.headers" title="Permalink to this definition">#</a></dt>
 <dd><p>Multidict of response’s headers</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Response</span>
 
@@ -735,7 +751,7 @@ the request’s body would be returned.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Response.cookies">
-<span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.10)"><span class="pre">http.cookies.SimpleCookie</span></a></em><a class="headerlink" href="#muffin.Response.cookies" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.10)"><span class="pre">SimpleCookie</span></a></em><a class="headerlink" href="#muffin.Response.cookies" title="Permalink to this definition">#</a></dt>
 <dd><p>Set/Update cookies</p>
 <ul class="simple">
 <li><p><cite>response.cookies[name] = value</cite> <code class="docutils literal notranslate"><span class="pre">str</span></code> – set a cookie’s value</p></li>
@@ -765,7 +781,7 @@ strategy (‘lax’|’strict’|’none’)</p></li>
 </dd></dl>
 
 <section id="responsetext-response">
-<h3>ResponseText (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsetext-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseText (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsetext-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseText">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseText" title="Permalink to this definition">#</a></dt>
@@ -782,7 +798,7 @@ strategy (‘lax’|’strict’|’none’)</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> (<em>ResponseContent</em>) – </p></li>
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
-<li><p><strong>headers</strong> (<em>multidict._multidict.MultiDict</em>) – </p></li>
+<li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -791,7 +807,7 @@ strategy (‘lax’|’strict’|’none’)</p></li>
 
 </section>
 <section id="responsehtml-response">
-<h3>ResponseHTML (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsehtml-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseHTML (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsehtml-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseHTML">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseHTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseHTML" title="Permalink to this definition">#</a></dt>
@@ -813,7 +829,7 @@ result will be converted into a HTML Response</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> (<em>ResponseContent</em>) – </p></li>
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
-<li><p><strong>headers</strong> (<em>multidict._multidict.MultiDict</em>) – </p></li>
+<li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -822,7 +838,7 @@ result will be converted into a HTML Response</p>
 
 </section>
 <section id="responsejson-response">
-<h3>ResponseJSON (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsejson-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseJSON (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsejson-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseJSON">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseJSON" title="Permalink to this definition">#</a></dt>
@@ -846,7 +862,7 @@ result will be converted into a JSON Response</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> (<em>ResponseContent</em>) – </p></li>
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
-<li><p><strong>headers</strong> (<em>multidict._multidict.MultiDict</em>) – </p></li>
+<li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -855,7 +871,7 @@ result will be converted into a JSON Response</p>
 
 </section>
 <section id="responseredirect-response">
-<h3>ResponseRedirect (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseredirect-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseRedirect (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseredirect-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseRedirect">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseRedirect" title="Permalink to this definition">#</a></dt>
@@ -866,9 +882,6 @@ result will be converted into a JSON Response</p>
 <li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – A string with the new location</p></li>
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseRedirect</span>
@@ -894,7 +907,7 @@ result will be converted into a JSON Response</p>
 
 </section>
 <section id="responseerror-response">
-<h3>ResponseError (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseerror-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseError (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseerror-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseError">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseError" title="Permalink to this definition">#</a></dt>
@@ -934,7 +947,7 @@ result will be converted into a JSON Response</p>
 
 </section>
 <section id="responsestream-response">
-<h3>ResponseStream (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsestream-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseStream (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsestream-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseStream">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseStream" title="Permalink to this definition">#</a></dt>
@@ -944,7 +957,7 @@ result will be converted into a JSON Response</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> (<em>AsyncGenerator</em>) – An async generator to stream the response’s body</p></li>
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
-<li><p><strong>headers</strong> (<em>multidict._multidict.MultiDict</em>) – </p></li>
+<li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -966,7 +979,7 @@ result will be converted into a JSON Response</p>
 
 </section>
 <section id="responsesse-response">
-<h3>ResponseSSE (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsesse-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseSSE (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsesse-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseSSE">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseSSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseSSE" title="Permalink to this definition">#</a></dt>
@@ -976,7 +989,7 @@ result will be converted into a JSON Response</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> (<em>AsyncGenerator</em>) – An async generator to stream the events</p></li>
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
-<li><p><strong>headers</strong> (<em>multidict._multidict.MultiDict</em>) – </p></li>
+<li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
@@ -1005,7 +1018,7 @@ result will be converted into a JSON Response</p>
 
 </section>
 <section id="responsefile-response">
-<h3>ResponseFile (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsefile-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseFile (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsefile-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseFile">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65536</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseFile" title="Permalink to this definition">#</a></dt>
@@ -1018,9 +1031,6 @@ result will be converted into a JSON Response</p>
 <li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – If set, <cite>Content-Disposition</cite> header will be generated</p></li>
 <li><p><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Return only file headers</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseFile</span>
@@ -1038,7 +1048,7 @@ result will be converted into a JSON Response</p>
 
 </section>
 <section id="responsewebsocket-response">
-<h3>ResponseWebSocket (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsewebsocket-response" title="Permalink to this headline">#</a></h3>
+<h3>ResponseWebSocket (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsewebsocket-response" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseWebSocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket" title="Permalink to this definition">#</a></dt>
@@ -1050,9 +1060,6 @@ result will be converted into a JSON Response</p>
 <li><p><strong>receive</strong> (<em>t.Optional</em><em>[</em><em>Receive</em><em>]</em>) – ASGI receive function</p></li>
 <li><p><strong>send</strong> (<em>t.Optional</em><em>[</em><em>Send</em><em>]</em>) – ASGI send function</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseWebsocket</span>
@@ -1134,62 +1141,66 @@ result will be converted into a JSON Response</p>
 </section>
 </section>
 <section id="test-client">
-<h2>Test Client<a class="headerlink" href="#test-client" title="Permalink to this headline">#</a></h2>
+<h2>Test Client<a class="headerlink" href="#test-client" title="Permalink to this heading">#</a></h2>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.TestClient">
 <span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">TestClient</span></span><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">#</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.64.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asgi_tools.tests.ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.64.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </section>
 </section>
 
 
-              </div>
+              </article>
               
-              
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="testing.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Testing</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="deploy.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Deployment</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-              
-          </main>
-          
 
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="testing.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Testing</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="deploy.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Deployment</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
       </div>
     </div>
+
+  
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
     &copy; Copyright 2015, Kirill Klenov.<br>
 </p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
-    </div>
-    
   </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.<br>
+</p>
+  </div>
+  
+</div>
 </footer>
   </body>
 </html>
