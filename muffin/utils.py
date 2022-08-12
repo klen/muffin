@@ -34,6 +34,8 @@ if trio:
 
 AIOLIBS["asyncio"] = asyncio
 
+_T = t.TypeVar("_T")
+
 
 def aio_lib() -> str:
     """Return first available async library."""
@@ -48,11 +50,11 @@ def aio_lib() -> str:
     return "asyncio"
 
 
-def aio_run(corofn: t.Callable[..., t.Awaitable], *args, **kwargs) -> t.Any:
+def aio_run(corofn: t.Callable[..., t.Awaitable[_T]], *args, **kwargs) -> _T:
     """Run the given coroutine with current async library."""
     AIOLIB.current = aiolib = AIOLIB.current or aio_lib()
     if aiolib == "asyncio":
-        return asyncio.run(corofn(*args, **kwargs))
+        return asyncio.run(corofn(*args, **kwargs))  # type: ignore
 
     return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))  # type: ignore
 
