@@ -2,9 +2,9 @@
 
 import inspect
 import logging
-import typing as t
 from logging.config import dictConfig
 from types import ModuleType
+from typing import Any, Dict, Union
 
 from asgi_tools import App as BaseApp
 from modconfig import Config
@@ -14,18 +14,16 @@ from muffin.utils import import_submodules
 
 
 class MuffinException(Exception):
-
     """Base class for Muffin Errors."""
 
     pass
 
 
 class Application(BaseApp):
-
     """The Muffin Application."""
 
     # Default configuration values
-    defaults: t.Dict = dict(
+    defaults: Dict[str, Any] = dict(
         # The application's name
         NAME="muffin",
         # Path to configuration module
@@ -44,7 +42,7 @@ class Application(BaseApp):
         LOG_CONFIG=None,
     )
 
-    def __init__(self, *cfg_mods: t.Union[str, ModuleType], **options):
+    def __init__(self, *cfg_mods: Union[str, ModuleType], **options):
         """Initialize the application.
 
         :param *cfg_mods: modules to import application's config
@@ -53,7 +51,7 @@ class Application(BaseApp):
         """
         from muffin.plugins import BasePlugin
 
-        self.plugins: t.Dict[str, BasePlugin] = {}
+        self.plugins: Dict[str, BasePlugin] = {}
 
         # Setup the configuration
         self.cfg = Config(**self.defaults, config_config=dict(update_from_env=False))
@@ -95,7 +93,7 @@ class Application(BaseApp):
         """Human readable representation."""
         return f"<muffin.Application: { self.cfg.name }>"
 
-    def import_submodules(self, *submodules: str) -> t.Dict[str, ModuleType]:
+    def import_submodules(self, *submodules: str) -> Dict[str, ModuleType]:
         """Import application components."""
         parent_frame = inspect.stack()[1][0]
         package_name = parent_frame.f_locals["__name__"]

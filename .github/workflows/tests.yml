@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', 'pypy-3.7']
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', 'pypy-3.8']
 
     steps:
     - name: Checkout changes
@@ -24,14 +24,8 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@main
       with:
+        cache: pip
         python-version: ${{ matrix.python-version }}
-
-    - name: Cache env
-      id: cache-env
-      uses: actions/cache@main
-      with:
-        path: env
-        key: env-${{ matrix.python-version }}-${{ hashFiles('requirements/requirements.txt', 'requirements/requirements-tests.txt') }}
 
     - name: Initialize virtual env
       run: python -m venv env
@@ -42,7 +36,7 @@ jobs:
 
     - name: Check typing
       run: env/bin/mypy muffin
-      if: matrix.python-version != 'pypy-3.7'
+      if: matrix.python-version != 'pypy-3.8'
 
     - name: Test with pytest
       run: env/bin/pytest tests

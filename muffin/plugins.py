@@ -1,7 +1,7 @@
 """A helper to write Muffin Plugins."""
 
-import typing as t
 from abc import ABC
+from typing import Any, Callable, Dict, Optional
 
 from asgi_tools.utils import to_awaitable
 from modconfig import Config
@@ -11,34 +11,32 @@ from muffin.app import Application
 
 
 class PluginException(MuffinException):
-
     """Implement any exception in plugins."""
 
 
 class BasePlugin(ABC):
-
     """Base class for Muffin plugins."""
 
     name: str
 
-    app: t.Optional[Application] = None
+    app: Optional[Application] = None
 
     # Plugin options with default values
-    defaults: t.Dict[str, t.Any] = {}
+    defaults: Dict[str, Any] = {}
 
     # Optional middleware method
-    middleware: t.Optional[t.Callable] = None
+    middleware: Optional[Callable] = None
 
     # Optional startup method
-    startup: t.Optional[t.Callable] = None
+    startup: Optional[Callable] = None
 
     # Optional shutdown method
-    shutdown: t.Optional[t.Callable] = None
+    shutdown: Optional[Callable] = None
 
     # Optional conftest method
-    conftest: t.Optional[t.Callable] = None
+    conftest: Optional[Callable] = None
 
-    def __init__(self, app: Application = None, **options):
+    def __init__(self, app: Optional[Application] = None, **options):
         """Save application and create he plugin's configuration."""
         if getattr(self, "name", None) is None:
             raise TypeError("Plugin.name is required")
@@ -59,12 +57,12 @@ class BasePlugin(ABC):
         """Check the plugin is installed to an app."""
         return bool(self.app)
 
-    def setup(self, app: Application, *, name: str = None, **options):
+    def setup(self, app: Application, *, name: Optional[str] = None, **options):
         """Bind app and update the plugin's configuration."""
         # allow to redefine the name for multi plugins with same type
         self.name = name or self.name  # type: ignore
         self.app = app
-        self.app.plugins[self.name] = self
+        app.plugins[self.name] = self
 
         # Update configuration
         self.cfg.update_from_dict(
@@ -74,12 +72,12 @@ class BasePlugin(ABC):
 
         # Register a middleware
         if self.middleware:
-            self.app.middleware(to_awaitable(self.middleware))
+            app.middleware(to_awaitable(self.middleware))
 
         # Bind startup
         if self.startup:
-            self.app.on_startup(self.startup)
+            app.on_startup(self.startup)
 
         # Bind shutdown
         if self.shutdown:
-            self.app.on_shutdown(self.shutdown)
+            app.on_shutdown(self.shutdown)

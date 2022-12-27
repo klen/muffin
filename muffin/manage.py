@@ -7,15 +7,15 @@ import logging
 import os
 import re
 import sys
-import typing as t
 from contextlib import AsyncExitStack
+from typing import Any, AsyncContextManager, Callable, Dict, Optional, TypeVar, overload
 
 from muffin import CONFIG_ENV_VARIABLE, __version__
 from muffin.app import Application
 from muffin.utils import AIOLIB, AIOLIBS, aio_lib, aio_run, import_app
 
 PARAM_RE = re.compile(r"^\s+:param (\w+): (.+)$", re.M)
-F = t.TypeVar("F", bound=t.Callable[..., t.Any])
+TvFn = TypeVar("TvFn", bound=Callable[..., Any])
 
 
 class Manager:
@@ -64,7 +64,7 @@ class Manager:
             )
 
         self.subparsers = self.parser.add_subparsers(dest="subparser")
-        self.commands: t.Dict[str, t.Callable] = dict()
+        self.commands: Dict[str, Callable] = dict()
 
         self.shell(
             getattr(
@@ -116,7 +116,7 @@ class Manager:
 
         self(run)
 
-    def shell(self, ctx: t.Any) -> t.Any:
+    def shell(self, ctx: Any) -> Any:
         """Set shell context. The method could be used as a decorator."""
         self.app.cfg.update(MANAGE_SHELL=ctx)
         return ctx
@@ -125,12 +125,12 @@ class Manager:
         """Just an alias for legacy code."""
         return self(*args, **kwargs)
 
-    @t.overload
-    def __call__(self, fn: F) -> F:
+    @overload
+    def __call__(self, fn: TvFn) -> TvFn:
         ...
 
-    @t.overload
-    def __call__(self, *, lifespan: bool = False) -> t.Callable[[F], F]:
+    @overload
+    def __call__(self, *, lifespan: bool = False) -> Callable[[TvFn], TvFn]:
         ...
 
     def __call__(self, fn=None, lifespan=False):
@@ -210,7 +210,7 @@ class Manager:
 
         return wrapper
 
-    def run(self, *args: str, prog: str = None):
+    def run(self, *args: str, prog: Optional[str] = None):
         """Parse the arguments and run a command."""
         if prog:
             self.parser.prog = prog
@@ -230,7 +230,7 @@ class Manager:
         if not inspect.iscoroutinefunction(fn):
             return fn(*pargs, **kwargs)
 
-        ctx: t.AsyncContextManager = AsyncExitStack()
+        ctx: AsyncContextManager = AsyncExitStack()
         if getattr(fn, "lifespan", False):
             ctx = self.app.lifespan
 

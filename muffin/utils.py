@@ -6,9 +6,9 @@ import os
 import pkgutil
 import sys
 import threading
-import typing as t
 from collections import OrderedDict
 from types import ModuleType
+from typing import Awaitable, Callable, Dict, TypeVar
 
 from asgi_tools._compat import curio, trio
 from asgi_tools.typing import ASGIApp
@@ -24,7 +24,7 @@ __all__ = (
 
 AIOLIB = threading.local()
 AIOLIB.current = None
-AIOLIBS: t.Dict[str, ModuleType] = OrderedDict()
+AIOLIBS: Dict[str, ModuleType] = OrderedDict()
 
 if curio:
     AIOLIBS["curio"] = curio
@@ -34,7 +34,7 @@ if trio:
 
 AIOLIBS["asyncio"] = asyncio
 
-_T = t.TypeVar("_T")
+Tv = TypeVar("Tv")
 
 
 def aio_lib() -> str:
@@ -50,7 +50,7 @@ def aio_lib() -> str:
     return "asyncio"
 
 
-def aio_run(corofn: t.Callable[..., t.Awaitable[_T]], *args, **kwargs) -> _T:
+def aio_run(corofn: Callable[..., Awaitable[Tv]], *args, **kwargs) -> Tv:
     """Run the given coroutine with current async library."""
     AIOLIB.current = aiolib = AIOLIB.current or aio_lib()
     if aiolib == "asyncio":
@@ -59,7 +59,7 @@ def aio_run(corofn: t.Callable[..., t.Awaitable[_T]], *args, **kwargs) -> _T:
     return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))  # type: ignore
 
 
-def import_submodules(package_name: str, *submodules: str) -> t.Dict[str, ModuleType]:
+def import_submodules(package_name: str, *submodules: str) -> Dict[str, ModuleType]:
     """Import all submodules by package name."""
     package = sys.modules[package_name]
     return {

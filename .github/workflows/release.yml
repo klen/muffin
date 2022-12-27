@@ -19,7 +19,8 @@ jobs:
 
     - uses: actions/setup-python@main
       with:
-        python-version: 3.9
+        cache: pip
+        python-version: 3.11
 
     - name: Build package
       run: |

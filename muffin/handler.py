@@ -1,17 +1,16 @@
 """Muffin Handlers."""
 
 import inspect
-import typing as t
+from typing import Awaitable, Callable, Optional
 
 from asgi_tools import Request
 from asgi_tools.app import HTTP_METHODS, HTTPView
 from asgi_tools.utils import is_awaitable
 from http_router import Router
-from http_router.typing import TYPE_METHODS
+from http_router.types import TMethods, TMethodsArg
 
 
 class HandlerMeta(type):
-
     """Prepare handlers."""
 
     def __new__(mcs, name, bases, params):
@@ -38,7 +37,7 @@ class HandlerMeta(type):
         return cls
 
 
-def route_method(*paths: str, **params) -> t.Callable:
+def route_method(*paths: str, **params) -> Callable:
     """Mark a method as a route."""
 
     def wrapper(method):
@@ -50,7 +49,6 @@ def route_method(*paths: str, **params) -> t.Callable:
 
 
 class Handler(HTTPView, metaclass=HandlerMeta):
-
     """Class-based view pattern for handling HTTP method dispatching.
 
     .. code-block:: python
@@ -89,11 +87,15 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     """
 
-    methods: t.Optional[t.Collection[str]] = None
+    methods: Optional[TMethods] = None
 
     @classmethod
     def __route__(
-        cls, router: Router, *paths: str, methods: TYPE_METHODS = None, **params
+        cls,
+        router: Router,
+        *paths: str,
+        methods: Optional[TMethodsArg] = None,
+        **params,
     ):
         """Check for registered methods."""
         router.bind(cls, *paths, methods=methods or cls.methods, **params)
@@ -103,7 +105,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
         return cls
 
-    def __call__(self, request: Request, **opts) -> t.Awaitable:
+    def __call__(self, request: Request, **opts) -> Awaitable:
         """Dispatch the given request by HTTP method."""
         method = getattr(self, opts.get("__meth__") or request.method.lower())
         return method(request)

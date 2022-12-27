@@ -7,18 +7,18 @@ from unittest import mock
 def test_imports():
     import muffin
 
-    assert muffin.Request
-    assert muffin.Response
-    assert muffin.ResponseError
-    assert muffin.ResponseFile
-    assert muffin.ResponseHTML
-    assert muffin.ResponseJSON
-    assert muffin.ResponseRedirect
-    assert muffin.ResponseStream
-    assert muffin.ResponseText
-    assert muffin.ASGINotFound
-    assert muffin.ASGIMethodNotAllowed
-    assert muffin.TestClient
+    assert hasattr(muffin, "Request")
+    assert hasattr(muffin, "Response")
+    assert hasattr(muffin, "ResponseError")
+    assert hasattr(muffin, "ResponseFile")
+    assert hasattr(muffin, "ResponseHTML")
+    assert hasattr(muffin, "ResponseJSON")
+    assert hasattr(muffin, "ResponseRedirect")
+    assert hasattr(muffin, "ResponseStream")
+    assert hasattr(muffin, "ResponseText")
+    assert hasattr(muffin, "ASGINotFound")
+    assert hasattr(muffin, "ASGIMethodNotAllowed")
+    assert hasattr(muffin, "TestClient")
 
 
 def test_app(app):
