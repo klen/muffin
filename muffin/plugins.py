@@ -19,8 +19,6 @@ class BasePlugin(ABC):
 
     name: str
 
-    app: Optional[Application] = None
-
     # Plugin options with default values
     defaults: Mapping[str, Any] = {}
 
@@ -42,6 +40,7 @@ class BasePlugin(ABC):
             raise TypeError("Plugin.name is required")
 
         self.cfg = Config(config_config={"update_from_env": False}, **self.defaults)
+        self.__app__ = app
 
         if app is not None:
             self.setup(app, **options)
@@ -53,15 +52,18 @@ class BasePlugin(ABC):
         return f"<muffin.Plugin: { self.name }>"
 
     @property
-    def installed(self):
-        """Check the plugin is installed to an app."""
-        return bool(self.app)
+    def app(self) -> Application:
+        """Get the application."""
+        if self.__app__ is None:
+            raise PluginException("Plugin is not installed to an app")
+
+        return self.__app__
 
     def setup(self, app: Application, *, name: Optional[str] = None, **options):
         """Bind app and update the plugin's configuration."""
         # allow to redefine the name for multi plugins with same type
-        self.name = name or self.name  # type: ignore
-        self.app = app
+        self.name = name or self.name
+        self.__app__ = app
         app.plugins[self.name] = self
 
         # Update configuration

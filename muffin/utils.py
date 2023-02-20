@@ -56,7 +56,7 @@ def aio_run(corofn: Callable[..., Awaitable[TV]], *args, **kwargs) -> TV:
     if aiolib == "asyncio":
         return asyncio.run(corofn(*args, **kwargs))  # type: ignore
 
-    return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))  # type: ignore
+    return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))
 
 
 def import_submodules(package_name: str, *submodules: str) -> Dict[str, ModuleType]:
@@ -64,7 +64,7 @@ def import_submodules(package_name: str, *submodules: str) -> Dict[str, ModuleTy
     package = sys.modules[package_name]
     return {
         name: importlib.import_module(package_name + "." + name)
-        for _, name, _ in pkgutil.walk_packages(package.__path__)  # type: ignore # mypy #1422
+        for _, name, _ in pkgutil.walk_packages(package.__path__)
         if not submodules or name in submodules
     }
 

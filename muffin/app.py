@@ -69,7 +69,7 @@ class Application(BaseApp):
         # Setup logging
         log_config = self.cfg.get("LOG_CONFIG")
         if log_config and isinstance(log_config, dict) and log_config.get("version"):
-            dictConfig(log_config)  # type: ignore
+            dictConfig(log_config)
 
         self.logger = logging.getLogger("muffin")
         self.logger.setLevel(self.cfg.LOG_LEVEL)

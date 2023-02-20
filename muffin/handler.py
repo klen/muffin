@@ -18,7 +18,7 @@ class HandlerMeta(type):
         mcs: Type, name: str, bases: Tuple[Type], params: Dict[str, Any]
     ) -> Type["Handler"]:
         """Prepare a Handler Class."""
-        cls: Type[Handler] = super().__new__(mcs, name, bases, params)  # type: ignore
+        cls: Type[Handler] = super().__new__(mcs, name, bases, params)
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:
