@@ -23,6 +23,6 @@ repos:
       pass_filenames: false
     - id: run-tests
       name: Run tests
-      entry: pytest tests
+      entry: tox
       language: system
       pass_filenames: false

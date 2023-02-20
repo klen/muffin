@@ -2,10 +2,9 @@
 
 import inspect
 import logging
-from collections.abc import Mapping
 from logging.config import dictConfig
 from types import ModuleType
-from typing import Any, Dict, Union
+from typing import Any, Dict, Mapping, Union
 
 from asgi_tools import App as BaseApp
 from modconfig import Config
