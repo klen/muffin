@@ -1,11 +1,12 @@
 """Muffin Handlers."""
 
 import inspect
-from typing import Awaitable, Callable, Optional
+from typing import Any, Awaitable, Callable, Dict, Optional, Tuple, Type
 
 from asgi_tools import Request
-from asgi_tools.app import HTTP_METHODS, HTTPView
+from asgi_tools.types import TVFn
 from asgi_tools.utils import is_awaitable
+from asgi_tools.view import HTTP_METHODS, HTTPView
 from http_router import Router
 from http_router.types import TMethods, TMethodsArg
 
@@ -13,9 +14,11 @@ from http_router.types import TMethods, TMethodsArg
 class HandlerMeta(type):
     """Prepare handlers."""
 
-    def __new__(mcs, name, bases, params):
+    def __new__(
+        mcs: Type, name: str, bases: Tuple[Type], params: Dict[str, Any]
+    ) -> Type["Handler"]:
         """Prepare a Handler Class."""
-        cls: Handler = super().__new__(mcs, name, bases, params)  # type: ignore
+        cls: Type[Handler] = super().__new__(mcs, name, bases, params)  # type: ignore
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:
@@ -37,7 +40,7 @@ class HandlerMeta(type):
         return cls
 
 
-def route_method(*paths: str, **params) -> Callable:
+def route_method(*paths: str, **params) -> Callable[[TVFn], TVFn]:
     """Mark a method as a route."""
 
     def wrapper(method):

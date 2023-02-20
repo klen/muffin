@@ -2,6 +2,7 @@
 
 import inspect
 import logging
+from collections.abc import Mapping
 from logging.config import dictConfig
 from types import ModuleType
 from typing import Any, Dict, Union
@@ -23,7 +24,7 @@ class Application(BaseApp):
     """The Muffin Application."""
 
     # Default configuration values
-    defaults: Dict[str, Any] = dict(
+    defaults: Mapping[str, Any] = dict(
         # The application's name
         NAME="muffin",
         # Path to configuration module
@@ -93,7 +94,7 @@ class Application(BaseApp):
         """Human readable representation."""
         return f"<muffin.Application: { self.cfg.name }>"
 
-    def import_submodules(self, *submodules: str) -> Dict[str, ModuleType]:
+    def import_submodules(self, *submodules: str):
         """Import application components."""
         parent_frame = inspect.stack()[1][0]
         package_name = parent_frame.f_locals["__name__"]

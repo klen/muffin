@@ -1,3 +1,3 @@
-asgi-tools      >= 0.64.8
+asgi-tools      >= 0.65
 modconfig       >= 1.2.1
 ujson; implementation_name == 'cpython'

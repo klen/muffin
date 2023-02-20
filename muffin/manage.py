@@ -7,15 +7,19 @@ import logging
 import os
 import re
 import sys
-from contextlib import AsyncExitStack
-from typing import Any, AsyncContextManager, Callable, Dict, Optional, TypeVar, overload
+from contextlib import AsyncExitStack, suppress
+from pathlib import Path
+from typing import AsyncContextManager, Callable, Mapping, Optional, overload
+
+from asgi_tools.types import TVFn
 
 from muffin import CONFIG_ENV_VARIABLE, __version__
 from muffin.app import Application
 from muffin.utils import AIOLIB, AIOLIBS, aio_lib, aio_run, import_app
 
+from .types import TVShellCtx
+
 PARAM_RE = re.compile(r"^\s+:param (\w+): (.+)$", re.M)
-TvFn = TypeVar("TvFn", bound=Callable[..., Any])
 
 
 class Manager:
@@ -64,7 +68,7 @@ class Manager:
             )
 
         self.subparsers = self.parser.add_subparsers(dest="subparser")
-        self.commands: Dict[str, Callable] = dict()
+        self.commands: Mapping[str, Callable] = {}
 
         self.shell(
             getattr(
@@ -89,13 +93,11 @@ class Manager:
                 ctx = ctx()
             banner += f"Loaded globals: {list(ctx.keys())}\n"
             if ipython:
-                try:
+                with suppress(ImportError):
                     from IPython.terminal.embed import InteractiveShellEmbed
 
                     sh = InteractiveShellEmbed(banner1=banner, user_ns=ctx)
                     return sh()
-                except ImportError:
-                    pass
 
             code.interact(banner, local=ctx)
 
@@ -110,13 +112,12 @@ class Manager:
                 self.app,
                 host=host,
                 port=port,
-                debug=cfg.debug,
                 log_config=cfg.LOG_CONFIG,
             )
 
         self(run)
 
-    def shell(self, ctx: Any) -> Any:
+    def shell(self, ctx: TVShellCtx) -> TVShellCtx:
         """Set shell context. The method could be used as a decorator."""
         self.app.cfg.update(MANAGE_SHELL=ctx)
         return ctx
@@ -126,11 +127,11 @@ class Manager:
         return self(*args, **kwargs)
 
     @overload
-    def __call__(self, fn: TvFn) -> TvFn:
+    def __call__(self, fn: TVFn) -> TVFn:
         ...
 
     @overload
-    def __call__(self, *, lifespan: bool = False) -> Callable[[TvFn], TvFn]:
+    def __call__(self, *, lifespan: bool = False) -> Callable[[TVFn], TVFn]:
         ...
 
     def __call__(self, fn=None, lifespan=False):
@@ -247,7 +248,7 @@ async def run_fn(ctx, fn, args=(), kwargs={}):
 
 def cli():
     """Define main CLI endpoint."""
-    sys.path.insert(0, os.getcwd())
+    sys.path.insert(0, Path.cwd())
     logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 
     parser = argparse.ArgumentParser(description="Manage Application", add_help=False)

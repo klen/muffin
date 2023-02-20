@@ -1,7 +1,7 @@
 """A helper to write Muffin Plugins."""
 
 from abc import ABC
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Mapping, Optional
 
 from asgi_tools.utils import to_awaitable
 from modconfig import Config
@@ -22,7 +22,7 @@ class BasePlugin(ABC):
     app: Optional[Application] = None
 
     # Plugin options with default values
-    defaults: Dict[str, Any] = {}
+    defaults: Mapping[str, Any] = {}
 
     # Optional middleware method
     middleware: Optional[Callable] = None

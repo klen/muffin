@@ -11,7 +11,7 @@ from types import ModuleType
 from typing import Awaitable, Callable, Dict, TypeVar
 
 from asgi_tools._compat import curio, trio
-from asgi_tools.typing import ASGIApp
+from asgi_tools.types import TASGIApp
 
 __all__ = (
     "aio_lib",
@@ -34,7 +34,7 @@ if trio:
 
 AIOLIBS["asyncio"] = asyncio
 
-Tv = TypeVar("Tv")
+TV = TypeVar("TV")
 
 
 def aio_lib() -> str:
@@ -50,7 +50,7 @@ def aio_lib() -> str:
     return "asyncio"
 
 
-def aio_run(corofn: Callable[..., Awaitable[Tv]], *args, **kwargs) -> Tv:
+def aio_run(corofn: Callable[..., Awaitable[TV]], *args, **kwargs) -> TV:
     """Run the given coroutine with current async library."""
     AIOLIB.current = aiolib = AIOLIB.current or aio_lib()
     if aiolib == "asyncio":
@@ -69,7 +69,7 @@ def import_submodules(package_name: str, *submodules: str) -> Dict[str, ModuleTy
     }
 
 
-def import_app(app_uri: str, reload: bool = False) -> ASGIApp:
+def import_app(app_uri: str, reload: bool = False) -> TASGIApp:
     """Import application by the given string (python.path.to.module:app_name)."""
     mod_name, _, app_name = app_uri.partition(":")
     mod = importlib.import_module(mod_name)
