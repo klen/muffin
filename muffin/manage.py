@@ -152,7 +152,12 @@ class Manager:
                     if not s.strip().startswith(":")
                 ]
             ).strip()
-            parser = self.subparsers.add_parser(fn.__name__, description=description)
+            command_name = fn.__name__.replace("_", "-")
+            if command_name in self.commands:
+                self.app.logger.warning("Command %s already registered", command_name)
+                return fn
+
+            parser = self.subparsers.add_parser(command_name, description=description)
             args, vargs, _, defs, __, kwdefs, anns = inspect.getfullargspec(fn)
             defs = defs or []
             kwargs_ = dict(zip(args[-len(defs) :], defs))
@@ -202,7 +207,7 @@ class Manager:
             for name in args:
                 process_arg(name, value=kwargs_.get(name, ...))
 
-            self.commands[fn.__name__] = fn
+            self.commands[command_name] = fn
             fn.parser = parser
             return fn
 
