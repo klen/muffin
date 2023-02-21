@@ -1,2 +1,0 @@
-bump2version
-wheel

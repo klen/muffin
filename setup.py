@@ -20,8 +20,7 @@ setup(
     install_requires=parse_requirements("requirements/requirements.txt"),
     extras_require={
         "standard": parse_requirements("requirements/requirements-standard.txt"),
-        "tests": parse_requirements("requirements/requirements-tests.txt"),
-        "build": ["bump2version", "wheel"],
+        "dev": parse_requirements("requirements/requirements-dev.txt"),
         "docs": parse_requirements("requirements/requirements-docs.txt"),
     },
 )

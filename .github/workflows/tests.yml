@@ -28,7 +28,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Setup dependencies
-      run: pip install .[tests]
+      run: pip install .[dev]
 
     - name: Check typing
       run: mypy muffin
