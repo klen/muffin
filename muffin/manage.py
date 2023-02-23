@@ -253,7 +253,7 @@ async def run_fn(ctx, fn, args=(), kwargs={}):
 
 def cli():
     """Define main CLI endpoint."""
-    sys.path.insert(0, Path.cwd())
+    sys.path.insert(0, Path.cwd().as_posix())
     logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 
     parser = argparse.ArgumentParser(description="Manage Application", add_help=False)
