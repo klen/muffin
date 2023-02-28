@@ -160,55 +160,6 @@ async def test_websockets(app, client):
         assert msg == "pong"
 
 
-async def test_middlewares(app, client):
-    @app.middleware
-    async def simple_middleware(app, request, receive, send):
-        response = await app(request, receive, send)
-
-        if request.path == "/md/simple":
-            response.headers["x-simple"] = "passed"
-
-        return response
-
-    @app.middleware
-    def classic_middleware(app):
-        async def middleware(scope, receive, send):
-            async def custom_send(msg):
-                if (
-                    scope["path"] == "/md/classic"
-                    and msg["type"] == "http.response.start"
-                ):
-                    msg["headers"].append((b"x-classic", b"passed"))
-                await send(msg)
-
-            await app(scope, receive, custom_send)
-
-        return middleware
-
-    @app.route("/md/simple")
-    async def simple(request):
-        return (200,)
-
-    @app.route("/md/classic")
-    async def classic(request):
-        return (200,)
-
-    res = await client.get("/")
-    assert res.status_code == 200
-    assert not res.headers.get("x-simple")
-    assert not res.headers.get("x-classic")
-
-    res = await client.get("/md/simple")
-    assert res.status_code == 200
-    assert res.headers["x-simple"] == "passed"
-    assert not res.headers.get("x-classic")
-
-    res = await client.get("/md/classic")
-    assert res.status_code == 200
-    assert not res.headers.get("x-simple")
-    assert res.headers["x-classic"] == "passed"
-
-
 async def test_lifespan(app):
     import muffin
 
@@ -279,12 +230,10 @@ async def test_error_handlers(client, app):
         raise Exception()
 
     @app.on_error(muffin.ResponseError)
-    async def handler(request, exc):
+    async def handler(request, response_error):
+        if response_error.status_code == 404:
+            return "Custom 404"
         return "Custom Server Error"
-
-    @app.on_error(404)
-    async def handler_404(request, exc):
-        return "Custom 404"
 
     @app.on_error(Exception)
     async def handle_exception(request, exc):
@@ -304,7 +253,6 @@ async def test_error_handlers(client, app):
     assert res.status_code == 200
     assert await res.text() == "Custom 404"
 
-    del app.exception_handlers[404]
     del app.exception_handlers[muffin.ResponseError]
 
 
@@ -312,7 +260,8 @@ async def test_nested(client, app):
     @app.middleware
     async def mid(app, req, receive, send):
         response = await app(req, receive, send)
-        response.headers["x-app"] = "OK"
+        if req.type == "http":
+            response.headers["x-app"] = "OK"
         return response
 
     from muffin import Application
@@ -336,3 +285,52 @@ async def test_nested(client, app):
     assert await res.text() == "OK from subroute"
     assert res.headers["x-app"] == "OK"
     assert res.headers["x-subapp"] == "OK"
+
+
+async def test_middlewares(app, client):
+    @app.middleware
+    async def simple_middleware(app, request, receive, send):
+        response = await app(request, receive, send)
+
+        if request.path == "/md/simple":
+            response.headers["x-simple"] = "passed"
+
+        return response
+
+    @app.middleware
+    def classic_middleware(app):
+        async def middleware(scope, receive, send):
+            async def custom_send(msg):
+                if (
+                    scope["path"] == "/md/classic"
+                    and msg["type"] == "http.response.start"
+                ):
+                    msg["headers"].append((b"x-classic", b"passed"))
+                await send(msg)
+
+            await app(scope, receive, custom_send)
+
+        return middleware
+
+    @app.route("/md/simple")
+    async def simple(request):
+        return (200,)
+
+    @app.route("/md/classic")
+    async def classic(request):
+        return (200,)
+
+    res = await client.get("/")
+    assert res.status_code == 200
+    assert not res.headers.get("x-simple")
+    assert not res.headers.get("x-classic")
+
+    res = await client.get("/md/simple")
+    assert res.status_code == 200
+    assert res.headers["x-simple"] == "passed"
+    assert not res.headers.get("x-classic")
+
+    res = await client.get("/md/classic")
+    assert res.status_code == 200
+    assert not res.headers.get("x-simple")
+    assert res.headers["x-classic"] == "passed"

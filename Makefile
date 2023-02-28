@@ -52,8 +52,8 @@ major:
 $(VIRTUAL_ENV): setup.cfg requirements/requirements.txt requirements/requirements-dev.txt
 	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
 	@$(VIRTUAL_ENV)/bin/pip install -e .[dev,docs]
-	@$(VIRTUAL_ENV)/bin/pip install refurb
-	@$(VIRTUAL_ENV)/bin/pre-commit install
+	@$(VIRTUAL_ENV)/bin/pip install pre-commit refurb
+	@$(VIRTUAL_ENV)/bin/pre-commit install --hook-type pre-push
 	@touch $(VIRTUAL_ENV)
 
 .PHONY: t test

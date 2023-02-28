@@ -4,7 +4,7 @@ import inspect
 from typing import Any, Awaitable, Callable, Dict, Optional, Tuple, Type
 
 from asgi_tools import Request
-from asgi_tools.types import TVFn
+from asgi_tools.types import TVCallable
 from asgi_tools.utils import is_awaitable
 from asgi_tools.view import HTTP_METHODS, HTTPView
 from http_router import Router
@@ -40,7 +40,7 @@ class HandlerMeta(type):
         return cls
 
 
-def route_method(*paths: str, **params) -> Callable[[TVFn], TVFn]:
+def route_method(*paths: str, **params) -> Callable[[TVCallable], TVCallable]:
     """Mark a method as a route."""
 
     def wrapper(method):

@@ -11,7 +11,7 @@ from contextlib import AsyncExitStack, suppress
 from pathlib import Path
 from typing import AsyncContextManager, Callable, Mapping, Optional, overload
 
-from asgi_tools.types import TVFn
+from asgi_tools.types import TVCallable
 
 from muffin import CONFIG_ENV_VARIABLE, __version__
 from muffin.app import Application
@@ -127,11 +127,11 @@ class Manager:
         return self(*args, **kwargs)
 
     @overload
-    def __call__(self, fn: TVFn) -> TVFn:
+    def __call__(self, fn: TVCallable) -> TVCallable:
         ...
 
     @overload
-    def __call__(self, *, lifespan: bool = False) -> Callable[[TVFn], TVFn]:
+    def __call__(self, *, lifespan: bool = False) -> Callable[[TVCallable], TVCallable]:
         ...
 
     def __call__(self, fn=None, lifespan=False):
