@@ -32,6 +32,7 @@ dependencies = [
 homepage = "https://github.com/klen/muffin"
 repository = "https://github.com/klen/muffin"
 documentation = "https://klen.github.io/muffin"
+changelog = "https://raw.githubusercontent.com/klen/muffin/master/CHANGELOG.md"
 
 [project.scripts]
 muffin = "muffin.manage:cli"
