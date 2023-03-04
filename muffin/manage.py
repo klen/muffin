@@ -1,6 +1,4 @@
 """CLI Support is here."""
-from __future__ import annotations
-
 import argparse
 import code
 import inspect
@@ -56,7 +54,7 @@ class Manager:
 
     """
 
-    def __init__(self, app: Application):
+    def __init__(self, app: "Application"):
         """Initialize the manager."""
         self.app = app
         self.parser = argparse.ArgumentParser(
@@ -122,7 +120,7 @@ class Manager:
 
         self(run)
 
-    def shell(self, ctx: TVShellCtx) -> TVShellCtx:
+    def shell(self, ctx: "TVShellCtx") -> "TVShellCtx":
         """Set shell context. The method could be used as a decorator."""
         self.app.cfg.update(MANAGE_SHELL=ctx)
         return ctx
@@ -132,11 +130,11 @@ class Manager:
         return self(*args, **kwargs)
 
     @overload
-    def __call__(self, fn: TVCallable) -> TVCallable:
+    def __call__(self, fn: "TVCallable") -> "TVCallable":
         ...
 
     @overload
-    def __call__(self, *, lifespan: bool = False) -> Callable[[TVCallable], TVCallable]:
+    def __call__(self, *, lifespan: bool = False) -> Callable[["TVCallable"], "TVCallable"]:
         ...
 
     def __call__(self, fn=None, *, lifespan=False):  # noqa: C901

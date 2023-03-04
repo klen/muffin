@@ -1,13 +1,17 @@
 """A helper to write Muffin Plugins."""
 
+from __future__ import annotations
+
 from abc import ABC
-from typing import Any, Callable, Mapping, Optional
+from typing import TYPE_CHECKING, Any, Callable, Mapping, Optional
 
 from asgi_tools.utils import to_awaitable
 from modconfig import Config
 
-from muffin.app import Application
 from muffin.errors import MuffinError
+
+if TYPE_CHECKING:
+    from muffin.app import Application
 
 
 class PluginError(MuffinError):

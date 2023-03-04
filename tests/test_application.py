@@ -228,7 +228,7 @@ async def test_error_handlers(client, app):
 
     @app.route("/unhandled")
     async def raise_unhandled(request):
-        raise Exception()
+        raise Exception()  # noqa: TRY002
 
     @app.on_error(muffin.ResponseError)
     async def handler(request, response_error):
@@ -274,7 +274,7 @@ async def test_nested(client, app):
         return "OK from subroute"
 
     @subapp.middleware
-    async def mid(app, req, receive, send):
+    async def submid(app, req, receive, send):
         response = await app(req, receive, send)
         response.headers["x-subapp"] = "OK"
         return response
@@ -335,3 +335,5 @@ async def test_middlewares(app, client):
     assert res.status_code == 200
     assert not res.headers.get("x-simple")
     assert res.headers["x-classic"] == "passed"
+
+# ruff: noqa: ARG001

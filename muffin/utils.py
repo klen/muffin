@@ -1,5 +1,7 @@
 """The Muffin Utils."""
 
+from __future__ import annotations
+
 import asyncio
 import importlib
 import os
@@ -7,15 +9,18 @@ import pkgutil
 import sys
 import threading
 from collections import OrderedDict
-from types import ModuleType
-from typing import Callable, Coroutine, Dict, TypeVar
+from typing import TYPE_CHECKING, Callable, Coroutine, Dict, TypeVar
 
 from asgi_tools._compat import curio, trio
-from asgi_tools.types import TASGIApp
 from asgi_tools.utils import is_awaitable, to_awaitable
 from sniffio import current_async_library
 
 from muffin.errors import InvalidAppError
+
+if TYPE_CHECKING:
+    from types import ModuleType
+
+    from asgi_tools.types import TASGIApp
 
 __all__ = (
     "aio_lib",
