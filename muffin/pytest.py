@@ -11,7 +11,7 @@ def pytest_addoption(parser):
     """Append pytest options for testing Muffin apps."""
     parser.addini("muffin_app", "Set path to muffin application")
     parser.addoption(
-        "--muffin-app", dest="muffin_app", help="Set to muffin application"
+        "--muffin-app", dest="muffin_app", help="Set to muffin application",
     )
 
     parser.addini("muffin_config", "Set module path to muffin configuration")
@@ -24,7 +24,7 @@ def pytest_addoption(parser):
 
 def pytest_load_initial_conftests(early_config, parser, args):
     """Prepare to loading Muffin application."""
-    from muffin import CONFIG_ENV_VARIABLE
+    from muffin.constants import CONFIG_ENV_VARIABLE
 
     options = parser.parse_known_args(args)
 
@@ -39,12 +39,12 @@ def pytest_load_initial_conftests(early_config, parser, args):
 
 
 @pytest.fixture(scope="session")
-async def app(pytestconfig, request, aiolib):
+async def app(pytestconfig, request, aiolib):  # noqa: ARG001
     """Load an application, run lifespan events, prepare plugins."""
     if not pytestconfig.app:
         logging.warning(
             "Improperly configured. Please set ``muffin_app`` in your pytest config. "
-            "Or use ``--muffin-app`` command option."
+            "Or use ``--muffin-app`` command option.",
         )
         return
 
@@ -61,13 +61,13 @@ async def app(pytestconfig, request, aiolib):
         # Setup plugins
         for plugin in app_.plugins.values():
             if hasattr(plugin, "conftest") and plugin.conftest is not None:
-                app_.logger.info(f"Setup plugin '{plugin.name}'")
+                app_.logger.info("Setup plugin '%s'", plugin.name)
                 await plugin.conftest()
 
         yield app_
 
 
-@pytest.fixture
+@pytest.fixture()
 def client(app):
     """Generate a test client for the app."""
     return ASGITestClient(app)

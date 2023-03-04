@@ -6,12 +6,15 @@ from typing import Any, Callable, Mapping, Optional
 from asgi_tools.utils import to_awaitable
 from modconfig import Config
 
-from muffin import MuffinException
 from muffin.app import Application
+from muffin.errors import MuffinError
 
 
-class PluginException(MuffinException):
+class PluginError(MuffinError):
     """Implement any exception in plugins."""
+
+class PluginNotInstalledError(RuntimeError):
+    """Raised when a plugin is not installed."""
 
 
 class BasePlugin(ABC):
@@ -37,7 +40,8 @@ class BasePlugin(ABC):
     def __init__(self, app: Optional[Application] = None, **options):
         """Save application and create he plugin's configuration."""
         if getattr(self, "name", None) is None:
-            raise TypeError("Plugin.name is required")
+            msg = "Plugin.name is required"
+            raise TypeError(msg)
 
         self.cfg = Config(config_config={"update_from_env": False}, **self.defaults)
         self.__app__ = app
@@ -55,7 +59,7 @@ class BasePlugin(ABC):
     def app(self) -> Application:
         """Get the application."""
         if self.__app__ is None:
-            raise PluginException("Plugin is not installed to an app")
+            raise PluginNotInstalledError()
 
         return self.__app__
 
@@ -68,7 +72,7 @@ class BasePlugin(ABC):
 
         # Update configuration
         self.cfg.update_from_dict(
-            dict(app.cfg), prefix=f"{self.name}_", exist_only=True
+            dict(app.cfg), prefix=f"{self.name}_", exist_only=True,
         )
         self.cfg.update_from_dict(options)
 

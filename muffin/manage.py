@@ -1,4 +1,5 @@
 """CLI Support is here."""
+from __future__ import annotations
 
 import argparse
 import code
@@ -8,17 +9,21 @@ import os
 import re
 import sys
 from contextlib import AsyncExitStack, suppress
+from importlib import metadata
 from pathlib import Path
-from typing import AsyncContextManager, Callable, Mapping, Optional, overload
+from typing import TYPE_CHECKING, AsyncContextManager, Callable, Mapping, Optional, overload
 
-from asgi_tools.types import TVCallable
-
-from muffin import CONFIG_ENV_VARIABLE, __version__
-from muffin.app import Application
+from muffin.constants import CONFIG_ENV_VARIABLE
+from muffin.errors import AsyncRequiredError
 from muffin.utils import AIOLIB, AIOLIBS, aio_lib, aio_run, import_app
 
-from .types import TVShellCtx
+if TYPE_CHECKING:
+    from asgi_tools.types import TVCallable
 
+    from .app import Application
+    from .types import TVShellCtx
+
+VERSION = metadata.version("muffin")
 PARAM_RE = re.compile(r"^\s+:param (\w+): (.+)$", re.M)
 
 
@@ -55,7 +60,7 @@ class Manager:
         """Initialize the manager."""
         self.app = app
         self.parser = argparse.ArgumentParser(
-            description="Manage %s" % app.cfg.name.capitalize()
+            description="Manage %s" % app.cfg.name.capitalize(),
         )
 
         if len(AIOLIBS) > 1:
@@ -75,18 +80,18 @@ class Manager:
                 app.cfg,
                 "MANAGE_SHELL",
                 lambda: dict(
-                    app=app, run=aio_run, lifespan=app.lifespan, **app.plugins
+                    app=app, run=aio_run, lifespan=app.lifespan, **app.plugins,
                 ),
-            )
+            ),
         )
 
         # We have to use sync mode here because of eventloop conflict with ipython/promt-toolkit
-        def shell(ipython: bool = True):
+        def shell(*, ipython: bool = True):
             """Start the application's shell.
 
             :param ipython: Use IPython as a shell
             """
-            banner = f"Interactive Muffin {__version__} Shell"
+            banner = f"Interactive Muffin {VERSION} Shell"
             banner = f"\n{banner}\n{'-' * len(banner)}\nPython: {sys.version}\n\n"
             ctx = app.cfg.MANAGE_SHELL
             if callable(ctx):
@@ -134,14 +139,12 @@ class Manager:
     def __call__(self, *, lifespan: bool = False) -> Callable[[TVCallable], TVCallable]:
         ...
 
-    def __call__(self, fn=None, lifespan=False):
+    def __call__(self, fn=None, *, lifespan=False):  # noqa: C901
         """Register a command."""
 
-        def wrapper(fn):
+        def wrapper(fn):  # noqa: C901
             if not inspect.iscoroutinefunction(fn) and lifespan:
-                raise ValueError(
-                    "Muffin manage lifespan supported only for async functions."
-                )
+                raise AsyncRequiredError(fn)
 
             fn.lifespan = lifespan
 
@@ -150,7 +153,7 @@ class Manager:
                     s
                     for s in (fn.__doc__ or "").split("\n")
                     if not s.strip().startswith(":")
-                ]
+                ],
             ).strip()
             command_name = fn.__name__.replace("_", "-")
             if command_name in self.commands:
@@ -188,7 +191,7 @@ class Manager:
 
                 if isinstance(value, list):
                     return parser.add_argument(
-                        "--" + argname, action="append", default=value, help=arghelp
+                        "--" + argname, action="append", default=value, help=arghelp,
                     )
 
                 return parser.add_argument(
@@ -243,7 +246,7 @@ class Manager:
         aio_run(run_fn, ctx, fn, args=pargs, kwargs=kwargs)
 
 
-async def run_fn(ctx, fn, args=(), kwargs={}):
+async def run_fn(ctx, fn, args=(), kwargs={}):  # noqa:
     """Run the given function with the given async context."""
     async with ctx:
         res = fn(*args, **kwargs)
@@ -259,21 +262,20 @@ def cli():
     parser = argparse.ArgumentParser(description="Manage Application", add_help=False)
     parser.add_argument("app", metavar="app", type=str, help="Application module path")
     parser.add_argument("--config", type=str, help="Path to configuration.")
-    parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("--version", action="version", version=VERSION)
     args_, subargs_ = parser.parse_known_args(sys.argv[1:])
     if args_.config:
         os.environ[CONFIG_ENV_VARIABLE] = args_.config
 
     try:
         app = import_app(args_.app)
-        app.logger.info("Application is loaded: %s" % app.cfg.name)
+        app.logger.info("Application is loaded: %s", app.cfg.name)
         app.manage.run(*subargs_, prog="muffin %s" % args_.app)
 
-    except Exception as exc:
-        logging.exception(exc)
+    except Exception:
+        logging.exception()
         return sys.exit(1)
 
     sys.exit(0)
 
-
-# pylama: ignore=W0404,D
+# ruff: noqa: T100

@@ -1,46 +1,45 @@
 """Implement Muffin Application."""
+from __future__ import annotations
 
 import inspect
 import logging
 from logging.config import dictConfig
-from types import ModuleType
-from typing import Any, Dict, Mapping, Union
+from typing import TYPE_CHECKING, Any, Dict, Mapping, Union
 
 from asgi_tools import App as BaseApp
 from modconfig import Config
 
-from muffin import CONFIG_ENV_VARIABLE
+from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.utils import import_submodules
 
+if TYPE_CHECKING:
+    from types import ModuleType
 
-class MuffinException(Exception):
-    """Base class for Muffin Errors."""
-
-    pass
+    from muffin.plugins import BasePlugin
 
 
 class Application(BaseApp):
     """The Muffin Application."""
 
     # Default configuration values
-    defaults: Mapping[str, Any] = dict(
+    defaults: Mapping[str, Any] = {
         # The application's name
-        NAME="muffin",
+        "NAME": "muffin",
         # Path to configuration module
-        CONFIG=None,
+        "CONFIG": None,
         # Enable debug mode (optional)
-        DEBUG=False,
+        "DEBUG": False,
         # Routing options
-        TRIM_LAST_SLASH=True,
+        "TRIM_LAST_SLASH": True,
         # Static files options
-        STATIC_URL_PREFIX="/static",
-        STATIC_FOLDERS=[],
+        "STATIC_URL_PREFIX": "/static",
+        "STATIC_FOLDERS": [],
         # Logging options
-        LOG_LEVEL="WARNING",
-        LOG_FORMAT="%(asctime)s [%(process)d] [%(levelname)s] %(message)s",
-        LOG_DATE_FORMAT="[%Y-%m-%d %H:%M:%S]",
-        LOG_CONFIG=None,
-    )
+        "LOG_LEVEL": "WARNING",
+        "LOG_FORMAT": "%(asctime)s [%(process)d] [%(levelname)s] %(message)s",
+        "LOG_DATE_FORMAT": "[%Y-%m-%d %H:%M:%S]",
+        "LOG_CONFIG": None,
+    }
 
     def __init__(self, *cfg_mods: Union[str, ModuleType], **options):
         """Initialize the application.
@@ -49,14 +48,12 @@ class Application(BaseApp):
         :param **options: Configuration options
 
         """
-        from muffin.plugins import BasePlugin
-
         self.plugins: Dict[str, BasePlugin] = {}
 
         # Setup the configuration
-        self.cfg = Config(**self.defaults, config_config=dict(update_from_env=False))
+        self.cfg = Config(**self.defaults, config_config={"update_from_env": False})
         options["CONFIG"] = self.cfg.update_from_modules(
-            *cfg_mods, f"env:{CONFIG_ENV_VARIABLE}"
+            *cfg_mods, f"env:{CONFIG_ENV_VARIABLE}",
         )
         self.cfg.update(**options)
         self.cfg.update_from_env(prefix=f"{ self.cfg.name }_")
@@ -77,7 +74,7 @@ class Application(BaseApp):
         if not self.logger.handlers:
             ch = logging.StreamHandler()
             ch.setFormatter(
-                logging.Formatter(self.cfg.LOG_FORMAT, self.cfg.LOG_DATE_FORMAT)
+                logging.Formatter(self.cfg.LOG_FORMAT, self.cfg.LOG_DATE_FORMAT),
             )
             self.logger.addHandler(ch)
 

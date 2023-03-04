@@ -1,4 +1,5 @@
 """Base Tests."""
+from __future__ import annotations
 
 from pathlib import Path
 from unittest import mock
@@ -16,8 +17,8 @@ def test_imports():
     assert hasattr(muffin, "ResponseRedirect")
     assert hasattr(muffin, "ResponseStream")
     assert hasattr(muffin, "ResponseText")
-    assert hasattr(muffin, "ASGINotFound")
-    assert hasattr(muffin, "ASGIMethodNotAllowed")
+    assert hasattr(muffin, "ASGINotFoundError")
+    assert hasattr(muffin, "ASGIInvalidMethodError")
     assert hasattr(muffin, "TestClient")
 
 
@@ -35,7 +36,7 @@ def test_app_config():
     os.environ["TEST_DEBUG"] = "true"
 
     app = muffin.Application(
-        "tests.appcfg", config="unknown", name="test", LOG_CONFIG={"version": 1}
+        "tests.appcfg", config="unknown", name="test", LOG_CONFIG={"version": 1},
     )
     assert app.cfg
     assert app.cfg.CONFIG == "tests.appcfg"
@@ -214,7 +215,7 @@ async def test_static_folders():
     text = await res.text()
     assert text.startswith('"""Base Tests."""')
 
-    res = await client.get("/assets/setup.cfg")
+    res = await client.get("/assets/pyproject.toml")
     assert res.status_code == 200
 
 

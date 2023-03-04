@@ -1,0 +1,95 @@
+[project]
+name = "muffin"
+version = "0.91.2"
+description = "Muffin is a fast, simple and asyncronous web-framework for Python 3 (asyncio, trio, curio)"
+readme = "README.rst"
+requires-python = ">=3.7"
+license = {"text" = "MIT License"}
+authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
+keywords = ["asgi", "web", "web framework", "asyncio", "trio", "curio"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Internet :: WWW/HTTP",
+  "Framework :: AsyncIO",
+  "Framework :: Trio",
+]
+dependencies = [
+  "asgi-tools >= 0.71.0",
+  "modconfig >= 1.2.1",
+  "ujson; implementation_name == 'cpython'",
+]
+
+[project.urls]
+homepage = "https://github.com/klen/muffin"
+repository = "https://github.com/klen/muffin"
+documentation = "https://klen.github.io/muffin"
+
+[project.scripts]
+muffin = "muffin.manage:cli"
+
+[project.entry-points.pytest11]
+muffin_pytest = "muffin.pytest"
+
+[project.optional-dependencies]
+tests = [
+  "aiofile",
+  "uvloop; implementation_name == 'cpython'",
+  "pytest",
+  "ruff",
+  "pytest-aio[curio,trio] >= 1.1.1",
+  "pytest-mypy; implementation_name == 'cpython'",
+  "types-ujson; implementation_name == 'cpython'",
+]
+dev = ["pre-commit", "refurb", "bump2version"]
+docs = ["sphinx", "pydata-sphinx-theme"]
+standard = ["gunicorn", "uvicorn[standard]"]
+
+[tool.setuptools]
+packages = ['muffin']
+
+[tool.setuptools.package-data]
+muffin = ["py.typed"]
+
+[tool.pytest.ini_options]
+addopts = "-xsv"
+muffin_app = "tests.app:app"
+
+[tool.mypy]
+packages = ["muffin"]
+install_types = true
+non_interactive = true
+ignore_missing_imports = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py37,py38,py39,py310,py311,pypy39
+
+[testenv]
+deps = -e .[tests]
+commands =
+	pytest --mypy tests
+
+[testenv:pypy39]
+deps = -e .[tests]
+commands =
+	pytest tests
+"""
+
+[tool.ruff]
+fix = true
+line-length = 100
+target-version = "py38"
+exclude = [".venv", "docs", "examples"]
+select = ["ALL"]
+ignore = ["D", "UP", "ANN", "DJ", "EM", "RSE", "SLF", "RET", "S101", "PLR2004", "N804"]

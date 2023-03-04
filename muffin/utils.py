@@ -8,10 +8,14 @@ import sys
 import threading
 from collections import OrderedDict
 from types import ModuleType
-from typing import Awaitable, Callable, Dict, TypeVar
+from typing import Callable, Coroutine, Dict, TypeVar
 
 from asgi_tools._compat import curio, trio
 from asgi_tools.types import TASGIApp
+from asgi_tools.utils import is_awaitable, to_awaitable
+from sniffio import current_async_library
+
+from muffin.errors import InvalidAppError
 
 __all__ = (
     "aio_lib",
@@ -50,11 +54,11 @@ def aio_lib() -> str:
     return "asyncio"
 
 
-def aio_run(corofn: Callable[..., Awaitable[TV]], *args, **kwargs) -> TV:
+def aio_run(corofn: Callable[..., Coroutine[None, None, TV]], *args, **kwargs) -> TV:
     """Run the given coroutine with current async library."""
     AIOLIB.current = aiolib = AIOLIB.current or aio_lib()
     if aiolib == "asyncio":
-        return asyncio.run(corofn(*args, **kwargs))  # type: ignore
+        return asyncio.run(corofn(*args, **kwargs))
 
     return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))
 
@@ -69,7 +73,7 @@ def import_submodules(package_name: str, *submodules: str) -> Dict[str, ModuleTy
     }
 
 
-def import_app(app_uri: str, reload: bool = False) -> TASGIApp:
+def import_app(app_uri: str, *, reload: bool = False) -> TASGIApp:
     """Import application by the given string (python.path.to.module:app_name)."""
     mod_name, _, app_name = app_uri.partition(":")
     mod = importlib.import_module(mod_name)
@@ -77,10 +81,6 @@ def import_app(app_uri: str, reload: bool = False) -> TASGIApp:
         importlib.reload(mod)
 
     try:
-        return getattr(mod, app_name or "app", None) or getattr(mod, "application")
+        return getattr(mod, app_name or "app", None) or mod.application
     except AttributeError as exc:
-        raise ImportError(f"Application {app_uri} not found") from exc
-
-
-from asgi_tools.utils import is_awaitable, to_awaitable  # noqa
-from sniffio import current_async_library  # noqa
+        raise InvalidAppError(app_uri) from exc
