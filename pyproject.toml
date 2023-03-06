@@ -23,7 +23,7 @@ classifiers = [
   "Framework :: Trio",
 ]
 dependencies = [
-  "asgi-tools >= 0.71.0",
+  "asgi-tools >= 0.72.0",
   "modconfig >= 1.2.1",
   "ujson; implementation_name == 'cpython'",
 ]
@@ -61,8 +61,8 @@ packages = ['muffin']
 muffin = ["py.typed"]
 
 [tool.pytest.ini_options]
-addopts = "-xsv"
-muffin_app = "tests.app:app"
+addopts = "-xsvl"
+muffin_app = "tests:app"
 
 [tool.mypy]
 packages = ["muffin"]
@@ -87,9 +87,16 @@ commands =
 """
 
 [tool.ruff]
-fix = true
 line-length = 100
 target-version = "py38"
-exclude = [".venv", "docs", "examples"]
+exclude = [".venv", "docs", "example"]
 select = ["ALL"]
 ignore = ["D", "UP", "ANN", "DJ", "EM", "RSE", "SLF", "RET", "S101", "PLR2004", "N804"]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["ARG", "TRY", "F", "PGH", "PLR", "PLW", "PTH", "SIM", "RET504", "T20"]
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311"]
+preview = true

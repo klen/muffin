@@ -1,11 +1,18 @@
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture()
 def name(app):
     return app.cfg.name
 
 
-async def test_app_imported(app, name):
-    assert app.cfg.name == 'muffin'
-    assert app.state == 'started'
+def test_app_imported(app):
+    assert app.cfg.name == "muffin"
+
+
+def test_app_available_in_fixture(name):
+    assert name == "muffin"
+
+
+def test_app_lifespan(app):
+    assert app.state == "started"
