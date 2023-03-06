@@ -23,12 +23,12 @@ clean:
 VERSION?=minor
 # target: release - Bump version
 release: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/bump2version $(VERSION)
 	@git checkout master
 	@git merge develop
 	@git pull
 	@git checkout develop
 	@git pull
+	@$(VIRTUAL_ENV)/bin/bump2version $(VERSION)
 	@git push origin develop master
 	@git push --tags
 
