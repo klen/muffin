@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>API &#8212; Muffin 0.93.4 documentation</title>
+    <title>API &#8212; Muffin 0.93.5 documentation</title>
   
   
   
@@ -424,7 +424,7 @@ document.write(`
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.93.4
+    Version: 0.93.5
 </div></div>
     </div>
   
@@ -601,9 +601,9 @@ document.write(`
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="muffin.Application.run_background">
-<span class="sig-name descname"><span class="pre">run_background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.run_background" title="Permalink to this definition">#</a></dt>
-<dd><p>Await the given awaitable after the request is completed.</p>
+<dt class="sig sig-object py" id="muffin.Application.run_after_response">
+<span class="sig-name descname"><span class="pre">run_after_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.run_after_response" title="Permalink to this definition">#</a></dt>
+<dd><p>Await the given awaitable after the response is completed.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
@@ -617,7 +617,7 @@ document.write(`
 <span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 
 <span class="c1"># Schedule any awaitable for later execution</span>
-<span class="n">app</span><span class="o">.</span><span class="n">run_background</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s1">&#39;user@email.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from Muffin!&#39;</span><span class="p">))</span>
+<span class="n">app</span><span class="o">.</span><span class="n">run_after_response</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s1">&#39;user@email.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from Muffin!&#39;</span><span class="p">))</span>
 
 <span class="c1"># Return response to a client immediately</span>
 <span class="c1"># The task will be executed after the response is sent</span>
@@ -1380,7 +1380,7 @@ result will be converted into a JSON Response</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.on_shutdown"><code class="docutils literal notranslate"><span class="pre">Application.on_shutdown()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.on_error"><code class="docutils literal notranslate"><span class="pre">Application.on_error()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.middleware"><code class="docutils literal notranslate"><span class="pre">Application.middleware()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.run_background"><code class="docutils literal notranslate"><span class="pre">Application.run_background()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.run_after_response"><code class="docutils literal notranslate"><span class="pre">Application.run_after_response()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.import_submodules"><code class="docutils literal notranslate"><span class="pre">Application.import_submodules()</span></code></a></li>
 </ul>
 </li>
