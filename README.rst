@@ -330,9 +330,9 @@ Muffin < 0.40 (based on AIOHTTP_)
 .. _license:
 
 License
---------
+========
 
-Licensed under a MIT license (See LICENSE)
+Licensed under a `MIT license`_.
 
 .. _links:
 
@@ -340,6 +340,7 @@ Licensed under a MIT license (See LICENSE)
 .. _ASGI: https://asgi.readthedocs.io/en/latest/
 .. _Asyncio: https://docs.python.org/3/library/asyncio.html
 .. _Curio: https://curio.readthedocs.io/en/latest/
+.. _MIT license: http://opensource.org/licenses/MIT
 .. _Python: http://python.org
 .. _Trio: https://trio.readthedocs.io/en/stable/index.html
 .. _klen: https://github.com/klen

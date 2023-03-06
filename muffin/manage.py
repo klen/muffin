@@ -78,7 +78,10 @@ class Manager:
                 app.cfg,
                 "MANAGE_SHELL",
                 lambda: dict(
-                    app=app, run=aio_run, lifespan=app.lifespan, **app.plugins,
+                    app=app,
+                    run=aio_run,
+                    lifespan=app.lifespan,
+                    **app.plugins,
                 ),
             ),
         )
@@ -147,11 +150,7 @@ class Manager:
             fn.lifespan = lifespan
 
             description = "\n".join(
-                [
-                    s
-                    for s in (fn.__doc__ or "").split("\n")
-                    if not s.strip().startswith(":")
-                ],
+                [s for s in (fn.__doc__ or "").split("\n") if not s.strip().startswith(":")],
             ).strip()
             command_name = fn.__name__.replace("_", "-")
             if command_name in self.commands:
@@ -189,7 +188,10 @@ class Manager:
 
                 if isinstance(value, list):
                     return parser.add_argument(
-                        "--" + argname, action="append", default=value, help=arghelp,
+                        "--" + argname,
+                        action="append",
+                        default=value,
+                        help=arghelp,
                     )
 
                 return parser.add_argument(
@@ -271,9 +273,10 @@ def cli():
         app.manage.run(*subargs_, prog="muffin %s" % args_.app)
 
     except Exception:
-        logging.exception()
+        logging.exception("Command failed")
         return sys.exit(1)
 
     sys.exit(0)
+
 
 # ruff: noqa: T100
