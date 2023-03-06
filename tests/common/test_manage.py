@@ -8,25 +8,17 @@ def cmd_aiolib(request):
     return request.param
 
 
-@pytest.fixture
-def app():
-    from muffin import Application
-
-    return Application()
-
-
 def test_command(app):
     @app.manage
-    def cmd1(name, lower=False):
+    def cmd1(name, *, lower=False):
         """Custom description.
 
         :param name: help for name
         """
-        pass
 
     assert cmd1.parser
     assert cmd1.parser.description == "Custom description."
-    assert cmd1.parser._actions[1].help == "help for name"
+    assert cmd1.parser._actions[2].help == "help for name"
     ns = cmd1.parser.parse_args(["test"])
     assert dict(ns._get_kwargs()) == {"name": "test", "lower": False}
 
@@ -40,7 +32,7 @@ def test_command(app):
 
 def test_manage(app, capsys, monkeypatch):
     @app.manage
-    def hello(user_name, lower=False):
+    def hello(user_name, *, lower=False):
         if lower:
             user_name = user_name.lower()
         print("hello " + user_name)

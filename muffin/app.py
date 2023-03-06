@@ -1,21 +1,29 @@
 """Implement Muffin Application."""
 from __future__ import annotations
 
-import inspect
 import logging
+from contextvars import ContextVar
+from inspect import isawaitable, stack
 from logging.config import dictConfig
 from typing import TYPE_CHECKING, Any, Dict, Mapping, Union
 
 from asgi_tools import App as BaseApp
+from asgi_tools.middleware import BACKGROUND_TASK
 from modconfig import Config
 
 from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.utils import import_submodules
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable
     from types import ModuleType
 
+    from asgi_tools.types import TASGIReceive, TASGIScope, TASGISend
+
     from muffin.plugins import BasePlugin
+
+
+background_task = ContextVar("background_task", default=None)
 
 
 class Application(BaseApp):
@@ -53,7 +61,8 @@ class Application(BaseApp):
         # Setup the configuration
         self.cfg = Config(**self.defaults, config_config={"update_from_env": False})
         options["CONFIG"] = self.cfg.update_from_modules(
-            *cfg_mods, f"env:{CONFIG_ENV_VARIABLE}",
+            *cfg_mods,
+            f"env:{CONFIG_ENV_VARIABLE}",
         )
         self.cfg.update(**options)
         self.cfg.update_from_env(prefix=f"{ self.cfg.name }_")
@@ -90,8 +99,59 @@ class Application(BaseApp):
         """Human readable representation."""
         return f"<muffin.Application: { self.cfg.name }>"
 
+    async def __call__(
+        self,
+        scope: TASGIScope,
+        receive: TASGIReceive,
+        send: TASGISend,
+    ):
+        """Support background tasks."""
+        await self.lifespan(scope, receive, send)
+        bgtask = BACKGROUND_TASK.get()
+        if bgtask is not None and isawaitable(bgtask):
+            await bgtask
+            BACKGROUND_TASK.set(None)
+
     def import_submodules(self, *submodules: str):
-        """Import application components."""
-        parent_frame = inspect.stack()[1][0]
+        """Automatically import submodules.
+
+        .. code-block:: python
+            # some __init__.py
+
+            # import all submodules
+            app.import_submodules()
+
+            # import only specific submodules
+            app.import_submodules('submodule1', 'submodule2')
+
+        """
+        parent_frame = stack()[1][0]
         package_name = parent_frame.f_locals["__name__"]
         return import_submodules(package_name, *submodules)
+
+    def run_background(self, task: Awaitable):
+        """Await the given awaitable after the request is completed.
+
+        .. code-block:: python
+
+            from muffin import Application
+
+            app = Application()
+
+            @app.task
+            def send_email(email, message):
+                # send email here
+                pass
+
+            @app.route('/send')
+            async def send(request):
+
+            # Schedule any awaitable for later execution
+            app.run_background(send_email('user@email.com', 'Hello from Muffin!'))
+
+            # Return response to a client immediately
+            # The task will be executed after the response is sent
+            return "OK"
+
+        """
+        BACKGROUND_TASK.set(task)

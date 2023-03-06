@@ -364,6 +364,32 @@ code base.
 Middlewares from app and subapp are chained (only internal middlewares are
 supported for nested apps).
 
+Run tasks in background
+-----------------------
+
+Muffin provides a simple way to run tasks in background: `Application.run_background`
+
+.. code-block:: python
+
+    from muffin import Application
+
+    app = Application()
+
+    @app.task
+    def send_email(email, message):
+        # send email here
+        pass
+
+    @app.route('/send')
+    async def send(request):
+
+      # Schedule any awaitable for later execution
+      app.run_background(send_email('user@email.com', 'Hello from Muffin!'))
+
+      # Return response to a client immediately
+      # The task will be executed after the response is sent
+      return "OK"
+
 Debug Mode
 ----------
 
