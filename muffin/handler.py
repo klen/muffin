@@ -15,21 +15,21 @@ if TYPE_CHECKING:
     from http_router import Router
 
 
-
 class HandlerMeta(type):
     """Prepare handlers."""
 
     def __new__(
-        mcs: Type, name: str, bases: Tuple[Type], params: Dict[str, Any],
+        mcs: Type,
+        name: str,
+        bases: Tuple[type],
+        params: Dict[str, Any],
     ) -> Type["Handler"]:
         """Prepare a Handler Class."""
         cls: Type[Handler] = super().__new__(mcs, name, bases, params)
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:
-            cls.methods = [
-                method for method in HTTP_METHODS if method.lower() in cls.__dict__
-            ]
+            cls.methods = [method for method in HTTP_METHODS if method.lower() in cls.__dict__]
 
         elif isinstance(cls.methods, str):
             cls.methods = [cls.methods]

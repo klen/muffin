@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-from contextvars import ContextVar
 from inspect import isawaitable, stack
 from logging.config import dictConfig
 from typing import TYPE_CHECKING, Any, Dict, Mapping, Union
@@ -21,9 +20,6 @@ if TYPE_CHECKING:
     from asgi_tools.types import TASGIReceive, TASGIScope, TASGISend
 
     from muffin.plugins import BasePlugin
-
-
-background_task = ContextVar("background_task", default=None)
 
 
 class Application(BaseApp):
@@ -108,7 +104,7 @@ class Application(BaseApp):
         """Support background tasks."""
         await self.lifespan(scope, receive, send)
         bgtask = BACKGROUND_TASK.get()
-        if bgtask is not None and isawaitable(bgtask):
+        if bgtask is not None:
             await bgtask
             BACKGROUND_TASK.set(None)
 
@@ -154,4 +150,7 @@ class Application(BaseApp):
             return "OK"
 
         """
+        if not isawaitable(task):
+            raise TypeError("Task must be awaitable")  # noqa: TRY003
+
         BACKGROUND_TASK.set(task)
