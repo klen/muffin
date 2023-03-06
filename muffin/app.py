@@ -2,25 +2,27 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Awaitable
+from contextvars import ContextVar
 from inspect import isawaitable, stack
 from logging.config import dictConfig
-from typing import TYPE_CHECKING, Any, Dict, Mapping, Union
+from typing import TYPE_CHECKING, Any, Dict, Final, Mapping, Union
 
 from asgi_tools import App as BaseApp
 from asgi_tools._compat import aio_wait
-from asgi_tools.middleware import BACKGROUND_TASK
 from modconfig import Config
 
 from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.utils import import_submodules
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable
     from types import ModuleType
 
     from asgi_tools.types import TASGIReceive, TASGIScope, TASGISend
 
     from muffin.plugins import BasePlugin
+
+BACKGROUND_TASK: Final = ContextVar[set[Awaitable] | None]("background_tasks", default=None)
 
 
 class Application(BaseApp):
@@ -104,7 +106,7 @@ class Application(BaseApp):
     ):
         """Support background tasks."""
         await self.lifespan(scope, receive, send)
-        bgtasks = BACKGROUND_TASK.get(None)
+        bgtasks = BACKGROUND_TASK.get()
         if bgtasks is not None:
             await aio_wait(*bgtasks)
             BACKGROUND_TASK.set(None)
@@ -154,7 +156,7 @@ class Application(BaseApp):
         if not isawaitable(task):
             raise TypeError("Task must be awaitable")  # noqa: TRY003
 
-        scheduled = BACKGROUND_TASK.get(set())
+        scheduled = BACKGROUND_TASK.get() or set()
         scheduled.add(task)
 
         BACKGROUND_TASK.set(scheduled)
