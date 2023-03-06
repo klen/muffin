@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Awaitable
 from contextvars import ContextVar
 from inspect import isawaitable, stack
 from logging.config import dictConfig
@@ -16,13 +15,17 @@ from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.utils import import_submodules
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable
     from types import ModuleType
 
     from asgi_tools.types import TASGIReceive, TASGIScope, TASGISend
 
     from muffin.plugins import BasePlugin
 
-BACKGROUND_TASK: Final = ContextVar[set[Awaitable] | None]("background_tasks", default=None)
+BACKGROUND_TASK: Final["ContextVar[set[Awaitable] | None]"] = ContextVar(
+    "background_tasks",
+    default=None,
+)
 
 
 class Application(BaseApp):
