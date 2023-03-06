@@ -52,6 +52,10 @@ Application
                     except RuntimeError:
                         return ResponseHTML('Middleware Exception')
 
+   .. automethod:: run_background
+
+   .. automethod:: import_submodules
+
 
 Class Based Handlers
 --------------------

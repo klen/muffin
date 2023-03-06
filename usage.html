@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Usage &#8212; Muffin 0.92.1 documentation</title>
+    <title>Usage &#8212; Muffin 0.93.3 documentation</title>
   
   
   
@@ -424,7 +424,7 @@ document.write(`
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.92.1
+    Version: 0.93.3
 </div></div>
     </div>
   
@@ -799,6 +799,30 @@ code base.</p>
 <p>Middlewares from app and subapp are chained (only internal middlewares are
 supported for nested apps).</p>
 </section>
+<section id="run-tasks-in-background">
+<h2>Run tasks in background<a class="headerlink" href="#run-tasks-in-background" title="Permalink to this heading">#</a></h2>
+<p>Muffin provides a simple way to run tasks in background: <cite>Application.run_background</cite></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># send email here</span>
+    <span class="k">pass</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/send&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+  <span class="c1"># Schedule any awaitable for later execution</span>
+  <span class="n">app</span><span class="o">.</span><span class="n">run_background</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s1">&#39;user@email.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from Muffin!&#39;</span><span class="p">))</span>
+
+  <span class="c1"># Return response to a client immediately</span>
+  <span class="c1"># The task will be executed after the response is sent</span>
+  <span class="k">return</span> <span class="s2">&quot;OK&quot;</span>
+</pre></div>
+</div>
+</section>
 <section id="debug-mode">
 <h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Permalink to this heading">#</a></h2>
 <p>Sometime there are errors in your code. If any exception happens when Muffin
@@ -868,6 +892,7 @@ an application in debug mode.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-responses">About Responses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#middlewares">Middlewares</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-applications">Nested applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-tasks-in-background">Run tasks in background</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-mode">Debug Mode</a></li>
 </ul>
   </nav></div>

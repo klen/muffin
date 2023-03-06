@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>API &#8212; Muffin 0.92.1 documentation</title>
+    <title>API &#8212; Muffin 0.93.3 documentation</title>
   
   
   
@@ -424,7 +424,7 @@ document.write(`
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.92.1
+    Version: 0.93.3
 </div></div>
     </div>
   
@@ -596,6 +596,48 @@ document.write(`
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>TVCallable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.run_background">
+<span class="sig-name descname"><span class="pre">run_background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.run_background" title="Permalink to this definition">#</a></dt>
+<dd><p>Await the given awaitable after the request is completed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># send email here</span>
+    <span class="k">pass</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/send&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+<span class="c1"># Schedule any awaitable for later execution</span>
+<span class="n">app</span><span class="o">.</span><span class="n">run_background</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s1">&#39;user@email.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from Muffin!&#39;</span><span class="p">))</span>
+
+<span class="c1"># Return response to a client immediately</span>
+<span class="c1"># The task will be executed after the response is sent</span>
+<span class="k">return</span> <span class="s2">&quot;OK&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>task</strong> (<em>Awaitable</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.import_submodules">
+<span class="sig-name descname"><span class="pre">import_submodules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">submodules</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.import_submodules" title="Permalink to this definition">#</a></dt>
+<dd><p>Automatically import submodules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>submodules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1284,7 +1326,7 @@ result will be converted into a JSON Response</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.TestClient">
 <span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">TestClient</span></span><a class="headerlink" href="#muffin.TestClient" title="Permalink to this definition">#</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.71.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v0.72.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ASGITestClient</span></code></a></p>
 </dd></dl>
 
 </section>
@@ -1338,6 +1380,8 @@ result will be converted into a JSON Response</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.on_shutdown"><code class="docutils literal notranslate"><span class="pre">Application.on_shutdown()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.on_error"><code class="docutils literal notranslate"><span class="pre">Application.on_error()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.middleware"><code class="docutils literal notranslate"><span class="pre">Application.middleware()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.run_background"><code class="docutils literal notranslate"><span class="pre">Application.run_background()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.import_submodules"><code class="docutils literal notranslate"><span class="pre">Application.import_submodules()</span></code></a></li>
 </ul>
 </li>
 </ul>
