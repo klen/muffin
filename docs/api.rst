@@ -52,7 +52,7 @@ Application
                     except RuntimeError:
                         return ResponseHTML('Middleware Exception')
 
-   .. automethod:: run_background
+   .. automethod:: run_after_response
 
    .. automethod:: import_submodules
 

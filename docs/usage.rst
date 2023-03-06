@@ -367,7 +367,7 @@ supported for nested apps).
 Run tasks in background
 -----------------------
 
-Muffin provides a simple way to run tasks in background: `Application.run_background`
+Muffin provides a simple way to run tasks in background: `Application.run_after_response`
 
 .. code-block:: python
 
@@ -384,7 +384,7 @@ Muffin provides a simple way to run tasks in background: `Application.run_backgr
     async def send(request):
 
       # Schedule any awaitable for later execution
-      app.run_background(send_email('user@email.com', 'Hello from Muffin!'))
+      app.run_after_response(send_email('user@email.com', 'Hello from Muffin!'))
 
       # Return response to a client immediately
       # The task will be executed after the response is sent

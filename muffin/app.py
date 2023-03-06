@@ -125,8 +125,8 @@ class Application(BaseApp):
         package_name = parent_frame.f_locals["__name__"]
         return import_submodules(package_name, *submodules)
 
-    def run_background(self, task: Awaitable):
-        """Await the given awaitable after the request is completed.
+    def run_after_response(self, task: Awaitable):
+        """Await the given awaitable after the response is completed.
 
         .. code-block:: python
 
@@ -143,7 +143,7 @@ class Application(BaseApp):
             async def send(request):
 
             # Schedule any awaitable for later execution
-            app.run_background(send_email('user@email.com', 'Hello from Muffin!'))
+            app.run_after_response(send_email('user@email.com', 'Hello from Muffin!'))
 
             # Return response to a client immediately
             # The task will be executed after the response is sent
