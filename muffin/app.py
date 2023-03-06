@@ -7,6 +7,7 @@ from logging.config import dictConfig
 from typing import TYPE_CHECKING, Any, Dict, Mapping, Union
 
 from asgi_tools import App as BaseApp
+from asgi_tools._compat import aio_wait
 from asgi_tools.middleware import BACKGROUND_TASK
 from modconfig import Config
 
@@ -103,9 +104,9 @@ class Application(BaseApp):
     ):
         """Support background tasks."""
         await self.lifespan(scope, receive, send)
-        bgtask = BACKGROUND_TASK.get()
-        if bgtask is not None:
-            await bgtask
+        bgtasks = BACKGROUND_TASK.get(None)
+        if bgtasks is not None:
+            await aio_wait(*bgtasks)
             BACKGROUND_TASK.set(None)
 
     def import_submodules(self, *submodules: str):
@@ -153,4 +154,7 @@ class Application(BaseApp):
         if not isawaitable(task):
             raise TypeError("Task must be awaitable")  # noqa: TRY003
 
-        BACKGROUND_TASK.set(task)
+        scheduled = BACKGROUND_TASK.get(set())
+        scheduled.add(task)
+
+        BACKGROUND_TASK.set(scheduled)
