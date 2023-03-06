@@ -1,6 +1,6 @@
 [project]
 name = "muffin"
-version = "0.93.0"
+version = "0.93.1"
 description = "Muffin is a fast, simple and asyncronous web-framework for Python 3 (asyncio, trio, curio)"
 readme = "README.rst"
 requires-python = ">=3.8"
