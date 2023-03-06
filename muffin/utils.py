@@ -9,9 +9,9 @@ import pkgutil
 import sys
 import threading
 from collections import OrderedDict
+from contextlib import suppress
 from typing import TYPE_CHECKING, Callable, Coroutine, Dict, TypeVar
 
-from asgi_tools._compat import curio, trio
 from asgi_tools.utils import is_awaitable, to_awaitable
 from sniffio import current_async_library
 
@@ -35,10 +35,14 @@ AIOLIB = threading.local()
 AIOLIB.current = None
 AIOLIBS: Dict[str, ModuleType] = OrderedDict()
 
-if curio:
+with suppress(ImportError):
+    import curio
+
     AIOLIBS["curio"] = curio
 
-if trio:
+with suppress(ImportError):
+    import trio
+
     AIOLIBS["trio"] = trio
 
 AIOLIBS["asyncio"] = asyncio
