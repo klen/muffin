@@ -126,7 +126,7 @@ Plugins overview
 
 The list of some Muffin plugins (please make PR if you want to provide more):
 
-`Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_ 
+`Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_
 ``````````````````````````````````````````````````````````
 
 `Jinja2 <https://jinja.palletsprojects.com/en/2.11.x/>`_ templates (asyncio/trio/curio)
@@ -141,7 +141,7 @@ The list of some Muffin plugins (please make PR if you want to provide more):
 
 
 
-`Muffin-Session <https://github.com/klen/muffin-session>`_ 
+`Muffin-Session <https://github.com/klen/muffin-session>`_
 ```````````````````````````````````````````````````````````
 
 Signed Cookie-Based HTTP sessions (asyncio/trio/curio)
@@ -155,7 +155,7 @@ Signed Cookie-Based HTTP sessions (asyncio/trio/curio)
     :alt: PYPI Version
 
 
-`Muffin-OAuth <https://github.com/klen/muffin-oauth>`_ 
+`Muffin-OAuth <https://github.com/klen/muffin-oauth>`_
 ```````````````````````````````````````````````````````
 
 Work with OAuth (authorization, resources loading) (asyncio/trio/curio)
@@ -183,7 +183,7 @@ Sentry integration (asyncio/trio/curio)
     :alt: PYPI Version
 
 
-`Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_ 
+`Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_
 ``````````````````````````````````````````````````````````
 
 Peewee support (SQL, ORM) (asyncio/trio/curio)
@@ -238,7 +238,7 @@ Work with Mongo DB (asyncio only)
     :target: https://pypi.org/project/muffin-mongo/
     :alt: PYPI Version
 
-`Muffin-REST    <https://github.com/klen/muffin-rest>`_ 
+`Muffin-REST    <https://github.com/klen/muffin-rest>`_
 ````````````````````````````````````````````````````````
 
 The package provides enhanced support for writing REST APIs (asyncio/trio/curio)
