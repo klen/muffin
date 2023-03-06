@@ -122,7 +122,7 @@ See also: :py:class:`~muffin.Handler`.
 Dynamic URLs
 ------------
 
-All the URLs support regexp. You can use any regular expression to customize your URLs: 
+All the URLs support regexp. You can use any regular expression to customize your URLs:
 
 .. code-block:: python
 
@@ -404,4 +404,3 @@ an application in debug mode.
 
 
 .. _ASGI: https://asgi.readthedocs.io/en/latest/
-
