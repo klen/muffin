@@ -330,7 +330,7 @@ Muffin < 0.40 (based on AIOHTTP_)
 .. _license:
 
 License
-========
+-------
 
 Licensed under a `MIT license`_.
 
