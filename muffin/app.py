@@ -131,7 +131,7 @@ class Application(BaseApp):
         package_name = parent_frame.f_locals["__name__"]
         return import_submodules(package_name, *submodules)
 
-    def run_after_response(self, task: Awaitable):
+    def run_after_response(self, *tasks: Awaitable):
         """Await the given awaitable after the response is completed.
 
         .. code-block:: python
@@ -156,10 +156,11 @@ class Application(BaseApp):
             return "OK"
 
         """
-        if not isawaitable(task):
-            raise TypeError("Task must be awaitable")  # noqa: TRY003
-
         scheduled = BACKGROUND_TASK.get() or set()
-        scheduled.add(task)
+        for task in tasks:
+            if not isawaitable(task):
+                raise TypeError(f"Task must be awaitable: {task!r}")  # noqa: TRY003
+
+            scheduled.add(task)
 
         BACKGROUND_TASK.set(scheduled)

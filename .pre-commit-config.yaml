@@ -1,35 +1,40 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+#
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
+    - id: trailing-whitespace
+    - id: end-of-file-fixer
+    - id: check-merge-conflict
+    - id: check-case-conflict
+    - id: check-toml
+    - id: check-ast
+    - id: debug-statements
 
-- repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: v0.0.253
+- repo: https://github.com/psf/black
+  rev: 23.1.0
   hooks:
-  - id: ruff
-    name: Check code
-    args: [--fix, --exit-non-zero-on-fix]
+  - id: black
 
 - repo: local
   hooks:
-    - id: check-types
-      name: Check types
+
+    - id: mypy
+      name: mypy
       entry: mypy
       language: system
       pass_filenames: false
-    - id: check-code
-      name: Refactor code
-      entry: refurb muffin
+
+    - id: ruff
+      name: ruff
+      entry: ruff muffin
       language: system
       pass_filenames: false
-    - id: run-tests
-      name: Run tests
+
+    - id: pytest
+      name: pytest
       entry: pytest tests
       language: system
       pass_filenames: false
