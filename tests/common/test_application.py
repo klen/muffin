@@ -261,8 +261,10 @@ async def test_run_after(app, client):
     @app.route("/background")
     async def background(request):
         app.run_after_response(background_task("bg1"))
-        app.run_after_response(background_task("bg2"))
-        app.run_after_response(background_task("bg3"))
+        app.run_after_response(
+            background_task("bg2"),
+            background_task("bg3"),
+        )
         return "OK"
 
     res = await client.get("/background")
