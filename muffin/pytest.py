@@ -46,10 +46,8 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
     """Load an application, run lifespan events, prepare plugins."""
     if not pytestconfig.app:
         logging.warning(
-            (
-                "Improperly configured. Please set ``muffin_app`` in your pytest config. "
-                "Or use ``--muffin-app`` command option."
-            ),
+            "Improperly configured. Please set ``muffin_app`` in your pytest config. "
+            "Or use ``--muffin-app`` command option.",
         )
         return
 
@@ -61,15 +59,16 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
         msg += f"with config '{app_.cfg.config}'"
     app_.logger.info(msg)
 
-    async with manage_lifespan(app_):
-        async with AsyncExitStack() as stack:
-            # Setup plugins
-            for plugin in app_.plugins.values():
-                conftest = getattr(plugin, "conftest", None)
-                if conftest:
-                    app_.logger.info("Setup plugin '%s'", plugin.name)
-                    await stack.enter_async_context(conftest())
+    # Setup plugins
+    async with AsyncExitStack() as stack:
+        for plugin in app_.plugins.values():
+            conftest = getattr(plugin, "conftest", None)
+            if conftest:
+                app_.logger.info("Setup plugin '%s'", plugin.name)
+                await stack.enter_async_context(conftest())
 
+        # Manage lifespan
+        async with manage_lifespan(app_):
             yield app_
 
 
