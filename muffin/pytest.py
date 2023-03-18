@@ -1,11 +1,17 @@
 """Support testing with Pytest."""
 
+from __future__ import annotations
+
 import logging
 import os
-from contextlib import AsyncExitStack
+from contextlib import AsyncExitStack, asynccontextmanager
+from typing import TYPE_CHECKING
 
 import pytest
 from asgi_tools.tests import ASGITestClient, manage_lifespan
+
+if TYPE_CHECKING:
+    from muffin.app import Application
 
 
 def pytest_addoption(parser):
@@ -55,23 +61,31 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
 
     from muffin.utils import import_app
 
-    app_ = import_app(pytestconfig.app)
-    msg = f"Setup application '{app_.cfg.name}'"
-    if app_.cfg.config:
-        msg += f"with config '{app_.cfg.config}'"
-    app_.logger.info(msg)
+    muffin_app = import_app(pytestconfig.app)
+    msg = f"Setup application '{muffin_app.cfg.name}'"
+    if muffin_app.cfg.config:
+        msg += f"with config '{muffin_app.cfg.config}'"
+    muffin_app.logger.info(msg)
 
     # Setup plugins
+    async with lifecycle(muffin_app):
+        yield muffin_app
+
+
+@asynccontextmanager
+async def lifecycle(app: Application):
+    """Setup plugins and run lifespan events."""
+
     async with AsyncExitStack() as stack:
-        for plugin in app_.plugins.values():
+        for plugin in app.plugins.values():
             conftest = getattr(plugin, "conftest", None)
             if conftest:
-                app_.logger.info("Setup plugin '%s'", plugin.name)
+                app.logger.info("Setup plugin '%s'", plugin.name)
                 await stack.enter_async_context(conftest())
 
         # Manage lifespan
-        async with manage_lifespan(app_):
-            yield app_
+        async with manage_lifespan(app):
+            yield app
 
 
 @pytest.fixture()
