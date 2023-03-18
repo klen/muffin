@@ -66,7 +66,7 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
             # Setup plugins
             for plugin in app_.plugins.values():
                 conftest = getattr(plugin, "conftest", None)
-                if conftest and hasattr(conftest, "__aenter__") and hasattr(conftest, "__aexit__"):
+                if conftest:
                     app_.logger.info("Setup plugin '%s'", plugin.name)
                     await stack.enter_async_context(conftest())
 

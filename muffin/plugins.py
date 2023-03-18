@@ -11,11 +11,14 @@ from modconfig import Config
 from muffin.errors import MuffinError
 
 if TYPE_CHECKING:
+    from contextlib import _AsyncGeneratorContextManager
+
     from muffin.app import Application
 
 
 class PluginError(MuffinError):
     """Implement any exception in plugins."""
+
 
 class PluginNotInstalledError(RuntimeError):
     """Raised when a plugin is not installed."""
@@ -39,7 +42,7 @@ class BasePlugin(ABC):
     shutdown: Optional[Callable] = None
 
     # Optional conftest method
-    conftest: Optional[Callable] = None
+    conftest: Optional[Callable[[], _AsyncGeneratorContextManager]] = None
 
     def __init__(self, app: Optional[Application] = None, **options):
         """Save application and create he plugin's configuration."""
@@ -76,7 +79,9 @@ class BasePlugin(ABC):
 
         # Update configuration
         self.cfg.update_from_dict(
-            dict(app.cfg), prefix=f"{self.name}_", exist_only=True,
+            dict(app.cfg),
+            prefix=f"{self.name}_",
+            exist_only=True,
         )
         self.cfg.update_from_dict(options)
 
