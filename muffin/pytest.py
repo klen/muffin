@@ -2,6 +2,7 @@
 
 import logging
 import os
+from contextlib import AsyncExitStack
 
 import pytest
 from asgi_tools.tests import ASGITestClient, manage_lifespan
@@ -11,7 +12,9 @@ def pytest_addoption(parser):
     """Append pytest options for testing Muffin apps."""
     parser.addini("muffin_app", "Set path to muffin application")
     parser.addoption(
-        "--muffin-app", dest="muffin_app", help="Set to muffin application",
+        "--muffin-app",
+        dest="muffin_app",
+        help="Set to muffin application",
     )
 
     parser.addini("muffin_config", "Set module path to muffin configuration")
@@ -57,14 +60,15 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
     app_.logger.info(msg)
 
     async with manage_lifespan(app_):
+        async with AsyncExitStack() as stack:
+            # Setup plugins
+            for plugin in app_.plugins.values():
+                conftest = getattr(plugin, "conftest", None)
+                if conftest and hasattr(conftest, "__aenter__") and hasattr(conftest, "__aexit__"):
+                    app_.logger.info("Setup plugin '%s'", plugin.name)
+                    await stack.enter_async_context(conftest())
 
-        # Setup plugins
-        for plugin in app_.plugins.values():
-            if hasattr(plugin, "conftest") and plugin.conftest is not None:
-                app_.logger.info("Setup plugin '%s'", plugin.name)
-                await plugin.conftest()
-
-        yield app_
+            yield app_
 
 
 @pytest.fixture()
