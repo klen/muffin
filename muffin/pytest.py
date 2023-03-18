@@ -46,8 +46,10 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
     """Load an application, run lifespan events, prepare plugins."""
     if not pytestconfig.app:
         logging.warning(
-            "Improperly configured. Please set ``muffin_app`` in your pytest config. "
-            "Or use ``--muffin-app`` command option.",
+            (
+                "Improperly configured. Please set ``muffin_app`` in your pytest config. "
+                "Or use ``--muffin-app`` command option."
+            ),
         )
         return
 
