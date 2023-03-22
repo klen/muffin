@@ -20,7 +20,7 @@ from muffin.errors import InvalidAppError
 if TYPE_CHECKING:
     from types import ModuleType
 
-    from asgi_tools.types import TASGIApp
+    from .app import Application
 
 __all__ = (
     "aio_lib",
@@ -82,7 +82,7 @@ def import_submodules(package_name: str, *submodules: str) -> Dict[str, ModuleTy
     }
 
 
-def import_app(app_uri: str, *, reload: bool = False) -> TASGIApp:
+def import_app(app_uri: str, *, reload: bool = False) -> Application:
     """Import application by the given string (python.path.to.module:app_name)."""
     mod_name, _, app_name = app_uri.partition(":")
     mod = importlib.import_module(mod_name)

@@ -12,4 +12,4 @@ async def index(request):
 
 @app.on_startup
 async def start():
-    app.state = "started"
+    app.state = "started"  # type: ignore[]

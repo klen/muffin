@@ -21,6 +21,7 @@ async def test_handler(app, client):
         async def custom2(self, request):
             return "CUSTOM2"
 
+    assert Index.methods
     assert sorted(Index.methods) == ["GET", "POST"]
 
     res = await client.get("/handler")
@@ -55,7 +56,6 @@ async def test_deffered(app, client):
     from muffin.handler import Handler
 
     class Resource(Handler):
-
         methods = "post"
 
         async def get(self, request):

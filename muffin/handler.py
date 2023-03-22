@@ -1,11 +1,12 @@
 """Muffin Handlers."""
 
+from __future__ import annotations
+
 import inspect
-from typing import TYPE_CHECKING, Any, Awaitable, Callable, Dict, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, Dict, Optional, Tuple, Type, cast
 
 from asgi_tools.utils import is_awaitable
 from asgi_tools.view import HTTP_METHODS, HTTPView
-from http_router.types import TMethods, TMethodsArg
 
 from muffin.errors import AsyncRequiredError
 
@@ -13,19 +14,20 @@ if TYPE_CHECKING:
     from asgi_tools import Request
     from asgi_tools.types import TVCallable
     from http_router import Router
+    from http_router.types import TMethods, TMethodsArg
 
 
 class HandlerMeta(type):
     """Prepare handlers."""
 
     def __new__(
-        mcs: Type,
+        mcs: Type[HandlerMeta],
         name: str,
         bases: Tuple[type],
         params: Dict[str, Any],
-    ) -> Type["Handler"]:
+    ):
         """Prepare a Handler Class."""
-        cls: Type[Handler] = super().__new__(mcs, name, bases, params)
+        cls = cast(Type["Handler"], super().__new__(mcs, name, bases, params))
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:
@@ -41,17 +43,6 @@ class HandlerMeta(type):
                 raise AsyncRequiredError(method)
 
         return cls
-
-
-def route_method(*paths: str, **params) -> Callable[["TVCallable"], "TVCallable"]:
-    """Mark a method as a route."""
-
-    def wrapper(method):
-        """Wrap a method."""
-        method.__route__ = paths, params
-        return method
-
-    return wrapper
 
 
 class Handler(HTTPView, metaclass=HandlerMeta):
@@ -116,4 +107,16 @@ class Handler(HTTPView, metaclass=HandlerMeta):
         method = getattr(self, opts.get("__meth__") or request.method.lower())
         return method(request)
 
-    route = route_method
+    @staticmethod
+    def route(*paths: str, **params) -> Callable[[TVCallable], TVCallable]:
+        """Mark a method as a route."""
+
+        def wrapper(method):
+            """Wrap a method."""
+            method.__route__ = paths, params
+            return method
+
+        return wrapper
+
+
+route_method = Handler.route
