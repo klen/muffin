@@ -30,18 +30,18 @@ repos:
 
     - id: mypy
       name: mypy
-      entry: mypy
+      entry: poetry run mypy
       language: system
       pass_filenames: false
 
     - id: ruff
       name: ruff
-      entry: ruff muffin
+      entry: poetry run ruff muffin
       language: system
       pass_filenames: false
 
     - id: pytest
       name: pytest
-      entry: pytest tests
+      entry: poetry run pytest tests
       language: system
       pass_filenames: false
