@@ -66,4 +66,3 @@ Marshmallow
 ~~~~~~~~~~~
 
 * `Field(load_from)` -> `Field(data_key)`
-

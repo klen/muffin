@@ -118,7 +118,8 @@ class Application(BaseApp):
         """Automatically import submodules.
 
         .. code-block:: python
-            # some __init__.py
+
+            # Somewhere in package "__init__.py" file
 
             # import all submodules
             app.import_submodules()

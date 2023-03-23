@@ -1,11 +1,10 @@
-[project]
+[tool.poetry]
 name = "muffin"
 version = "0.95.5"
 description = "Muffin is a fast, simple and asyncronous web-framework for Python 3 (asyncio, trio, curio)"
 readme = "README.rst"
-requires-python = ">=3.8"
-license = {"text" = "MIT License"}
-authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
+license = "MIT"
+authors = ["Kirill Klenov <horneds@gmail.com>"]
 keywords = ["asgi", "web", "web framework", "asyncio", "trio", "curio"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -22,43 +21,43 @@ classifiers = [
   "Framework :: AsyncIO",
   "Framework :: Trio",
 ]
-dependencies = [
-  "asgi-tools >= 0.73.0",
-  "modconfig >= 1.2.1",
-  "ujson; implementation_name == 'cpython'",
-]
-
-[project.urls]
 homepage = "https://github.com/klen/muffin"
 repository = "https://github.com/klen/muffin"
 documentation = "https://klen.github.io/muffin"
+packages = [{include = "muffin"}]
+
+[tool.poetry.urls]
 changelog = "https://raw.githubusercontent.com/klen/muffin/master/CHANGELOG.md"
 
-[project.scripts]
+[tool.poetry.dependencies]
+python = "^3.8"
+asgi-tools = "^0.73.2"
+modconfig = "^1.2.1"
+ujson = "^5.7.0"
+
+# Optional
+gunicorn = {version = "^20.1.0", optional = true}
+uvicorn = {version = "^0.21.1", optional = true, extras = ["standard"]}
+
+[tool.poetry.scripts]
 muffin = "muffin.manage:cli"
 
-[project.entry-points.pytest11]
-muffin_pytest = "muffin.pytest"
+[tool.poetry.plugins]
+pytest11 = { muffin_pytest = "muffin.pytest" }
 
-[project.optional-dependencies]
-tests = [
-  "aiofile",
-  "uvloop; implementation_name == 'cpython'",
-  "pytest",
-  "ruff",
-  "pytest-aio[curio,trio] >= 1.1.1",
-  "pytest-mypy; implementation_name == 'cpython'",
-  "types-ujson; implementation_name == 'cpython'",
-]
-dev = ["pre-commit", "refurb", "bump2version"]
-docs = ["sphinx", "pydata-sphinx-theme"]
-standard = ["gunicorn", "uvicorn[standard]"]
+[tool.poetry.extras]
+standard = ["gunicorn", "uvicorn"]
 
-[tool.setuptools]
-packages = ['muffin']
-
-[tool.setuptools.package-data]
-muffin = ["py.typed"]
+[tool.poetry.group.dev.dependencies]
+aiofile = "^3.8.5"
+pytest = "^7.2.2"
+ruff = "^0.0.258"
+pytest-aio = {extras = ["curio", "trio"], version = "^1.5.0"}
+pre-commit = "^3.2.0"
+pytest-mypy = "^0.10.3"
+sphinx = "^6.1.3"
+pydata-sphinx-theme = "^0.13.1"
+sphinx-copybutton = "^0.5.1"
 
 [tool.pytest.ini_options]
 addopts = "-xsvl"
@@ -67,22 +66,6 @@ muffin_app = "tests:app"
 [tool.mypy]
 packages = ["muffin"]
 ignore_missing_imports = true
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = py38,py39,py310,py311,pypy39
-
-[testenv]
-deps = -e .[tests]
-commands =
-	pytest --mypy tests
-
-[testenv:pypy39]
-deps = -e .[tests]
-commands =
-	pytest tests
-"""
 
 [tool.ruff]
 line-length = 100
@@ -98,3 +81,28 @@ ignore = ["D", "UP", "ANN", "DJ", "EM", "RSE", "SLF", "RET", "S101", "PLR2004", 
 line-length = 100
 target-version = ["py38", "py39", "py310", "py311"]
 preview = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+envlist = py38,py39,py310,py311,pypy39
+
+[testenv]
+allowlist_externals = poetry
+commands_pre =
+    poetry install --no-root --sync --with dev
+commands =
+    poetry run pytest --mypy tests --import-mode importlib
+
+[testenv:pypy39]
+allowlist_externals = poetry
+commands_pre =
+    poetry install --no-root --sync --with dev
+commands =
+    poetry run pytest tests --import-mode importlib
+"""
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

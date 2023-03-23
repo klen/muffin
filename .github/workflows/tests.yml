@@ -18,27 +18,28 @@ jobs:
         python-version: ['3.8', '3.9', '3.10', '3.11', 'pypy-3.9']
 
     steps:
-    - name: Checkout changes
-      uses: actions/checkout@main
+    - uses: actions/checkout@main
+    - name: install poetry
+      run: pipx install poetry
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@main
       with:
-        cache: pip
+        cache: poetry
         python-version: ${{ matrix.python-version }}
 
-    - name: Setup dependencies
-      run: pip install .[tests]
-
-    - name: Check typing
-      run: mypy
-      if: matrix.python-version != 'pypy-3.9'
+    - name: Setup requirements
+      run: poetry install --with dev
 
     - name: Check code
-      run: ruff muffin
+      run: poetry run ruff muffin
+
+    - name: Check typing
+      run: poetry run mypy
+      if: matrix.python-version != 'pypy-3.9'
 
     - name: Test with pytest
-      run: pytest tests
+      run: poetry run pytest tests
 
   notify:
     runs-on: ubuntu-latest
