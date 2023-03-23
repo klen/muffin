@@ -184,7 +184,7 @@ Sentry integration (asyncio/trio/curio)
 
 
 `Muffin-Peewee  <https://github.com/klen/muffin-peewee-aio>`_
-``````````````````````````````````````````````````````````
+`````````````````````````````````````````````````````````````
 
 Peewee support (SQL, ORM) (asyncio/trio/curio)
 
