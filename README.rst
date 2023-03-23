@@ -183,17 +183,17 @@ Sentry integration (asyncio/trio/curio)
     :alt: PYPI Version
 
 
-`Muffin-Peewee  <https://github.com/klen/muffin-peewee>`_
+`Muffin-Peewee  <https://github.com/klen/muffin-peewee-aio>`_
 ``````````````````````````````````````````````````````````
 
 Peewee support (SQL, ORM) (asyncio/trio/curio)
 
-.. image:: https://github.com/klen/muffin-peewee/workflows/tests/badge.svg
+.. image:: https://github.com/klen/muffin-peewee-aio/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin-peewee/actions
     :alt: Tests Status
 
-.. image:: https://img.shields.io/pypi/v/muffin-peewee
-    :target: https://pypi.org/project/muffin-peewee/
+.. image:: https://img.shields.io/pypi/v/muffin-peewee-aio
+    :target: https://pypi.org/project/muffin-peewee-aio/
     :alt: PYPI Version
 
 
