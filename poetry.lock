@@ -1952,4 +1952,4 @@ standard = ["gunicorn", "uvicorn"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "d905b389445ffa2d167e3fdb68cd83942a3e0e1e8cab5daaf85704274ae06f9d"
+content-hash = "17e14a948a320a9c01b122a714ca90d4094e4b6df4514da836336ef3914dd3e3"
