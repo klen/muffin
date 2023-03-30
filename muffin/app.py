@@ -124,7 +124,7 @@ class Application(BaseApp):
             # import all submodules
             app.import_submodules()
 
-            # import only specific submodules
+            # import only specific submodules (in specified order)
             app.import_submodules('submodule1', 'submodule2')
 
         """
