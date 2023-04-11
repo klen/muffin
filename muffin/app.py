@@ -75,10 +75,6 @@ class Application(BaseApp):
         self.manage = Manager(self)
 
         # Setup logging
-        log_config = self.cfg.get("LOG_CONFIG")
-        if log_config and isinstance(log_config, dict) and log_config.get("version"):
-            dictConfig(log_config)
-
         self.logger = logging.getLogger("muffin")
         self.logger.setLevel(self.cfg.LOG_LEVEL)
         self.logger.propagate = False
@@ -88,6 +84,10 @@ class Application(BaseApp):
                 logging.Formatter(self.cfg.LOG_FORMAT, self.cfg.LOG_DATE_FORMAT),
             )
             self.logger.addHandler(ch)
+
+        log_config = self.cfg.get("LOG_CONFIG")
+        if log_config and isinstance(log_config, dict) and log_config.get("version"):
+            dictConfig(log_config)
 
         super().__init__(
             debug=self.cfg.DEBUG,
