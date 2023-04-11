@@ -50,7 +50,7 @@ class BasePlugin(ABC):
             msg = "Plugin.name is required"
             raise TypeError(msg)
 
-        self.cfg = Config(config_config={"update_from_env": False}, **self.defaults)
+        self.cfg = Config(config_config={"update_from_env": False}, disabled=False, **self.defaults)
         self.__app__ = app
 
         if app is not None:
@@ -74,8 +74,6 @@ class BasePlugin(ABC):
         """Bind app and update the plugin's configuration."""
         # allow to redefine the name for multi plugins with same type
         self.name = name or self.name
-        self.__app__ = app
-        app.plugins[self.name] = self
 
         # Update configuration
         self.cfg.update_from_dict(
@@ -84,6 +82,12 @@ class BasePlugin(ABC):
             exist_only=True,
         )
         self.cfg.update_from_dict(options)
+        if self.cfg.disabled:
+            app.logger.warning("Plugin %s is disabled", self.name)
+            return
+
+        app.plugins[self.name] = self
+        self.__app__ = app
 
         # Register a middleware
         if self.middleware:
