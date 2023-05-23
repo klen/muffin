@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Usage &#8212; Muffin 0.98.1 documentation</title>
+    <title>Usage &#8212; Muffin 0.98.2 documentation</title>
   
   
   
@@ -424,7 +424,7 @@ document.write(`
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.98.1
+    Version: 0.98.2
 </div></div>
     </div>
   
@@ -506,12 +506,12 @@ world greeting.</p>
 <h2>The Request Object<a class="headerlink" href="#the-request-object" title="Permalink to this heading">#</a></h2>
 <p>Every view should accept a request object.  The request object is
 documented in the API section and we will not cover it here in detail (see
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>). Here is a broad overview of some of the most
+<a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>). Here is a broad overview of some of the most
 common operations.</p>
 <p>The current request method is available by using the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">method</span></code> attribute.  To access form data (data
 transmitted in a <code class="docutils literal notranslate"><span class="pre">POST</span></code> or <code class="docutils literal notranslate"><span class="pre">PUT</span></code> request) you can use the
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">form</span></code> attribute.  Here is a full example of the two
+<a class="reference internal" href="api.html#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-attr docutils literal notranslate"><span class="pre">form</span></code></a> attribute.  Here is a full example of the two
 attributes mentioned above:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
  <span class="k">async</span> <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -527,7 +527,7 @@ attributes mentioned above:</p>
 </pre></div>
 </div>
 <p>To access parameters submitted in the URL (<code class="docutils literal notranslate"><span class="pre">?key=value</span></code>) you can use the
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">query</span></code> attribute:</p>
+<a class="reference internal" href="api.html#muffin.Request.query" title="muffin.Request.query"><code class="xref py py-attr docutils literal notranslate"><span class="pre">query</span></code></a> attribute:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -535,10 +535,10 @@ attributes mentioned above:</p>
 <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.11)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> because users might change the URL and presenting them a 400
 bad request page in that case is not user friendly.</p>
 <p>For a full list of methods and attributes of the request object, head over
-to the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> documentation.</p>
+to the <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> documentation.</p>
 <section id="cookies">
 <h3>Cookies<a class="headerlink" href="#cookies" title="Permalink to this heading">#</a></h3>
-<p>Cookies are exposed as a regular dictionary interface through <code class="xref py py-attr docutils literal notranslate"><span class="pre">cookies</span></code>:</p>
+<p>Cookies are exposed as a regular dictionary interface through <a class="reference internal" href="api.html#muffin.Request.cookies" title="muffin.Request.cookies"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cookies</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -546,7 +546,7 @@ to the <code class="xref py py-class docutils literal notranslate"><span class="
 <section id="file-uploads">
 <h3>File Uploads<a class="headerlink" href="#file-uploads" title="Permalink to this heading">#</a></h3>
 <p>Request files are normally sent as multipart form data (<cite>multipart/form-data</cite>).
-The uploaded files are available in <code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code>:</p>
+The uploaded files are available in <a class="reference internal" href="api.html#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">formdata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -557,7 +557,7 @@ The uploaded files are available in <code class="xref py py-meth docutils litera
 <p>Modern web applications use meaningful URLs to help users. Users are more
 likely to like a page and come back if the page uses a meaningful URL they can
 remember and use to directly visit a page.</p>
-<p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">route()</span></code> decorator to bind a function to a URL.</p>
+<p>Use the <a class="reference internal" href="api.html#muffin.Application.route" title="muffin.Application.route"><code class="xref py py-meth docutils literal notranslate"><span class="pre">route()</span></code></a> decorator to bind a function to a URL.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
     <span class="k">return</span> <span class="s1">&#39;Index Page&#39;</span>
@@ -572,8 +572,8 @@ remember and use to directly visit a page.</p>
 </pre></div>
 </div>
 <p>You can do more! You can make parts of the URL dynamic.  The every routed
-callback should be callable and accepts a <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p>
-<p>See also: <code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code>.</p>
+callback should be callable and accepts a <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>.</p>
+<p>See also: <a class="reference internal" href="api.html#muffin.Handler" title="muffin.Handler"><code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></a>.</p>
 </section>
 <section id="dynamic-urls">
 <h2>Dynamic URLs<a class="headerlink" href="#dynamic-urls" title="Permalink to this heading">#</a></h2>
@@ -647,7 +647,7 @@ callback should be callable and accepts a <code class="xref py py-class docutils
 </section>
 <section id="redirects-and-errors">
 <h2>Redirects and Errors<a class="headerlink" href="#redirects-and-errors" title="Permalink to this heading">#</a></h2>
-<p>To redirect a user to another endpoint, use the <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseRedirect</span></code>
+<p>To redirect a user to another endpoint, use the <a class="reference internal" href="api.html#muffin.ResponseRedirect" title="muffin.ResponseRedirect"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseRedirect</span></code></a>
 class; to abort a request early with an error code, use the
 <a class="reference internal" href="api.html#muffin.ResponseError" title="muffin.ResponseError"><code class="xref py py-func docutils literal notranslate"><span class="pre">ResponseError()</span></code></a> class:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseRedirect</span><span class="p">,</span> <span class="n">ResponseError</span>
@@ -690,11 +690,11 @@ a <em class="mimetype">text/html</em> mimetype. If the return value is a dict or
 <a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a> is called to produce a response.  The logic that Muffin
 applies to converting return values into response objects is as follows:</p>
 <ol class="arabic simple">
-<li><p>If a result is response <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> it’s directly
+<li><p>If a result is response <a class="reference internal" href="api.html#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> it’s directly
 returned from the view.</p></li>
-<li><p>If it’s a string, a response <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseHTML</span></code> is created with
+<li><p>If it’s a string, a response <a class="reference internal" href="api.html#muffin.ResponseHTML" title="muffin.ResponseHTML"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseHTML</span></code></a> is created with
 that data and the default parameters.</p></li>
-<li><p>If it’s a dict/list/bool/None, a response <code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseJSON</span></code>
+<li><p>If it’s a dict/list/bool/None, a response <a class="reference internal" href="api.html#muffin.ResponseJSON" title="muffin.ResponseJSON"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseJSON</span></code></a>
 is created</p></li>
 <li><p>If a tuple is returned the items in the tuple can provide extra
 information. Such tuples have to be in the form <code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">response</span>
@@ -731,7 +731,7 @@ and return as html.</p></li>
 <p>A Muffin application supports middlewares, which provide a flexible way to
 define a chain of functions that handles every web requests.</p>
 <ol class="arabic">
-<li><p>As an <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> application <code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code> can be proxied with
+<li><p>As an <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> application <a class="reference internal" href="api.html#muffin.Application" title="muffin.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> can be proxied with
 any <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> middleware:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
 <span class="kn">from</span> <span class="nn">sentry_asgi</span> <span class="kn">import</span> <span class="n">SentryMiddleware</span>
