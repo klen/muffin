@@ -72,15 +72,22 @@ def aio_run(corofn: Callable[..., Coroutine[None, None, TV]], *args, **kwargs) -
     return AIOLIBS[aiolib].run(lambda: corofn(*args, **kwargs))
 
 
-def import_submodules(package_name: str, *module_names: str) -> Dict[str, ModuleType]:
-    """Import all submodules by package name."""
+def import_submodules(
+    package_name: str, *module_names: str, silent: bool = False
+) -> Dict[str, ModuleType]:
+    """Import all submodules by the given package name."""
     package = sys.modules[package_name]
-    return {
-        module_name: importlib.import_module(f"{package_name}.{module_name}")
-        for module_name in (
-            module_names or (name for _, name, _ in pkgutil.walk_packages(package.__path__))
-        )
-    }
+    res = {}
+    for module_name in module_names or (
+        name for _, name, _ in pkgutil.walk_packages(package.__path__)
+    ):
+        try:
+            res[module_name] = importlib.import_module(f"{package_name}.{module_name}")
+        except ImportError:
+            if not silent:
+                raise
+
+    return res
 
 
 def import_app(app_uri: str, *, reload: bool = False) -> Application:
