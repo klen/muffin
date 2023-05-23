@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>API &#8212; Muffin 0.97.2 documentation</title>
+    <title>API &#8212; Muffin 0.98.0 documentation</title>
   
   
   
@@ -424,7 +424,7 @@ document.write(`
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.97.2
+    Version: 0.98.0
 </div></div>
     </div>
   
@@ -633,7 +633,7 @@ document.write(`
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Application.import_submodules">
-<span class="sig-name descname"><span class="pre">import_submodules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">submodules</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.import_submodules" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">import_submodules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">submodules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.import_submodules" title="Permalink to this definition">#</a></dt>
 <dd><p>Automatically import submodules.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Somewhere in package &quot;__init__.py&quot; file</span>
 
@@ -642,11 +642,17 @@ document.write(`
 
 <span class="c1"># import only specific submodules (in specified order)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">import_submodules</span><span class="p">(</span><span class="s1">&#39;submodule1&#39;</span><span class="p">,</span> <span class="s1">&#39;submodule2&#39;</span><span class="p">)</span>
+
+<span class="c1"># ignore import errors</span>
+<span class="n">app</span><span class="o">.</span><span class="n">import_submodules</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>submodules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>submodules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
+<li><p><strong>silent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -787,7 +793,7 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Request.url">
 <span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#muffin.Request.url" title="Permalink to this definition">#</a></dt>
-<dd><p>A lazy property that parses the current URL and returns <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api.html#yarl.URL" title="(in yarl v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> object.</p>
+<dd><p>A lazy property that parses the current URL and returns <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api.html#yarl.URL" title="(in yarl v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
 <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;... the full http URL ..&#39;</span>
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">scheme</span>
@@ -796,7 +802,7 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">query_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </pre></div>
 </div>
-<p>See <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api.html#module-yarl" title="(in yarl v1.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yarl</span></code></a> documentation for further reference.</p>
+<p>See <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api.html#module-yarl" title="(in yarl v1.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yarl</span></code></a> documentation for further reference.</p>
 </dd></dl>
 
 <dl class="py method">
