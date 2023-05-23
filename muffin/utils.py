@@ -13,6 +13,7 @@ from contextlib import suppress
 from typing import TYPE_CHECKING, Callable, Coroutine, Dict, TypeVar
 
 from asgi_tools.utils import is_awaitable, to_awaitable
+from curio.task import logging
 from sniffio import current_async_library
 
 from muffin.errors import InvalidAppError
@@ -48,6 +49,8 @@ with suppress(ImportError):
 AIOLIBS["asyncio"] = asyncio
 
 TV = TypeVar("TV")
+
+logger = logging.getLogger("muffin")
 
 
 def aio_lib() -> str:
@@ -86,6 +89,8 @@ def import_submodules(
         except ImportError:
             if not silent:
                 raise
+
+            logger.debug("Failed to import module: %s", f"{package_name}.{module_name}")
 
     return res
 

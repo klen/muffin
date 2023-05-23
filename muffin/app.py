@@ -12,7 +12,7 @@ from asgi_tools._compat import aio_wait
 from modconfig import Config
 
 from muffin.constants import CONFIG_ENV_VARIABLE
-from muffin.utils import import_submodules
+from muffin.utils import import_submodules, logger
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable
@@ -75,7 +75,7 @@ class Application(BaseApp):
         self.manage = Manager(self)
 
         # Setup logging
-        self.logger = logging.getLogger("muffin")
+        self.logger = logger
         self.logger.setLevel(self.cfg.LOG_LEVEL)
         self.logger.propagate = False
         if not self.logger.handlers:
