@@ -10,10 +10,10 @@ import sys
 import threading
 from collections import OrderedDict
 from contextlib import suppress
+from logging import getLogger
 from typing import TYPE_CHECKING, Callable, Coroutine, Dict, TypeVar
 
 from asgi_tools.utils import is_awaitable, to_awaitable
-from curio.task import logging
 from sniffio import current_async_library
 
 from muffin.errors import InvalidAppError
@@ -26,9 +26,10 @@ if TYPE_CHECKING:
 __all__ = (
     "aio_lib",
     "aio_run",
-    "import_submodules",
     "current_async_library",
+    "import_submodules",
     "is_awaitable",
+    "logger",
     "to_awaitable",
 )
 
@@ -50,7 +51,7 @@ AIOLIBS["asyncio"] = asyncio
 
 TV = TypeVar("TV")
 
-logger = logging.getLogger("muffin")
+logger = getLogger("muffin")
 
 
 def aio_lib() -> str:
