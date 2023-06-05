@@ -88,32 +88,30 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     @classmethod
     def __route__(
-        cls,
-        router: "Router",
-        *paths: str,
-        methods: Optional[TMethodsArg] = None,
-        **params,
+        cls, router: Router, *paths: str, methods: Optional[TMethodsArg] = None, **params
     ):
         """Check for registered methods."""
         router.bind(cls, *paths, methods=methods or cls.methods, **params)
         for _, method in inspect.getmembers(cls, lambda m: hasattr(m, "__route__")):
-            cpaths, cparams = method.__route__
-            router.bind(cls, *cpaths, __meth__=method.__name__, **cparams)
+            paths, methods = method.__route__
+            router.bind(cls, *paths, methods=methods, method=method.__name__)
 
         return cls
 
-    def __call__(self, request: "Request", **opts) -> Awaitable:
+    def __call__(self, request: Request, method: Optional[str] = None) -> Awaitable:
         """Dispatch the given request by HTTP method."""
-        method = getattr(self, opts.get("__meth__") or request.method.lower())
-        return method(request)
+        process = getattr(self, method or request.method.lower())
+        return process(request)
 
     @staticmethod
-    def route(*paths: str, **params) -> Callable[[TVCallable], TVCallable]:
+    def route(
+        *paths: str, methods: Optional[TMethodsArg] = None
+    ) -> Callable[[TVCallable], TVCallable]:
         """Mark a method as a route."""
 
         def wrapper(method):
             """Wrap a method."""
-            method.__route__ = paths, params
+            method.__route__ = paths, methods
             return method
 
         return wrapper
