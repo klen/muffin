@@ -114,7 +114,7 @@ class Application(BaseApp):
             await aio_wait(*bgtasks)
             BACKGROUND_TASK.set(None)
 
-    def import_submodules(self, *submodules: str, silent: bool = False):
+    def import_submodules(self, *submodules: str, silent: bool = False, **kwargs):
         """Automatically import submodules.
 
         .. code-block:: python
@@ -133,7 +133,7 @@ class Application(BaseApp):
         """
         parent_frame = stack()[1][0]
         package_name = parent_frame.f_locals["__name__"]
-        return import_submodules(package_name, *submodules, silent=silent)
+        return import_submodules(package_name, *submodules, silent=silent, **kwargs)
 
     def run_after_response(self, *tasks: Awaitable):
         """Await the given awaitable after the response is completed.

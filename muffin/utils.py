@@ -11,7 +11,7 @@ import threading
 from collections import OrderedDict
 from contextlib import suppress
 from logging import getLogger
-from typing import TYPE_CHECKING, Callable, Coroutine, Dict, TypeVar
+from typing import TYPE_CHECKING, Callable, Coroutine, Dict, Iterable, TypeVar
 
 from asgi_tools.utils import is_awaitable, to_awaitable
 from sniffio import current_async_library
@@ -77,14 +77,16 @@ def aio_run(corofn: Callable[..., Coroutine[None, None, TV]], *args, **kwargs) -
 
 
 def import_submodules(
-    package_name: str, *module_names: str, silent: bool = False
+    package_name: str, *module_names: str, silent: bool = False, exclude: Iterable[str] = ()
 ) -> Dict[str, ModuleType]:
     """Import all submodules by the given package name."""
     package = sys.modules[package_name]
     res = {}
-    for module_name in module_names or (
-        name for _, name, _ in pkgutil.walk_packages(package.__path__)
-    ):
+    to_import = module_names or (name for _, name, _ in pkgutil.walk_packages(package.__path__))
+    if exclude:
+        to_import = (name for name in to_import if name not in exclude)
+
+    for module_name in to_import:
         try:
             res[module_name] = importlib.import_module(f"{package_name}.{module_name}")
         except ImportError:
