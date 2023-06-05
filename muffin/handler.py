@@ -98,7 +98,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
         return cls
 
-    def __call__(self, request: Request, method: Optional[str] = None) -> Awaitable:
+    def __call__(self, request: Request, *, method: Optional[str] = None, **_) -> Awaitable:
         """Dispatch the given request by HTTP method."""
         process = getattr(self, method or request.method.lower())
         return process(request)
