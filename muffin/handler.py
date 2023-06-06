@@ -94,14 +94,14 @@ class Handler(HTTPView, metaclass=HandlerMeta):
         router.bind(cls, *paths, methods=methods or cls.methods, **params)
         for _, method in inspect.getmembers(cls, lambda m: hasattr(m, "__route__")):
             paths, methods = method.__route__
-            router.bind(cls, *paths, methods=methods, method=method.__name__)
+            router.bind(cls, *paths, methods=methods, method_name=method.__name__)
 
         return cls
 
-    def __call__(self, request: Request, *, method: Optional[str] = None, **_) -> Awaitable:
+    def __call__(self, request: Request, *, method_name: Optional[str] = None, **_) -> Awaitable:
         """Dispatch the given request by HTTP method."""
-        process = getattr(self, method or request.method.lower())
-        return process(request)
+        method = getattr(self, method_name or request.method.lower())
+        return method(request)
 
     @staticmethod
     def route(

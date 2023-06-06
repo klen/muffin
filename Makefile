@@ -56,8 +56,7 @@ release: $(VIRTUAL_ENV)
 	@git checkout master
 	@git merge develop
 	@git checkout develop
-	@git push origin develop master
-	@git push --tags
+	@git push --tags origin develop master
 
 .PHONY: minor
 minor: release
