@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING, Any, Callable, Mapping, Optional
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Mapping, Optional
 
 from asgi_tools.utils import to_awaitable
 from modconfig import Config
@@ -30,7 +30,7 @@ class BasePlugin(ABC):
     name: str
 
     # Plugin options with default values
-    defaults: Mapping[str, Any] = {}
+    defaults: ClassVar[Mapping[str, Any]] = {}
 
     # Optional middleware method
     middleware: Optional[Callable] = None
