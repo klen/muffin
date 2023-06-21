@@ -102,7 +102,7 @@ class Manager:
                 with suppress(ImportError):
                     from IPython.terminal.embed import InteractiveShellEmbed
 
-                    sh = InteractiveShellEmbed(banner1=banner, user_ns=ctx)
+                    sh = InteractiveShellEmbed.instance(banner1=banner, user_ns=ctx)
                     return sh()
 
             code.interact(banner, local=ctx)
