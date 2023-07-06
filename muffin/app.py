@@ -23,8 +23,7 @@ if TYPE_CHECKING:
     from muffin.plugins import BasePlugin
 
 BACKGROUND_TASK: Final["ContextVar[set[Awaitable] | None]"] = ContextVar(
-    "background_tasks",
-    default=None,
+    "background_tasks", default=None
 )
 
 
@@ -101,12 +100,7 @@ class Application(BaseApp):
         """Human readable representation."""
         return f"<muffin.Application: { self.cfg.name }>"
 
-    async def __call__(
-        self,
-        scope: TASGIScope,
-        receive: TASGIReceive,
-        send: TASGISend,
-    ):
+    async def __call__(self, scope: TASGIScope, receive: TASGIReceive, send: TASGISend):
         """Support background tasks."""
         await self.lifespan(scope, receive, send)
         bgtasks = BACKGROUND_TASK.get()

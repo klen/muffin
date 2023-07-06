@@ -20,12 +20,7 @@ if TYPE_CHECKING:
 class HandlerMeta(type):
     """Prepare handlers."""
 
-    def __new__(
-        mcs: Type[HandlerMeta],
-        name: str,
-        bases: Tuple[type],
-        params: Dict[str, Any],
-    ):
+    def __new__(mcs: Type[HandlerMeta], name: str, bases: Tuple[type], params: Dict[str, Any]):
         """Prepare a Handler Class."""
         cls = cast(Type["Handler"], super().__new__(mcs, name, bases, params))
 

@@ -9,7 +9,7 @@ import sys
 from contextlib import AsyncExitStack, suppress
 from importlib import metadata
 from pathlib import Path
-from typing import TYPE_CHECKING, AsyncContextManager, Callable, Mapping, Optional, overload
+from typing import TYPE_CHECKING, AsyncContextManager, Callable, Dict, Optional, overload
 
 from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.errors import AsyncRequiredError
@@ -71,7 +71,7 @@ class Manager:
             )
 
         self.subparsers = self.parser.add_subparsers(dest="subparser")
-        self.commands: Mapping[str, Callable] = {}
+        self.commands: Dict[str, Callable] = {}  # noqa: FA
 
         self.shell(
             getattr(

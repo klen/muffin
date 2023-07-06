@@ -50,14 +50,13 @@ shell:
 VERSION?=minor
 # target: release - Bump version
 release: $(VIRTUAL_ENV)
-	@git checkout master
-	@git merge develop
-	@git pull
 	@git checkout develop
 	@git pull
-	@$(eval VFROM := $(shell poetry version -s))
+	@git checkout master
+	@git pull
+	@git merge develop
 	@poetry version $(VERSION)
-	@git commit -am "Bump version $(VFROM) → `poetry version -s`"
+	@git commit -am "Bump version `poetry version -s`"
 	@git tag `poetry version -s`
 	@git checkout master
 	@git merge develop
@@ -74,3 +73,7 @@ patch:
 .PHONY: major
 major:
 	make release VERSION=major
+
+.PHONY: version v
+version v:
+	@poetry version -s
