@@ -89,7 +89,7 @@ def import_submodules(
     for module_name in to_import:
         try:
             res[module_name] = importlib.import_module(f"{package_name}.{module_name}")
-        except ImportError:
+        except ImportError:  # noqa: PERF203
             if not silent:
                 raise
 

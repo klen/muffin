@@ -17,6 +17,12 @@ $(VIRTUAL_ENV): pyproject.toml
 t test: $(VIRTUAL_ENV)
 	@poetry run pytest -xsvl --mypy tests
 
+.PHONY: lint
+# target: mypy - Run typechecking
+lint: $(VIRTUAL_ENV)
+	@poetry run ruff muffin
+	@poetry run mypy
+
 .PHONY: mypy
 # target: mypy - Run typechecking
 mypy: $(VIRTUAL_ENV)
