@@ -58,9 +58,8 @@ release: $(VIRTUAL_ENV)
 	@poetry version $(VERSION)
 	@git commit -am "Bump version `poetry version -s`"
 	@git tag `poetry version -s`
-	@git checkout master
-	@git merge develop
 	@git checkout develop
+	@git merge master
 	@git push --tags origin develop master
 
 .PHONY: minor
