@@ -22,7 +22,7 @@ from asgi_tools.tests import ASGITestClient as TestClient
 
 from .app import Application
 from .errors import MuffinError
-from .handler import Handler
+from .handler import Handler, route_method
 
 __all__ = (
     "ASGIConnectionClosedError",
@@ -44,4 +44,5 @@ __all__ = (
     "ResponseText",
     "ResponseWebSocket",
     "TestClient",
+    "route_method",
 )

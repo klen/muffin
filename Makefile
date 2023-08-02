@@ -7,9 +7,9 @@ all: $(VIRTUAL_ENV)
 #  Development
 # =============
 
-$(VIRTUAL_ENV): pyproject.toml
+$(VIRTUAL_ENV): pyproject.toml .pre-commit-config.yaml .git-commits.yaml
 	@poetry install --with dev -E standard
-	@poetry run pre-commit install --hook-type pre-push
+	@poetry run pre-commit install
 	@touch $(VIRTUAL_ENV)
 
 .PHONY: t test
@@ -56,7 +56,7 @@ release: $(VIRTUAL_ENV)
 	@git pull
 	@git merge develop
 	@poetry version $(VERSION)
-	@git commit -am "Bump version `poetry version -s`"
+	@git commit -am "build(release): `poetry version -s`"
 	@git tag `poetry version -s`
 	@git checkout develop
 	@git merge master
