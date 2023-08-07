@@ -30,13 +30,21 @@ jobs:
 
     - name: Setup requirements
       run: poetry install --with dev
+      if: matrix.python-version != 'pypy-3.10'
+
+    - name: Setup requirements pypy
+      run: |
+        poetry install
+        poetry install aiofile pytest pytest-aio
+      if: matrix.python-version == 'pypy-3.10'
 
     - name: Check code
       run: poetry run ruff muffin
+      if: matrix.python-version != 'pypy-3.10'
 
     - name: Check typing
       run: poetry run mypy
-      if: matrix.python-version != 'pypy-3.9'
+      if: matrix.python-version != 'pypy-3.10'
 
     - name: Test with pytest
       run: poetry run pytest tests
