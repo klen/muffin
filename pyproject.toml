@@ -94,7 +94,7 @@ preview = true
 legacy_tox_ini = """
 [tox]
 isolated_build = true
-envlist = py38,py39,py310,py311,pypy39
+envlist = py38,py39,py310,py311,pypy310
 
 [testenv]
 allowlist_externals = poetry
@@ -103,7 +103,7 @@ commands_pre =
 commands =
     poetry run pytest --mypy tests --import-mode importlib
 
-[testenv:pypy39]
+[testenv:pypy310]
 allowlist_externals = poetry
 commands_pre =
     poetry install --no-root --sync --with dev
