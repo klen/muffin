@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11', 'pypy-3.10']
+        python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
     - uses: actions/checkout@main
@@ -30,21 +30,12 @@ jobs:
 
     - name: Setup requirements
       run: poetry install --with dev
-      if: matrix.python-version != 'pypy-3.10'
-
-    - name: Setup requirements pypy
-      run: |
-        poetry install
-        pip install aiofile pytest pytest-aio
-      if: matrix.python-version == 'pypy-3.10'
 
     - name: Check code
       run: poetry run ruff muffin
-      if: matrix.python-version != 'pypy-3.10'
 
     - name: Check typing
       run: poetry run mypy
-      if: matrix.python-version != 'pypy-3.10'
 
     - name: Test with pytest
       run: poetry run pytest tests
