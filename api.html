@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>API &#8212; Muffin 0.99.2 documentation</title>
+    <title>API &#8212; Muffin 0.99.3 documentation</title>
   
   
   
@@ -37,9 +37,6 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
@@ -424,7 +421,7 @@ document.write(`
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.99.2
+    Version: 0.99.3
 </div></div>
     </div>
   
@@ -728,7 +725,7 @@ send event messages to the client</p></li>
 request.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="si">}</span><span class="s2"> </span><span class="si">{</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span> <span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="w"> </span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="w"> </span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="w"> </span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
@@ -886,7 +883,7 @@ Any subsequent calls to <a class="reference internal" href="#muffin.Request.body
 <p><cite>json = await request.json()</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><em>Union</em></a>[None, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><em>List</em></a>[TJSON], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><em>Mapping</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, TJSON]]</p>
+<dd class="field-odd"><p>None | <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a> | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><em>List</em></a>[TJSON] | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><em>Mapping</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, TJSON]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1002,7 +999,7 @@ strategy (‘lax’|’strict’|’none’)</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
-<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.11)"><em>SimpleCookie</em></a>) – </p></li>
 </ul>
@@ -1033,7 +1030,7 @@ result will be converted into a HTML Response</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
-<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.11)"><em>SimpleCookie</em></a>) – </p></li>
 </ul>
@@ -1066,7 +1063,7 @@ result will be converted into a JSON Response</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – </p></li>
-<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>headers</strong> (<em>MultiDict</em>) – </p></li>
 <li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.11)"><em>SimpleCookie</em></a>) – </p></li>
 </ul>
@@ -1304,7 +1301,7 @@ result will be converted into a JSON Response</p>
 <dd><p>Send the given message to a client.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><em>Union</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><em>Dict</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><em>Dict</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -1532,7 +1529,7 @@ result will be converted into a JSON Response</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     <br/>
   </p>
 </div>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Deployment &#8212; Muffin 0.99.2 documentation</title>
+    <title>Deployment &#8212; Muffin 0.99.3 documentation</title>
   
   
   
@@ -37,9 +37,6 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
@@ -424,7 +421,7 @@ document.write(`
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.99.2
+    Version: 0.99.3
 </div></div>
     </div>
   
@@ -494,7 +491,7 @@ replicability, development simplicity, etc.</p>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">from</span><span class="w"> </span><span class="s">horneds/muffin:latest</span>
 
 <span class="c"># Copy whole application</span>
-<span class="k">COPY</span><span class="w"> </span>. /app
+<span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>/app
 </pre></div>
 </div>
 </section>
@@ -520,7 +517,7 @@ replicability, development simplicity, etc.</p>
 <ul class="simple">
 <li><p>Build your application image</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker build -t myimage .
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>myimage<span class="w"> </span>.
 </pre></div>
 </div>
 </section>
@@ -529,7 +526,7 @@ replicability, development simplicity, etc.</p>
 <ul class="simple">
 <li><p>Run a container based on your image:</p></li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker run -d --name mycontainer -p <span class="m">80</span>:80 myimage
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span>myimage
 </pre></div>
 </div>
 <ul class="simple">
@@ -719,7 +716,7 @@ popular one. Alternatives like HAProxy may be used as well.</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     <br/>
   </p>
 </div>
