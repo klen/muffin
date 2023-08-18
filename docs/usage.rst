@@ -56,7 +56,8 @@ attributes mentioned above:
 
             error = 'Invalid username/password'
 
-        return render_template('login.html', error=error)
+        # Let's assume that you have Muffin-Jinja2 plugin enabled
+        return await jinja2.render('login.html', error=error)
 
 To access parameters submitted in the URL (``?key=value``) you can use the
 :attr:`~muffin.Request.query` attribute:
