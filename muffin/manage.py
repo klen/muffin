@@ -26,7 +26,6 @@ PARAM_RE = re.compile(r"^\s+:param (\w+): (.+)$", re.M)
 
 
 class Manager:
-
     """Provide simple interface to make application's commands.
 
     ::
@@ -71,7 +70,7 @@ class Manager:
             )
 
         self.subparsers = self.parser.add_subparsers(dest="subparser")
-        self.commands: Dict[str, Callable] = {}  # noqa: FA
+        self.commands: Dict[str, Callable] = {}  # noqa: FA100
 
         self.shell(
             getattr(
@@ -219,7 +218,7 @@ class Manager:
 
         return wrapper
 
-    def run(self, *args: str, prog: Optional[str] = None):
+    def run(self, *args: str, prog: Optional[str] = None):  # noqa: FA100
         """Parse the arguments and run a command."""
         if prog:
             self.parser.prog = prog
@@ -246,7 +245,7 @@ class Manager:
         aio_run(run_fn, ctx, fn, args=pargs, kwargs=kwargs)
 
 
-async def run_fn(ctx, fn, args=(), kwargs={}):  # noqa:
+async def run_fn(ctx, fn, args=(), kwargs={}):  # noqa: B006
     """Run the given function with the given async context."""
     async with ctx:
         res = fn(*args, **kwargs)
