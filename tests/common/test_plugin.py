@@ -23,6 +23,7 @@ async def test_plugin_config(app, client):
     plugin = Plugin(debug=False)
     assert plugin.cfg
     assert plugin.cfg.debug is False
+    assert plugin.cfg.disabled is False  # disabled injected automatically
 
     app = Application("tests.config_fixture")
 

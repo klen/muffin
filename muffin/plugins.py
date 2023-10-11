@@ -30,7 +30,7 @@ class BasePlugin(ABC):
     name: str
 
     # Plugin options with default values
-    defaults: ClassVar[Mapping[str, Any]] = {}
+    defaults: ClassVar[Mapping[str, Any]] = {"disabled": False}
 
     # Optional middleware method
     middleware: Optional[Callable] = None
@@ -50,7 +50,9 @@ class BasePlugin(ABC):
             msg = "Plugin.name is required"
             raise TypeError(msg)
 
-        self.cfg = Config(config_config={"update_from_env": False}, disabled=False, **self.defaults)
+        self.cfg = Config(
+            config_config={"update_from_env": False}, **dict({"disabled": False}, **self.defaults)
+        )
         self.__app__ = app
 
         if app is not None:
@@ -70,7 +72,7 @@ class BasePlugin(ABC):
 
         return self.__app__
 
-    def setup(self, app: Application, *, name: Optional[str] = None, **options):
+    def setup(self, app: Application, *, name: Optional[str] = None, **options) -> bool:
         """Bind app and update the plugin's configuration."""
         # allow to redefine the name for multi plugins with same type
         self.name = name or self.name
@@ -84,7 +86,7 @@ class BasePlugin(ABC):
         self.cfg.update_from_dict(options)
         if self.cfg.disabled:
             app.logger.warning("Plugin %s is disabled", self.name)
-            return
+            return False
 
         app.plugins[self.name] = self
         self.__app__ = app
@@ -100,3 +102,5 @@ class BasePlugin(ABC):
         # Bind shutdown
         if self.shutdown:
             app.on_shutdown(self.shutdown)
+
+        return True
