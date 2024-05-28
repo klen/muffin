@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "muffin"
-version = "0.100.1"
+version = "0.101.0"
 description = "Muffin is a fast, simple and asyncronous web-framework for Python 3 (asyncio, trio, curio)"
 readme = "README.rst"
 license = "MIT"
