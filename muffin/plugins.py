@@ -64,6 +64,14 @@ class BasePlugin(ABC):
         """Human readable representation."""
         return f"<muffin.Plugin: { self.name }>"
 
+    async def __aenter__(self):
+        if self.startup is not None:
+            await self.startup()
+
+    async def __aexit__(self, exc_type, exc, tb):
+        if self.shutdown is not None:
+            await self.shutdown()
+
     @property
     def app(self) -> Application:
         """Get the application."""

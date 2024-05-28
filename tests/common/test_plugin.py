@@ -115,3 +115,25 @@ def test_multi_plugins(app):
         "plugin1": p1,
         "plugin2": p2,
     }
+
+
+async def test_plugin_as_context_manager():
+    from muffin.plugins import BasePlugin
+
+    events = []
+
+    class Plugin(BasePlugin):
+        name = "plugin"
+
+        async def startup(self):
+            events.append("start")
+
+        async def shutdown(self):
+            events.append("end")
+
+    plug = Plugin()
+    async with plug:
+        pass
+
+    assert "start" in events
+    assert "end" in events
