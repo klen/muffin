@@ -5,7 +5,7 @@ import logging
 from contextvars import ContextVar
 from inspect import isawaitable, stack
 from logging.config import dictConfig
-from typing import TYPE_CHECKING, Any, Dict, Final, Mapping, Union
+from typing import TYPE_CHECKING, Any, Final, Mapping, Union
 
 from asgi_tools import App as BaseApp
 from asgi_tools._compat import aio_wait
@@ -57,7 +57,7 @@ class Application(BaseApp):
         :param **options: Configuration options
 
         """
-        self.plugins: Dict[str, BasePlugin] = {}
+        self.plugins: dict[str, BasePlugin] = {}
 
         # Setup the configuration
         self.cfg = Config(**self.defaults, config_config={"update_from_env": False})

@@ -11,7 +11,7 @@ import threading
 from collections import OrderedDict
 from contextlib import suppress
 from logging import getLogger
-from typing import TYPE_CHECKING, Callable, Coroutine, Dict, Iterable, TypeVar
+from typing import TYPE_CHECKING, Callable, Coroutine, Iterable, TypeVar
 
 from asgi_tools.utils import is_awaitable, to_awaitable
 from sniffio import current_async_library
@@ -35,7 +35,7 @@ __all__ = (
 
 AIOLIB = threading.local()
 AIOLIB.current = None
-AIOLIBS: Dict[str, ModuleType] = OrderedDict()
+AIOLIBS: dict[str, ModuleType] = OrderedDict()
 
 with suppress(ImportError):
     import curio
@@ -78,7 +78,7 @@ def aio_run(corofn: Callable[..., Coroutine[None, None, TV]], *args, **kwargs) -
 
 def import_submodules(
     package_name: str, *module_names: str, silent: bool = False, exclude: Iterable[str] = ()
-) -> Dict[str, ModuleType]:
+) -> dict[str, ModuleType]:
     """Import all submodules by the given package name."""
     package = sys.modules[package_name]
     res = {}

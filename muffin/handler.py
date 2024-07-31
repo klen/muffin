@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import inspect
-from typing import TYPE_CHECKING, Any, Awaitable, Callable, Dict, Optional, Tuple, Type, cast
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, Optional, cast
 
 from asgi_tools.utils import is_awaitable
 from asgi_tools.view import HTTP_METHODS, HTTPView
@@ -20,9 +20,9 @@ if TYPE_CHECKING:
 class HandlerMeta(type):
     """Prepare handlers."""
 
-    def __new__(mcs: Type[HandlerMeta], name: str, bases: Tuple[type], params: Dict[str, Any]):
+    def __new__(mcs: type[HandlerMeta], name: str, bases: tuple[type], params: dict[str, Any]):
         """Prepare a Handler Class."""
-        cls = cast(Type["Handler"], super().__new__(mcs, name, bases, params))
+        cls = cast(type["Handler"], super().__new__(mcs, name, bases, params))
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:
