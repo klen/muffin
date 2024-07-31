@@ -80,7 +80,7 @@ class BasePlugin(ABC):
 
         return self.__app__
 
-    def setup(self, app: Application, *, name: Optional[str] = None, **options) -> bool:
+    def setup(self, app: Application, *, name: Optional[str] = None, **options) -> Any:
         """Bind app and update the plugin's configuration."""
         # allow to redefine the name for multi plugins with same type
         self.name = name or self.name
