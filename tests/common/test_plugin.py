@@ -44,9 +44,6 @@ async def test_plugin(app, client):
 
     start = mock.MagicMock()
     finish = mock.MagicMock()
-    assert BasePlugin.middleware is None
-    assert BasePlugin.startup is None
-    assert BasePlugin.shutdown is None
 
     class Plugin(BasePlugin):
         name = "plugin"

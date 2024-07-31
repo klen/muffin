@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, Mapping, Optional
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, ClassVar, Mapping, Optional
 
-from asgi_tools.utils import to_awaitable
 from modconfig import Config
 
 from muffin.errors import MuffinError
@@ -33,13 +32,13 @@ class BasePlugin(ABC):
     defaults: ClassVar[Mapping[str, Any]] = {"disabled": False}
 
     # Optional middleware method
-    middleware: Optional[Callable] = None
+    middleware: Callable[..., Awaitable]
 
     # Optional startup method
-    startup: Optional[Callable] = None
+    startup: Callable[..., Awaitable]
 
     # Optional shutdown method
-    shutdown: Optional[Callable] = None
+    shutdown: Callable[..., Awaitable]
 
     # Optional conftest method
     conftest: Optional[Callable[[], _AsyncGeneratorContextManager]] = None
@@ -65,11 +64,11 @@ class BasePlugin(ABC):
         return f"<muffin.Plugin: { self.name }>"
 
     async def __aenter__(self):
-        if self.startup is not None:
+        if hasattr(self, "startup"):
             await self.startup()
 
     async def __aexit__(self, exc_type, exc, tb):
-        if self.shutdown is not None:
+        if hasattr(self, "shutdown"):
             await self.shutdown()
 
     @property
@@ -100,15 +99,15 @@ class BasePlugin(ABC):
         self.__app__ = app
 
         # Register a middleware
-        if self.middleware:
-            app.middleware(to_awaitable(self.middleware))
+        if hasattr(self, "middleware"):
+            app.middleware(self.middleware)
 
         # Bind startup
-        if self.startup:
+        if hasattr(self, "startup"):
             app.on_startup(self.startup)
 
         # Bind shutdown
-        if self.shutdown:
+        if hasattr(self, "shutdown"):
             app.on_shutdown(self.shutdown)
 
         return True
