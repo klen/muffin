@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     from .types import TVShellCtx
 
 VERSION = metadata.version("muffin")
-PARAM_RE = re.compile(r"^\s+:param (\w+): (.+)$", re.M)
+PARAM_RE = re.compile(r"^\s+:param (\w+): (.+)$", re.MULTILINE)
 
 
 class Manager:
@@ -70,7 +70,7 @@ class Manager:
             )
 
         self.subparsers = self.parser.add_subparsers(dest="subparser")
-        self.commands: Dict[str, Callable] = {}  # noqa: FA100
+        self.commands: Dict[str, Callable] = {}
 
         self.shell(
             getattr(

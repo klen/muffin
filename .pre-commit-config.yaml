@@ -60,7 +60,7 @@ repos:
   hooks:
   - id: ruff
     name: ruff
-    entry: poetry run ruff muffin
+    entry: poetry run ruff check muffin
     language: system
     pass_filenames: false
     files: \.py$

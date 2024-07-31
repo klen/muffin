@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Removed
+
+## [0.102.0] - 2024-06-31
+
+### Added
+- Python 3.12 support
+
+### Removed
+
+- Drop Python 3.8 support
+
 ## [0.92.0] - 2023-03-04
 
 ### Removed
@@ -33,13 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First public release
 
-### Added
-
-### Changed
-
-### Removed
-
-[unreleased]: https://github.com/klen/muffin/compare/0.92.0...HEAD
+[unreleased]: https://github.com/klen/muffin/compare/0.102.0...HEAD
+[0.102.0]: https://github.com/klen/muffin/compare/0.92.2...0.102.0
 [0.92.0]: https://github.com/klen/muffin/compare/0.87.1...0.92.0
 [0.87.1]: https://github.com/klen/muffin/compare/0.87.0...0.87.1
 [0.87.0]: https://github.com/klen/muffin/compare/0.86.2...0.87.0
