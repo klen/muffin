@@ -1,4 +1,5 @@
 """CLI Support is here."""
+
 import argparse
 import code
 import inspect
@@ -9,7 +10,7 @@ import sys
 from contextlib import AsyncExitStack, suppress
 from importlib import metadata
 from pathlib import Path
-from typing import TYPE_CHECKING, AsyncContextManager, Callable, Optional, overload
+from typing import TYPE_CHECKING, AsyncContextManager, Callable, overload
 
 from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.errors import AsyncRequiredError
@@ -132,17 +133,15 @@ class Manager:
         return self(*args, **kwargs)
 
     @overload
-    def __call__(self, fn: "TVCallable") -> "TVCallable":
-        ...
+    def __call__(self, fn: "TVCallable") -> "TVCallable": ...
 
     @overload
-    def __call__(self, *, lifespan: bool = False) -> Callable[["TVCallable"], "TVCallable"]:
-        ...
+    def __call__(self, *, lifespan: bool = False) -> Callable[["TVCallable"], "TVCallable"]: ...
 
     def __call__(self, fn=None, *, lifespan=False):  # noqa: C901
         """Register a command."""
 
-        def wrapper(fn):  # noqa: C901
+        def wrapper(fn):  # noqa: PLR0912, C901
             if not inspect.iscoroutinefunction(fn) and lifespan:
                 raise AsyncRequiredError(fn)
 
@@ -157,57 +156,70 @@ class Manager:
                 return fn
 
             parser = self.subparsers.add_parser(command_name, description=description)
-            args, vargs, _, defs, __, kwdefs, anns = inspect.getfullargspec(fn)
-            defs = defs or []
-            kwargs_ = dict(zip(args[-len(defs) :], defs))
+            sig = inspect.signature(fn)
             docs = dict(PARAM_RE.findall(fn.__doc__ or ""))
 
-            def process_arg(name, *, value=..., **opts):
-                argname = name.lower()
+            for name, param in sig.parameters.items():
                 arghelp = docs.get(name, "")
-                if value is ...:
-                    return parser.add_argument(argname, help=arghelp, **opts)
+                argname = name.replace("_", "-")
 
-                argname = argname.replace("_", "-")
-                if isinstance(value, bool):
-                    if value:
-                        return parser.add_argument(
-                            "--no-" + argname,
-                            dest=name,
-                            action="store_false",
-                            help=arghelp or f"Disable { name }",
-                        )
-
-                    return parser.add_argument(
-                        "--" + argname,
-                        dest=name,
-                        action="store_true",
-                        help=arghelp or f"Enable { name }",
-                    )
-
-                if isinstance(value, list):
-                    return parser.add_argument(
-                        "--" + argname,
-                        action="append",
-                        default=value,
-                        help=arghelp,
-                    )
-
-                return parser.add_argument(
-                    "--" + argname,
-                    type=anns.get(name, type(value)),
-                    default=value,
-                    help=arghelp + " [%s]" % repr(value),
+                type_func = (
+                    param.annotation
+                    if param.annotation is not param.empty
+                    else type(param.default) if param.default is not param.empty else str
                 )
+                if not isinstance(type_func, type):
+                    type_func = str
 
-            if vargs:
-                process_arg("*", nargs="*", metavar=vargs)
+                if param.kind == param.VAR_POSITIONAL:
+                    parser.add_argument(name, nargs="*", metavar=name, help=arghelp)
+                    continue
 
-            for name, value in (kwdefs or {}).items():
-                process_arg(name, value=value)
+                if param.kind == param.VAR_KEYWORD:
+                    # **kwargs not supported in CLI parser
+                    continue
 
-            for name in args:
-                process_arg(name, value=kwargs_.get(name, ...))
+                if param.default is param.empty:
+                    parser.add_argument(
+                        name,
+                        help=arghelp,
+                        type=type_func,
+                    )
+                else:
+                    default = param.default
+                    if isinstance(default, bool):
+                        if default:
+                            parser.add_argument(
+                                f"--no-{argname}",
+                                dest=name,
+                                action="store_false",
+                                help=arghelp or f"Disable {name}",
+                            )
+                        else:
+                            parser.add_argument(
+                                f"--{argname}",
+                                dest=name,
+                                action="store_true",
+                                help=arghelp or f"Enable {name}",
+                            )
+                    elif isinstance(default, list):
+                        parser.add_argument(
+                            f"--{argname}",
+                            action="append",
+                            default=default,
+                            help=arghelp,
+                        )
+                    else:
+                        parser.add_argument(
+                            f"--{argname}",
+                            type=(
+                                param.annotation
+                                if param.annotation is not param.empty
+                                else type(default)
+                            ),
+                            default=default,
+                            help=f"{arghelp} [{default!r}]",
+                        )
 
             self.commands[command_name] = fn
             fn.parser = parser
@@ -218,7 +230,7 @@ class Manager:
 
         return wrapper
 
-    def run(self, *args: str, prog: Optional[str] = None):  # noqa: FA100
+    def run(self, *args: str, prog: str | None = None):
         """Parse the arguments and run a command."""
         if prog:
             self.parser.prog = prog

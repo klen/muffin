@@ -5,79 +5,77 @@ fail_fast: true
 default_install_hook_types: [commit-msg, pre-commit, pre-push]
 
 repos:
+  - repo: https://github.com/qoomon/git-conventional-commits
+    rev: "v2.7.2"
+    hooks:
+      - id: conventional-commits
+        args: ["-c", ".git-commits.yaml"]
+        stages: ["commit-msg"]
 
-- repo: https://github.com/qoomon/git-conventional-commits
-  rev: 'v2.6.5'
-  hooks:
-  - id: conventional-commits
-    args: ["-c", ".git-commits.yaml"]
-    stages: ["commit-msg"]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-case-conflict
+        stages: ["pre-commit"]
+      - id: check-merge-conflict
+        stages: ["pre-commit"]
+      - id: check-added-large-files
+        stages: ["pre-commit"]
+      - id: check-ast
+        stages: ["pre-commit"]
+      - id: check-executables-have-shebangs
+        stages: ["pre-commit"]
+      - id: check-symlinks
+        stages: ["pre-commit"]
+      - id: check-toml
+        stages: ["pre-commit"]
+      - id: check-yaml
+        stages: ["pre-commit"]
+      - id: debug-statements
+        stages: ["pre-commit"]
+      - id: end-of-file-fixer
+        stages: ["pre-commit"]
+      - id: trailing-whitespace
+        stages: ["pre-commit"]
 
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.4.0
-  hooks:
-  - id: check-case-conflict
-    stages: ["pre-commit"]
-  - id: check-merge-conflict
-    stages: ["pre-commit"]
-  - id: check-added-large-files
-    stages: ["pre-commit"]
-  - id: check-ast
-    stages: ["pre-commit"]
-  - id: check-executables-have-shebangs
-    stages: ["pre-commit"]
-  - id: check-symlinks
-    stages: ["pre-commit"]
-  - id: check-toml
-    stages: ["pre-commit"]
-  - id: check-yaml
-    stages: ["pre-commit"]
-  - id: debug-statements
-    stages: ["pre-commit"]
-  - id: end-of-file-fixer
-    stages: ["pre-commit"]
-  - id: trailing-whitespace
-    stages: ["pre-commit"]
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        stages: ["pre-commit"]
 
-- repo: https://github.com/psf/black
-  rev: 23.7.0
-  hooks:
-  - id: black
-    stages: ["pre-commit"]
+  - repo: https://github.com/python-poetry/poetry
+    rev: "2.1.3"
+    hooks:
+      - id: poetry-check
+        files: ^(.*/)?pyproject\.toml$
+        stages: ["pre-commit"]
+      - id: poetry-lock
+        files: ^(.*/)?(poetry\.lock|pyproject\.toml)$
+        stages: ["pre-commit"]
 
-- repo: https://github.com/python-poetry/poetry
-  rev: '1.5.0'
-  hooks:
-  - id: poetry-check
-    files: ^(.*/)?pyproject\.toml$
-    stages: ["pre-commit"]
-  - id: poetry-lock
-    files: ^(.*/)?(poetry\.lock|pyproject\.toml)$
-    args: ["--no-update"]
-    stages: ["pre-commit"]
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        entry: poetry run ruff check muffin
+        language: system
+        pass_filenames: false
+        files: \.py$
+        stages: ["pre-commit"]
 
-- repo: local
-  hooks:
-  - id: ruff
-    name: ruff
-    entry: poetry run ruff check muffin
-    language: system
-    pass_filenames: false
-    files: \.py$
-    stages: ["pre-commit"]
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy
+        language: system
+        pass_filenames: false
+        files: \.py$
+        stages: ["pre-push"]
 
-  - id: mypy
-    name: mypy
-    entry: poetry run mypy
-    language: system
-    pass_filenames: false
-    files: \.py$
-    stages: ["pre-push"]
-
-  - id: pytest
-    name: pytest
-    entry: poetry run pytest tests
-    language: system
-    pass_filenames: false
-    files: \.py$
-    stages: ["pre-push"]
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest tests
+        language: system
+        pass_filenames: false
+        files: \.py$
+        stages: ["pre-push"]

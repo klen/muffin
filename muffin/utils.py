@@ -56,7 +56,7 @@ logger = getLogger("muffin")
 
 def aio_lib() -> str:
     """Return first available async library."""
-    aiolib = os.environ.get("MUFFIN_AIOLIB", "asyncio")
+    aiolib = os.environ.get("MUFFIN_AIOLIB")
     if aiolib:
         return aiolib
 
@@ -89,11 +89,11 @@ def import_submodules(
     for module_name in to_import:
         try:
             res[module_name] = importlib.import_module(f"{package_name}.{module_name}")
-        except ImportError:  # noqa: PERF203
+        except ImportError as exc:  # noqa: PERF203
             if not silent:
                 raise
 
-            logger.debug("Failed to import module: %s", f"{package_name}.{module_name}")
+            logger.debug("Failed to import %s: %s", f"{package_name}.{module_name}", exc)
 
     return res
 

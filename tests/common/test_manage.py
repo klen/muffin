@@ -16,18 +16,19 @@ def test_command(app):
         :param name: help for name
         """
 
-    assert cmd1.parser
-    assert cmd1.parser.description == "Custom description."
-    assert cmd1.parser._actions[2].help == "help for name"
-    ns = cmd1.parser.parse_args(["test"])
+    parser = cmd1.parser  # type: ignore[]
+    assert parser
+    assert parser.description == "Custom description."
+    assert parser._actions[1].help == "help for name"
+    ns = parser.parse_args(["test"])
     assert dict(ns._get_kwargs()) == {"name": "test", "lower": False}
 
     @app.manage
     def cmd2(*names, lower=False):
         pass
 
-    ns = cmd2.parser.parse_args(["test"])
-    assert dict(ns._get_kwargs()) == {"*": ["test"], "lower": False}
+    ns = cmd2.parser.parse_args(["test"])  # type: ignore[]
+    assert dict(ns._get_kwargs()) == {"names": ["test"], "lower": False}
 
 
 def test_manage(app, capsys, monkeypatch):
@@ -69,7 +70,7 @@ def test_manage_async(app, cmd_aiolib):
     run = mock.MagicMock()
 
     @app.manage(lifespan=True)
-    async def command(name: t.Union[str, int]):
+    async def command(name: str | int):
         run(name)
         assert current_async_library() == cmd_aiolib
 

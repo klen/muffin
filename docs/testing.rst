@@ -1,12 +1,14 @@
 Testing
-========
+=======
+
+Muffin provides a built-in test client for testing your application.
 
 TestClient
 ----------
 
-The test client allows you to test requests against your ASGI application.
+Use :class:`~muffin.TestClient` to test HTTP requests:
 
-The application code:
+**Example application code:**
 
 .. code-block:: python
 
@@ -14,25 +16,27 @@ The application code:
 
     app = Application()
 
-    # Test HTTP requests
     @app.route('/')
     async def home(request):
         return "OK"
 
-Tests:
+**Tests:**
 
 .. code-block:: python
 
     from muffin import TestClient
 
     client = TestClient(app)
+
     response = await client.get('/')
     assert response.status_code == 200
     assert await response.text() == 'OK'
 
 
-Websockets:
-^^^^^^^^^^^
+WebSocket Testing
+-----------------
+
+You can also test WebSocket routes:
 
 .. code-block:: python
 
@@ -42,13 +46,12 @@ Websockets:
 
     @app.route('/ws')
     async def socket(request):
-        ws = ResponseWebSocket(request)
-        async with ws:
+        async with ResponseWebSocket(request) as ws:
             msg = await ws.receive()
             if msg == 'ping':
                 await ws.send('pong')
 
-Test Websockets:
+**Test WebSockets:**
 
 .. code-block:: python
 
@@ -65,19 +68,25 @@ Test Websockets:
 Check the TestClient API Reference: :class:`~muffin.TestClient`
 
 
-Pytest Support
---------------
+Pytest Integration
+------------------
 
-Set module path to your Muffin Application in pytest configuration file or use
-command line option ``--muffin-app``.
+Muffin provides fixtures for integration with pytest.
 
-Example: ::
+**Setup:**
 
-    $ py.test -xs --muffin-app example
+Set the module path to your Muffin application in your pytest configuration file or use the ``--muffin-app`` command-line option:
 
-After that the fixtures ``app``, ``client`` will be available for your tests.
+.. code-block:: console
+
+    $ pytest -xs --muffin-app example
+
+After this, the following fixtures will be available in your tests:
+
+- ``app`` – your Muffin application
+- ``client`` – a :class:`~muffin.TestClient` instance
 
 .. warning::
 
-   if you get a warning from pytest: ``"PytestCollectionWarning: cannot collect test class 'ASGITestClient'``
-   change TestClient import ``from muffin import TestClient as Client``
+   If you get the warning: ``PytestCollectionWarning: cannot collect test class 'ASGITestClient'``,
+   change the TestClient import to: ``from muffin import TestClient as Client``

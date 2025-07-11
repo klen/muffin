@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 import inspect
-from typing import TYPE_CHECKING, Any, Awaitable, Callable, Optional, cast
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, cast
 
-from asgi_tools.utils import is_awaitable
 from asgi_tools.view import HTTP_METHODS, HTTPView
 
 from muffin.errors import AsyncRequiredError
@@ -34,7 +33,7 @@ class HandlerMeta(type):
         cls.methods = {method.upper() for method in cls.methods}
         for m in cls.methods:
             method = getattr(cls, m.lower(), None)
-            if method and not is_awaitable(method):
+            if method and not inspect.iscoroutinefunction(method):
                 raise AsyncRequiredError(method)
 
         return cls
@@ -50,7 +49,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
             async def get(self, request):
                 name = request.patch_params.get('name') or 'all'
-                return "GET: Hello f{name}"
+                return f"GET: Hello {name}"
 
             async def post(self, request):
                 name = request.patch_params.get('name') or 'all'
@@ -79,12 +78,10 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     """
 
-    methods: Optional[TMethods] = None
+    methods: TMethods | None = None
 
     @classmethod
-    def __route__(
-        cls, router: Router, *paths: str, methods: Optional[TMethodsArg] = None, **params
-    ):
+    def __route__(cls, router: Router, *paths: str, methods: TMethodsArg | None = None, **params):
         """Check for registered methods."""
         router.bind(cls, *paths, methods=methods or cls.methods, **params)
         for _, method in inspect.getmembers(cls, lambda m: hasattr(m, "__route__")):
@@ -93,14 +90,14 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
         return cls
 
-    def __call__(self, request: Request, *, method_name: Optional[str] = None, **_) -> Awaitable:
+    def __call__(self, request: Request, *, method_name: str | None = None, **_) -> Awaitable:
         """Dispatch the given request by HTTP method."""
         method = getattr(self, method_name or request.method.lower())
         return method(request)
 
     @staticmethod
     def route(
-        *paths: str, methods: Optional[TMethodsArg] = None
+        *paths: str, methods: TMethodsArg | None = None
     ) -> Callable[[TVCallable], TVCallable]:
         """Mark a method as a route."""
 

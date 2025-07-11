@@ -1,11 +1,7 @@
 .. image:: https://raw.github.com/klen/muffin/develop/docs/static/logo-h200.png
    :height: 100px
 
-.. _description:
-
-**Muffin** -- is a fast, lightweight and asyncronous ASGI_ web-framework for Python_ 3.
-
-.. _badges:
+**Muffin** – fast, lightweight, and asynchronous ASGI_ web framework for Python 3.10+.
 
 .. image:: https://github.com/klen/muffin/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin/actions
@@ -25,322 +21,132 @@
 
 ----------
 
-.. _features:
+Why Muffin?
+-----------
 
-Features
---------
+Muffin combines the simplicity of microframeworks with native ASGI_ performance, supporting multiple async libraries (Asyncio_, Trio_, Curio_) out of the box. Its rich plugin ecosystem makes building modern web applications pleasant and efficient.
 
-- ASGI_ compatible;
-- `Competitive Performance <http://klen.github.io/py-frameworks-bench/>`_;
-- All async python libraries are supported (Asyncio_, Trio_, Curio_);
-- Send HTTP (text, html, json, stream, file, http errors) responses
-- Support WebSockets, Server Side Events
+Key Features
+------------
 
-.. _documentation:
-
-**Docs are available at https://klen.github.io/muffin/. Pull requests
-with documentation enhancements and/or fixes are awesome and most welcome.**
-
-.. _contents:
-
-.. contents::
-
-.. _requirements:
-
-.. _installation:
+- ASGI_ compatible
+- Competitive performance ([Benchmarks](http://klen.github.io/py-frameworks-bench/))
+- Supports Asyncio_, Trio_, and Curio_
+- Multiple response types: text, HTML, JSON, streams, files, SSE, WebSockets
+- First-class plugin system for templating, databases, auth, and more
 
 Installation
 ------------
 
-We recommend using the latest version of Python. The library supports Python
-3.8 and newer (PyPy-3.9+ are supported too).
+Muffin requires **Python 3.10 or newer**. We recommend using the latest stable Python.
 
-Muffin should be installed using pip: ::
-
-    pip install muffin
-
-The command will install minimal configuration.
-
-To install Muffin with `gunicorn`, `uvicorn`, `uvloop`, `httptools` use the
-command:
+Install via pip:
 
 .. code-block:: console
 
-  $ pip install muffin[standard]
+    $ pip install muffin
+
+For the standard installation with `gunicorn`, `uvicorn`, `uvloop`, `httptools`:
+
+.. code-block:: console
+
+    $ pip install muffin[standard]
 
 Dependencies
-````````````
+~~~~~~~~~~~~
 
-These distributions will be installed automatically when installing **Muffin**.
+These packages will be installed automatically:
 
-* `ASGI-Tools`_ - ASGI_ Toolkit
-* `Modconfig`_  - Simple hierarchic configuration manager
+* `ASGI-Tools`_ – ASGI toolkit
+* `Modconfig`_  – hierarchical configuration manager
 
 .. _ASGI-Tools: https://klen.github.io/asgi-tools/
 .. _Modconfig: https://pypi.org/project/modconfig/
 
-.. _quickstart:
-
 Quickstart
 ----------
 
-Example "Hello User" with the Muffin:
+Create a simple "Hello User" app:
 
 .. code-block:: python
 
     import muffin
 
-
     app = muffin.Application()
-
 
     @app.route('/', '/hello/{name}')
     async def hello(request):
         name = request.path_params.get('name', 'world')
-        return f'Hello {name.title()}!'
+        return f'Hello, {name.title()}!'
 
+Save this as `example.py` and run:
 
-What did that code do?
-
-1. First we imported the ``muffin.Application`` class.  An instance of
-   this class will be our application.
-2. Next we create an instance of this class.
-3. We then use the ``muffin.Application.route`` decorator to tell Muffin
-   what URLs should trigger our handler function.
-4. The function returns the message we want to display in the user's browser.
-
-
-Save the script as `example.py` and run it using Uvicorn (or another ASGI_ server): ::
+.. code-block:: console
 
     $ uvicorn example:app
 
-Open http://localhost:8000, http://localhost:8000/hello/username in your browser. Enjoy!
+Visit http://localhost:8000 or http://localhost:8000/hello/username in your browser.
 
-.. TODO: Finish the general example
-.. For a more complete example, see https://github.com/klen/muffin-example
+Plugins
+-------
 
-.. _plugins:
+Muffin has a rich ecosystem of plugins:
 
-Plugins overview
-----------------
+- [`muffin-jinja2`](https://github.com/klen/muffin-jinja2) – Jinja2 templates (asyncio/trio/curio)
+- [`muffin-session`](https://github.com/klen/muffin-session) – Signed cookie-based HTTP sessions
+- [`muffin-oauth`](https://github.com/klen/muffin-oauth) – OAuth integration
+- [`muffin-sentry`](https://github.com/klen/muffin-sentry) – Sentry error tracking
+- [`muffin-peewee`](https://github.com/klen/muffin-peewee-aio) – Peewee ORM integration
+- [`muffin-babel`](https://github.com/klen/muffin-babel) – i18n support
+- [`muffin-databases`](https://github.com/klen/muffin-databases) – SQL database support
+- [`muffin-mongo`](https://github.com/klen/muffin-mongo) – MongoDB integration
+- [`muffin-rest`](https://github.com/klen/muffin-rest) – REST API utilities
+- [`muffin-redis`](https://github.com/klen/muffin-redis) – Redis integration
+- [`muffin-admin`](https://github.com/klen/muffin-admin) – Auto-generated admin UI
+- [`muffin-prometheus`](https://github.com/klen/muffin-prometheus) – Prometheus metrics exporter
 
-The list of some Muffin plugins (please make PR if you want to provide more):
-
-`Muffin-Jinja2  <https://github.com/klen/muffin-jinja2>`_
-``````````````````````````````````````````````````````````
-
-`Jinja2 <https://jinja.palletsprojects.com/en/2.11.x/>`_ templates (asyncio/trio/curio)
-
-.. image:: https://github.com/klen/muffin-jinja2/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-jinja2/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-jinja2
-    :target: https://pypi.org/project/muffin-jinja2/
-    :alt: PYPI Version
-
-
-
-`Muffin-Session <https://github.com/klen/muffin-session>`_
-```````````````````````````````````````````````````````````
-
-Signed Cookie-Based HTTP sessions (asyncio/trio/curio)
-
-.. image:: https://github.com/klen/muffin-session/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-session/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-session
-    :target: https://pypi.org/project/muffin-session/
-    :alt: PYPI Version
-
-
-`Muffin-OAuth <https://github.com/klen/muffin-oauth>`_
-```````````````````````````````````````````````````````
-
-Work with OAuth (authorization, resources loading) (asyncio/trio/curio)
-
-.. image:: https://github.com/klen/muffin-oauth/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-oauth/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-oauth
-    :target: https://pypi.org/project/muffin-oauth/
-    :alt: PYPI Version
-
-
-`Muffin-Sentry  <https://github.com/klen/muffin-sentry>`_
-`````````````````````````````````````````````````````````
-
-Sentry integration (asyncio/trio/curio)
-
-.. image:: https://github.com/klen/muffin-sentry/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-sentry/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-sentry
-    :target: https://pypi.org/project/muffin-sentry/
-    :alt: PYPI Version
-
-
-`Muffin-Peewee  <https://github.com/klen/muffin-peewee-aio>`_
-`````````````````````````````````````````````````````````````
-
-Peewee support (SQL, ORM) (asyncio/trio/curio)
-
-.. image:: https://github.com/klen/muffin-peewee-aio/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-peewee/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-peewee-aio
-    :target: https://pypi.org/project/muffin-peewee-aio/
-    :alt: PYPI Version
-
-
-`Muffin-Babel   <https://github.com/klen/muffin-babel>`_
-````````````````````````````````````````````````````````
-
-Localization support (asyncio/trio/curio)
-
-.. image:: https://github.com/klen/muffin-babel/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-babel/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-babel
-    :target: https://pypi.org/project/muffin-babel/
-    :alt: PYPI Version
-
-
-`Muffin-Databases   <https://github.com/klen/muffin-databases>`_
-`````````````````````````````````````````````````````````````````
-
-Work with SQL databases (asyncio only)
-
-.. image:: https://github.com/klen/muffin-databases/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-databases/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-databases
-    :target: https://pypi.org/project/muffin-databases/
-    :alt: PYPI Version
-
-
-`Muffin-Mongo   <https://github.com/klen/muffin-mongo>`_
-`````````````````````````````````````````````````````````
-
-Work with Mongo DB (asyncio only)
-
-.. image:: https://github.com/klen/muffin-mongo/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-mongo/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-mongo
-    :target: https://pypi.org/project/muffin-mongo/
-    :alt: PYPI Version
-
-`Muffin-REST    <https://github.com/klen/muffin-rest>`_
-````````````````````````````````````````````````````````
-
-The package provides enhanced support for writing REST APIs (asyncio/trio/curio)
-
-.. image:: https://github.com/klen/muffin-rest/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-rest/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-rest
-    :target: https://pypi.org/project/muffin-rest/
-    :alt: PYPI Version
-
-`Muffin-Redis   <https://github.com/klen/muffin-redis>`_
-`````````````````````````````````````````````````````````
-
-Redis support
-
-.. image:: https://github.com/klen/muffin-redis/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-redis/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-redis
-    :target: https://pypi.org/project/muffin-redis/
-    :alt: PYPI Version
-
-`Muffin-Admin   <https://github.com/klen/muffin-admin>`_
-`````````````````````````````````````````````````````````
-
-Automatically build Admin UI
-
-.. image:: https://github.com/klen/muffin-admin/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-admin/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-admin
-    :target: https://pypi.org/project/muffin-admin/
-    :alt: PYPI Version
-
-`Muffin-Prometheus   <https://github.com/klen/muffin-prometheus>`_
-```````````````````````````````````````````````````````````````````
-
-Prometheus metrics exporter
-
-.. image:: https://github.com/klen/muffin-prometheus/workflows/tests/badge.svg
-    :target: https://github.com/klen/muffin-prometheus/actions
-    :alt: Tests Status
-
-.. image:: https://img.shields.io/pypi/v/muffin-prometheus
-    :target: https://pypi.org/project/muffin-prometheus/
-    :alt: PYPI Version
-
-.. _benchmarks:
+See each repo for usage and installation instructions.
 
 Benchmarks
------------
+----------
 
-You could find some tests here: http://klen.github.io/py-frameworks-bench/
-
-.. _bugtracker:
+Performance comparisons are available at: http://klen.github.io/py-frameworks-bench/
 
 Bug tracker
 -----------
 
-If you have any suggestions, bug reports or
-annoyances please report them to the issue tracker
-at https://github.com/klen/muffin/issues
-
-.. _contributing:
+Found a bug or have a feature request? Please open an issue at:
+https://github.com/klen/muffin/issues
 
 Contributing
 ------------
 
-Development of The Muffin happens at: https://github.com/klen/muffin
+Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/klen/muffin/blob/develop/CONTRIBUTING.md) for guidelines.
 
+License
+-------
 
-Contributors
--------------
+Muffin is licensed under the MIT license.
 
-Muffin > 0.40 (completelly rewriten from scratch)
+----------
+
+Credits
+-------
+
+**Muffin > 0.40 (completely rewritten on ASGI)**
 
 * `Kirill Klenov <https://github.com/klen>`_
 
-Muffin < 0.40 (based on AIOHTTP_)
+**Muffin < 0.40 (based on AIOHTTP_)**
 
 * `Kirill Klenov <https://github.com/klen>`_
 * `Andrew Grigorev <https://github.com/ei-grad>`_
 * `Diego Garcia <https://github.com/drgarcia1986>`_
 
-.. _license:
-
-License
--------
-
-Licensed under a `MIT license`_.
-
-.. _links:
-
 .. _AIOHTTP: https://docs.aiohttp.org/en/stable/
 .. _ASGI: https://asgi.readthedocs.io/en/latest/
 .. _Asyncio: https://docs.python.org/3/library/asyncio.html
 .. _Curio: https://curio.readthedocs.io/en/latest/
-.. _MIT license: http://opensource.org/licenses/MIT
 .. _Python: http://python.org
 .. _Trio: https://trio.readthedocs.io/en/stable/index.html
-.. _klen: https://github.com/klen
+.. _MIT license: http://opensource.org/licenses/MIT

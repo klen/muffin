@@ -3,14 +3,15 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING, Any, Awaitable, Callable, ClassVar, Mapping, Optional
+from asyncio import iscoroutinefunction
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, ClassVar, Mapping
 
 from modconfig import Config
 
 from muffin.errors import MuffinError
 
 if TYPE_CHECKING:
-    from contextlib import _AsyncGeneratorContextManager
+    from collections.abc import AsyncGenerator
 
     from muffin.app import Application
 
@@ -32,18 +33,18 @@ class BasePlugin(ABC):
     defaults: ClassVar[Mapping[str, Any]] = {"disabled": False}
 
     # Optional middleware method
-    middleware: Callable[..., Awaitable]
+    middleware: Callable[..., Awaitable] | None = None
 
     # Optional startup method
-    startup: Callable[..., Awaitable]
+    startup: Callable[..., Awaitable] | None = None
 
     # Optional shutdown method
-    shutdown: Callable[..., Awaitable]
+    shutdown: Callable[..., Awaitable] | None = None
 
     # Optional conftest method
-    conftest: Optional[Callable[[], _AsyncGeneratorContextManager]] = None
+    conftest: Callable[[], AsyncGenerator] | None = None
 
-    def __init__(self, app: Optional[Application] = None, **options):
+    def __init__(self, app: Application | None = None, **options):
         """Save application and create he plugin's configuration."""
         if getattr(self, "name", None) is None:
             msg = "Plugin.name is required"
@@ -64,11 +65,11 @@ class BasePlugin(ABC):
         return f"<muffin.Plugin: { self.name }>"
 
     async def __aenter__(self):
-        if hasattr(self, "startup"):
+        if iscoroutinefunction(self.startup):
             await self.startup()
 
     async def __aexit__(self, exc_type, exc, tb):
-        if hasattr(self, "shutdown"):
+        if iscoroutinefunction(self.shutdown):
             await self.shutdown()
 
     @property
@@ -79,7 +80,7 @@ class BasePlugin(ABC):
 
         return self.__app__
 
-    def setup(self, app: Application, *, name: Optional[str] = None, **options) -> Any:
+    def setup(self, app: Application, *, name: str | None = None, **options) -> Any:
         """Bind app and update the plugin's configuration."""
         # allow to redefine the name for multi plugins with same type
         self.name = name or self.name
@@ -99,15 +100,22 @@ class BasePlugin(ABC):
         self.__app__ = app
 
         # Register a middleware
-        if hasattr(self, "middleware"):
+        if callable(self.middleware):
             app.middleware(self.middleware)
 
         # Bind startup
-        if hasattr(self, "startup"):
+        if callable(self.startup):
             app.on_startup(self.startup)
 
         # Bind shutdown
-        if hasattr(self, "shutdown"):
+        if callable(self.shutdown):
             app.on_shutdown(self.shutdown)
 
         return True
+
+    async def restart(self):
+        if callable(self.shutdown):
+            await self.shutdown()
+
+        if callable(self.startup):
+            await self.startup()

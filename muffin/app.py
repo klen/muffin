@@ -1,11 +1,12 @@
 """Implement Muffin Application."""
+
 from __future__ import annotations
 
 import logging
 from contextvars import ContextVar
-from inspect import isawaitable, stack
+from inspect import currentframe, isawaitable
 from logging.config import dictConfig
-from typing import TYPE_CHECKING, Any, Final, Mapping, Union
+from typing import TYPE_CHECKING, Any, Final, Mapping
 
 from asgi_tools import App as BaseApp
 from asgi_tools._compat import aio_wait
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
 
     from muffin.plugins import BasePlugin
 
-BACKGROUND_TASK: Final["ContextVar[set[Awaitable] | None]"] = ContextVar(
+BACKGROUND_TASKS: Final[ContextVar[set[Awaitable[Any]] | None]] = ContextVar(
     "background_tasks", default=None
 )
 
@@ -50,7 +51,7 @@ class Application(BaseApp):
         "LOG_CONFIG": None,
     }
 
-    def __init__(self, *cfg_mods: Union[str, ModuleType], **options):
+    def __init__(self, *cfg_mods: str | ModuleType, **options):
         """Initialize the application.
 
         :param *cfg_mods: modules to import application's config
@@ -103,10 +104,10 @@ class Application(BaseApp):
     async def __call__(self, scope: TASGIScope, receive: TASGIReceive, send: TASGISend):
         """Support background tasks."""
         await self.lifespan(scope, receive, send)
-        bgtasks = BACKGROUND_TASK.get()
+        bgtasks = BACKGROUND_TASKS.get()
         if bgtasks is not None:
             await aio_wait(*bgtasks)
-            BACKGROUND_TASK.set(None)
+            BACKGROUND_TASKS.set(None)
 
     def import_submodules(self, *submodules: str, silent: bool = False, **kwargs):
         """Automatically import submodules.
@@ -125,9 +126,12 @@ class Application(BaseApp):
             app.import_submodules(silent=True)
 
         """
-        parent_frame = stack()[1][0]
-        package_name = parent_frame.f_locals["__name__"]
-        return import_submodules(package_name, *submodules, silent=silent, **kwargs)
+        curframe = currentframe()
+        if curframe:
+            parent_frame = curframe.f_back
+            if parent_frame:
+                package_name = parent_frame.f_locals["__name__"]
+                return import_submodules(package_name, *submodules, silent=silent, **kwargs)
 
     def run_after_response(self, *tasks: Awaitable):
         """Await the given awaitable after the response is completed.
@@ -154,11 +158,11 @@ class Application(BaseApp):
             return "OK"
 
         """
-        scheduled = BACKGROUND_TASK.get() or set()
+        scheduled = set(BACKGROUND_TASKS.get() or [])
         for task in tasks:
             if not isawaitable(task):
                 raise TypeError(f"Task must be awaitable: {task!r}")  # noqa: TRY003
 
             scheduled.add(task)
 
-        BACKGROUND_TASK.set(scheduled)
+        BACKGROUND_TASKS.set(scheduled)
