@@ -2,67 +2,58 @@
 
 """Setup Muffin documentation."""
 
-import sys
 import os
-import pkg_resources
+import sys
+from importlib.metadata import version
 
-sys.path.append(os.path.abspath('_themes'))
-sys.path.append(os.path.abspath('.'))
+sys.path.append(os.path.abspath("_themes"))
+sys.path.append(os.path.abspath("."))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx_copybutton']
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx", "sphinx_copybutton"]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['templates']
+templates_path = ["templates"]
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = u'Muffin'
-copyright = u'2015, Kirill Klenov'  # noqa
+project = "Muffin"
+copyright = "2015, Kirill Klenov"  # noqa
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-try:
-    release = pkg_resources.get_distribution('Muffin').version
-except pkg_resources.DistributionNotFound:
-    print('To build the documentation, The distribution information of Muffin')
-    print('Has to be available.  Either install the package into your')
-    print('development environment or run "setup.py develop" to setup the')
-    print('metadata.  A virtualenv is recommended!')
-    sys.exit(1)
-del pkg_resources
 
-version = release
+version = version("muffin")
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ["_build"]
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
-html_theme = 'pydata_sphinx_theme'
+html_theme = "pydata_sphinx_theme"
 #  html_theme = 'sphinx_rtd_theme'
 #  html_theme = 'aiohttp_theme'
-html_logo = 'static/logo.png'
+html_logo = "static/logo.png"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
     #  'logo_link': 'https://github.com/klen/muffin',
-    'github_url': 'https://github.com/klen/muffin',
-    'icon_links': [
+    "github_url": "https://github.com/klen/muffin",
+    "icon_links": [
         {
-            'name': 'PyPI',
-            'url': 'https://pypi.org/project/muffin',
-            'icon': 'fas fa-box',
+            "name": "PyPI",
+            "url": "https://pypi.org/project/muffin",
+            "icon": "fas fa-box",
         }
     ],
     #  'logo_only': True,
@@ -89,7 +80,7 @@ html_sidebars = {
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-html_last_updated_fmt = '%b %d, %Y'
+html_last_updated_fmt = "%b %d, %Y"
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
@@ -126,7 +117,7 @@ html_use_modindex = False
 # html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Muffindoc'
+htmlhelp_basename = "Muffindoc"
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -134,7 +125,7 @@ htmlhelp_basename = 'Muffindoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('latexindex', 'Muffin.tex', u'Muffin Documentation', u'Kirill Klenov', 'manual'),
+    ("latexindex", "Muffin.tex", "Muffin Documentation", "Kirill Klenov", "manual"),
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -144,16 +135,16 @@ latex_documents = [
 latex_use_modindex = False
 
 latex_elements = {
-    'fontpkg':      r'\usepackage{mathpazo}',
-    'papersize':    'a4paper',
-    'pointsize':    '12pt',
-    'preamble':     r'\usepackage{flaskstyle}'
+    "fontpkg": r"\usepackage{mathpazo}",
+    "papersize": "a4paper",
+    "pointsize": "12pt",
+    "preamble": r"\usepackage{flaskstyle}",
 }
 latex_use_parts = True
 
 latex_additional_files = [
     # 'muffinstyle.sty',
-    'static/logo.png'
+    "static/logo.png"
 ]
 
 
@@ -202,5 +193,5 @@ intersphinx_mapping = {
 
 #  pygments_style = 'tango'
 
-autodoc_member_order = 'bysource'
-autodoc_typehints = 'description'
+autodoc_member_order = "bysource"
+autodoc_typehints = "description"
