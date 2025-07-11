@@ -3,61 +3,50 @@ API
 
 .. module:: muffin
 
-This part of the documentation covers the interfaces of Muffin
+This section documents all public interfaces of Muffin.
 
 Application
 -----------
 
 .. autoclass:: Application
+   :members: route, on_startup, on_shutdown, on_error, middleware, run_after_response, import_submodules
 
-   .. automethod:: route
+Middleware
+~~~~~~~~~~
 
-   .. automethod:: on_startup
+Register external ASGI middleware:
 
-   .. automethod:: on_shutdown
+.. code-block:: python
 
-   .. automethod:: on_error
+    from muffin import Application
+    from sentry_asgi import SentryMiddleware
 
-   .. automethod:: middleware
+    app = Application()
 
-        Register any ASGI middleware
+    app.middleware(SentryMiddleware)
 
-        .. code-block:: python
+    # or wrap directly
+    app = SentryMiddleware(app)
 
-                from muffin import Application
-                from sentry_asgi import SentryMiddleware
+Register internal (application-level) middleware:
 
-                app = Application()
+.. code-block:: python
 
-                app.middleware(SentryMiddleware)
+    from muffin import Application, ResponseHTML
 
-                # as an alternative method
-                app = SentryMiddleware(app)
+    app = Application()
 
-        Register a custom (internal) middleware
-
-        .. code-block:: python
-
-                from muffin import Application
-
-
-                app = Application()
-
-                @app.middleware
-                async def simple_md(app, request, receive, send):
-                    try:
-                        response = await app(request, receive, send)
-                        response.headers['x-simple-md'] = 'passed'
-                        return response
-                    except RuntimeError:
-                        return ResponseHTML('Middleware Exception')
-
-   .. automethod:: run_after_response
-
-   .. automethod:: import_submodules
+    @app.middleware
+    async def simple_md(app, request, receive, send):
+        try:
+            response = await app(request, receive, send)
+            response.headers['x-simple-md'] = 'passed'
+            return response
+        except RuntimeError:
+            return ResponseHTML('Middleware Exception')
 
 
-Class Based Handlers
+Class-Based Handlers
 --------------------
 
 .. autoclass:: Handler
@@ -66,326 +55,229 @@ Request
 -------
 
 .. autoclass:: Request
+   :members:
+   :undoc-members:
 
-    The Request object contains all the information about an incoming HTTP
-    request.
+Example usage:
 
-    .. code-block:: python
+.. code-block:: python
 
-        @app.route('/')
-        async def home(request):
-            response = f"{ request.method } { request.url.path }"
-            return response
+    @app.route('/')
+    async def home(request):
+        return f"{request.method} {request.url.path}"
 
-    Requests are based on a given ASGI_ scope and represents a mapping interface.
+Properties:
 
-    .. code-block:: python
+- :attr:`query` – Query parameters (MultiDict)
+- :attr:`headers` – HTTP headers (CIMultiDict)
+- :attr:`cookies` – Cookies dictionary
+- :attr:`charset` – Request encoding
+- :attr:`content_type` – Content-Type header
+- :attr:`url` – Full URL object
 
-        request = Request(scope)
-        assert request['version'] == scope['version']
-        assert request['method'] == scope['method']
-        assert request['scheme'] == scope['scheme']
-        assert request['path'] == scope['path']
+Methods:
 
-        # and etc
-
-        # ASGI Scope keys also are available as Request attrubutes.
-
-        assert request.version == scope['version']
-        assert request.method == scope['method']
-        assert request.scheme == scope['scheme']
-
-    .. autoattribute:: query
-
-    .. autoattribute:: headers
-
-    .. autoattribute:: cookies
-
-    .. autoattribute:: charset
-
-    .. autoattribute:: content_type
-
-    .. autoattribute:: url
-
-    .. automethod:: stream
-
-        .. code-block:: python
-
-            @app.route('/repeater')
-            async def repeater(request):
-                body = b''
-                async for chunk in request.stream():
-                    body += chunk
-
-                return body
-
-    .. automethod:: body
-
-    .. automethod:: text
-
-    .. automethod:: form
-
-    .. automethod:: json
-
-    .. automethod:: data
+- :meth:`stream` – Stream body in chunks
+- :meth:`body` – Return body as bytes
+- :meth:`text` – Return body decoded as text
+- :meth:`form` – Parse form data (multipart/form-data or application/x-www-form-urlencoded)
+- :meth:`json` – Parse body as JSON
+- :meth:`data` – Smart parser: returns JSON, form or text depending on Content-Type
 
 Responses
 ---------
 
 .. autoclass:: Response
+   :members: headers, cookies
 
-    A helper to make http responses.
+Basic response example:
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import Response
+    from muffin import Response
 
-        @app.route('/hello')
-        async def hello(request):
-            response = Response('Hello, world!', content_type='text/plain')
-            return response
+    @app.route('/hello')
+    async def hello(request):
+        return Response('Hello, world!', content_type='text/plain')
 
-    .. autoattribute:: headers
+Setting headers:
 
-        .. code-block:: python
+.. code-block:: python
 
-            from muffin import Response
+    @app.route('/example')
+    async def example(request):
+        response = Response('OK')
+        response.headers["X-Version"] = "42"
+        return response
 
-            @app.route('/example')
-            async def example(request):
-                response = Response('OK')
-                response.headers["X-Version"] = "42"
-                return response
+Setting cookies:
 
-    .. autoattribute:: cookies
+.. code-block:: python
 
-        .. code-block:: python
-
-            from muffin import Response
-
-            @app.route('/example')
-            async def example(request):
-                response = Response('OK')
-                response.cookies["rocky"] = "road"
-                response.cookies["rocky"]["path"] = "/cookie"
-                return response
+    @app.route('/example')
+    async def example(request):
+        response = Response('OK')
+        response.cookies["session"] = "xyz"
+        response.cookies["session"]["path"] = "/"
+        return response
 
 
-
-ResponseText (:class:`Response`)
-````````````````````````````````
+ResponseText
+~~~~~~~~~~~~
 
 .. autoclass:: ResponseText
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseText
-
-        @app.route('/example')
-        async def example(request):
-            return ResponseText('Hello, world!')
+    @app.route('/example')
+    async def example(request):
+        return ResponseText('Hello, world!')
 
 
-ResponseHTML (:class:`Response`)
-````````````````````````````````
+ResponseHTML
+~~~~~~~~~~~~
 
 .. autoclass:: ResponseHTML
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseHTML
+    @app.route('/example')
+    async def example(request):
+        return ResponseHTML('<h1>Hello, world!</h1>')
 
-        @app.route('/example')
-        async def example(request):
-            return ResponseHTML('<h1>Hello, world!</h1>')
-
-    .. note:: If your view function returns a string/byte-string the
-                result will be converted into a HTML Response
+.. note:: Returning a string/bytes will automatically produce an HTML response.
 
 
-ResponseJSON (:class:`Response`)
-````````````````````````````````
+ResponseJSON
+~~~~~~~~~~~~
 
 .. autoclass:: ResponseJSON
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseJSON
+    @app.route('/example')
+    async def example(request):
+        return ResponseJSON({'hello': 'world'})
 
-        @app.route('/example')
-        async def example(request):
-            return ResponseJSON({'hello': 'world'})
-
-    .. note:: If your view function returns a dictionary/list/boolean the
-                result will be converted into a JSON Response
+.. note:: Returning dicts, lists, or booleans produces a JSON response.
 
 
-ResponseRedirect (:class:`Response`)
-````````````````````````````````````
+ResponseRedirect
+~~~~~~~~~~~~~~~~
 
 .. autoclass:: ResponseRedirect
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseRedirect
+    @app.route('/example')
+    async def example(request):
+        return ResponseRedirect('/login')
 
-        @app.route('/example')
-        async def example(request):
-            return ResponseRedirect('/login')
+Alternatively, raise as an exception:
 
-    You are able to raise the :py:class:`ResponseRedirect` as an exception.
+.. code-block:: python
 
-    .. code-block:: python
-
-        from muffin import ResponseRedirect
-
-        @app.route('/example')
-        async def example(request):
-            if not request.headers.get('authorization'):
-                # The client will be redirected to "/login"
-                raise ResponseRedirect('/login')
-
-            return 'OK'
+    @app.route('/example')
+    async def example(request):
+        if not request.cookies.get('session'):
+            raise ResponseRedirect('/login')
+        return 'OK'
 
 
-ResponseError (:class:`Response`)
-`````````````````````````````````
+ResponseError
+~~~~~~~~~~~~~
 
-.. py:class:: ResponseError(message=None, status_code=500, **kwargs)
+.. autoclass:: ResponseError
 
-    A helper to return HTTP errors. Uses a 500 status code by default.
+Raise HTTP errors:
 
-    .. :comment: ***
+.. code-block:: python
 
-    :param message: A string with the error's message (HTTPStatus messages will be used by default)
+    @app.route('/example')
+    async def example(request):
+        data = await request.data()
+        if not data:
+            raise ResponseError('Invalid request data', 400)
+        return 'OK'
 
-    .. code-block:: python
+Supports `http.HTTPStatus` shortcuts:
 
-        from muffin import ResponseError
+.. code-block:: python
 
-        @app.route('/example')
-        async def example(request):
-            return ResponseError('Timeout', 502)
-
-    You are able to raise the :py:class:`ResponseError` as an exception.
-
-    .. code-block:: python
-
-        from muffin import ResponseError
-
-        @app.route('/example')
-        async def example(request):
-            data = await request.data()
-            if not data:
-                raise ResponseError('Invalid request data', 400)
-
-            return 'OK'
-
-    You able to use :py:class:`http.HTTPStatus` properties with the `ResponseError` class
-
-    .. code-block:: python
-
-        response = ResponseError.BAD_REQUEST('invalid data')
-        response = ResponseError.NOT_FOUND()
-        response = ResponseError.BAD_GATEWAY()
-        # and etc
+    response = ResponseError.BAD_REQUEST('invalid data')
+    response = ResponseError.NOT_FOUND()
+    response = ResponseError.BAD_GATEWAY()
 
 
-ResponseStream (:class:`Response`)
-``````````````````````````````````
+ResponseStream
+~~~~~~~~~~~~~~
 
 .. autoclass:: ResponseStream
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseStream
+    from muffin import ResponseStream
 
-        async def stream_response():
-            for number in range(10):
-                await sleep(1)
-                yield str(number)
+    async def stream_response():
+        for i in range(10):
+            await sleep(1)
+            yield f"chunk {i}"
 
-        @app.route('/example')
-        async def example(request):
-            generator = stream_response()
-            return ResponseStream(generator, content_type='plain/text')
+    @app.route('/stream')
+    async def stream(request):
+        return ResponseStream(stream_response())
 
 
-ResponseSSE (:class:`Response`)
-```````````````````````````````
+ResponseSSE
+~~~~~~~~~~~
 
 .. autoclass:: ResponseSSE
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseSSE
+    from muffin import ResponseSSE
 
-        async def stream_response():
-            for number in range(10):
-                await aio_sleep(1)
-                # The response support messages as text
-                yield "data: message text"
+    async def sse_response():
+        while True:
+            await sleep(1)
+            yield {"event": "ping", "data": "pong"}
 
-                # And as dictionaties as weel
-                yield {
-                    "event": "ping",
-                    "data": time.time(),
-                }
-
-        @app.route('/example')
-        async def example(request):
-            generator = stream_response()
-            return ResponseSSE(generator, content_type='plain/text')
+    @app.route('/sse')
+    async def sse(request):
+        return ResponseSSE(sse_response())
 
 
-ResponseFile (:class:`Response`)
-````````````````````````````````
+ResponseFile
+~~~~~~~~~~~~
 
 .. autoclass:: ResponseFile
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseFile
-
-        @app.route('/selfie')
-        async def view_my_selfie(request):
-            return ResponseFile('/storage/my_best_selfie.jpeg')
-
-        @app.route('/download')
-        async def download_movie(request):
-            return ResponseFile('/storage/video.mp4', filename='movie-2020-01-01.mp4')
+    @app.route('/download')
+    async def download(request):
+        return ResponseFile('/path/to/file.txt', filename='file.txt')
 
 
-ResponseWebSocket (:class:`Response`)
-`````````````````````````````````````
+ResponseWebSocket
+~~~~~~~~~~~~~~~~~
 
 .. autoclass:: ResponseWebSocket
 
-    .. code-block:: python
+.. code-block:: python
 
-        from muffin import ResponseWebsocket
-
-        @app.route('/example')
-        async def example(request):
-            async with ResponseWebSocket(request) as ws:
-                msg = await ws.receive()
-                assert msg == 'ping'
-                await ws.send('pong')
-
-    .. automethod:: accept
-
-    .. automethod:: close
-
-    .. automethod:: send
-
-    .. automethod:: send_json
-
-    .. automethod:: receive
+    @app.route('/ws')
+    async def websocket(request):
+        async with ResponseWebSocket(request) as ws:
+            msg = await ws.receive()
+            await ws.send(f"Echo: {msg}")
 
 Test Client
 -----------
 
 .. autoclass:: TestClient
+
+Use for testing your Muffin applications efficiently.
 
 .. Links
 

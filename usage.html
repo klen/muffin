@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Usage &#8212; Muffin 0.102.3 documentation</title>
+    <title>Usage &#8212; Muffin  documentation</title>
   
   
   
@@ -16,28 +16,31 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=1c680bbd"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
@@ -48,7 +51,8 @@
     <link rel="prev" title="Welcome to Muffin’s documentation!" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jul 31, 2024"/>
+  <meta name="docsearch:version" content="1.0.1" />
+    <meta name="docbuild:last-update" content="Jul 11, 2025"/>
   </head>
   
   
@@ -64,19 +68,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -84,7 +77,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -92,8 +84,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,8 +118,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Muffin 0.102.3 documentation - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Muffin 0.102.3 documentation - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Muffin  documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Muffin  documentation - Home"/>
   
   
 </a></div>
@@ -177,7 +169,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -191,7 +185,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="plugins.html">
-    Plugins overview
+    <no title>
   </a>
 </li>
 
@@ -209,29 +203,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -268,15 +254,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -295,7 +277,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -354,7 +337,7 @@ document.write(`
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="plugins.html">
-    Plugins overview
+    <no title>
   </a>
 </li>
 
@@ -370,15 +353,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -421,7 +400,6 @@ document.write(`
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -437,15 +415,20 @@ document.write(`
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.102.3
+    Version: 1.0.1
 </div></div>
     </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -463,8 +446,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -473,7 +454,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Usage</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Usage</span></li>
   </ul>
 </nav>
 </div>
@@ -494,126 +475,66 @@ document.write(`
 <h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h1>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span>
 
-<span class="c1"># Create the muffin&#39;s application</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
 
-<span class="c1"># Create view and bind it to http path &quot;/&quot;</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hello_world</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="s2">&quot;&lt;p&gt;Hello, World!&lt;/p&gt;&quot;</span>
 </pre></div>
 </div>
-<p>Save it as <code class="file docutils literal notranslate"><span class="pre">hello.py</span></code> or something similar.</p>
-<p>To run the application, run the command:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">uvicorn</span> <span class="n">hello</span><span class="p">:</span><span class="n">app</span>
+<p>Save this as <code class="file docutils literal notranslate"><span class="pre">hello.py</span></code>.</p>
+<p>Run with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uvicorn<span class="w"> </span>hello:app
 </pre></div>
 </div>
-<p>This launches a very simple builtin server, which is good enough for
-testing but probably not what you want to use in production.</p>
-<p>Now head over to <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a>, and you should see your hello
-world greeting.</p>
+<p>Visit <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> to see your greeting.</p>
 </section>
-<section id="the-request-object">
-<h2>The Request Object<a class="headerlink" href="#the-request-object" title="Link to this heading">#</a></h2>
-<p>Every view should accept a request object.  The request object is
-documented in the API section and we will not cover it here in detail (see
-<a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>). Here is a broad overview of some of the most
-common operations.</p>
-<p>The current request method is available by using the
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">method</span></code> attribute.  To access form data (data
-transmitted in a <code class="docutils literal notranslate"><span class="pre">POST</span></code> or <code class="docutils literal notranslate"><span class="pre">PUT</span></code> request) you can use the
-<a class="reference internal" href="api.html#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-attr docutils literal notranslate"><span class="pre">form</span></code></a> attribute.  Here is a full example of the two
-attributes mentioned above:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
- <span class="k">async</span> <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-     <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
-     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
-         <span class="n">formdata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
-         <span class="k">if</span> <span class="n">valid_login</span><span class="p">(</span><span class="n">formdata</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">formdata</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]):</span>
-             <span class="k">return</span> <span class="n">log_the_user_in</span><span class="p">(</span><span class="n">formdata</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
-
-         <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Invalid username/password&#39;</span>
-
-     <span class="c1"># Let&#39;s assume that you have Muffin-Jinja2 plugin enabled</span>
-     <span class="k">return</span> <span class="k">await</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;login.html&#39;</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
+<section id="request-object">
+<h2>Request Object<a class="headerlink" href="#request-object" title="Link to this heading">#</a></h2>
+<p>Every view receives a <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="s1">&#39;admin&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Welcome, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;Invalid credentials&quot;</span>
 </pre></div>
 </div>
-<p>To access parameters submitted in the URL (<code class="docutils literal notranslate"><span class="pre">?key=value</span></code>) you can use the
-<a class="reference internal" href="api.html#muffin.Request.query" title="muffin.Request.query"><code class="xref py py-attr docutils literal notranslate"><span class="pre">query</span></code></a> attribute:</p>
+<p>Query parameters:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We recommend accessing URL parameters with <cite>get</cite> or by catching the
-<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.12)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> because users might change the URL and presenting them a 400
-bad request page in that case is not user friendly.</p>
-<p>For a full list of methods and attributes of the request object, head over
-to the <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> documentation.</p>
-<section id="cookies">
-<h3>Cookies<a class="headerlink" href="#cookies" title="Link to this heading">#</a></h3>
-<p>Cookies are exposed as a regular dictionary interface through <a class="reference internal" href="api.html#muffin.Request.cookies" title="muffin.Request.cookies"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cookies</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<p>Cookies:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="file-uploads">
-<h3>File Uploads<a class="headerlink" href="#file-uploads" title="Link to this heading">#</a></h3>
-<p>Request files are normally sent as multipart form data (<cite>multipart/form-data</cite>).
-The uploaded files are available in <a class="reference internal" href="api.html#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">formdata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+<p>File uploads:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span>
+<span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
-</section>
 </section>
 <section id="routing">
 <h2>Routing<a class="headerlink" href="#routing" title="Link to this heading">#</a></h2>
-<p>Modern web applications use meaningful URLs to help users. Users are more
-likely to like a page and come back if the page uses a meaningful URL they can
-remember and use to directly visit a page.</p>
-<p>Use the <a class="reference internal" href="api.html#muffin.Application.route" title="muffin.Application.route"><code class="xref py py-meth docutils literal notranslate"><span class="pre">route()</span></code></a> decorator to bind a function to a URL.</p>
+<p>Define routes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="s1">&#39;Index Page&#39;</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">,</span> <span class="s1">&#39;/hello/world&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
-    <span class="k">return</span> <span class="s1">&#39;Hello, World&#39;</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/only-post&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">only_post</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span>
 </pre></div>
 </div>
-<p>You can do more! You can make parts of the URL dynamic.  The every routed
-callback should be callable and accepts a <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>.</p>
-<p>See also: <a class="reference internal" href="api.html#muffin.Handler" title="muffin.Handler"><code class="xref py py-class docutils literal notranslate"><span class="pre">Handler</span></code></a>.</p>
-</section>
-<section id="dynamic-urls">
-<h2>Dynamic URLs<a class="headerlink" href="#dynamic-urls" title="Link to this heading">#</a></h2>
-<p>All the URLs support regexp. You can use any regular expression to customize your URLs:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
-
- <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/reg/(a|b|c)/?&#39;</span><span class="p">))</span>
- <span class="k">async</span> <span class="k">def</span> <span class="nf">regexp</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-     <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
-</pre></div>
-</div>
-<section id="variable-rules">
-<h3>Variable Rules<a class="headerlink" href="#variable-rules" title="Link to this heading">#</a></h3>
-<p>You can add variable sections to a URL by marking sections with
-<code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;</span></code>. Your function then receives the <code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;</span></code> from
-<code class="docutils literal notranslate"><span class="pre">request.path_params</span></code>.</p>
+<p>Dynamic routes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/user/</span><span class="si">{username}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">show_user_profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">user_profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;User </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>By default this will capture characters up to the end of the path or the next /.</p>
-<p>Optionally, you can use a converter to specify the type of the argument like
-<code class="docutils literal notranslate"><span class="pre">&lt;variable_name:converter&gt;</span></code>.</p>
-<p>Converter types:</p>
+<p>Type converters:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
@@ -634,217 +555,134 @@ callback should be callable and accepts a <a class="reference internal" href="ap
 </tbody>
 </table>
 </div>
-<p>Convertors are used by prefixing them with a colon, like so:</p>
+<p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post/{post_id:int}&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">show_post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">post_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;post_id&#39;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Post # </span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Post #</span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>Any unknown convertor will be parsed as a regex:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/orders/{order_id:\d</span><span class="si">{3}</span><span class="s1">}&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">orders</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">order_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;order_id&#39;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Order # </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s1">&#39;</span>
+<p>Regex routes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/item/(a|b|c)/&#39;</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">item</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
 </pre></div>
 </div>
-</section>
 </section>
 <section id="static-files">
 <h2>Static Files<a class="headerlink" href="#static-files" title="Link to this heading">#</a></h2>
-<p>Set static url prefix and directories when initializing your app:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">static_url_prefix</span><span class="o">=</span><span class="s1">&#39;/assets&#39;</span><span class="p">,</span> <span class="n">static_folders</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">])</span>
+<p>Configure static files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">static_url_prefix</span><span class="o">=</span><span class="s1">&#39;/assets&#39;</span><span class="p">,</span> <span class="n">static_folders</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>And your static files will be available at url <code class="docutils literal notranslate"><span class="pre">/static/{file}</span></code>.</p>
+<p>Files are served at <cite>/assets/{file}</cite>.</p>
 </section>
 <section id="redirects-and-errors">
 <h2>Redirects and Errors<a class="headerlink" href="#redirects-and-errors" title="Link to this heading">#</a></h2>
-<p>To redirect a user to another endpoint, use the <a class="reference internal" href="api.html#muffin.ResponseRedirect" title="muffin.ResponseRedirect"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseRedirect</span></code></a>
-class; to abort a request early with an error code, use the
-<a class="reference internal" href="api.html#muffin.ResponseError" title="muffin.ResponseError"><code class="xref py py-func docutils literal notranslate"><span class="pre">ResponseError()</span></code></a> class:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseRedirect</span><span class="p">,</span> <span class="n">ResponseError</span>
+<p>Redirect example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseRedirect</span>
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">)</span>
-    <span class="n">this_is_never_executed</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="n">ResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This is a rather pointless example because a user will be redirected from
-the index to a page they cannot access (401 means access denied) but it
-shows how that works.</p>
-<p>By default only description is shown for each error code.  If you want to
-customize the error page, you can use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">on_error()</span></code>
-decorator:</p>
+<p>Raise HTTP errors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseError</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/secure&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">secure</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">UNAUTHORIZED</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s2">&quot;Secret data&quot;</span>
+</pre></div>
+</div>
+<p>Custom error handler:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;page_not_found.html&#39;</span><span class="p">),</span> <span class="mi">404</span>
-</pre></div>
-</div>
-<p>It’s possible to bind the handlers not only for status codes, but for the
-exceptions themself:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="ne">TimeoutError</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;Something bad happens&#39;</span>
-</pre></div>
-</div>
-</section>
-<section id="about-responses">
-<span id="id1"></span><h2>About Responses<a class="headerlink" href="#about-responses" title="Link to this heading">#</a></h2>
-<p>The return value from a view function is automatically converted into a
-response object for you. If the return value is a string it’s converted into a
-response object with the string as response body, a <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> status code and
-a <em class="mimetype">text/html</em> mimetype. If the return value is a dict or list,
-<a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a> is called to produce a response.  The logic that Muffin
-applies to converting return values into response objects is as follows:</p>
-<ol class="arabic simple">
-<li><p>If a result is response <a class="reference internal" href="api.html#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> it’s directly
-returned from the view.</p></li>
-<li><p>If it’s a string, a response <a class="reference internal" href="api.html#muffin.ResponseHTML" title="muffin.ResponseHTML"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseHTML</span></code></a> is created with
-that data and the default parameters.</p></li>
-<li><p>If it’s a dict/list/bool/None, a response <a class="reference internal" href="api.html#muffin.ResponseJSON" title="muffin.ResponseJSON"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseJSON</span></code></a>
-is created</p></li>
-<li><p>If a tuple is returned the items in the tuple can provide extra
-information. Such tuples have to be in the form <code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">response</span>
-<span class="pre">content)</span></code>, <code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">response</span> <span class="pre">content,</span> <span class="pre">headers)</span></code>.  The
-<code class="docutils literal notranslate"><span class="pre">status</span></code>:<code class="docutils literal notranslate"><span class="pre">int</span></code> value will override the status code and
-<code class="docutils literal notranslate"><span class="pre">headers</span></code>:<code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code> a list or dictionary of additional header
-values.</p></li>
-<li><p>If none of that works, Muffin will convert the return value to a string
-and return as html.</p></li>
-</ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/html&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">html</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;&lt;b&gt;HTML is here&lt;/b&gt;&#39;</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/json&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="s1">&#39;here&#39;</span><span class="p">}</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/text&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">ResponseText</span><span class="p">(</span><span class="s1">&#39;response is here&#39;</span><span class="p">)</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-custom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s1">&#39;x-custom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
-    <span class="k">return</span> <span class="n">res</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/short-form&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">short_form</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">418</span><span class="p">,</span> <span class="s1">&#39;Im a teapot&#39;</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">not_found</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;Custom 404 Page&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="middlewares">
 <h2>Middlewares<a class="headerlink" href="#middlewares" title="Link to this heading">#</a></h2>
-<p>A Muffin application supports middlewares, which provide a flexible way to
-define a chain of functions that handles every web requests.</p>
-<ol class="arabic">
-<li><p>As an <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> application <a class="reference internal" href="api.html#muffin.Application" title="muffin.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> can be proxied with
-any <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> middleware:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-<span class="kn">from</span> <span class="nn">sentry_asgi</span> <span class="kn">import</span> <span class="n">SentryMiddleware</span>
+<p>External ASGI middleware:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentry_asgi</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentryMiddleware</span>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">SentryMiddleware</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p>Alternatively you can decorate any <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> middleware to connect it to an app:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-<span class="kn">from</span> <span class="nn">sentry_asgi</span> <span class="kn">import</span> <span class="n">SentryMiddleware</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
 <span class="n">app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="n">SentryMiddleware</span><span class="p">)</span>
 </pre></div>
 </div>
-</li>
-<li><p>Internal middlewares. For middlewares it’s possible to use simpler interface
-which one accepts a request and can return responses.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">simple_md</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-simple-md&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;passed&#39;</span>
-        <span class="k">return</span> <span class="n">response</span>
-    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ResponseHTML</span><span class="p">(</span><span class="s1">&#39;Middleware Exception&#39;</span><span class="p">)</span>
+<p>Internal middleware:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">simple_md</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-custom-md&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;passed&#39;</span>
+    <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
-</li>
-</ol>
 </section>
 <section id="nested-applications">
-<h2>Nested applications<a class="headerlink" href="#nested-applications" title="Link to this heading">#</a></h2>
-<p>Sub applications are designed for solving the problem of the big monolithic
-code base.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-
-<span class="c1"># Main application</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;OK&#39;</span>
-
-<span class="c1"># Sub application</span>
-<span class="n">subapp</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+<h2>Nested Applications<a class="headerlink" href="#nested-applications" title="Link to this heading">#</a></h2>
+<p>Mount sub-applications for modular design:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">subapp</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
 
 <span class="nd">@subapp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/route&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">subpage</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;OK from subapp&#39;</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">subroute</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;From subapp&quot;</span>
 
-<span class="c1"># Connect the subapplication with an URL prefix</span>
 <span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/sub&#39;</span><span class="p">)(</span><span class="n">subapp</span><span class="p">)</span>
-
-<span class="c1"># await client.get(&#39;/sub/route&#39;).text() == &#39;OK from subapp&#39;</span>
 </pre></div>
 </div>
-<p>Middlewares from app and subapp are chained (only internal middlewares are
-supported for nested apps).</p>
+<p>Accessing <cite>/sub/route</cite> calls the sub-application route.</p>
 </section>
 <section id="run-tasks-in-background">
-<h2>Run tasks in background<a class="headerlink" href="#run-tasks-in-background" title="Link to this heading">#</a></h2>
-<p>Muffin provides a simple way to run tasks in background: <cite>Application.run_after_response</cite></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
+<h2>Run Tasks in Background<a class="headerlink" href="#run-tasks-in-background" title="Link to this heading">#</a></h2>
+<p>Schedule background tasks after response is sent:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">background_task</span><span class="p">(</span><span class="n">param</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Done: </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
-<span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-    <span class="c1"># send email here</span>
-    <span class="k">pass</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/send&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-
-  <span class="c1"># Schedule any awaitable for later execution</span>
-  <span class="n">app</span><span class="o">.</span><span class="n">run_after_response</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s1">&#39;user@email.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from Muffin!&#39;</span><span class="p">))</span>
-
-  <span class="c1"># Return response to a client immediately</span>
-  <span class="c1"># The task will be executed after the response is sent</span>
-  <span class="k">return</span> <span class="s2">&quot;OK&quot;</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/bg&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">bg</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run_after_response</span><span class="p">(</span><span class="n">background_task</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;Scheduled&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="debug-mode">
 <h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Link to this heading">#</a></h2>
-<p>Sometime there are errors in your code. If any exception happens when Muffin
-processing a request, the library returns HTTP 500 page (the page is
-customisible). If you want to see the errors in console, you are able to start
-an application in debug mode.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># as other options, this one could be defined in configuration modules</span>
+<p>Enable debug mode for detailed error output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This prints tracebacks to console during development.</p>
+</section>
+<section id="about-responses">
+<h2>About Responses<a class="headerlink" href="#about-responses" title="Link to this heading">#</a></h2>
+<p>Return values from views are automatically converted:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="api.html#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> is returned as-is</p></li>
+<li><p><cite>str</cite> → HTML response</p></li>
+<li><p><cite>dict</cite>, <cite>list</cite>, <cite>bool</cite>, <cite>None</cite> → JSON response</p></li>
+<li><p><cite>(status, content)</cite> tuple → overrides status</p></li>
+<li><p><cite>(status, content, headers)</cite> tuple → adds headers</p></li>
+</ol>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/json&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">json_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">}</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/html&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">html_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;h1&gt;Hello&lt;/h1&gt;&#39;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/tuple&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tuple_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">201</span><span class="p">,</span> <span class="s1">&#39;Created&#39;</span>
 </pre></div>
 </div>
 </section>
@@ -885,7 +723,8 @@ an application in debug mode.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -897,34 +736,26 @@ an application in debug mode.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-request-object">The Request Object</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cookies">Cookies</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-uploads">File Uploads</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-object">Request Object</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#routing">Routing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-urls">Dynamic URLs</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-rules">Variable Rules</a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-files">Static Files</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redirects-and-errors">Redirects and Errors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-responses">About Responses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#middlewares">Middlewares</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-applications">Nested applications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-tasks-in-background">Run tasks in background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-applications">Nested Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-tasks-in-background">Run Tasks in Background</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-mode">Debug Mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-responses">About Responses</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="_sources/usage.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -939,8 +770,8 @@ an application in debug mode.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -960,7 +791,7 @@ an application in debug mode.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>
@@ -973,7 +804,8 @@ an application in debug mode.</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

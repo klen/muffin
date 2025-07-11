@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Configuration &#8212; Muffin 0.102.3 documentation</title>
+    <title>Configuration &#8212; Muffin  documentation</title>
   
   
   
@@ -16,28 +16,31 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=1c680bbd"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
@@ -48,7 +51,8 @@
     <link rel="prev" title="Usage" href="usage.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jul 31, 2024"/>
+  <meta name="docsearch:version" content="1.0.1" />
+    <meta name="docbuild:last-update" content="Jul 11, 2025"/>
   </head>
   
   
@@ -64,19 +68,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -84,7 +77,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -92,8 +84,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,8 +118,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Muffin 0.102.3 documentation - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Muffin 0.102.3 documentation - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Muffin  documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Muffin  documentation - Home"/>
   
   
 </a></div>
@@ -177,7 +169,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -191,7 +185,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="plugins.html">
-    Plugins overview
+    <no title>
   </a>
 </li>
 
@@ -209,29 +203,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -268,15 +254,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -295,7 +277,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -354,7 +337,7 @@ document.write(`
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="plugins.html">
-    Plugins overview
+    <no title>
   </a>
 </li>
 
@@ -370,15 +353,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -421,7 +400,6 @@ document.write(`
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -437,15 +415,20 @@ document.write(`
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.102.3
+    Version: 1.0.1
 </div></div>
     </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -463,8 +446,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -473,7 +454,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Configuration</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Configuration</span></li>
   </ul>
 </nav>
 </div>
@@ -492,70 +473,73 @@ document.write(`
                   
   <section id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h1>
-<p>Muffin gets configuration options from python files. You have to specify
-default configuration module name in your app initialization:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Application arguments are configuration modules, first available will be used</span>
+<p>Muffin uses flexible hierarchical configuration via Python modules, environment variables, and runtime parameters.</p>
+<section id="basic-usage">
+<h2>Basic usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
+<p>Provide configuration modules during application initialization:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pass configuration module names; the first existing will be used</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s1">&#39;config.local&#39;</span><span class="p">,</span> <span class="s1">&#39;config.production&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This configuration module path could be overriden by <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code>
-environment variable:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ MUFFIN_CONFIG=settings.local uvicorn your_project:app
+<p>You can override the configuration module using the <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code> environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">MUFFIN_CONFIG</span><span class="o">=</span>settings.local<span class="w"> </span>uvicorn<span class="w"> </span>your_project:app
 </pre></div>
 </div>
-<p>Also you can redefine config parameters while initializing your application:</p>
-<p>Configuration will be available through <code class="xref py py-attr docutils literal notranslate"><span class="pre">app.cfg</span></code> attribute.</p>
+<p>Additionally, you can override individual configuration options directly:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="n">DEBUG</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ANY_OPTION</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">ONE_MORE</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>
 
 <span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">DEBUG</span> <span class="ow">is</span> <span class="kc">True</span>
-<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ANY_OPTION</span>  <span class="o">==</span> <span class="s1">&#39;value&#39;</span>
-<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ANY_OPTION</span>  <span class="o">==</span> <span class="s1">&#39;value2&#39;</span>
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ANY_OPTION</span> <span class="o">==</span> <span class="s1">&#39;value&#39;</span>
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">ONE_MORE</span> <span class="o">==</span> <span class="s1">&#39;value2&#39;</span>
 </pre></div>
 </div>
+<p>The configuration is accessible via <code class="xref py py-attr docutils literal notranslate"><span class="pre">app.cfg</span></code>.</p>
+</section>
 <section id="default-application-options">
 <h2>Default Application Options<a class="headerlink" href="#default-application-options" title="Link to this heading">#</a></h2>
-<p>Base Muffin options and default values:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Application name (used as prefix for env variables, for logging, for plugins)</span>
-<span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;muffin&#39;</span><span class="p">,</span>
+<p>Here are the built-in options and their default values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="c1"># Application name (used for env prefixes, logging, plugin configs)</span>
+    <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;muffin&#39;</span><span class="p">,</span>
 
-<span class="c1"># Configuration module</span>
-<span class="s1">&#39;CONFIG&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="c1"># Configuration module</span>
+    <span class="s1">&#39;CONFIG&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 
-<span class="c1"># Enable debug mode</span>
-<span class="s1">&#39;DEBUG&#39;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="c1"># Enable debug mode</span>
+    <span class="s1">&#39;DEBUG&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
 
-<span class="c1"># Routing options</span>
-<span class="s1">&#39;TRIM_LAST_SLASH&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># Routing options</span>
+    <span class="s1">&#39;TRIM_LAST_SLASH&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 
-<span class="c1"># Static files options</span>
-<span class="s1">&#39;STATIC_URL_PREFIX&#39;</span><span class="p">:</span> <span class="s1">&#39;/static&#39;</span><span class="p">,</span>
-<span class="s1">&#39;STATIC_FOLDERS&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="c1"># Static files options</span>
+    <span class="s1">&#39;STATIC_URL_PREFIX&#39;</span><span class="p">:</span> <span class="s1">&#39;/static&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;STATIC_FOLDERS&#39;</span><span class="p">:</span> <span class="p">[],</span>
 
-<span class="c1"># Logging options</span>
-<span class="s1">&#39;LOG_LEVEL&#39;</span><span class="p">:</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span>
-<span class="s1">&#39;LOG_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(process)d</span><span class="s1">] [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-<span class="s1">&#39;LOG_DATE_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;[%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S]&#39;</span><span class="p">,</span>
-<span class="s1">&#39;LOG_CONFIG&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="c1"># Logging options</span>
+    <span class="s1">&#39;LOG_LEVEL&#39;</span><span class="p">:</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LOG_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(process)d</span><span class="s1">] [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LOG_DATE_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;[%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S]&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LOG_CONFIG&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 
-<span class="c1"># Muffin shell context</span>
-<span class="s1">&#39;MANAGE_SHELL&#39;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="n">app</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">:</span> <span class="n">aio_run</span><span class="p">,</span> <span class="o">**</span><span class="n">app</span><span class="o">.</span><span class="n">plugins</span><span class="p">},</span>
+    <span class="c1"># Muffin shell context</span>
+    <span class="s1">&#39;MANAGE_SHELL&#39;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="n">app</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">:</span> <span class="n">aio_run</span><span class="p">,</span> <span class="o">**</span><span class="n">app</span><span class="o">.</span><span class="n">plugins</span><span class="p">},</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="environment-variables">
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Link to this heading">#</a></h2>
-<p>Muffin reads configuration values from the current environment’s variables
-using the form: <code class="docutils literal notranslate"><span class="pre">{app.name}_{option_name}</span></code>. By default Muffin parses env
-values as a JSON.</p>
-<p>Consider the options file <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>:</p>
+<p>Muffin reads environment variables in the form {APP_NAME}_{OPTION_NAME}. By default, values are parsed as JSON.</p>
+<p>Example settings.py:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DB_PARAMS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pool&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+<span class="n">DB_PARAMS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pool&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
 <span class="n">TOKEN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TOKEN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>  <span class="c1"># simple strings supported as well</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;false&#39;</span>  <span class="c1"># json boolean value</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_PARAMS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;{&quot;pool&quot;: 50}&#39;</span> <span class="c1"># json too</span>
+<p>Override values with environment variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;APP_TOKEN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>  <span class="c1"># simple strings supported as well</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;APP_DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;false&#39;</span>  <span class="c1"># json boolean value</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;APP_DB_PARAMS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;{&quot;pool&quot;: 50}&#39;</span> <span class="c1"># json too</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Muffin</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
 
@@ -568,18 +552,20 @@ values as a JSON.</p>
 <section id="configuration-precedence">
 <h2>Configuration precedence<a class="headerlink" href="#configuration-precedence" title="Link to this heading">#</a></h2>
 <p>The order in which configuration values are read is:</p>
-<ul class="simple">
-<li><p>From default config;</p></li>
-<li><p>From the given python modules;</p></li>
-<li><p>From environment variables;</p></li>
-<li><p>From the given paramenters when initializing the app;</p></li>
-</ul>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Defaults
+2.      Python config modules
+3.      Environment variables
+4.      Keyword arguments passed to Application</p></li>
+</ol>
+</div></blockquote>
 </section>
-<section id="configuring-logging">
-<h2>Configuring logging<a class="headerlink" href="#configuring-logging" title="Link to this heading">#</a></h2>
-<p>You can define your logging configurations with
-<a class="reference external" href="https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema">Python dictConfig format</a>
-and place in <code class="docutils literal notranslate"><span class="pre">LOG_CONFIG</span></code> option:</p>
+<section id="logging-configuration">
+<h2>Logging configuration<a class="headerlink" href="#logging-configuration" title="Link to this heading">#</a></h2>
+<p>You can define logging settings using
+<a class="reference external" href="https://docs.python.org/3.4/library/logging.config.html#configuration-dictionary-schema">Python’s dictConfig format</a>
+format in the <code class="docutils literal notranslate"><span class="pre">LOG_CONFIG</span></code> option:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LOG_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -648,7 +634,8 @@ and place in <code class="docutils literal notranslate"><span class="pre">LOG_CO
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -659,21 +646,22 @@ and place in <code class="docutils literal notranslate"><span class="pre">LOG_CO
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#default-application-options">Default Application Options</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables">Environment variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-precedence">Configuration precedence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-logging">Configuring logging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-configuration">Logging configuration</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="_sources/configuration.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/configuration.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -688,8 +676,8 @@ and place in <code class="docutils literal notranslate"><span class="pre">LOG_CO
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -709,7 +697,7 @@ and place in <code class="docutils literal notranslate"><span class="pre">LOG_CO
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>
@@ -722,7 +710,8 @@ and place in <code class="docutils literal notranslate"><span class="pre">LOG_CO
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

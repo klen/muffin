@@ -1,66 +1,85 @@
 CLI integration
 ===============
 
+Muffin provides a built-in CLI to manage your application.
+
 Run in your shell:
 
 .. code-block:: console
 
     $ muffin path.to.your.module --help
     $ muffin path.to.your.module:app_object_name --help
-    
-You'll see commands available for your application.
+
+This will list all available commands for your application.
 
 Built-in commands
 -----------------
 
 shell
 ~~~~~
-  
-Usage: 
+
+Start an interactive shell with your application context.
+
+Usage:
 
 .. code-block:: console
 
-  $ muffin shell [-h] [--no-ipython]
+    $ muffin your.module shell [--no-ipython]
 
-Run the application shell.
+Options:
 
-Optional arguments:
-  -h, --help    Show this help message and exit
-  --no-ipython  Disable use ipython as shell
+- ``--no-ipython`` – Disable IPython, use standard Python shell
 
+Example:
+
+.. code-block:: console
+
+    $ muffin example shell
+
+    Interactive Muffin Shell
+    ------------------------
+    Python: 3.11.0
+
+    Loaded globals: ['app', 'run', ...]
 
 Write a custom command
-----------------------
+-----------------------
+
+Define your own commands using :meth:`app.manage.command`:
 
 .. code-block:: python
 
     @app.manage.command
     async def hello(name, upper=False):
-        """ Write command help text here.
+        """Say hello to someone.
 
-        :param name:  Write your name
+        :param name: Your name
         :param upper: Use uppercase
-
         """
-        greetings = 'Hello %s!' % name
+        greetings = f"Hello {name}!"
         if upper:
             greetings = greetings.upper()
         print(greetings)
+
+Run your command:
+
+.. code-block:: console
+
+    $ muffin example hello mike --upper
+    HELLO MIKE!
+
+Show help for your command:
 
 .. code-block:: console
 
     $ muffin example hello --help
 
-        Write command help text here.
+    Say hello to someone.
 
-        positional arguments:
-        name        Write your name
+    positional arguments:
+      name        Your name
 
-        optional arguments:
-        -h, --help  show this help message and exit
-        --upper     Enable use uppercase
-        --no-upper  Disable use uppercase
-
-    $ muffin example hello mike --upper
-
-        HELLO MIKE!
+    optional arguments:
+      -h, --help  Show this help message and exit
+      --upper     Enable use uppercase
+      --no-upper  Disable use uppercase

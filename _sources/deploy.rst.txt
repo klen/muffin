@@ -1,97 +1,68 @@
 Deployment
 ==========
 
-Deploy with Docker
-------------------
+Deploying with Docker
+---------------------
 
-You can use Docker for deployment. It has several advantages like security,
-replicability, development simplicity, etc.
+Using Docker for deployment provides advantages such as security, reproducibility, and simplicity.
 
-If you are using Docker, you can use the official Docker images:
+Muffin has an official Docker image:
 
-`Muffin-Docker  <https://hub.docker.com/r/horneds/muffin>`_
+`Muffin-Docker <https://hub.docker.com/r/horneds/muffin>`_
 
-Create a Dockerfile
-^^^^^^^^^^^^^^^^^^^
+**1. Create a Dockerfile**
 
-* Go to your project directory
-* Create a `Dockerfile` with:
+In your project directory, create a `Dockerfile`:
 
 .. code-block:: dockerfile
 
-    from horneds/muffin:latest
+    FROM horneds/muffin:latest
 
-    # Copy whole application
+    # Copy your application code
     COPY . /app
 
-Create the application code
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**2. Create application code**
 
-* Create an `app.py` file with:
+Create `app.py` with:
 
 .. code-block:: python
 
-   from muffin import Application
+    from muffin import Application
 
+    app = Application()
 
-   app = Application()
+    @app.route('/')
+    async def index(request):
+        return 'Hello World!'
 
+**3. Build the Docker image**
 
-   @app.route('/')
-   async def index(request):
-       return 'Hello World!'
+.. code-block:: console
 
+    $ docker build -t myimage .
 
-Build the Docker image
-^^^^^^^^^^^^^^^^^^^^^^
+**4. Run the Docker container**
 
-* Build your application image
+.. code-block:: console
 
-.. code-block:: sh
+    $ docker run -d --name mycontainer -p 80:80 myimage
 
-   docker build -t myimage .
+Visit http://localhost or http://127.0.0.1 to check.
 
-Start the Docker container
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Deploying behind NGINX
+----------------------
 
-* Run a container based on your image:
+Running Muffin apps behind NGINX provides:
 
-.. code-block:: sh
+- Improved security (filters malformed HTTP requests)
+- Ability to run multiple Muffin instances utilizing all CPU cores
+- Faster serving of static files compared to Muffin itself
 
-    docker run -d --name mycontainer -p 80:80 myimage
+**Example NGINX configuration**
 
-* Check it: http://localhost, http://127.0.0.1, etc
+Here is a minimal setup. For a full reference, read the `Nginx tutorial <https://www.nginx.com/resources/admin-guide/>`_ and `Nginx documentation <http://nginx.org/en/docs/http/ngx_http_proxy_module.html>`_.
 
-
-Deploy behind NGINX
--------------------
-
-Running muffin apps behind nginx makes several advantages.
-
-At first, nginx is the perfect frontend server. It may prevent many attacks
-based on malformed http protocol etc.
-
-Second, running several muffin instances behind nginx allows to utilize all CPU
-cores.
-
-Third, nginx serves static files much faster than built-in muffin static file
-support.
-
-But this way requires more complex configuration.
-
-Nginx configuration
-^^^^^^^^^^^^^^^^^^^
-
-Here is short extraction about writing Nginx configuration file. It does not
-cover all available Nginx options.
-
-For full reference read `Nginx tutorial
-<https://www.nginx.com/resources/admin-guide/>` and official `Nginx
-documentation <http://nginx.org/en/docs/http/ngx_http_proxy_module.html>`.
-
-First configure HTTP server itself:
-
-.. code-block::
+.. code-block:: nginx
 
     http {
         server {
@@ -109,36 +80,19 @@ First configure HTTP server itself:
             }
 
             location /static {
-                # path for static files
+                # Serve static files
                 root /path/to/app/static;
             }
-
         }
-    }
 
-This config listens on port 80 for server named example.com and redirects
-everything to muffin backend group.
-
-Also it serves static files from `/path/to/app/static` path as
-example.com/static.
-
-Next we need to configure muffin upstream group:
-
-.. code-block::
-
-    http {
         upstream muffin {
-            # fail_timeout=0 means we always retry an upstream even if it failed
-            # to return a good HTTP response
-
-            # Unix domain servers
+            # Unix domain sockets for high performance
             server unix:/tmp/example_1.sock fail_timeout=0;
             server unix:/tmp/example_2.sock fail_timeout=0;
             server unix:/tmp/example_3.sock fail_timeout=0;
             server unix:/tmp/example_4.sock fail_timeout=0;
 
-            # Unix domain sockets are used in this example due to their high performance,
-            # but TCP/IP sockets could be used instead:
+            # Alternatively, use TCP/IP sockets:
             # server 127.0.0.1:8081 fail_timeout=0;
             # server 127.0.0.1:8082 fail_timeout=0;
             # server 127.0.0.1:8083 fail_timeout=0;
@@ -146,10 +100,12 @@ Next we need to configure muffin upstream group:
         }
     }
 
-All HTTP requests for http://example.com except ones for
-http://example.com/static will be redirected to example1.sock, example2.sock,
-example3.sock or example4.sock backend servers. By default, Nginx uses
-round-robin algorithm for backend selection.
+This config:
 
-.. note:: Nginx is not the only existing reverse proxy server but the most
-   popular one. Alternatives like HAProxy may be used as well. 
+- Listens on port 80 for `example.com`
+- Proxies requests to Muffin backend sockets
+- Serves static files directly from `/path/to/app/static`
+
+.. note::
+
+   While NGINX is the most popular reverse proxy, alternatives like HAProxy can also be used.

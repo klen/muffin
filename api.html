@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API &#8212; Muffin 0.102.3 documentation</title>
+    <title>API &#8212; Muffin  documentation</title>
   
   
   
@@ -16,28 +16,31 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=1c680bbd"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
@@ -48,7 +51,8 @@
     <link rel="prev" title="Testing" href="testing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jul 31, 2024"/>
+  <meta name="docsearch:version" content="1.0.1" />
+    <meta name="docbuild:last-update" content="Jul 11, 2025"/>
   </head>
   
   
@@ -64,19 +68,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -84,7 +77,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -92,8 +84,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,8 +118,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Muffin 0.102.3 documentation - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Muffin 0.102.3 documentation - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Muffin  documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Muffin  documentation - Home"/>
   
   
 </a></div>
@@ -177,7 +169,9 @@
 </li>
 
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
@@ -191,7 +185,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="plugins.html">
-    Plugins overview
+    <no title>
   </a>
 </li>
 
@@ -209,29 +203,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -268,15 +254,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -295,7 +277,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -354,7 +337,7 @@ document.write(`
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="plugins.html">
-    Plugins overview
+    <no title>
   </a>
 </li>
 
@@ -370,15 +353,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -421,7 +400,6 @@ document.write(`
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -437,15 +415,20 @@ document.write(`
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 0.102.3
+    Version: 1.0.1
 </div></div>
     </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -463,8 +446,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -473,7 +454,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">API</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">API</span></li>
   </ul>
 </nav>
 </div>
@@ -492,158 +473,18 @@ document.write(`
                   
   <section id="module-muffin">
 <span id="api"></span><h1>API<a class="headerlink" href="#module-muffin" title="Link to this heading">#</a></h1>
-<p>This part of the documentation covers the interfaces of Muffin</p>
+<p>This section documents all public interfaces of Muffin.</p>
 <section id="application">
 <h2>Application<a class="headerlink" href="#application" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Application">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cfg_mods</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cfg_mods</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application" title="Link to this definition">#</a></dt>
 <dd><p>The Muffin Application.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cfg_mods</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>ModuleType</em><em>]</em>)</p>
+<dd class="field-odd"><p><strong>cfg_mods</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> | </em><em>ModuleType</em>)</p>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.Application.route">
-<span class="sig-name descname"><span class="pre">route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">methods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">opts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.route" title="Link to this definition">#</a></dt>
-<dd><p>Register a route.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>paths</strong> (<em>TPath</em>)</p></li>
-<li><p><strong>methods</strong> (<em>Optional</em><em>[</em><em>TMethods</em><em>]</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.Application.on_startup">
-<span class="sig-name descname"><span class="pre">on_startup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.on_startup" title="Link to this definition">#</a></dt>
-<dd><p>Register a startup handler.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.Application.on_shutdown">
-<span class="sig-name descname"><span class="pre">on_shutdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.on_shutdown" title="Link to this definition">#</a></dt>
-<dd><p>Register a shutdown handler.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.Application.on_error">
-<span class="sig-name descname"><span class="pre">on_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.on_error" title="Link to this definition">#</a></dt>
-<dd><p>Register an exception handler.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="ne">TimeoutError</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;Something bad happens&#39;</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="n">ResponseError</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">process_http_errors</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response_error</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">response_error</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;page_not_found.html&#39;</span><span class="p">),</span> <span class="mi">404</span>
-    <span class="k">return</span> <span class="n">response_error</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>etype</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.12)"><em>type</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#BaseException" title="(in Python v3.12)"><em>BaseException</em></a><em>]</em>)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.Application.middleware">
-<span class="sig-name descname"><span class="pre">middleware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insert_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.middleware" title="Link to this definition">#</a></dt>
-<dd><p>Register a middleware.</p>
-<p>Register any ASGI middleware</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-<span class="kn">from</span> <span class="nn">sentry_asgi</span> <span class="kn">import</span> <span class="n">SentryMiddleware</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
-
-<span class="n">app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="n">SentryMiddleware</span><span class="p">)</span>
-
-<span class="c1"># as an alternative method</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">SentryMiddleware</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Register a custom (internal) middleware</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">simple_md</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-simple-md&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;passed&#39;</span>
-        <span class="k">return</span> <span class="n">response</span>
-    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ResponseHTML</span><span class="p">(</span><span class="s1">&#39;Middleware Exception&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>md</strong> (<em>TVCallable</em>)</p></li>
-<li><p><strong>insert_first</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>TVCallable</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.Application.run_after_response">
-<span class="sig-name descname"><span class="pre">run_after_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tasks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.run_after_response" title="Link to this definition">#</a></dt>
-<dd><p>Await the given awaitable after the response is completed.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Application</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
-<span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-    <span class="c1"># send email here</span>
-    <span class="k">pass</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/send&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-
-<span class="c1"># Schedule any awaitable for later execution</span>
-<span class="n">app</span><span class="o">.</span><span class="n">run_after_response</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s1">&#39;user@email.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from Muffin!&#39;</span><span class="p">))</span>
-
-<span class="c1"># Return response to a client immediately</span>
-<span class="c1"># The task will be executed after the response is sent</span>
-<span class="k">return</span> <span class="s2">&quot;OK&quot;</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tasks</strong> (<em>Awaitable</em>)</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Application.import_submodules">
 <span class="sig-name descname"><span class="pre">import_submodules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">submodules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.import_submodules" title="Link to this definition">#</a></dt>
@@ -663,39 +504,204 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>submodules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>)</p></li>
-<li><p><strong>silent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>)</p></li>
+<li><p><strong>submodules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>silent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>)</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.run_after_response">
+<span class="sig-name descname"><span class="pre">run_after_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tasks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.run_after_response" title="Link to this definition">#</a></dt>
+<dd><p>Await the given awaitable after the response is completed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">send_email</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="c1"># send email here</span>
+    <span class="k">pass</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/send&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+<span class="c1"># Schedule any awaitable for later execution</span>
+<span class="n">app</span><span class="o">.</span><span class="n">run_after_response</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s1">&#39;user@email.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from Muffin!&#39;</span><span class="p">))</span>
+
+<span class="c1"># Return response to a client immediately</span>
+<span class="c1"># The task will be executed after the response is sent</span>
+<span class="k">return</span> <span class="s2">&quot;OK&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tasks</strong> (<em>Awaitable</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.route">
+<span class="sig-name descname"><span class="pre">route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">methods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">opts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.route" title="Link to this definition">#</a></dt>
+<dd><p>Register a route handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>paths</strong> (<em>TPath</em>) – One or more URL paths to match</p></li>
+<li><p><strong>methods</strong> (<em>Optional</em><em>[</em><em>TMethods</em><em>]</em>) – HTTP methods to match (GET, POST, etc.)</p></li>
+<li><p><strong>opts</strong> (<em>Any</em>) – Additional options for the route</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorator function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[TRouteHandler], TRouteHandler]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.on_startup">
+<span class="sig-name descname"><span class="pre">on_startup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.on_startup" title="Link to this definition">#</a></dt>
+<dd><p>Register a startup event handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> (<em>Callable</em>) – The function to call on startup</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.on_shutdown">
+<span class="sig-name descname"><span class="pre">on_shutdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.on_shutdown" title="Link to this definition">#</a></dt>
+<dd><p>Register a shutdown event handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> (<em>Callable</em>) – The function to call on shutdown</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.on_error">
+<span class="sig-name descname"><span class="pre">on_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">etype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.on_error" title="Link to this definition">#</a></dt>
+<dd><p>Register a custom exception handler for a given exception type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>etype</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.13)"><em>type</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#BaseException" title="(in Python v3.13)"><em>BaseException</em></a><em>]</em>) – The exception type to handle</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A decorator to register the handler</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="ne">TimeoutError</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">timeout_handler</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s1">&#39;Timeout occurred&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Application.middleware">
+<span class="sig-name descname"><span class="pre">middleware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">insert_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Application.middleware" title="Link to this definition">#</a></dt>
+<dd><p>Register a middleware for the application.</p>
+<p>Middleware can be a coroutine (request/response) or a regular callable (lifespan).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>md</strong> (<em>TCallable</em>) – The middleware function or class</p></li>
+<li><p><strong>insert_first</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – If True, insert as the first middleware</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The registered middleware</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TCallable</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
+<span class="gp">... </span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">log_requests</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="k">await</span> <span class="n">handler</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
+<section id="middleware">
+<h3>Middleware<a class="headerlink" href="#middleware" title="Link to this heading">#</a></h3>
+<p>Register external ASGI middleware:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sentry_asgi</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentryMiddleware</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="n">SentryMiddleware</span><span class="p">)</span>
+
+<span class="c1"># or wrap directly</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">SentryMiddleware</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Register internal (application-level) middleware:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">ResponseHTML</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">simple_md</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-simple-md&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;passed&#39;</span>
+        <span class="k">return</span> <span class="n">response</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ResponseHTML</span><span class="p">(</span><span class="s1">&#39;Middleware Exception&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="class-based-handlers">
-<h2>Class Based Handlers<a class="headerlink" href="#class-based-handlers" title="Link to this heading">#</a></h2>
+<h2>Class-Based Handlers<a class="headerlink" href="#class-based-handlers" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Handler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">opts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Handler" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">opts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Handler" title="Link to this definition">#</a></dt>
 <dd><p>Class-based view pattern for handling HTTP method dispatching.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">,</span> <span class="s1">&#39;/hello/</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">HelloHandler</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HelloHandler</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">patch_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;all&#39;</span>
-        <span class="k">return</span> <span class="s2">&quot;GET: Hello f</span><span class="si">{name}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;GET: Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">patch_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;all&#39;</span>
         <span class="k">return</span> <span class="s2">&quot;POST: Hello f</span><span class="si">{name}</span><span class="s2">&quot;</span>
 
     <span class="nd">@Handler</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/hello/custom&#39;</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">custom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">custom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;Custom HELLO&#39;</span>
 
 <span class="c1"># ...</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">test_my_endpoint</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_my_endpoint</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
     <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;GET: Hello all&#39;</span>
 
@@ -724,8 +730,8 @@ document.write(`
 <h2>Request<a class="headerlink" href="#request" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Request">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request" title="Link to this definition">#</a></dt>
-<dd><p>Represent a HTTP Request.</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request" title="Link to this definition">#</a></dt>
+<dd><p>Provides a convenient, high-level interface for incoming HTTP requests.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -737,77 +743,25 @@ send event messages to the client</p></li>
 </ul>
 </dd>
 </dl>
-<p>The Request object contains all the information about an incoming HTTP
-request.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="w"> </span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="w"> </span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="w"> </span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="n">response</span>
-</pre></div>
-</div>
-<p>Requests are based on a given <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> scope and represents a mapping interface.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">request</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
-<span class="k">assert</span> <span class="n">request</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span>
-<span class="k">assert</span> <span class="n">request</span><span class="p">[</span><span class="s1">&#39;scheme&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;scheme&#39;</span><span class="p">]</span>
-<span class="k">assert</span> <span class="n">request</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
-
-<span class="c1"># and etc</span>
-
-<span class="c1"># ASGI Scope keys also are available as Request attrubutes.</span>
-
-<span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
-<span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span>
-<span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="n">scope</span><span class="p">[</span><span class="s1">&#39;scheme&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="muffin.Request.query">
-<span class="sig-name descname"><span class="pre">query</span></span><a class="headerlink" href="#muffin.Request.query" title="Link to this definition">#</a></dt>
-<dd><p>A lazy property that parse the current query string and returns it as a
-<a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.MultiDict" title="(in multidict v6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code></a>.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="muffin.Request.scope">
+<span class="sig-name descname"><span class="pre">scope</span></span><a class="headerlink" href="#muffin.Request.scope" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="muffin.Request.headers">
-<span class="sig-name descname"><span class="pre">headers</span></span><a class="headerlink" href="#muffin.Request.headers" title="Link to this definition">#</a></dt>
-<dd><p>A lazy property that parses the current scope’s headers, decodes them as strings and
-returns case-insensitive multi-dict <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.CIMultiDict" title="(in multidict v6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.CIMultiDict</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
-
-<span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;content-type&#39;</span><span class="p">]</span>
-<span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;authorization&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>See <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#module-multidict" title="(in multidict v6.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">multidict</span></code></a> documentation for futher reference.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="muffin.Request.receive">
+<span class="sig-name descname"><span class="pre">receive</span></span><a class="headerlink" href="#muffin.Request.receive" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="muffin.Request.cookies">
-<span class="sig-name descname"><span class="pre">cookies</span></span><a class="headerlink" href="#muffin.Request.cookies" title="Link to this definition">#</a></dt>
-<dd><p>A lazy property that parses the current scope’s cookies and returns a dictionary.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
-<span class="n">ses</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
+<dt class="sig sig-object py" id="muffin.Request.send">
+<span class="sig-name descname"><span class="pre">send</span></span><a class="headerlink" href="#muffin.Request.send" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="muffin.Request.charset">
-<span class="sig-name descname"><span class="pre">charset</span></span><a class="headerlink" href="#muffin.Request.charset" title="Link to this definition">#</a></dt>
-<dd><p>Get an encoding charset for the current scope.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="muffin.Request.content_type">
-<span class="sig-name descname"><span class="pre">content_type</span></span><a class="headerlink" href="#muffin.Request.content_type" title="Link to this definition">#</a></dt>
-<dd><p>Get a content type for the current scope.</p>
-</dd></dl>
-
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="muffin.Request.url">
-<span class="sig-name descname"><span class="pre">url</span></span><a class="headerlink" href="#muffin.Request.url" title="Link to this definition">#</a></dt>
-<dd><p>A lazy property that parses the current URL and returns <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api/#yarl.URL" title="(in yarl v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> object.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://yarl.aio-libs.org/en/stable/api/#yarl.URL" title="(in yarl v1.20)"><span class="pre">URL</span></a></em><a class="headerlink" href="#muffin.Request.url" title="Link to this definition">#</a></dt>
+<dd><p>A lazy property that parses the current URL and returns <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api/#yarl.URL" title="(in yarl v1.20)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
 <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;... the full http URL ..&#39;</span>
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">scheme</span>
@@ -816,12 +770,61 @@ returns case-insensitive multi-dict <a class="reference external" href="https://
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">query_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </pre></div>
 </div>
-<p>See <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api/#module-yarl" title="(in yarl v1.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yarl</span></code></a> documentation for further reference.</p>
+<p>See <a class="reference external" href="https://yarl.aio-libs.org/en/stable/api/#module-yarl" title="(in yarl v1.20)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yarl</span></code></a> documentation for further reference.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muffin.Request.headers">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">CIMultiDict</span></em><a class="headerlink" href="#muffin.Request.headers" title="Link to this definition">#</a></dt>
+<dd><p>A lazy property that parses the current scope’s headers, decodes them as strings and
+returns case-insensitive multi-dict <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.CIMultiDict" title="(in multidict v6.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.CIMultiDict</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;content-type&#39;</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;authorization&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#module-multidict" title="(in multidict v6.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">multidict</span></code></a> documentation for futher reference.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muffin.Request.cookies">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#muffin.Request.cookies" title="Link to this definition">#</a></dt>
+<dd><p>A lazy property that parses the current scope’s cookies and returns a dictionary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+<span class="n">ses</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muffin.Request.media">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.13)"><span class="pre">Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#muffin.Request.media" title="Link to this definition">#</a></dt>
+<dd><p>Prepare a media data for the request.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muffin.Request.charset">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">charset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#muffin.Request.charset" title="Link to this definition">#</a></dt>
+<dd><p>Get an encoding charset for the current scope.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muffin.Request.query">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MultiDictProxy</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#muffin.Request.query" title="Link to this definition">#</a></dt>
+<dd><p>A lazy property that parse the current query string and returns it as a
+<a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.MultiDict" title="(in multidict v6.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muffin.Request.content_type">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">content_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#muffin.Request.content_type" title="Link to this definition">#</a></dt>
+<dd><p>Get a content type for the current scope.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.stream">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.stream" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.stream" title="Link to this definition">#</a></dt>
 <dd><p>Stream the request’s body.</p>
 <p>The method provides byte chunks without storing the entire body to memory.
 Any subsequent calls to <a class="reference internal" href="#muffin.Request.body" title="muffin.Request.body"><code class="xref py py-meth docutils literal notranslate"><span class="pre">body()</span></code></a>, <a class="reference internal" href="#muffin.Request.form" title="muffin.Request.form"><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code></a>, <a class="reference internal" href="#muffin.Request.json" title="muffin.Request.json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code></a>
@@ -831,89 +834,87 @@ or <a class="reference internal" href="#muffin.Request.data" title="muffin.Reque
 <p>You can only read stream once. Second call raises an error. Save a readed stream into a
 variable if you need.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/repeater&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">repeater</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">body</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">stream</span><span class="p">():</span>
-        <span class="n">body</span> <span class="o">+=</span> <span class="n">chunk</span>
-
-    <span class="k">return</span> <span class="n">body</span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncGenerator" title="(in Python v3.12)"><em>AsyncGenerator</em></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncGenerator" title="(in Python v3.13)"><em>AsyncGenerator</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.body">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.body" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">body</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.body" title="Link to this definition">#</a></dt>
 <dd><p>Read and return the request’s body as bytes.</p>
 <p><cite>body = await request.body()</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)">bytes</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.13)">bytes</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.text">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.text" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.text" title="Link to this definition">#</a></dt>
 <dd><p>Read and return the request’s body as a string.</p>
 <p><cite>text = await request.text()</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="muffin.Request.json">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.json" title="Link to this definition">#</a></dt>
+<dd><p>Read and return the request’s body as a JSON.</p>
+<p><cite>json = await request.json()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None | <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)">list</a>[TJSON] | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.13)"><em>Mapping</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, TJSON]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.form">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_memory_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.form" title="Link to this definition">#</a></dt>
-<dd><p>Read and return the request’s multipart formdata as a multidict.</p>
-<p>The method reads the request’s stream stright into memory formdata.
-Any subsequent calls to <a class="reference internal" href="#muffin.Request.body" title="muffin.Request.body"><code class="xref py py-meth docutils literal notranslate"><span class="pre">body()</span></code></a>, <a class="reference internal" href="#muffin.Request.json" title="muffin.Request.json"><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code></a> will raise an error.</p>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_memory_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.form" title="Link to this definition">#</a></dt>
+<dd><p>Read and return the request’s form data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>max_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The maximum size of the request body in bytes.</p></li>
-<li><p><strong>upload_to</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – A callable to be used to determine the upload path for files.</p></li>
-<li><p><strong>file_memory_limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The maximum size of the file to be stored in memory in bytes.</p></li>
+<li><p><strong>max_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Maximum size of the form data in bytes</p></li>
+<li><p><strong>upload_to</strong> (<em>Optional</em><em>[</em><em>UploadHandler</em><em>]</em>) – Callable to handle file uploads</p></li>
+<li><p><strong>file_memory_limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Maximum size of file to keep in memory</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>MultiDict</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Form data as MultiDict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MultiDict</p>
 </dd>
 </dl>
 <p><cite>formdata = await request.form()</cite></p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="muffin.Request.json">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.json" title="Link to this definition">#</a></dt>
-<dd><p>Read and return the request’s body as a JSON.</p>
-<p><cite>json = await request.json()</cite></p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None | <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[TJSON] | <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.12)"><em>Mapping</em></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, TJSON]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="muffin.Request.data">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.data" title="Link to this definition">#</a></dt>
-<dd><p>The method checks Content-Type Header and parse the request’s data automatically.</p>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Request.data" title="Link to this definition">#</a></dt>
+<dd><p>Read and return the request’s data based on content type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>raise_errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Raise an error if the given data is invalid.</p>
+<dd class="field-odd"><p><strong>raise_errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Raise an error if the given data is invalid.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)">bytes</a>, MultiDict, TJSON]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Request data in appropriate format</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.13)">bytes</a>, MultiDict, TJSON]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ASGIDecodeError</strong> – If data cannot be decoded and raise_errors is True</p>
 </dd>
 </dl>
 <p><cite>data = await request.data()</cite></p>
@@ -925,51 +926,57 @@ the request’s body would be returned.</p>
 
 </dd></dl>
 
+<p>Example usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Properties:</p>
+<ul class="simple">
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">query</span></code> – Query parameters (MultiDict)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">headers</span></code> – HTTP headers (CIMultiDict)</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">cookies</span></code> – Cookies dictionary</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">charset</span></code> – Request encoding</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">content_type</span></code> – Content-Type header</p></li>
+<li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">url</span></code> – Full URL object</p></li>
+</ul>
+<p>Methods:</p>
+<ul class="simple">
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">stream()</span></code> – Stream body in chunks</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">body()</span></code> – Return body as bytes</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">text()</span></code> – Return body decoded as text</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">form()</span></code> – Parse form data (multipart/form-data or application/x-www-form-urlencoded)</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">json()</span></code> – Parse body as JSON</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">data()</span></code> – Smart parser: returns JSON, form or text depending on Content-Type</p></li>
+</ul>
 </section>
 <section id="responses">
 <h2>Responses<a class="headerlink" href="#responses" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.Response">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Response" title="Link to this definition">#</a></dt>
-<dd><p>A base class to make <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> responses.</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.Response" title="Link to this definition">#</a></dt>
+<dd><p>Base class for creating HTTP responses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><em>bytes</em></a>) – A response’s body</p></li>
-<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – An HTTP status code</p></li>
-<li><p><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – A dictionary of HTTP headers</p></li>
-<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A string with the content-type</p></li>
-<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em>) – An initial dictionary of cookies</p></li>
+<li><p><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.13)"><em>bytes</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em> | </em><em>None</em>) – A response’s body</p></li>
+<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – An HTTP status code</p></li>
+<li><p><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – A dictionary of HTTP headers</p></li>
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – A string with the content-type</p></li>
+<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>]</em>) – An initial dictionary of cookies</p></li>
 </ul>
 </dd>
 </dl>
-<p>A helper to make http responses.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Response</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">response</span>
-</pre></div>
-</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Response.headers">
 <span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MultiDict</span></em><a class="headerlink" href="#muffin.Response.headers" title="Link to this definition">#</a></dt>
 <dd><p>Multidict of response’s headers</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Response</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s1">&#39;OK&#39;</span><span class="p">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;X-Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;42&quot;</span>
-    <span class="k">return</span> <span class="n">response</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.Response.cookies">
-<span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.12)"><span class="pre">SimpleCookie</span></a></em><a class="headerlink" href="#muffin.Response.cookies" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cookies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.13)"><span class="pre">SimpleCookie</span></a></em><a class="headerlink" href="#muffin.Response.cookies" title="Link to this definition">#</a></dt>
 <dd><p>Set/Update cookies</p>
 <ul class="simple">
 <li><p><cite>response.cookies[name] = value</cite> <code class="docutils literal notranslate"><span class="pre">str</span></code> – set a cookie’s value</p></li>
@@ -984,192 +991,174 @@ should be available through HTTP request only (not from JS)</p></li>
 <li><p><cite>response.cookies[name][‘samesite’] = value</cite> <code class="docutils literal notranslate"><span class="pre">str</span></code> – set a cookie’s
 strategy (‘lax’|’strict’|’none’)</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">Response</span>
+</dd></dl>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</dd></dl>
+
+<p>Basic response example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Setting headers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s1">&#39;OK&#39;</span><span class="p">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;rocky&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;road&quot;</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;rocky&quot;</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/cookie&quot;</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;X-Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;42&quot;</span>
     <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
-</dd></dl>
-
-</dd></dl>
-
-<section id="responsetext-response">
-<h3>ResponseText (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsetext-response" title="Link to this heading">#</a></h3>
-<dl class="py class">
-<dt class="sig sig-object py" id="muffin.ResponseText">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseText" title="Link to this definition">#</a></dt>
-<dd><p>A helper to return plain text responses (text/plain).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseText</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ResponseText</span><span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">)</span>
+<p>Setting cookies:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s1">&#39;OK&#39;</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xyz&quot;</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">][</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+    <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
+<section id="responsetext">
+<h3>ResponseText<a class="headerlink" href="#responsetext" title="Link to this heading">#</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="muffin.ResponseText">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseText" title="Link to this definition">#</a></dt>
+<dd><p>Returns plain text responses (text/plain).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>)</p></li>
-<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>content</strong> (<em>TContent</em>)</p></li>
+<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
 <li><p><strong>headers</strong> (<em>MultiDict</em>)</p></li>
-<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.12)"><em>SimpleCookie</em></a>)</p></li>
+<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.13)"><em>SimpleCookie</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ResponseText</span><span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
-<section id="responsehtml-response">
-<h3>ResponseHTML (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsehtml-response" title="Link to this heading">#</a></h3>
+<section id="responsehtml">
+<h3>ResponseHTML<a class="headerlink" href="#responsehtml" title="Link to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseHTML">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseHTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseHTML" title="Link to this definition">#</a></dt>
-<dd><p>A helper to return HTML responses (text/html).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseHTML</span>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseHTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseHTML" title="Link to this definition">#</a></dt>
+<dd><p>Returns HTML responses (text/html).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>content</strong> (<em>TContent</em>)</p></li>
+<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>headers</strong> (<em>MultiDict</em>)</p></li>
+<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.13)"><em>SimpleCookie</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResponseHTML</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello, world!&lt;/h1&gt;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If your view function returns a string/byte-string the
-result will be converted into a HTML Response</p>
+<p>Returning a string/bytes will automatically produce an HTML response.</p>
 </div>
+</section>
+<section id="responsejson">
+<h3>ResponseJSON<a class="headerlink" href="#responsejson" title="Link to this heading">#</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="muffin.ResponseJSON">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseJSON" title="Link to this definition">#</a></dt>
+<dd><p>Returns JSON responses (application/json).</p>
+<p>The class optionally supports <a class="reference external" href="https://pypi.org/project/ujson/">ujson</a> and <a class="reference external" href="https://pypi.org/project/orjson/">orjson</a> JSON libraries. Install one of them to use instead
+the standard library.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>)</p></li>
-<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>content</strong> (<em>TContent</em>)</p></li>
+<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
 <li><p><strong>headers</strong> (<em>MultiDict</em>)</p></li>
-<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.12)"><em>SimpleCookie</em></a>)</p></li>
+<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.13)"><em>SimpleCookie</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-</section>
-<section id="responsejson-response">
-<h3>ResponseJSON (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsejson-response" title="Link to this heading">#</a></h3>
-<dl class="py class">
-<dt class="sig sig-object py" id="muffin.ResponseJSON">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cookies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseJSON" title="Link to this definition">#</a></dt>
-<dd><p>A helper to return JSON responses (application/json).</p>
-<p>The class optionally supports <a class="reference external" href="https://pypi.org/project/ujson/">ujson</a> and <a class="reference external" href="https://pypi.org/project/orjson/">orjson</a> JSON libraries. Install one of them to use instead
-the standard library.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseJSON</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResponseJSON</span><span class="p">({</span><span class="s1">&#39;hello&#39;</span><span class="p">:</span> <span class="s1">&#39;world&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If your view function returns a dictionary/list/boolean the
-result will be converted into a JSON Response</p>
+<p>Returning dicts, lists, or booleans produces a JSON response.</p>
 </div>
+</section>
+<section id="responseredirect">
+<h3>ResponseRedirect<a class="headerlink" href="#responseredirect" title="Link to this heading">#</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="muffin.ResponseRedirect">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseRedirect" title="Link to this definition">#</a></dt>
+<dd><p>Creates HTTP redirects. Uses a 307 status code by default.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>)</p></li>
-<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
-<li><p><strong>headers</strong> (<em>MultiDict</em>)</p></li>
-<li><p><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.12)"><em>SimpleCookie</em></a>)</p></li>
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – A string with the new location</p></li>
+<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-</section>
-<section id="responseredirect-response">
-<h3>ResponseRedirect (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseredirect-response" title="Link to this heading">#</a></h3>
-<dl class="py class">
-<dt class="sig sig-object py" id="muffin.ResponseRedirect">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseRedirect" title="Link to this definition">#</a></dt>
-<dd><p>A helper to return HTTP redirects. Uses a 307 status code by default.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – A string with the new location</p></li>
-<li><p><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>)</p></li>
-</ul>
-</dd>
-</dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseRedirect</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You are able to raise the <a class="reference internal" href="#muffin.ResponseRedirect" title="muffin.ResponseRedirect"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseRedirect</span></code></a> as an exception.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseRedirect</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;authorization&#39;</span><span class="p">):</span>
-        <span class="c1"># The client will be redirected to &quot;/login&quot;</span>
+<p>Alternatively, raise as an exception:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="s1">&#39;OK&#39;</span>
 </pre></div>
 </div>
-</dd></dl>
-
 </section>
-<section id="responseerror-response">
-<h3>ResponseError (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responseerror-response" title="Link to this heading">#</a></h3>
-<dl class="py class">
-<dt class="sig sig-object py" id="muffin.ResponseError">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseError" title="Link to this definition">#</a></dt>
-<dd><p>A helper to return HTTP errors. Uses a 500 status code by default.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> – A string with the error’s message (HTTPStatus messages will be used by default)</p>
-</dd>
-</dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseError</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ResponseError</span><span class="p">(</span><span class="s1">&#39;Timeout&#39;</span><span class="p">,</span> <span class="mi">502</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>You are able to raise the <a class="reference internal" href="#muffin.ResponseError" title="muffin.ResponseError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseError</span></code></a> as an exception.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseError</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<section id="responseerror">
+<h3>ResponseError<a class="headerlink" href="#responseerror" title="Link to this heading">#</a></h3>
+<p>Raise HTTP errors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="s1">&#39;Invalid request data&#39;</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="s1">&#39;OK&#39;</span>
 </pre></div>
 </div>
-<p>You able to use <a class="reference external" href="https://docs.python.org/3/library/http.html#http.HTTPStatus" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">http.HTTPStatus</span></code></a> properties with the <cite>ResponseError</cite> class</p>
+<p>Supports <cite>http.HTTPStatus</cite> shortcuts:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">(</span><span class="s1">&#39;invalid data&#39;</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">()</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">BAD_GATEWAY</span><span class="p">()</span>
-<span class="c1"># and etc</span>
 </pre></div>
 </div>
-</dd></dl>
-
 </section>
-<section id="responsestream-response">
-<h3>ResponseStream (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsestream-response" title="Link to this heading">#</a></h3>
+<section id="responsestream">
+<h3>ResponseStream<a class="headerlink" href="#responsestream" title="Link to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseStream">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseStream" title="Link to this definition">#</a></dt>
-<dd><p>A helper to stream a response’s body.</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseStream" title="Link to this definition">#</a></dt>
+<dd><p>Streams response body as chunks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1178,28 +1167,27 @@ result will be converted into a JSON Response</p>
 </ul>
 </dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseStream</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">stream_response</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-        <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">generator</span> <span class="o">=</span> <span class="n">stream_response</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">ResponseStream</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;plain/text&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd></dl>
 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseStream</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;chunk </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/stream&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ResponseStream</span><span class="p">(</span><span class="n">stream_response</span><span class="p">())</span>
+</pre></div>
+</div>
 </section>
-<section id="responsesse-response">
-<h3>ResponseSSE (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsesse-response" title="Link to this heading">#</a></h3>
+<section id="responsesse">
+<h3>ResponseSSE<a class="headerlink" href="#responsesse" title="Link to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseSSE">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseSSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseSSE" title="Link to this definition">#</a></dt>
-<dd><p>A helper to stream SSE (server side events).</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseSSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseSSE" title="Link to this definition">#</a></dt>
+<dd><p>Streams Server-Sent Events (SSE).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1208,150 +1196,69 @@ result will be converted into a JSON Response</p>
 </ul>
 </dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseSSE</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">stream_response</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-        <span class="k">await</span> <span class="n">aio_sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># The response support messages as text</span>
-        <span class="k">yield</span> <span class="s2">&quot;data: message text&quot;</span>
-
-        <span class="c1"># And as dictionaties as weel</span>
-        <span class="k">yield</span> <span class="p">{</span>
-            <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;ping&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span>
-        <span class="p">}</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">generator</span> <span class="o">=</span> <span class="n">stream_response</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">ResponseSSE</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;plain/text&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd></dl>
 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseSSE</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">sse_response</span><span class="p">():</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="p">{</span><span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;pong&quot;</span><span class="p">}</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/sse&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">sse</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ResponseSSE</span><span class="p">(</span><span class="n">sse_response</span><span class="p">())</span>
+</pre></div>
+</div>
 </section>
-<section id="responsefile-response">
-<h3>ResponseFile (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsefile-response" title="Link to this heading">#</a></h3>
+<section id="responsefile">
+<h3>ResponseFile<a class="headerlink" href="#responsefile" title="Link to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseFile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65536</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseFile" title="Link to this definition">#</a></dt>
-<dd><p>A helper to stream files as a response body.</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">65536</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseFile" title="Link to this definition">#</a></dt>
+<dd><p>Serves files as HTTP responses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>Path</em>) – The filepath to the file</p></li>
-<li><p><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Default chunk size (32768)</p></li>
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – If set, <cite>Content-Disposition</cite> header will be generated</p></li>
-<li><p><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Return only file headers</p></li>
+<li><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> | </em><em>Path</em>) – The filepath to the file</p></li>
+<li><p><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Default chunk size (32768)</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – If set, <cite>Content-Disposition</cite> header will be generated</p></li>
+<li><p><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>) – Return only file headers</p></li>
 </ul>
 </dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseFile</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/selfie&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">view_my_selfie</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ResponseFile</span><span class="p">(</span><span class="s1">&#39;/storage/my_best_selfie.jpeg&#39;</span><span class="p">)</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/download&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">download_movie</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ResponseFile</span><span class="p">(</span><span class="s1">&#39;/storage/video.mp4&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;movie-2020-01-01.mp4&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd></dl>
 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/download&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">download</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ResponseFile</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;file.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
-<section id="responsewebsocket-response">
-<h3>ResponseWebSocket (<a class="reference internal" href="#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>)<a class="headerlink" href="#responsewebsocket-response" title="Link to this heading">#</a></h3>
+<section id="responsewebsocket">
+<h3>ResponseWebSocket<a class="headerlink" href="#responsewebsocket" title="Link to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="muffin.ResponseWebSocket">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseWebSocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket" title="Link to this definition">#</a></dt>
-<dd><p>A helper to work with websockets.</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">ResponseWebSocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket" title="Link to this definition">#</a></dt>
+<dd><p>Provides a WebSocket handler interface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scope</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – Request info (ASGI Scope | ASGI-Tools Request)</p></li>
-<li><p><strong>receive</strong> (<em>Optional</em><em>[</em><em>TASGIReceive</em><em>]</em>) – ASGI receive function</p></li>
-<li><p><strong>send</strong> (<em>Optional</em><em>[</em><em>TASGISend</em><em>]</em>) – ASGI send function</p></li>
+<li><p><strong>scope</strong> (<em>TASGIScope</em>)</p></li>
+<li><p><strong>receive</strong> (<em>TASGIReceive</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>send</strong> (<em>TASGISend</em><em> | </em><em>None</em>)</p></li>
 </ul>
 </dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muffin</span> <span class="kn">import</span> <span class="n">ResponseWebsocket</span>
+</dd></dl>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/example&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/ws&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">websocket</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">async</span> <span class="k">with</span> <span class="n">ResponseWebSocket</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="k">as</span> <span class="n">ws</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
-        <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s1">&#39;ping&#39;</span>
-        <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;pong&#39;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Echo: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.ResponseWebSocket.accept">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.accept" title="Link to this definition">#</a></dt>
-<dd><p>Accept a websocket connection.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.ResponseWebSocket.close">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.close" title="Link to this definition">#</a></dt>
-<dd><p>Sent by the application to tell the server to close the connection.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.ResponseWebSocket.send">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'websocket.send'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send" title="Link to this definition">#</a></dt>
-<dd><p>Send the given message to a client.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><em>bytes</em></a>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.ResponseWebSocket.send_json">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.send_json" title="Link to this definition">#</a></dt>
-<dd><p>Serialize the given data to JSON and send to a client.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="muffin.ResponseWebSocket.receive">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muffin.ResponseWebSocket.receive" title="Link to this definition">#</a></dt>
-<dd><p>Receive messages from a client.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Receive messages as is.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Union[TASGIMessage, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 </section>
 <section id="test-client">
@@ -1359,9 +1266,10 @@ result will be converted into a JSON Response</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="muffin.TestClient">
 <span class="sig-prename descclassname"><span class="pre">muffin.</span></span><span class="sig-name descname"><span class="pre">TestClient</span></span><a class="headerlink" href="#muffin.TestClient" title="Link to this definition">#</a></dt>
-<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v1.0.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ASGITestClient</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://klen.github.io/asgi-tools/api.html#asgi_tools.tests.ASGITestClient" title="(in asgi-tools v1.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ASGITestClient</span></code></a></p>
 </dd></dl>
 
+<p>Use for testing your Muffin applications efficiently.</p>
 </section>
 </section>
 
@@ -1400,7 +1308,8 @@ result will be converted into a JSON Response</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1413,34 +1322,39 @@ result will be converted into a JSON Response</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application">Application</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application"><code class="docutils literal notranslate"><span class="pre">Application</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.import_submodules"><code class="docutils literal notranslate"><span class="pre">Application.import_submodules()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.run_after_response"><code class="docutils literal notranslate"><span class="pre">Application.run_after_response()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.route"><code class="docutils literal notranslate"><span class="pre">Application.route()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.on_startup"><code class="docutils literal notranslate"><span class="pre">Application.on_startup()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.on_shutdown"><code class="docutils literal notranslate"><span class="pre">Application.on_shutdown()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.on_error"><code class="docutils literal notranslate"><span class="pre">Application.on_error()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.middleware"><code class="docutils literal notranslate"><span class="pre">Application.middleware()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.run_after_response"><code class="docutils literal notranslate"><span class="pre">Application.run_after_response()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Application.import_submodules"><code class="docutils literal notranslate"><span class="pre">Application.import_submodules()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#middleware">Middleware</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-based-handlers">Class Based Handlers</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-based-handlers">Class-Based Handlers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Handler"><code class="docutils literal notranslate"><span class="pre">Handler</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request">Request</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request"><code class="docutils literal notranslate"><span class="pre">Request</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.query"><code class="docutils literal notranslate"><span class="pre">Request.query</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.scope"><code class="docutils literal notranslate"><span class="pre">Request.scope</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.receive"><code class="docutils literal notranslate"><span class="pre">Request.receive</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.send"><code class="docutils literal notranslate"><span class="pre">Request.send</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.url"><code class="docutils literal notranslate"><span class="pre">Request.url</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.headers"><code class="docutils literal notranslate"><span class="pre">Request.headers</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.cookies"><code class="docutils literal notranslate"><span class="pre">Request.cookies</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.media"><code class="docutils literal notranslate"><span class="pre">Request.media</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.charset"><code class="docutils literal notranslate"><span class="pre">Request.charset</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.query"><code class="docutils literal notranslate"><span class="pre">Request.query</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.content_type"><code class="docutils literal notranslate"><span class="pre">Request.content_type</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.url"><code class="docutils literal notranslate"><span class="pre">Request.url</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.stream"><code class="docutils literal notranslate"><span class="pre">Request.stream()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.body"><code class="docutils literal notranslate"><span class="pre">Request.body()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.text"><code class="docutils literal notranslate"><span class="pre">Request.text()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.form"><code class="docutils literal notranslate"><span class="pre">Request.form()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.json"><code class="docutils literal notranslate"><span class="pre">Request.json()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.form"><code class="docutils literal notranslate"><span class="pre">Request.form()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Request.data"><code class="docutils literal notranslate"><span class="pre">Request.data()</span></code></a></li>
 </ul>
 </li>
@@ -1452,47 +1366,37 @@ result will be converted into a JSON Response</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.Response.cookies"><code class="docutils literal notranslate"><span class="pre">Response.cookies</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsetext-response">ResponseText (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsetext">ResponseText</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseText"><code class="docutils literal notranslate"><span class="pre">ResponseText</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsehtml-response">ResponseHTML (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsehtml">ResponseHTML</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseHTML"><code class="docutils literal notranslate"><span class="pre">ResponseHTML</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsejson-response">ResponseJSON (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsejson">ResponseJSON</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseJSON"><code class="docutils literal notranslate"><span class="pre">ResponseJSON</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responseredirect-response">ResponseRedirect (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responseredirect">ResponseRedirect</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseRedirect"><code class="docutils literal notranslate"><span class="pre">ResponseRedirect</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responseerror-response">ResponseError (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseError"><code class="docutils literal notranslate"><span class="pre">ResponseError</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsestream-response">ResponseStream (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responseerror">ResponseError</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsestream">ResponseStream</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseStream"><code class="docutils literal notranslate"><span class="pre">ResponseStream</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsesse-response">ResponseSSE (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsesse">ResponseSSE</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseSSE"><code class="docutils literal notranslate"><span class="pre">ResponseSSE</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsefile-response">ResponseFile (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsefile">ResponseFile</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseFile"><code class="docutils literal notranslate"><span class="pre">ResponseFile</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsewebsocket-response">ResponseWebSocket (<code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code>)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseWebSocket"><code class="docutils literal notranslate"><span class="pre">ResponseWebSocket</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseWebSocket.accept"><code class="docutils literal notranslate"><span class="pre">ResponseWebSocket.accept()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseWebSocket.close"><code class="docutils literal notranslate"><span class="pre">ResponseWebSocket.close()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseWebSocket.send"><code class="docutils literal notranslate"><span class="pre">ResponseWebSocket.send()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseWebSocket.send_json"><code class="docutils literal notranslate"><span class="pre">ResponseWebSocket.send_json()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseWebSocket.receive"><code class="docutils literal notranslate"><span class="pre">ResponseWebSocket.receive()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#responsewebsocket">ResponseWebSocket</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.ResponseWebSocket"><code class="docutils literal notranslate"><span class="pre">ResponseWebSocket</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1505,13 +1409,13 @@ result will be converted into a JSON Response</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="_sources/api.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -1526,8 +1430,8 @@ result will be converted into a JSON Response</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1547,7 +1451,7 @@ result will be converted into a JSON Response</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>
@@ -1560,7 +1464,8 @@ result will be converted into a JSON Response</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
