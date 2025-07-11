@@ -21,6 +21,8 @@
 
 ----------
 
+.. _description:
+
 Why Muffin?
 -----------
 
@@ -34,6 +36,8 @@ Key Features
 - Supports Asyncio_, Trio_, and Curio_
 - Multiple response types: text, HTML, JSON, streams, files, SSE, WebSockets
 - First-class plugin system for templating, databases, auth, and more
+
+.. _installation:
 
 Installation
 ------------
@@ -63,6 +67,8 @@ These packages will be installed automatically:
 .. _ASGI-Tools: https://klen.github.io/asgi-tools/
 .. _Modconfig: https://pypi.org/project/modconfig/
 
+.. _quickstart:
+
 Quickstart
 ----------
 
@@ -87,6 +93,8 @@ Save this as `example.py` and run:
 
 Visit http://localhost:8000 or http://localhost:8000/hello/username in your browser.
 
+.. _plugins:
+
 Plugins
 -------
 
@@ -107,10 +115,14 @@ Muffin has a rich ecosystem of plugins:
 
 See each repo for usage and installation instructions.
 
+.. _benchmarks:
+
 Benchmarks
 ----------
 
 Performance comparisons are available at: http://klen.github.io/py-frameworks-bench/
+
+.. _links:
 
 Bug tracker
 -----------
