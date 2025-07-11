@@ -50,7 +50,7 @@
     <link rel="next" title="Usage" href="usage.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.0.1" />
+  <meta name="docsearch:version" content="1.0.2" />
     <meta name="docbuild:last-update" content="Jul 11, 2025"/>
   </head>
   
@@ -184,7 +184,7 @@
 
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="plugins.html">
-    <no title>
+    Plugins
   </a>
 </li>
 
@@ -338,7 +338,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="plugins.html">
-    <no title>
+    Plugins
   </a>
 </li>
 
@@ -410,7 +410,7 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 1.0.1
+    Version: 1.0.2
 </div></div>
     </div>
   
@@ -444,30 +444,63 @@
                   
   <section id="welcome-to-muffin-s-documentation">
 <h1>Welcome to Muffin’s documentation!<a class="headerlink" href="#welcome-to-muffin-s-documentation" title="Link to this heading">#</a></h1>
-<p>Fast, lightweight, asynchronous <a href="#id1"><span class="problematic" id="id2">ASGI_</span></a> web framework for Python.</p>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<p>Fast, lightweight, asynchronous <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> web framework for Python.</p>
+<section id="why-muffin">
+<h2>Why Muffin?<a class="headerlink" href="#why-muffin" title="Link to this heading">#</a></h2>
+<p>Muffin combines the simplicity of microframeworks with native <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> performance, supporting multiple async libraries (<a class="reference external" href="https://docs.python.org/3/library/asyncio.html">Asyncio</a>, <a class="reference external" href="https://trio.readthedocs.io/en/stable/index.html">Trio</a>, <a class="reference external" href="https://curio.readthedocs.io/en/latest/">Curio</a>) out of the box. Its rich plugin ecosystem makes building modern web applications pleasant and efficient.</p>
+</section>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://asgi.readthedocs.io/en/latest/">ASGI</a> compatible</p></li>
+<li><p>Competitive performance ([Benchmarks](<a class="reference external" href="http://klen.github.io/py-frameworks-bench/">http://klen.github.io/py-frameworks-bench/</a>))</p></li>
+<li><p>Supports <a class="reference external" href="https://docs.python.org/3/library/asyncio.html">Asyncio</a>, <a class="reference external" href="https://trio.readthedocs.io/en/stable/index.html">Trio</a>, and <a class="reference external" href="https://curio.readthedocs.io/en/latest/">Curio</a></p></li>
+<li><p>Multiple response types: text, HTML, JSON, streams, files, SSE, WebSockets</p></li>
+<li><p>First-class plugin system for templating, databases, auth, and more</p></li>
+</ul>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>Muffin requires <strong>Python 3.10 or newer</strong>. We recommend using the latest stable Python.</p>
+<p>Install via pip:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>muffin
+</pre></div>
+</div>
+<p>For the standard installation with <cite>gunicorn</cite>, <cite>uvicorn</cite>, <cite>uvloop</cite>, <cite>httptools</cite>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>muffin<span class="o">[</span>standard<span class="o">]</span>
+</pre></div>
+</div>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">#</a></h3>
+<p>These packages will be installed automatically:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://klen.github.io/asgi-tools/">ASGI-Tools</a> – ASGI toolkit</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/modconfig/">Modconfig</a>  – hierarchical configuration manager</p></li>
+</ul>
+</section>
 </section>
 <section id="quickstart">
-<h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">#</a></h2>
-</section>
-<section id="plugins">
-<h2>Plugins<a class="headerlink" href="#plugins" title="Link to this heading">#</a></h2>
+<span id="id2"></span><h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">#</a></h2>
+<p>Create a simple “Hello User” app:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">muffin</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">muffin</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;/hello/</span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;world&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Hello, </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1">!&#39;</span>
+</pre></div>
+</div>
+<p>Save this as <cite>example.py</cite> and run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uvicorn<span class="w"> </span>example:app
+</pre></div>
+</div>
+<p>Visit <a class="reference external" href="http://localhost:8000">http://localhost:8000</a> or <a class="reference external" href="http://localhost:8000/hello/username">http://localhost:8000/hello/username</a> in your browser.</p>
 </section>
 <section id="benchmarks">
 <h2>Benchmarks<a class="headerlink" href="#benchmarks" title="Link to this heading">#</a></h2>
-</section>
-<section id="bug-tracker">
-<h2>Bug tracker<a class="headerlink" href="#bug-tracker" title="Link to this heading">#</a></h2>
-</section>
-<section id="contributing">
-<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h2>
-</section>
-<section id="license">
-<h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
+<p>Performance comparisons are available at: <a class="reference external" href="http://klen.github.io/py-frameworks-bench/">http://klen.github.io/py-frameworks-bench/</a></p>
 </section>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
@@ -521,8 +554,38 @@
 </ul>
 </div>
 <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
+</ul>
 </div>
-<span class="target" id="links"></span></section>
+</section>
+<section id="bug-tracker">
+<span id="links"></span><h2>Bug tracker<a class="headerlink" href="#bug-tracker" title="Link to this heading">#</a></h2>
+<p>Found a bug or have a feature request? Please open an issue at:
+<a class="github reference external" href="https://github.com/klen/muffin/issues">klen/muffin#issues</a></p>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h2>
+<p>Contributions are welcome! Please see [CONTRIBUTING.md](<a class="github reference external" href="https://github.com/klen/muffin/blob/develop/CONTRIBUTING.md">klen/muffin</a>) for guidelines.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
+<p>Muffin is licensed under the MIT license.</p>
+</section>
+<hr class="docutils" />
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Link to this heading">#</a></h2>
+<p><strong>Muffin &gt; 0.40 (completely rewritten on ASGI)</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/klen">Kirill Klenov</a></p></li>
+</ul>
+<p><strong>Muffin &lt; 0.40 (based on AIOHTTP_)</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/klen">Kirill Klenov</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ei-grad">Andrew Grigorev</a></p></li>
+<li><p><a class="reference external" href="https://github.com/drgarcia1986">Diego Garcia</a></p></li>
+</ul>
+</section>
 </section>
 
 
@@ -563,17 +626,21 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-muffin">Why Muffin?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plugins">Plugins</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarks">Benchmarks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-tracker">Bug tracker</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-tracker">Bug tracker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#credits">Credits</a></li>
 </ul>
   </nav></div>
 
