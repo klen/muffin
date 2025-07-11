@@ -11,7 +11,7 @@ from modconfig import Config
 from muffin.errors import MuffinError
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator
+    from contextlib import AbstractAsyncContextManager
 
     from muffin.app import Application
 
@@ -42,7 +42,7 @@ class BasePlugin(ABC):
     shutdown: Callable[..., Awaitable] | None = None
 
     # Optional conftest method
-    conftest: Callable[[], AsyncGenerator] | None = None
+    conftest: Callable[[], AbstractAsyncContextManager] | None = None
 
     def __init__(self, app: Application | None = None, **options):
         """Save application and create he plugin's configuration."""
