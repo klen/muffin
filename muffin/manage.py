@@ -294,8 +294,8 @@ def cli():
         app = import_app(args_.app)
         app.logger.info("Application is loaded: %s", app.cfg.name)
 
-    except (ImportError, ModuleNotFoundError):
-        logging.exception("Failed to import application")
+    except ImportError as exc:
+        logging.error("Failed to import application: %s", exc)
         return sys.exit(1)
 
     try:
@@ -307,4 +307,4 @@ def cli():
     sys.exit(0)
 
 
-# ruff: noqa: T100, LOG015
+# ruff: noqa: T100, LOG015, TRY400
