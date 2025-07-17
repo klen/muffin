@@ -86,7 +86,7 @@ class Manager:
 
         # We have to use sync mode here because of eventloop conflict with ipython/promt-toolkit
         def shell(*, ipython: bool = True):
-            """Start the application's shell.
+            """Start an interactive shell with the application context.
 
             :param ipython: Use IPython as a shell
             """
@@ -108,7 +108,7 @@ class Manager:
         self(shell)
 
         def run(host: str = "localhost", port: int = 5000):
-            """Start the application's server."""
+            """Run the application with the given host and port."""
             from uvicorn.main import run as urun
 
             cfg = self.app.cfg
@@ -234,6 +234,14 @@ class Manager:
         """Parse the arguments and run a command."""
         if prog:
             self.parser.prog = prog
+
+        # Sort subparsers by name
+        choices_actions = getattr(self.subparsers, "_choices_actions", None)
+        if choices_actions:
+            sorted_actions = sorted(choices_actions, key=lambda a: a.dest)
+            choices_actions.clear()
+            choices_actions.extend(sorted_actions)
+            self.subparsers.metavar = "{" + ",".join(a.dest for a in sorted_actions) + "}"
 
         ns, _ = self.parser.parse_known_args(args or sys.argv[1:])
         kwargs = dict(ns._get_kwargs())
