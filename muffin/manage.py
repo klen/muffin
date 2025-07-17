@@ -253,7 +253,11 @@ class Manager:
             self.parser.print_help()
             sys.exit(1)
 
-        pargs = kwargs.pop("*", [])
+        pargs = []
+        sig = inspect.signature(fn)
+        for name, param in sig.parameters.items():
+            if param.kind == param.VAR_POSITIONAL:
+                pargs.extend(kwargs.pop(name, []))
 
         if not inspect.iscoroutinefunction(fn):
             return fn(*pargs, **kwargs)
@@ -290,7 +294,7 @@ def cli():
         app = import_app(args_.app)
         app.logger.info("Application is loaded: %s", app.cfg.name)
 
-    except ImportError:
+    except (ImportError, ModuleNotFoundError):
         logging.exception("Failed to import application")
         return sys.exit(1)
 
