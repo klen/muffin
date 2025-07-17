@@ -57,9 +57,7 @@ class Manager:
     def __init__(self, app: "Application"):
         """Initialize the manager."""
         self.app = app
-        self.parser = argparse.ArgumentParser(
-            description="Manage %s" % app.cfg.name.capitalize(),
-        )
+        self.parser = argparse.ArgumentParser(description="Manage %s" % app.cfg.name.capitalize())
 
         if len(AIOLIBS) > 1:
             self.parser.add_argument(
@@ -141,7 +139,7 @@ class Manager:
     def __call__(self, fn=None, *, lifespan=False):  # noqa: C901
         """Register a command."""
 
-        def wrapper(fn):  # noqa: PLR0912, C901
+        def wrapper(fn):  # noqa: C901, PLR0912
             if not inspect.iscoroutinefunction(fn) and lifespan:
                 raise AsyncRequiredError(fn)
 
@@ -155,7 +153,9 @@ class Manager:
                 self.app.logger.warning("Command %s already registered", command_name)
                 return fn
 
-            parser = self.subparsers.add_parser(command_name, description=description)
+            parser = self.subparsers.add_parser(
+                command_name, description=description, help=description
+            )
             sig = inspect.signature(fn)
             docs = dict(PARAM_RE.findall(fn.__doc__ or ""))
 
@@ -281,8 +281,13 @@ def cli():
     try:
         app = import_app(args_.app)
         app.logger.info("Application is loaded: %s", app.cfg.name)
-        app.manage.run(*subargs_, prog="muffin %s" % args_.app)
 
+    except ImportError:
+        logging.exception("Failed to import application")
+        return sys.exit(1)
+
+    try:
+        app.manage.run(*subargs_, prog="muffin %s" % args_.app)
     except Exception:
         logging.exception("Command failed")
         return sys.exit(1)
@@ -290,4 +295,4 @@ def cli():
     sys.exit(0)
 
 
-# ruff: noqa: T100
+# ruff: noqa: T100, LOG015
