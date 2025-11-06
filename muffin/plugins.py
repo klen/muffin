@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC
-from asyncio import iscoroutinefunction
+from inspect import iscoroutinefunction
 from typing import TYPE_CHECKING, Any, Awaitable, Callable, ClassVar, Mapping
 
 from modconfig import Config

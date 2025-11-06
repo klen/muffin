@@ -15,27 +15,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
     steps:
       - uses: actions/checkout@main
-      - name: install poetry
-        run: pip install poetry
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@main
+      - uses: astral-sh/setup-uv@v7
         with:
-          cache: poetry
+          enable-cache: true
           python-version: ${{ matrix.python-version }}
 
-      - name: Setup requirements
-        run: poetry install --with dev
+      - name: Setup dependencies
+        run: uv sync --locked --all-extras --dev
 
       - name: Check code
-        run: poetry run ruff check muffin
+        run: uv run ruff check muffin
 
       - name: Check typing
-        run: poetry run mypy
+        run: uv run mypy
 
       - name: Test with pytest
-        run: poetry run pytest tests
+        run: uv run pytest tests

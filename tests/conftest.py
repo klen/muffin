@@ -1,12 +1,13 @@
 import pytest
+import uvloop
 
 import muffin
 
 
 @pytest.fixture(
     params=[
-        pytest.param(("asyncio", {"use_uvloop": False}), id="asyncio"),
-        pytest.param(("asyncio", {"use_uvloop": True}), id="asyncio+uvloop"),
+        pytest.param(("asyncio"), id="asyncio"),
+        pytest.param(("asyncio", {"loop_factory": uvloop.new_event_loop}), id="asyncio+uvloop"),
         "trio",
         "curio",
     ],

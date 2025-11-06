@@ -21,7 +21,7 @@ class HandlerMeta(type):
 
     def __new__(mcs: type[HandlerMeta], name: str, bases: tuple[type], params: dict[str, Any]):
         """Prepare a Handler Class."""
-        cls = cast(type["Handler"], super().__new__(mcs, name, bases, params))
+        cls = cast("type[Handler]", super().__new__(mcs, name, bases, params))
 
         # Ensure that the class methods are exist and iterable
         if not cls.methods:

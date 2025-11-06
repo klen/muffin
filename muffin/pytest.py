@@ -10,6 +10,9 @@ from typing import TYPE_CHECKING
 import pytest
 from asgi_tools.tests import ASGITestClient, manage_lifespan
 
+from muffin.constants import CONFIG_ENV_VARIABLE
+from muffin.utils import import_app
+
 if TYPE_CHECKING:
     from muffin.app import Application
 
@@ -33,7 +36,6 @@ def pytest_addoption(parser):
 
 def pytest_load_initial_conftests(early_config, parser, args):
     """Prepare to loading Muffin application."""
-    from muffin.constants import CONFIG_ENV_VARIABLE
 
     options = parser.parse_known_args(args)
 
@@ -51,13 +53,11 @@ def pytest_load_initial_conftests(early_config, parser, args):
 async def app(pytestconfig, request, aiolib):  # noqa: ARG001
     """Load an application, run lifespan events, prepare plugins."""
     if not pytestconfig.app:
-        logging.warning(
+        logging.warning(  # noqa: LOG015
             "Improperly configured. Please set ``muffin_app`` in your pytest config. "
             "Or use ``--muffin-app`` command option.",
         )
         return
-
-    from muffin.utils import import_app
 
     muffin_app = import_app(pytestconfig.app)
     msg = f"Setup application '{muffin_app.cfg.name}'"
@@ -89,7 +89,7 @@ async def lifecycle(app: Application):
             yield app
 
 
-@pytest.fixture()
+@pytest.fixture
 def client(app):
     """Generate a test client for the app."""
     return ASGITestClient(app)

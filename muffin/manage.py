@@ -98,7 +98,7 @@ class Manager:
             banner += f"Loaded globals: {list(ctx.keys())}\n"
             if ipython:
                 with suppress(ImportError):
-                    from IPython.terminal.embed import InteractiveShellEmbed
+                    from IPython.terminal.embed import InteractiveShellEmbed  # noqa: PLC0415
 
                     sh = InteractiveShellEmbed.instance(banner1=banner, user_ns=ctx)
                     return sh()
@@ -109,15 +109,10 @@ class Manager:
 
         def run(host: str = "localhost", port: int = 5000):
             """Run the application with the given host and port."""
-            from uvicorn.main import run as urun
+            from uvicorn.main import run as urun  # noqa: PLC0415
 
             cfg = self.app.cfg
-            return urun(
-                self.app,
-                host=host,
-                port=port,
-                log_config=cfg.LOG_CONFIG,
-            )
+            return urun(self.app, host=host, port=port, log_config=cfg.LOG_CONFIG)
 
         self(run)
 

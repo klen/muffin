@@ -12,9 +12,11 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@main
-      - name: Install poetry
-        run: pipx install poetry
-      - name: Setup poetry
-        run: poetry config pypi-token.pypi ${{ secrets.pypy }}
-      - name: Build and publish
-        run: poetry publish --build
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Build Package
+        run: |
+          uv build
+          uv publish --token ${{ secrets.pypy }}

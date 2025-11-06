@@ -13,7 +13,7 @@ repos:
         stages: ["commit-msg"]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-case-conflict
         stages: ["pre-commit"]
@@ -39,26 +39,23 @@ repos:
         stages: ["pre-commit"]
 
   - repo: https://github.com/psf/black
-    rev: 25.1.0
+    rev: 25.9.0
     hooks:
       - id: black
         stages: ["pre-commit"]
 
-  - repo: https://github.com/python-poetry/poetry
-    rev: "2.1.3"
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.7
     hooks:
-      - id: poetry-check
-        files: ^(.*/)?pyproject\.toml$
-        stages: ["pre-commit"]
-      - id: poetry-lock
-        files: ^(.*/)?(poetry\.lock|pyproject\.toml)$
+      - id: uv-lock
+        args: ["--check"]
         stages: ["pre-commit"]
 
   - repo: local
     hooks:
       - id: ruff
         name: ruff
-        entry: poetry run ruff check muffin
+        entry: uv run ruff check muffin
         language: system
         pass_filenames: false
         files: \.py$
@@ -66,7 +63,7 @@ repos:
 
       - id: mypy
         name: mypy
-        entry: poetry run mypy
+        entry: uv run mypy
         language: system
         pass_filenames: false
         files: \.py$
@@ -74,7 +71,7 @@ repos:
 
       - id: pytest
         name: pytest
-        entry: poetry run pytest tests
+        entry: uv run pytest tests
         language: system
         pass_filenames: false
         files: \.py$

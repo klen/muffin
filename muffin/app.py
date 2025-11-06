@@ -13,6 +13,7 @@ from asgi_tools._compat import aio_wait
 from modconfig import Config
 
 from muffin.constants import CONFIG_ENV_VARIABLE
+from muffin.manage import Manager
 from muffin.utils import import_submodules, logger
 
 if TYPE_CHECKING:
@@ -70,7 +71,6 @@ class Application(BaseApp):
         self.cfg.update_from_env(prefix=f"{ self.cfg.name }_")
 
         # Setup CLI
-        from muffin.manage import Manager
 
         self.manage = Manager(self)
 
