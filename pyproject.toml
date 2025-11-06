@@ -94,3 +94,13 @@ commands_pre =
 commands =
     uv run pytest --mypy tests --import-mode importlib
 """
+
+[tool.bumpversion]
+current_version = "1.1.4"
+commit = false
+tag = false
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
