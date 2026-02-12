@@ -1,6 +1,6 @@
 [project]
 name = "muffin"
-version = "1.4.0"
+version = "1.4.1"
 description = "Muffin is a fast, simple and asyncronous web-framework for Python 3 (asyncio, trio, curio)"
 authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
 requires-python = ">=3.10"
@@ -129,7 +129,7 @@ commands =
 """
 
 [tool.bumpversion]
-current_version = "1.4.0"
+current_version = "1.4.1"
 commit = false
 tag = false
 
