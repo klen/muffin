@@ -23,12 +23,7 @@ classifiers = [
   "Framework :: AsyncIO",
   "Framework :: Trio",
 ]
-dependencies = [
-  "asgi-tools>=1.3.3,<2",
-  "modconfig>=1,<2",
-  "ujson",
-  "typing-extensions ; python_full_version < '3.11'",
-]
+dependencies = ["asgi-tools>=1.3.3,<2", "modconfig>=1,<2", "ujson"]
 
 [project.optional-dependencies]
 standard = ["gunicorn>=20.1.0,<21", "uvicorn[standard]>=0.21.1,<0.22"]
