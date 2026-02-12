@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from contextlib import asynccontextmanager
 from inspect import iscoroutinefunction
 from typing import TYPE_CHECKING, Any, ClassVar, Mapping
 
@@ -113,6 +114,7 @@ class BasePlugin(ABC):
         await self.shutdown()
         await self.startup()
 
+    @asynccontextmanager
     async def conftest(self):
         """Return a context manager for pytest conftest.py."""
         yield self

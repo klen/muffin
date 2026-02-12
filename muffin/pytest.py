@@ -79,7 +79,7 @@ async def lifecycle(app: Application):
     # Manage lifespan and prepare plugins
     async with AsyncExitStack() as stack:
         for plugin in plugins:
-            await stack.enter_async_context(plugin.conftest())  # type: ignore[]
+            await stack.enter_async_context(plugin.conftest())
 
         async with manage_lifespan(app):
             yield app
