@@ -7,6 +7,7 @@ from inspect import iscoroutinefunction
 from typing import TYPE_CHECKING, Any, ClassVar, Mapping
 
 from modconfig import Config
+from typing_extensions import Self  # py310
 
 from muffin.errors import MuffinError
 
@@ -56,9 +57,10 @@ class BasePlugin(ABC):
         """Human readable representation."""
         return f"<muffin.Plugin: {self.name}>"
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> Self:
         if iscoroutinefunction(self.startup):
             await self.startup()
+        return self
 
     async def __aexit__(self, exc_type, exc, tb):
         if iscoroutinefunction(self.shutdown):

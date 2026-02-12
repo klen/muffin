@@ -765,6 +765,7 @@ source = { editable = "." }
 dependencies = [
     { name = "asgi-tools" },
     { name = "modconfig" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
     { name = "ujson" },
 ]
 
@@ -798,6 +799,7 @@ requires-dist = [
     { name = "asgi-tools", specifier = ">=1.3.3,<2" },
     { name = "gunicorn", marker = "extra == 'standard'", specifier = ">=20.1.0,<21" },
     { name = "modconfig", specifier = ">=1,<2" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
     { name = "ujson" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.21.1,<0.22" },
 ]
