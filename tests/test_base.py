@@ -1,5 +1,7 @@
+import muffin
+
+
 def test_imports():
-    import muffin
 
     assert hasattr(muffin, "Request")
     assert hasattr(muffin, "Response")

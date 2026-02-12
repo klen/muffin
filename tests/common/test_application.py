@@ -1,10 +1,13 @@
+import re
 from unittest import mock
 
 from asgi_tools._compat import aio_sleep
 
+import muffin
+from muffin import Application, ResponseWebSocket
+
 
 async def test_routing(app, client):
-    import re
 
     @app.route("/simple", re.compile("/simple/(a|b|c)/?$"), methods=["GET"])
     async def test(request):
@@ -101,7 +104,6 @@ async def test_responses(app, client):
 
 
 async def test_websockets(app, client):
-    from muffin import ResponseWebSocket
 
     @app.route("/stream")
     async def stream(request):
@@ -119,7 +121,6 @@ async def test_websockets(app, client):
 
 
 async def test_lifespan(app):
-    import muffin
 
     start, finish = mock.MagicMock(), mock.MagicMock()
 
@@ -192,8 +193,6 @@ async def test_nested(client, app):
             response.headers["x-app"] = "OK"
         return response
 
-    from muffin import Application
-
     subapp = Application()
 
     @subapp.route("/route")
@@ -216,8 +215,6 @@ async def test_nested(client, app):
 
 
 async def test_error_handlers(client, app):
-    import muffin
-
     @app.route("/500")
     async def raise_500(request):
         raise muffin.ResponseError(500)

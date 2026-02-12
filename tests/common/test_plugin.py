@@ -1,18 +1,17 @@
+from typing import ClassVar
 from unittest import mock
 
 import pytest
 
+from muffin import Application, TestClient
+from muffin.plugins import BasePlugin
+
 
 async def test_plugin_config(app, client):
-    from muffin import Application
-    from muffin.plugins import BasePlugin
 
     class Plugin(BasePlugin):
         name = "plugin"
-        defaults = {
-            "debug": True,
-            "option": 11,
-        }
+        defaults: ClassVar = {"debug": True, "option": 11}
 
         after_setup = True
 
@@ -36,8 +35,6 @@ async def test_plugin_config(app, client):
 
 
 async def test_plugin(app, client):
-    from muffin import Application, TestClient
-    from muffin.plugins import BasePlugin
 
     with pytest.raises(TypeError):
         BasePlugin()
@@ -47,10 +44,7 @@ async def test_plugin(app, client):
 
     class Plugin(BasePlugin):
         name = "plugin"
-        defaults = {
-            "debug": True,
-            "option": 42,
-        }
+        defaults: ClassVar = {"debug": True, "option": 42}
 
         async def middleware(self, handler, request, receive, send):
             response = await handler(request, receive, send)
@@ -97,8 +91,6 @@ async def test_plugin(app, client):
 
 
 def test_multi_plugins(app):
-    from muffin.plugins import BasePlugin
-
     class Plugin(BasePlugin):
         name = "plugin"
 
@@ -115,8 +107,6 @@ def test_multi_plugins(app):
 
 
 async def test_plugin_as_context_manager():
-    from muffin.plugins import BasePlugin
-
     events = []
 
     class Plugin(BasePlugin):

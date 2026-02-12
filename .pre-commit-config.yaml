@@ -1,5 +1,4 @@
 # See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
 
 fail_fast: true
 default_install_hook_types: [commit-msg, pre-commit, pre-push]
@@ -21,6 +20,7 @@ repos:
         stages: ["pre-commit"]
       - id: check-added-large-files
         stages: ["pre-commit"]
+        args: ["--maxkb=5000"]
       - id: check-ast
         stages: ["pre-commit"]
       - id: check-executables-have-shebangs
@@ -35,44 +35,49 @@ repos:
         stages: ["pre-commit"]
       - id: end-of-file-fixer
         stages: ["pre-commit"]
+        exclude: |
+          (?x)^(
+              _pb2\.py|
+              _pb2_grpc\.py
+          )
       - id: trailing-whitespace
         stages: ["pre-commit"]
 
-  - repo: https://github.com/psf/black
-    rev: 25.9.0
-    hooks:
-      - id: black
-        stages: ["pre-commit"]
-
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.7
+    rev: 0.10.2
     hooks:
       - id: uv-lock
         args: ["--check"]
         stages: ["pre-commit"]
 
-  - repo: local
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.15.0"
     hooks:
-      - id: ruff
-        name: ruff
-        entry: uv run ruff check muffin
-        language: system
-        pass_filenames: false
-        files: \.py$
+      # Run the linter.
+      - id: ruff-check
+        name: ruff check
+        stages: ["pre-commit"]
+      # Run the formatter.
+      - id: ruff-format
+        name: ruff format
         stages: ["pre-commit"]
 
-      - id: mypy
-        name: mypy
-        entry: uv run mypy
-        language: system
-        pass_filenames: false
-        files: \.py$
-        stages: ["pre-push"]
+  - repo: https://github.com/facebook/pyrefly-pre-commit
+    rev: 0.52.0 # Note: this is the version of the pre-commit hook, NOT the pyrefly version used for type checking
+    hooks:
+      - id: pyrefly-check
+        name: pyrefly check
+        pass_filenames: false # Recommended to do full repo checks. However, you can change this to `true` to only check changed files
+        language: system # Use system-installed pyrefly
+        stages: ["pre-commit"]
 
+  - repo: local
+    hooks:
       - id: pytest
         name: pytest
-        entry: uv run pytest tests
+        entry: poetry run pytest tests
         language: system
         pass_filenames: false
         files: \.py$
         stages: ["pre-push"]
+# See https://pre-commit.com/hooks.html for more hooks

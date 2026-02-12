@@ -1,14 +1,15 @@
 """Base Tests."""
+
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from unittest import mock
 
+import muffin
+
 
 def test_app_config():
-    import os
-
-    import muffin
 
     os.environ["TEST_DEBUG"] = "true"
 
@@ -27,8 +28,6 @@ def test_app_config():
 
 
 def test_configure_logging():
-    import muffin
-
     dummy = {"dummy": "dict", "version": 1}
     with mock.patch("muffin.app.dictConfig") as mocked:
         app = muffin.Application("muffin", LOG_CONFIG=dummy)
@@ -38,8 +37,6 @@ def test_configure_logging():
 
 
 async def test_static_folders():
-    import muffin
-
     app = muffin.Application(
         static_folders=["tests", Path(__file__).parent.parent],
         static_url_prefix="/assets",
@@ -62,6 +59,3 @@ async def test_static_folders():
 
     res = await client.get("/assets/pyproject.toml")
     assert res.status_code == 200
-
-
-# ruff: noqa: ARG001

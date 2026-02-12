@@ -1,8 +1,9 @@
 import pytest
 
+from muffin.handler import Handler, route_method
+
 
 async def test_handler(app, client):
-    from muffin.handler import Handler, route_method
 
     @app.route("/handler", "/handler/{res}")
     class Index(Handler):
@@ -53,7 +54,6 @@ async def test_handler(app, client):
 
 
 async def test_deffered(app, client):
-    from muffin.handler import Handler
 
     class Resource(Handler):
         methods = "post"

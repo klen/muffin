@@ -81,7 +81,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
     methods: TMethods | None = None
 
     @classmethod
-    def __route__(cls, router: Router, *paths: str, methods: TMethodsArg | None = None, **params):
+    def __route__(cls, router: Router, *paths: str, methods: TMethodsArg | None = None, **params):  # type: ignore[override]
         """Check for registered methods."""
         router.bind(cls, *paths, methods=methods or cls.methods, **params)
         for _, method in inspect.getmembers(cls, lambda m: hasattr(m, "__route__")):

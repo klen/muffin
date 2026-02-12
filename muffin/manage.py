@@ -161,7 +161,7 @@ class Manager:
                 type_func = (
                     param.annotation
                     if param.annotation is not param.empty
-                    else type(param.default) if param.default is not param.empty else str
+                    else (type(param.default) if param.default is not param.empty else str)
                 )
                 if not isinstance(type_func, type):
                     type_func = str
@@ -208,7 +208,7 @@ class Manager:
                         parser.add_argument(
                             f"--{argname}",
                             type=(
-                                param.annotation
+                                param.annotation  # type: ignore[]
                                 if param.annotation is not param.empty
                                 else type(default)
                             ),
@@ -291,13 +291,13 @@ def cli():
 
     except ImportError as exc:
         logging.error("Failed to import application: %s", exc)
-        return sys.exit(1)
+        sys.exit(1)
 
     try:
         app.manage.run(*subargs_, prog="muffin %s" % args_.app)
     except Exception:
         logging.exception("Command failed")
-        return sys.exit(1)
+        sys.exit(1)
 
     sys.exit(0)
 

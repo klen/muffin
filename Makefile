@@ -16,18 +16,13 @@ $(VIRTUAL_ENV): uv.lock .pre-commit-config.yaml
 .PHONY: t test
 # target: test - Run tests
 t test: $(VIRTUAL_ENV)
-	@uv run pytest -xsvl --mypy tests
+	@uv run pytest -xsvl tests
 
 .PHONY: lint
-# target: mypy - Run typechecking
+# target: lint - Run typechecking
 lint: $(VIRTUAL_ENV)
-	@uv run ruff muffin
-	@uv run mypy
-
-.PHONY: mypy
-# target: mypy - Run typechecking
-mypy: $(VIRTUAL_ENV)
-	@uv run mypy
+	@uv run ruff check
+	@uv run pyrefly check
 
 .PHONY: docs
 docs: $(VIRTUAL_ENV)
@@ -47,35 +42,42 @@ shell:
 #  Bump version
 # ==============
 
+VERSION	?= minor
+
 .PHONY: release
-VERSION?=minor
+VPART?=minor
 # target: release - Bump version
-release: $(VIRTUAL_ENV)
-	@git checkout develop
-	@git pull
-	@git checkout master
-	@git pull
-	@git merge develop
-	@uvx bump-my-version bump $(VERSION)
-	@uv lock
-	@git commit -am "build(release): `uv version --short`"
-	@git tag `uv version --short`
-	@git checkout develop
-	@git merge master
-	@git push --tags origin develop master
-	@echo "Release process complete for `uv version --short`."
+release:
+	git checkout master
+	git pull
+	git checkout develop
+	git pull
+	git merge master
+	uvx bump-my-version bump $(VPART)
+	uv lock
+	@VERSION="$$(uv version --short)"; \
+		{ \
+			printf 'build(release): %s\n\n' "$$VERSION"; \
+			printf 'Changes:\n\n'; \
+			git log --oneline --pretty=format:'%s [%an]' master..develop | grep -Evi 'github|^Merge' || true; \
+		} | git commit -a -F -; \
+		git tag "$$VERSION";
+	git checkout master
+	git merge develop
+	git checkout develop
+	git push origin develop master --tags
+	@echo "Release process complete for `uv version --short`"
 
 .PHONY: minor
 minor: release
 
 .PHONY: patch
 patch:
-	make release VERSION=patch
+	make release VPART=patch
 
 .PHONY: major
 major:
-	make release VERSION=major
+	make release VPART=major
 
-.PHONY: version v
 version v:
-	@uv version --short
+	uv version --short

@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from abc import ABC
 from inspect import iscoroutinefunction
-from typing import TYPE_CHECKING, Any, Awaitable, Callable, ClassVar, Mapping
+from typing import TYPE_CHECKING, Any, ClassVar, Mapping
 
 from modconfig import Config
 
 from muffin.errors import MuffinError
 
 if TYPE_CHECKING:
-    from contextlib import AbstractAsyncContextManager
+    from asgi_tools.app import TCallable
 
     from muffin.app import Application
 
@@ -33,16 +33,7 @@ class BasePlugin(ABC):
     defaults: ClassVar[Mapping[str, Any]] = {"disabled": False}
 
     # Optional middleware method
-    middleware: Callable[..., Awaitable] | None = None
-
-    # Optional startup method
-    startup: Callable[..., Awaitable] | None = None
-
-    # Optional shutdown method
-    shutdown: Callable[..., Awaitable] | None = None
-
-    # Optional conftest method
-    conftest: Callable[[], AbstractAsyncContextManager] | None = None
+    middleware: TCallable | None = None
 
     def __init__(self, app: Application | None = None, **options):
         """Save application and create he plugin's configuration."""
@@ -51,7 +42,8 @@ class BasePlugin(ABC):
             raise TypeError(msg)
 
         self.cfg = Config(
-            config_config={"update_from_env": False}, **dict({"disabled": False}, **self.defaults)
+            config_config={"update_from_env": False},
+            **dict({"disabled": False}, **self.defaults),
         )
         self.__app__ = app
 
@@ -62,7 +54,7 @@ class BasePlugin(ABC):
 
     def __repr__(self) -> str:
         """Human readable representation."""
-        return f"<muffin.Plugin: { self.name }>"
+        return f"<muffin.Plugin: {self.name}>"
 
     async def __aenter__(self):
         if iscoroutinefunction(self.startup):
@@ -103,19 +95,22 @@ class BasePlugin(ABC):
         if callable(self.middleware):
             app.middleware(self.middleware)
 
-        # Bind startup
-        if callable(self.startup):
-            app.on_startup(self.startup)
-
-        # Bind shutdown
-        if callable(self.shutdown):
-            app.on_shutdown(self.shutdown)
+        app.on_startup(self.startup)
+        app.on_shutdown(self.shutdown)
 
         return True
 
-    async def restart(self):
-        if callable(self.shutdown):
-            await self.shutdown()
+    async def startup(self):  # noqa: B027
+        """Startup the plugin."""
 
-        if callable(self.startup):
-            await self.startup()
+    async def shutdown(self):  # noqa: B027
+        """Shutdown the plugin."""
+
+    async def restart(self):
+        """Restart the plugin."""
+        await self.shutdown()
+        await self.startup()
+
+    async def conftest(self):
+        """Return a context manager for pytest conftest.py."""
+        yield self

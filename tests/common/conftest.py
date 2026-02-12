@@ -1,10 +1,11 @@
 import pytest
 
+import muffin
 
-@pytest.fixture()
+
+@pytest.fixture
 def app():
     """Simple basic app for testing."""
-    import muffin
 
     app = muffin.Application(debug=True)
 

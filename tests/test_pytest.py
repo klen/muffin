@@ -7,7 +7,7 @@ def aiolib(request):
     return request.param
 
 
-@pytest.fixture()
+@pytest.fixture
 def name(app):
     return app.cfg.name
 

@@ -28,10 +28,10 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Check code
-        run: uv run ruff check muffin
+        run: uv run ruff check
 
       - name: Check typing
-        run: uv run mypy
+        run: uv run pyrefly check
 
       - name: Test with pytest
         run: uv run pytest tests

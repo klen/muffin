@@ -41,7 +41,16 @@ muffin = "muffin.manage:cli"
 muffin_pytest = "muffin.pytest"
 
 [dependency-groups]
-dev = ["aiofile", "pytest", "pytest-mypy", "ruff", "pytest-aio[curio, trio, uvloop]", "pre-commit"]
+dev = [
+  "aiofile",
+  "pytest",
+  "ruff",
+  "pytest-aio[curio, trio, uvloop]",
+  "pre-commit",
+  "pyrefly>=0.52.0",
+  "ipdb",
+  "uvicorn",
+]
 docs = ["sphinx", "pydata-sphinx-theme", "sphinx-copybutton"]
 
 [tool.uv]
@@ -61,26 +70,44 @@ build-backend = "hatchling.build"
 addopts = "-xsvl"
 muffin_app = "tests:app"
 
-[tool.mypy]
-packages = ["muffin"]
-ignore_missing_imports = true
-
 [tool.ruff]
 line-length = 100
 target-version = "py310"
 exclude = [".venv", "docs", "example"]
 
+[tool.pyrefly]
+project-includes = ["muffin"]
+
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D", "UP", "ANN", "DJ", "EM", "RSE", "SLF", "RET", "S101", "PLR2004", "N804", "COM"]
+ignore = [
+  "D",
+  "UP",
+  "ANN",
+  "DJ",
+  "EM",
+  "RSE",
+  "SLF",
+  "RET",
+  "S101",
+  "PLR2004",
+  "N804",
+  "COM",
+]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["ARG", "TRY", "F", "PGH", "PLR", "PLW", "PTH", "SIM", "RET504", "T20"]
-
-[tool.black]
-line-length = 100
-target-version = ["py310"]
-preview = true
+"tests/*" = [
+  "ARG",
+  "TRY",
+  "F",
+  "PGH",
+  "PLR",
+  "PLW",
+  "PTH",
+  "SIM",
+  "RET504",
+  "T20",
+]
 
 [tool.tox]
 legacy_tox_ini = """
@@ -93,7 +120,7 @@ allowlist_externals = uv
 commands_pre =
     uv sync
 commands =
-    uv run pytest --mypy tests --import-mode importlib
+    uv run pytest tests --import-mode importlib
 """
 
 [tool.bumpversion]

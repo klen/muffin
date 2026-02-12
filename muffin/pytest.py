@@ -74,16 +74,12 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
 async def lifecycle(app: Application):
     """Setup plugins and run lifespan events."""
 
-    plugin_conf = [
-        plugin.conftest
-        for plugin in app.plugins.values()
-        if hasattr(plugin, "conftest") and plugin.conftest
-    ]
+    plugins = list(app.plugins.values())
 
     # Manage lifespan and prepare plugins
     async with AsyncExitStack() as stack:
-        for conftest in plugin_conf:
-            await stack.enter_async_context(conftest())
+        for plugin in plugins:
+            await stack.enter_async_context(plugin.conftest())  # type: ignore[]
 
         async with manage_lifespan(app):
             yield app

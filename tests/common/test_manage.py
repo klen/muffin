@@ -2,6 +2,8 @@ from unittest import mock
 
 import pytest
 
+from muffin.utils import current_async_library
+
 
 @pytest.fixture(params=["curio", "trio", "asyncio"])
 def cmd_aiolib(request):
@@ -57,9 +59,6 @@ def test_manage(app, capsys, monkeypatch):
 
 
 def test_manage_async(app, cmd_aiolib):
-    import typing as t
-
-    from muffin.utils import current_async_library
 
     start = mock.MagicMock()
     app.on_startup(start)
