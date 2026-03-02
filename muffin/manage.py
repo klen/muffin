@@ -10,7 +10,7 @@ import sys
 from contextlib import AsyncExitStack, suppress
 from importlib import metadata
 from pathlib import Path
-from typing import TYPE_CHECKING, AsyncContextManager, Callable, overload
+from typing import TYPE_CHECKING, AsyncContextManager, Callable, Optional, overload
 
 from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.errors import AsyncRequiredError
@@ -225,7 +225,7 @@ class Manager:
 
         return wrapper
 
-    def run(self, *args: str, prog: str | None = None):
+    def run(self, *args: str, prog: Optional[str] = None):
         """Parse the arguments and run a command."""
         if prog:
             self.parser.prog = prog

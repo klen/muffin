@@ -49,7 +49,7 @@ MAIN_BRANCH = master
 VPART?=minor
 # target: release - Bump version
 release:
-	git checkout master
+	git checkout $(MAIN_BRANCH)
 	git pull
 	git checkout develop
 	git pull
