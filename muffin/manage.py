@@ -10,7 +10,15 @@ import sys
 from contextlib import AsyncExitStack, suppress
 from importlib import metadata
 from pathlib import Path
-from typing import TYPE_CHECKING, AsyncContextManager, Callable, Optional, overload
+from typing import (
+    TYPE_CHECKING,
+    AsyncContextManager,
+    Callable,
+    Optional,
+    get_args,
+    get_origin,
+    overload,
+)
 
 from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.errors import AsyncRequiredError
@@ -134,7 +142,7 @@ class Manager:
     def __call__(self, fn=None, *, lifespan=False):  # noqa: C901
         """Register a command."""
 
-        def wrapper(fn):  # noqa: C901, PLR0912
+        def wrapper(fn):
             if not inspect.iscoroutinefunction(fn) and lifespan:
                 raise AsyncRequiredError(fn)
 
@@ -158,13 +166,7 @@ class Manager:
                 arghelp = docs.get(name, "")
                 argname = name.replace("_", "-")
 
-                type_func = (
-                    param.annotation
-                    if param.annotation is not param.empty
-                    else (type(param.default) if param.default is not param.empty else str)
-                )
-                if not isinstance(type_func, type):
-                    type_func = str
+                type_func = _normalize_type(param)
 
                 if param.kind == param.VAR_POSITIONAL:
                     parser.add_argument(name, nargs="*", metavar=name, help=arghelp)
@@ -207,11 +209,7 @@ class Manager:
                     else:
                         parser.add_argument(
                             f"--{argname}",
-                            type=(
-                                param.annotation  # type: ignore[]
-                                if param.annotation is not param.empty
-                                else type(default)
-                            ),
+                            type=type_func,
                             default=default,
                             help=f"{arghelp} [{default!r}]",
                         )
@@ -300,6 +298,25 @@ def cli():
         sys.exit(1)
 
     sys.exit(0)
+
+
+def _normalize_type(param):
+    annotation, default = param.annotation, param.default
+    if annotation is not param.empty:
+        origin = get_origin(annotation)
+        if origin is None:
+            return annotation if isinstance(annotation, type) else str
+
+        # Union / Optional
+        for arg in get_args(annotation):
+            if arg is type(None):
+                continue
+            if isinstance(arg, type):
+                return arg
+        return str
+    if default is not param.empty:
+        return type(default)
+    return str
 
 
 # ruff: noqa: T100, LOG015, TRY400
