@@ -46,27 +46,20 @@ VERSION	?= minor
 MAIN_BRANCH = master
 
 .PHONY: release
-VPART?=minor
 # target: release - Bump version
 release:
 	git checkout $(MAIN_BRANCH)
 	git pull
 	git checkout develop
 	git pull
-	uvx bump-my-version bump $(VPART)
+	uvx bump-my-version bump $(VERSION)
 	uv lock
-	@VERSION="$$(uv version --short)"; \
-		{ \
-			printf 'build(release): %s\n\n' "$$VERSION"; \
-			printf 'Changes:\n\n'; \
-			git log --oneline --pretty=format:'%s [%an]' $(MAIN_BRANCH)..develop | grep -Evi 'github|^Merge' || true; \
-		} | git commit -a -F -; \
-		git tag "$$VERSION";
 	git checkout $(MAIN_BRANCH)
 	git merge develop
 	git checkout develop
 	git merge $(MAIN_BRANCH)
-	git push origin develop $(MAIN_BRANCH) --tags
+	@git -c push.followTags=false push origin develop $(MAIN_BRANCH)
+	@git push --tags origin
 	@echo "Release process complete for `uv version --short`"
 
 .PHONY: minor
@@ -74,11 +67,11 @@ minor: release
 
 .PHONY: patch
 patch:
-	make release VPART=patch
+	make release VERSION=patch
 
 .PHONY: major
 major:
-	make release VPART=major
+	make release VERSION=major
 
 version v:
 	uv version --short
