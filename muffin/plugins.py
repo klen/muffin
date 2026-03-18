@@ -5,15 +5,13 @@ from __future__ import annotations
 from abc import ABC
 from contextlib import asynccontextmanager
 from inspect import iscoroutinefunction
-from typing import TYPE_CHECKING, Any, ClassVar, Mapping
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Mapping
 
 from modconfig import Config
 
 from muffin.errors import MuffinError
 
 if TYPE_CHECKING:
-    from asgi_tools.app import TCallable
-
     from muffin.app import Application
 
 
@@ -34,7 +32,7 @@ class BasePlugin(ABC):
     defaults: ClassVar[Mapping[str, Any]] = {"disabled": False}
 
     # Optional middleware method
-    middleware: TCallable | None = None
+    middleware: Callable[..., Any] | None = None
 
     def __init__(self, app: Application | None = None, **options):
         """Save application and create he plugin's configuration."""
