@@ -54,6 +54,14 @@ release:
 	git pull
 	uvx bump-my-version bump $(VERSION)
 	uv lock
+	@CVER="$$(uv version --short)"; \
+		{ \
+			printf 'build(release): %s\n\n' "$$CVER"; \
+			printf 'Changes:\n\n'; \
+			git log --oneline --pretty=format:'%s [%an]' $(MAIN_BRANCH)..develop | grep -Evi 'github|^Merge' || true; \
+		} | git commit -a -F -; \
+		git tag -a "$$CVER" -m "$$CVER";
+	@echo "Merging changes between branches..."
 	git checkout $(MAIN_BRANCH)
 	git merge develop
 	git checkout develop

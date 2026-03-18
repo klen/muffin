@@ -125,9 +125,8 @@ commands =
 
 [tool.bumpversion]
 current_version = "1.4.4"
-commit = true
-tag = true
-message = "build: Bump version: {current_version} → {new_version}"
+commit = false
+tag = false
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
