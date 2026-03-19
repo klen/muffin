@@ -259,6 +259,7 @@ class Manager:
         if getattr(fn, "lifespan", False):
             ctx = self.app.lifespan
 
+        self.app.logger.info("Running command: %s", fn.__name__)
         aio_run(run_fn, ctx, fn, args=pargs, kwargs=kwargs)
 
 
