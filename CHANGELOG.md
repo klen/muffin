@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-03-19
+
+### Added
+
+- Logging for command execution in `Manager.run`.
+
 ## [1.5.1] - 2026-03-18
 
 ### Changed
@@ -171,7 +177,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First public release
 
-[unreleased]: https://github.com/klen/muffin/compare/1.5.0...HEAD
+[unreleased]: https://github.com/klen/muffin/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/klen/muffin/compare/1.5.1...1.6.0
+[1.5.1]: https://github.com/klen/muffin/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/klen/muffin/compare/1.4.4...1.5.0
 [1.4.4]: https://github.com/klen/muffin/compare/1.4.3...1.4.4
 [1.4.3]: https://github.com/klen/muffin/compare/1.4.2...1.4.3
