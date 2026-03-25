@@ -37,7 +37,7 @@ async def test_plugin_config(app, client):
 async def test_plugin(app, client):
 
     with pytest.raises(TypeError):
-        BasePlugin()
+        BasePlugin(app)
 
     start = mock.MagicMock()
     finish = mock.MagicMock()

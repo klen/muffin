@@ -36,9 +36,6 @@ class BasePlugin(ABC):
 
     def __init__(self, app: Application | None = None, **options):
         """Save application and create he plugin's configuration."""
-        if getattr(self, "name", None) is None:
-            msg = "Plugin.name is required"
-            raise TypeError(msg)
 
         self.cfg = Config(
             config_config={"update_from_env": False},
@@ -75,14 +72,13 @@ class BasePlugin(ABC):
     def setup(self, app: Application, *, name: str | None = None, **options) -> Any:
         """Bind app and update the plugin's configuration."""
         # allow to redefine the name for multi plugins with same type
-        self.name = name or self.name
+        self.name = name or getattr(self, "name", "")
+        if not self.name:
+            msg = "Plugin.name is required"
+            raise TypeError(msg)
 
         # Update configuration
-        self.cfg.update_from_dict(
-            dict(app.cfg),
-            prefix=f"{self.name}_",
-            exist_only=True,
-        )
+        self.cfg.update_from_dict(dict(app.cfg), prefix=f"{self.name}_", exist_only=True)
         self.cfg.update_from_dict(options)
         if self.cfg.disabled:
             app.logger.warning("Plugin %s is disabled", self.name)
