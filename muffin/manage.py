@@ -150,14 +150,14 @@ class Manager:
 
             fn.lifespan = lifespan
 
-            description = "\n".join(
-                [s for s in (fn.__doc__ or "").split("\n") if not s.strip().startswith(":")],
-            ).strip()
             command_name = name or fn.__name__.replace("_", "-")
             if command_name in self.commands:
                 self.app.logger.warning("Command %s already registered", command_name)
                 return fn
 
+            description = "\n".join(
+                [s for s in (fn.__doc__ or "").split("\n") if not s.strip().startswith(":")],
+            ).strip()
             parser = self.subparsers.add_parser(
                 command_name, description=description, help=description
             )
@@ -240,7 +240,10 @@ class Manager:
 
         ns, _ = self.parser.parse_known_args(args or sys.argv[1:])
         kwargs = dict(ns._get_kwargs())
-        fn = self.commands.get(kwargs.pop("subparser"))
+
+        command_name = kwargs.pop("subparser")
+        fn = self.commands.get(command_name)
+
         if "aiolib" in kwargs:
             AIOLIB.current = kwargs.pop("aiolib")
 
@@ -261,7 +264,7 @@ class Manager:
         if getattr(fn, "lifespan", False):
             ctx = self.app.lifespan
 
-        self.app.logger.info("Running command: %s", fn.__name__)
+        self.app.logger.info("Running command: %s", command_name)
         aio_run(run_fn, ctx, fn, args=pargs, kwargs=kwargs)
 
 
