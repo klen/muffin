@@ -150,7 +150,7 @@ class Manager:
 
             fn.lifespan = lifespan
 
-            command_name = name or fn.__name__.replace("_", "-")
+            command_name = (name or fn.__name__).replace("_", "-")
             if command_name in self.commands:
                 self.app.logger.warning("Command %s already registered", command_name)
                 return fn
