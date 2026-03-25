@@ -137,9 +137,11 @@ class Manager:
     def __call__(self, fn: "TVCallable") -> "TVCallable": ...
 
     @overload
-    def __call__(self, *, lifespan: bool = False) -> Callable[["TVCallable"], "TVCallable"]: ...
+    def __call__(
+        self, *, name: str | None = None, lifespan: bool = False
+    ) -> Callable[["TVCallable"], "TVCallable"]: ...
 
-    def __call__(self, fn=None, *, lifespan=False):  # noqa: C901
+    def __call__(self, fn=None, *, name: str | None = None, lifespan=False):  # noqa: C901
         """Register a command."""
 
         def wrapper(fn):
@@ -151,7 +153,7 @@ class Manager:
             description = "\n".join(
                 [s for s in (fn.__doc__ or "").split("\n") if not s.strip().startswith(":")],
             ).strip()
-            command_name = fn.__name__.replace("_", "-")
+            command_name = name or fn.__name__.replace("_", "-")
             if command_name in self.commands:
                 self.app.logger.warning("Command %s already registered", command_name)
                 return fn
@@ -162,14 +164,14 @@ class Manager:
             sig = inspect.signature(fn)
             docs = dict(PARAM_RE.findall(fn.__doc__ or ""))
 
-            for name, param in sig.parameters.items():
-                arghelp = docs.get(name, "")
-                argname = name.replace("_", "-")
+            for pname, param in sig.parameters.items():
+                arghelp = docs.get(pname, "")
+                argname = pname.replace("_", "-")
 
                 type_func = _normalize_type(param)
 
                 if param.kind == param.VAR_POSITIONAL:
-                    parser.add_argument(name, nargs="*", metavar=name, help=arghelp)
+                    parser.add_argument(pname, nargs="*", metavar=pname, help=arghelp)
                     continue
 
                 if param.kind == param.VAR_KEYWORD:
@@ -178,7 +180,7 @@ class Manager:
 
                 if param.default is param.empty:
                     parser.add_argument(
-                        name,
+                        pname,
                         help=arghelp,
                         type=type_func,
                     )
@@ -188,16 +190,16 @@ class Manager:
                         if default:
                             parser.add_argument(
                                 f"--no-{argname}",
-                                dest=name,
+                                dest=pname,
                                 action="store_false",
-                                help=arghelp or f"Disable {name}",
+                                help=arghelp or f"Disable {pname}",
                             )
                         else:
                             parser.add_argument(
                                 f"--{argname}",
-                                dest=name,
+                                dest=pname,
                                 action="store_true",
-                                help=arghelp or f"Enable {name}",
+                                help=arghelp or f"Enable {pname}",
                             )
                     elif isinstance(default, list):
                         parser.add_argument(

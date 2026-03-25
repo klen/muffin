@@ -2,6 +2,7 @@ from unittest import mock
 
 import pytest
 
+import muffin.manage as manage_module
 from muffin.utils import current_async_library
 
 
@@ -89,3 +90,62 @@ def test_shell_context(app):
         return {"custom": True}
 
     assert app.cfg.MANAGE_SHELL is custom_context
+
+
+def test_command_bool_true_and_list_defaults(app):
+    @app.manage
+    def command(*, enabled=True, tags=["base"]):  # noqa: B006
+        pass
+
+    ns = command.parser.parse_args("--no-enabled --tags extra".split())  # type: ignore[]
+    assert dict(ns._get_kwargs()) == {
+        "enabled": False,
+        "tags": ["base", "extra"],
+    }
+
+
+def test_manage_variadic_command_ignores_kwargs(app):
+    called = mock.MagicMock()
+
+    @app.manage
+    def collect(*items, **options):
+        called(items, options)
+
+    app.manage.run(*"collect one two".split())
+    called.assert_called_once_with(("one", "two"), {})
+
+
+def test_cli_success(monkeypatch):
+    fake_manage = mock.MagicMock()
+    fake_logger = mock.MagicMock()
+    fake_app = mock.MagicMock(logger=fake_logger, manage=fake_manage)
+    fake_app.cfg.name = "demo"
+
+    monkeypatch.setattr(manage_module, "import_app", lambda _: fake_app)
+    monkeypatch.setenv(manage_module.CONFIG_ENV_VARIABLE, "")
+    monkeypatch.setattr(
+        manage_module.sys,
+        "argv",
+        ["muffin", "project.app", "--config", "config.toml", "hello", "Mike"],
+    )
+
+    with pytest.raises(SystemExit) as exc_info:
+        manage_module.cli()
+
+    assert exc_info.value.code == 0
+    assert fake_manage.run.call_args == mock.call("hello", "Mike", prog="muffin project.app")
+    assert manage_module.os.environ[manage_module.CONFIG_ENV_VARIABLE] == "config.toml"
+
+
+def test_cli_import_error(monkeypatch):
+    monkeypatch.setattr(
+        manage_module,
+        "import_app",
+        mock.MagicMock(side_effect=ImportError("broken app")),
+    )
+    monkeypatch.setattr(manage_module.sys, "argv", ["muffin", "broken.app"])
+
+    with pytest.raises(SystemExit) as exc_info:
+        manage_module.cli()
+
+    assert exc_info.value.code == 1
