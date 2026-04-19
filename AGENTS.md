@@ -1,144 +1,52 @@
-# AGENTS.md (Repository Playbook)
+# AGENTS
 
-Guidance for agentic coding tools operating in `muffin/core`.
-Use repository-native commands and conventions.
+## Fast start (authoritative commands)
 
-## Project Snapshot
-- Language: Python (`>=3.10`)
-- Package/env manager: `uv`
-- Build backend: `hatchling`
-- Main package: `muffin/`
-- Tests: `tests/`
-- Example app: `example/`
-- Lint/type tools: `ruff`, `pyrefly`
-- Test runner: `pytest`
-- Commit convention: Conventional Commits (pre-commit enforced)
+- Install/update dev env: `make` (runs `uv sync --all-groups` and installs pre-commit hooks).
+- Lint + typecheck: `make lint` (runs `ruff check` then `pyrefly check`).
+- Tests: `make test` (equivalent to `uv run pytest -xsvl tests`).
+- Docs build: `make docs` (Sphinx HTML into `docs/_build`).
 
-## Source of Truth
-When guidance conflicts, use:
-1. `pyproject.toml`
-2. `Makefile`
-3. `.github/workflows/*.yml`
-4. `.pre-commit-config.yaml`
-5. Existing patterns in `muffin/` and `tests/`
+## Verification order used by CI
 
-## Setup Commands (root)
-- Install all groups: `uv sync --all-groups`
-- Locked CI-like install: `uv sync --locked --all-extras --dev`
-- Bootstrap deps/hooks: `make`
+- Match CI locally: `uv run ruff check` -> `uv run pyrefly check` -> `uv run pytest tests`.
+- CI uses Python `3.10`-`3.14` (`.github/workflows/tests.yml`).
 
-## Build / Lint / Test Commands
+## Repo shape and real entrypoints
 
-### Lint + Types
-- Lint target: `make lint`
-- Direct lint: `uv run ruff check`
-- Type check: `uv run pyrefly check`
-- Format: `uv run ruff format`
+- Core package is `muffin/` (single-package repo, not a monorepo).
+- Public API exports come from `muffin/__init__.py`.
+- Main framework class is `muffin/app.py` (`Application`).
+- CLI entrypoint is the `muffin` script -> `muffin.manage:cli` (`pyproject.toml`).
+- Pytest plugin is built-in via entry point `muffin.pytest`.
+- `example/` is a git submodule (`.gitmodules`), not core framework code.
 
-### Tests
-- Full suite: `make test`
-- Full suite direct: `uv run pytest -xsvl tests`
-- CI workflow command: `uv run pytest tests`
+## Testing and async quirks
 
-### Single Test Commands (important)
-- Single file: `uv run pytest -xsvl tests/test_application.py`
-- Single test: `uv run pytest -xsvl tests/test_application.py::test_app_config`
-- Single class method: `uv run pytest -xsvl tests/test_file.py::TestClass::test_method`
-- Keyword filter: `uv run pytest -xsvl tests -k "plugin and not context"`
-- Marker filter: `uv run pytest -xsvl tests -m "not slow"`
+- Pytest default app is configured as `muffin_app = "tests:app"` in `pyproject.toml`;
+  tests rely on `tests/__init__.py` app fixture.
+- Project-level `tests/conftest.py` parametrizes `aiolib` across `asyncio`, `asyncio+uvloop`,
+  `trio`, `curio`, so async tests can run multiple times per backend.
+- For focused runs, use node selection directly,
+  e.g. `uv run pytest tests/test_application.py::test_app_config`.
 
-### Docs
-- Build docs: `make docs`
-- Direct docs build: `uv run sphinx-build docs/ docs/_build -b html`
+## Config/env details agents usually miss
 
-### Additional Useful Commands
-- Run one test package: `uv run pytest -xsvl tests/common`
-- Stop after first failure is already enabled via `-x` in local default options.
-- Run with importlib mode (tox pattern): `uv run pytest tests --import-mode importlib`
-- Show version: `uv version --short`
-- Run all checks manually before commit:
-  - `uv run ruff check`
-  - `uv run ruff format`
-  - `uv run pyrefly check`
-  - `uv run pytest -xsvl tests`
+- App config env var is `MUFFIN_CONFIG` (`muffin/constants.py`),
+  used by both app init and CLI `--config`.
+- Async backend can be forced with `MUFFIN_AIOLIB` (`muffin/utils.py`).
 
-## Example App Commands
-- From repo root: `make run`, `make shell`
-- From `example/`: `make test`, `make run`
+## Hooks and commit conventions
 
-## Code Style Guidelines
+- Pre-commit enforces Conventional Commits using `.git-commits.yaml` (allowed types include `feat`,
+  `fix`, `refactor`, `test`, etc.).
+- `uv.lock` consistency is enforced by pre-commit (`uv-lock --check`);
+  update lockfile when dependency groups change.
+- Pre-push hook runs `poetry run pytest tests` from `.pre-commit-config.yaml` (note:
+  repo otherwise uses `uv`).
 
-### Formatting
-- Max line length: 100 (Ruff).
-- Use `uv run ruff format` on touched files.
-- Keep code compact/readable; avoid noisy vertical spacing.
-- Preserve local quote/docstring style unless refactor demands change.
+## Release workflow safety
 
-### Imports
-- Group imports: stdlib, third-party, local.
-- Prefer absolute package imports (`from muffin...`).
-- Move typing-only imports into `if TYPE_CHECKING:`.
-- Remove unused imports (Ruff enforced).
-
-### Types and Annotations
-- Use modern typing (`|`, built-in generics like `list[str]`).
-- Keep/introduce `from __future__ import annotations` where already used.
-- Type public APIs and non-trivial helpers.
-- Avoid import cycles with `TYPE_CHECKING` guards.
-- Validate with `uv run pyrefly check`.
-
-### Naming
-- Classes: `PascalCase`
-- Functions/variables/modules: `snake_case`
-- Constants: `UPPER_SNAKE_CASE`
-- Tests: files `tests/test_*.py`, functions `test_*`
-- Config keys are typically uppercase (`LOG_LEVEL`, `STATIC_URL_PREFIX`)
-
-### Control Flow and Design
-- Prefer guard clauses over nested conditionals.
-- Keep functions focused on one responsibility.
-- Preserve async-first patterns; handlers should be async.
-- Keep changes minimal and backward-compatible unless asked otherwise.
-
-### Error Handling
-- Raise specific exceptions with actionable messages.
-- Use exception chaining (`raise ... from exc`) when wrapping errors.
-- Do not swallow exceptions unless behavior requires it (`silent=True` patterns).
-- Log failures with concise operational context.
-
-### Logging
-- Use `%s` interpolation in logger calls (avoid f-strings in logging methods).
-- Reuse app/package logger patterns where possible.
-
-### Testing
-- Use clear arrange/act/assert structure.
-- Keep async behavior in async tests.
-- Reuse fixtures from `tests/conftest.py` and `tests/common/conftest.py`.
-- Assert concrete outcomes (status, headers, body/payload).
-
-## Ruff and Pre-commit Notes
-- Ruff config uses `select = ["ALL"]` with project-specific ignores.
-- Tests have extra per-file ignores; production code should be stricter.
-- Pre-commit runs: commit-message checks, Ruff check/format, `uv lock --check`, pyrefly.
-- Allowed commit types are in `.git-commits.yaml`.
-
-## Cursor/Copilot Rules
-Repository scan results:
-- No `.cursorrules` found
-- No `.cursor/rules/` found
-- No `.github/copilot-instructions.md` found
-
-If these files are added later, treat them as mandatory and update this playbook.
-
-## Recommended Agent Workflow
-1. Read `pyproject.toml` and target module(s).
-2. Implement minimal focused changes.
-3. Run targeted tests first (single file/node id when possible).
-4. Run `uv run ruff check` and `uv run pyrefly check`.
-5. Run full tests (`uv run pytest -xsvl tests`) for broad or risky changes.
-
-## Safety
-- Do not modify unrelated files.
-- Do not add dependencies unless required.
-- Avoid broad refactors unless requested.
-- Preserve public API compatibility in framework code.
+- `make release` is branch-opinionated and mutates git state:
+  checks out/pulls `master` and `develop`, bumps version, tags, merges both ways, and pushes.
+- Do not run release targets for normal feature work.
