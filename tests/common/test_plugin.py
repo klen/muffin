@@ -7,38 +7,50 @@ from muffin import Application, TestClient
 from muffin.plugins import BasePlugin
 
 
-async def test_plugin_config(app, client):
+class ConfigPlugin(BasePlugin):
+    name = "plugin"
+    defaults: ClassVar = {"debug": True, "option": 11}
 
-    class Plugin(BasePlugin):
-        name = "plugin"
-        defaults: ClassVar = {"debug": True, "option": 11}
+    after_setup = True
 
-        after_setup = True
+    def setup(self, app, **options):
+        super(ConfigPlugin, self).setup(app, **options)
+        self.after_setup = self.cfg.option
 
-        def setup(self, app, **options):
-            super(Plugin, self).setup(app, **options)
-            self.after_setup = self.cfg.option
 
-    plugin = Plugin(debug=False)
+async def test_plugin_config_from_plugin_defaults():
+    plugin = ConfigPlugin(debug=False)
     assert plugin.cfg
     assert plugin.cfg.debug is False
     assert plugin.cfg.disabled is False  # disabled injected automatically
 
-    app = Application("tests.config_fixture")
 
-    plugin = Plugin(app)
+async def test_plugin_config_from_application_config():
+    app = Application("tests.config_fixture")
+    plugin = ConfigPlugin(app)
     assert plugin.cfg.option == 42  # from application config
 
-    plugin = Plugin(app, option=22)
+
+async def test_plugin_config_from_env(monkeypatch):
+    app = Application()
+    monkeypatch.setenv("MUFFIN_PLUGIN_OPTION", "33")
+    plugin = ConfigPlugin(app)
+    assert plugin.cfg.option == 33  # from env
+
+
+async def test_plugin_config_from_options():
+    app = Application("tests.config_fixture")
+    plugin = ConfigPlugin(app, option=22)
     assert plugin.cfg.option == 22
     assert plugin.after_setup == 22
 
 
-async def test_plugin(app, client):
-
+async def test_base_plugin_requires_name(app):
     with pytest.raises(TypeError):
         BasePlugin(app)
 
+
+async def test_plugin_setup_registers_and_applies_config():
     start = mock.MagicMock()
     finish = mock.MagicMock()
 
@@ -69,23 +81,57 @@ async def test_plugin(app, client):
     assert plugin.cfg.debug is True
     assert plugin.cfg.option == 43
 
+    assert not start.called
+    assert not finish.called
+
+
+async def test_plugin_middleware_adds_header():
+    class Plugin(BasePlugin):
+        name = "plugin"
+
+        async def middleware(self, handler, request, receive, send):
+            response = await handler(request, receive, send)
+            response.headers["x-plugin"] = "42"
+            return response
+
+    app = Application("muffin")
+    Plugin(app)
+
     @app.route("/")
     async def index(request):
         return "OK"
 
-    assert not start.called
-    assert not finish.called
-
     client = TestClient(app)
-
     async with client.lifespan():
-        assert start.called
-        assert not finish.called
-
         res = await client.get("/")
         assert res.status_code == 200
         assert res.headers["x-plugin"] == "42"
         assert await res.text() == "OK"
+
+
+async def test_plugin_lifespan_calls_startup_and_shutdown():
+    start = mock.MagicMock()
+    finish = mock.MagicMock()
+
+    class Plugin(BasePlugin):
+        name = "plugin"
+
+        async def startup(self):
+            return start()
+
+        def shutdown(self):
+            return finish()
+
+    app = Application("muffin")
+    Plugin(app)
+    client = TestClient(app)
+
+    assert not start.called
+    assert not finish.called
+
+    async with client.lifespan():
+        assert start.called
+        assert not finish.called
 
     assert finish.called
 

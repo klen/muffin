@@ -78,7 +78,10 @@ class BasePlugin(ABC):
             raise TypeError(msg)
 
         # Update configuration
-        self.cfg.update_from_dict(dict(app.cfg), prefix=f"{self.name}_", exist_only=True)
+        app_cfg = app.cfg
+        prefix = f"{self.name}_"
+        self.cfg.update_from_env(prefix=f"{app_cfg.name}_{prefix}")
+        self.cfg.update_from_dict(dict(app_cfg), prefix=prefix, exist_only=True)
         self.cfg.update_from_dict(options)
         if self.cfg.disabled:
             app.logger.warning("Plugin %s is disabled", self.name)
