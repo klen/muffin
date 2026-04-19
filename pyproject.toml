@@ -32,7 +32,7 @@ standard = ["gunicorn>=20.1.0,<21", "uvicorn[standard]>=0.21.1,<0.22"]
 Homepage = "https://github.com/klen/muffin"
 Repository = "https://github.com/klen/muffin"
 Documentation = "https://klen.github.io/muffin"
-changelog = "https://raw.githubusercontent.com/klen/muffin/master/CHANGELOG.md"
+changelog = "https://raw.githubusercontent.com/klen/muffin/main/CHANGELOG.md"
 
 [project.scripts]
 muffin = "muffin.manage:cli"

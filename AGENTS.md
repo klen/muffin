@@ -48,5 +48,5 @@
 ## Release workflow safety
 
 - `make release` is branch-opinionated and mutates git state:
-  checks out/pulls `master` and `develop`, bumps version, tags, merges both ways, and pushes.
+  checks out/pulls `main` and `develop`, bumps version, tags, merges both ways, and pushes.
 - Do not run release targets for normal feature work.
