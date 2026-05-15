@@ -92,6 +92,32 @@ Override values with environment variables:
    assert app.cfg.DB_PARAMS == {'pool': 50}
    assert app.cfg.TOKEN == 'value'
 
+Plugin configuration from environment
+-------------------------------------
+
+Plugins read environment variables with the prefix ``{APP_NAME}_{PLUGIN_NAME}_``.
+
+For example, for app name ``muffin`` and plugin name ``plugin``:
+
+.. code-block:: python
+
+   os.environ['MUFFIN_PLUGIN_OPTION'] = '33'
+
+   class Plugin(BasePlugin):
+       name = 'plugin'
+       defaults = {'option': 11}
+
+   app = Application()
+   plugin = Plugin(app)
+   assert plugin.cfg.option == 33
+
+Plugin option precedence is:
+
+1. Plugin defaults
+2. Plugin environment variables
+3. Application config values with ``{PLUGIN_NAME}_`` prefix
+4. Plugin kwargs passed to ``Plugin(app, ...)``
+
 Configuration precedence
 ------------------------
 
