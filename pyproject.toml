@@ -23,10 +23,10 @@ classifiers = [
   "Framework :: AsyncIO",
   "Framework :: Trio",
 ]
-dependencies = ["asgi-tools>=1.3.3", "modconfig>=1,<2", "ujson"]
+dependencies = ["asgi-tools", "modconfig", "orjson"]
 
 [project.optional-dependencies]
-standard = ["gunicorn>=20.1.0,<21", "uvicorn[standard]>=0.21.1,<0.22"]
+standard = ["gunicorn", "uvicorn[standard]"]
 
 [project.urls]
 Homepage = "https://github.com/klen/muffin"
