@@ -669,7 +669,7 @@ wheels = [
 
 [[package]]
 name = "muffin"
-version = "1.11.0"
+version = "2.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "asgi-tools" },
