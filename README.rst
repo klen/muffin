@@ -1,7 +1,7 @@
 .. image:: https://raw.github.com/klen/muffin/develop/docs/static/logo-h200.png
    :height: 100px
 
-**Muffin** – fast, lightweight, and asynchronous ASGI_ web framework for Python 3.10+.
+**Muffin** – fast, lightweight, and asynchronous ASGI_ web framework for Python 3.11+.
 
 .. image:: https://github.com/klen/muffin/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin/actions
@@ -42,7 +42,7 @@ Key Features
 Installation
 ------------
 
-Muffin requires **Python 3.10 or newer**. We recommend using the latest stable Python.
+Muffin requires **Python 3.11 or newer**. We recommend using the latest stable Python.
 
 Install via pip:
 

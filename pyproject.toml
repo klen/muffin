@@ -3,7 +3,7 @@ name = "muffin"
 version = "1.11.0"
 description = "Muffin is a fast, simple and asyncronous web-framework for Python 3 (asyncio, trio, curio)"
 authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = "README.rst"
 license = "MIT"
 keywords = ["asgi", "web", "web framework", "asyncio", "trio", "curio"]
@@ -13,7 +13,6 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
@@ -72,7 +71,7 @@ muffin_app = "tests:app"
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 exclude = [".venv", "docs", "example"]
 
 [tool.pyrefly]
@@ -113,7 +112,7 @@ ignore = [
 legacy_tox_ini = """
 [tox]
 isolated_build = true
-envlist = py310,py311,py312,py313,py314,pypy311
+envlist = py311,py312,py313,py314,pypy311
 
 [testenv]
 allowlist_externals = uv

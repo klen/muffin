@@ -5,7 +5,7 @@ from __future__ import annotations
 from abc import ABC
 from contextlib import asynccontextmanager
 from inspect import iscoroutinefunction
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, Mapping
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Mapping, Self
 
 from modconfig import Config
 
@@ -52,7 +52,7 @@ class BasePlugin(ABC):
         """Human readable representation."""
         return f"<muffin.Plugin: {self.name}>"
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> Self:
         if iscoroutinefunction(self.startup):
             await self.startup()
         return self
