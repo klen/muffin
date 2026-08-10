@@ -1,4 +1,7 @@
-"""Simple basic app for testing."""
+"""Module-level app fixture for the pytest plugin (muffin_app = "tests:app").
+
+Also used directly by tests/test_pytest.py.
+"""
 
 from muffin import Application
 

@@ -2,6 +2,8 @@ import pytest
 from asgi_tools._compat import aio_sleep
 
 
+# Only asyncio and curio are compatible with the pytest plugin;
+# trio and uvloop are skipped here (they are covered in common/ tests).
 @pytest.fixture(params=["asyncio", "curio"], scope="session")
 def aiolib(request):
     return request.param

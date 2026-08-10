@@ -1,4 +1,5 @@
 import re
+from asyncio import Queue
 from unittest import mock
 
 from asgi_tools._compat import aio_sleep
@@ -249,11 +250,11 @@ async def test_error_handlers(client, app):
 
 
 async def test_run_after(app, client):
-    results = []
+    results: Queue[str] = Queue()
 
     async def background_task(param):
         await aio_sleep(1e-1)
-        results.append(param)
+        await results.put(param)
 
     @app.route("/background")
     async def background(request):
@@ -266,4 +267,5 @@ async def test_run_after(app, client):
 
     res = await client.get("/background")
     assert res.status_code == 200
-    assert set(results) == {"bg1", "bg2", "bg3"}
+    collected = {await results.get() for _ in range(3)}
+    assert collected == {"bg1", "bg2", "bg3"}
