@@ -84,7 +84,7 @@ def import_submodules(
     res = {}
     prefix = f"{package_name}."
     to_import = module_names or (
-        name[len(prefix) :] for _, name, _ in pkgutil.walk_packages(package.__path__, prefix)
+        name[len(prefix) :] for _, name, _ in pkgutil.iter_modules(package.__path__, prefix)
     )
     if exclude:
         to_import = (name for name in to_import if name not in exclude)

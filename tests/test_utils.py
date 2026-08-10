@@ -6,18 +6,18 @@ import muffin.utils
 
 
 def test_import_submodules_uses_prefix():
-    """import_submodules passes prefix to walk_packages for namespaced imports."""
+    """import_submodules passes prefix to iter_modules for namespaced imports."""
     pkg = mock.MagicMock()
     pkg.__path__ = ["/fake/path"]
 
     with mock.patch.object(sys, "modules", {"mypkg": pkg}):
-        with mock.patch("muffin.utils.pkgutil.walk_packages") as mock_walk:
-            mock_walk.return_value = [("finder", "mypkg.mymod", False)]
+        with mock.patch("muffin.utils.pkgutil.iter_modules") as mock_iter:
+            mock_iter.return_value = [("finder", "mypkg.mymod", False)]
             with mock.patch("muffin.utils.importlib.import_module") as mock_import:
                 mock_import.return_value = mock.MagicMock()
                 result = muffin.utils.import_submodules("mypkg")
 
-    mock_walk.assert_called_once_with(["/fake/path"], "mypkg.")
+    mock_iter.assert_called_once_with(["/fake/path"], "mypkg.")
     mock_import.assert_called_once_with("mypkg.mymod")
     assert "mymod" in result
 
