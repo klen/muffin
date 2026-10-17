@@ -8,7 +8,7 @@ async def test_handler(app, client):
     @app.route("/handler", "/handler/{res}")
     class Index(Handler):
         async def get(self, request):
-            return request.path_params or "ok"
+            return dict(request.path_params) or "ok"
 
         async def post(self, request):
             data = await request.data()

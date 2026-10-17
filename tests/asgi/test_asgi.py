@@ -16,7 +16,7 @@ async def test_routing(app, client):
 
     @app.route(r"/parameters/{param1}/{param2}")
     async def test_params(request):
-        return 200, request.path_params
+        return 200, dict(request.path_params)
 
     res = await client.get("/simple")
     assert res.status_code == 200
