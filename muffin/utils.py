@@ -8,7 +8,6 @@ import os
 import pkgutil
 import sys
 import threading
-from collections import OrderedDict
 from contextlib import suppress
 from logging import getLogger
 from typing import TYPE_CHECKING, Callable, Coroutine, Iterable, TypeVar
@@ -35,7 +34,7 @@ __all__ = (
 
 AIOLIB = threading.local()
 AIOLIB.current = None
-AIOLIBS: dict[str, ModuleType] = OrderedDict()
+AIOLIBS: dict[str, ModuleType] = {}
 
 with suppress(ImportError):
     import curio
@@ -84,7 +83,7 @@ def import_submodules(
     res = {}
     prefix = f"{package_name}."
     to_import = module_names or (
-        name[len(prefix) :] for _, name, _ in pkgutil.iter_modules(package.__path__, prefix)
+        name.removeprefix(prefix) for _, name, _ in pkgutil.iter_modules(package.__path__, prefix)
     )
     if exclude:
         to_import = (name for name in to_import if name not in exclude)
