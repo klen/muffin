@@ -191,6 +191,28 @@ Mount sub-applications for modular design:
 
 Accessing `/sub/route` calls the sub-application route.
 
+Host-Based Routing
+------------------
+
+Restrict routes to specific hosts. Enable host matching on the application
+and pass ``hosts`` to routes:
+
+.. code-block:: python
+
+    app = Application(USE_HOSTS=True)
+
+    @app.route('/', hosts=['example.com'])
+    async def home(request):
+        return "example.com only"
+
+    @app.route('/')
+    async def fallback(request):
+        return "any host"
+
+Requests are matched against the ``Host`` header, lowercased and without the
+port. A route with ``hosts`` only matches the listed hosts; a request whose
+host matches nothing returns 404.
+
 Run Tasks in Background
 ------------------------
 
@@ -208,6 +230,10 @@ Schedule background tasks after response is sent:
     async def bg(request):
         app.run_after_response(background_task("task"))
         return "Scheduled"
+
+The response is sent first, then the tasks run to completion. A task that
+raises is logged and does not affect the response. Call ``run_after_response``
+only from a request handler: scheduling from a background task has no effect.
 
 Debug Mode
 ----------
