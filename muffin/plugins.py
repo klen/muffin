@@ -9,8 +9,14 @@ from typing import TYPE_CHECKING, Any, Callable, ClassVar, Mapping, Self
 
 from modconfig import Config
 
+from muffin.errors import MuffinError
+
 if TYPE_CHECKING:
     from muffin.app import Application
+
+
+class PluginError(MuffinError):
+    """Base exception for plugin errors (public API for external plugins)."""
 
 
 class PluginNotInstalledError(RuntimeError):
