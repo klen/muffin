@@ -71,6 +71,14 @@ def test_manage_rejects_unknown_option(app, capsys):
     assert "unrecognized arguments" in err
 
 
+def test_manage_unknown_command(app, capsys):
+    with pytest.raises(SystemExit):
+        app.manage.run("unknown-command")
+
+    _, err = capsys.readouterr()
+    assert "invalid choice" in err
+
+
 def test_manage_async(app, cmd_aiolib):
 
     start = mock.MagicMock()

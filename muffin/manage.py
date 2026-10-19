@@ -128,10 +128,6 @@ class Manager:
         self.app.cfg.update(MANAGE_SHELL=ctx)
         return ctx
 
-    def command(self, *args, **kwargs):
-        """Just an alias for legacy code."""
-        return self(*args, **kwargs)
-
     @overload
     def __call__(self, fn: "TVCallable") -> "TVCallable": ...
 

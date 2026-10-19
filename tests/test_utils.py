@@ -2,8 +2,11 @@ import sys
 from pathlib import Path
 from unittest import mock
 
+import pytest
+
 import muffin
 import muffin.utils
+from muffin.errors import InvalidAppError
 
 
 def test_import_submodules_uses_prefix():
@@ -89,3 +92,36 @@ def test_application_import_submodules_from_function(tmp_path):
         sys.path.remove(str(tmp_path))
         sys.modules.pop("_apppkg", None)
         sys.modules.pop("_apppkg.submod", None)
+
+
+def test_import_app_by_name_and_fallback(tmp_path):
+    (tmp_path / "_appmod.py").write_text("app = 'APP'\napplication = 'APPLICATION'\n")
+    sys.path.insert(0, str(tmp_path))
+    try:
+        assert muffin.utils.import_app("_appmod") == "APP"
+        assert muffin.utils.import_app("_appmod:app") == "APP"
+        assert muffin.utils.import_app("_appmod:application") == "APPLICATION"
+    finally:
+        sys.path.remove(str(tmp_path))
+        sys.modules.pop("_appmod", None)
+
+
+def test_import_app_falls_back_to_application(tmp_path):
+    (tmp_path / "_appmod2.py").write_text("application = 'APPLICATION'\n")
+    sys.path.insert(0, str(tmp_path))
+    try:
+        assert muffin.utils.import_app("_appmod2") == "APPLICATION"
+    finally:
+        sys.path.remove(str(tmp_path))
+        sys.modules.pop("_appmod2", None)
+
+
+def test_import_app_missing_raises(tmp_path):
+    (tmp_path / "_appmod3.py").write_text("x = 1\n")
+    sys.path.insert(0, str(tmp_path))
+    try:
+        with pytest.raises(InvalidAppError):
+            muffin.utils.import_app("_appmod3")
+    finally:
+        sys.path.remove(str(tmp_path))
+        sys.modules.pop("_appmod3", None)

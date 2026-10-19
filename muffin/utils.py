@@ -108,7 +108,9 @@ def import_app(app_uri: str, *, reload: bool = False) -> Application:
     if reload:
         importlib.reload(mod)
 
-    try:
-        return getattr(mod, app_name or "app", None) or mod.application
-    except AttributeError as exc:
-        raise InvalidAppError(app_uri) from exc
+    app = getattr(mod, app_name or "app", None)
+    if app is None:
+        app = getattr(mod, "application", None)
+    if app is None:
+        raise InvalidAppError(app_uri)
+    return app
