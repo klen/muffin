@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Host-based routing: `USE_HOSTS` option and `hosts=` on routes, including class-based
+  handlers and their sub-routes (requires `asgi-tools>=3.2.0`).
+
+### Changed
+
+- Environment variables now override plugin options, matching the application's
+  precedence (options are treated as defaults).
+- Handler classes require `methods` to be set explicitly or inherited; automatic
+  detection from defined async methods is removed.
+
+### Fixed
+
+- Background task failures are logged instead of tearing down the already-sent
+  response and the keep-alive connection.
+- Unknown CLI arguments are rejected instead of silently ignored.
+- `Application.import_submodules` resolves the package from the caller module
+  even when called from inside a function.
+- A disabled plugin is no longer left half-attached: its `app` property raises
+  `PluginNotInstalledError`.
+- `import_app` falls back with explicit `None` checks instead of truthiness.
+
+### Removed
+
+- Unused `PluginError` exception and `Manager.command` alias.
+
 ## [2.0.0] - 2026-06-26
 
 ### Removed
