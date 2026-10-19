@@ -51,6 +51,9 @@ Here are the built-in options and their default values:
         # Routing options
         'TRIM_LAST_SLASH': True,
 
+        # Host-based routing options
+        'USE_HOSTS': False,
+
         # Static files options
         'STATIC_URL_PREFIX': '/static',
         'STATIC_FOLDERS': [],

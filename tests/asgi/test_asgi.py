@@ -286,3 +286,30 @@ async def test_run_after_failure_does_not_break_response(app, client):
         assert await res.text() == "OK"
 
     log_exc.assert_called_once()
+
+
+async def test_host_routing():
+    app = Application(USE_HOSTS=True)
+
+    @app.route("/", hosts=["example.com"])
+    async def index(request):
+        return "example"
+
+    @app.route("/any")
+    async def any_host(request):
+        return "any"
+
+    client = muffin.TestClient(app, base_url="http://example.com")
+    async with client.lifespan():
+        res = await client.get("/")
+        assert res.status_code == 200
+        assert await res.text() == "example"
+
+    other = muffin.TestClient(app, base_url="http://other.com")
+    async with other.lifespan():
+        res = await other.get("/")
+        assert res.status_code == 404
+
+        res = await other.get("/any")
+        assert res.status_code == 200
+        assert await res.text() == "any"

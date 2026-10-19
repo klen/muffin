@@ -1,5 +1,6 @@
 import pytest
 
+import muffin
 from muffin.handler import Handler, route_method
 
 
@@ -99,3 +100,33 @@ def test_handler_methods_are_explicit_or_inherited():
 
     assert Parent.methods == {"GET"}
     assert Child.methods == {"GET"}  # inherited; post is not auto-registered
+
+
+async def test_handler_host_routing():
+    app = muffin.Application(USE_HOSTS=True)
+
+    @app.route("/host", hosts=["example.com"])
+    class Hosted(Handler):
+        methods = ("get",)
+
+        async def get(self, request):
+            return "hosted"
+
+        @Handler.route("/sub", hosts=["sub.com"])
+        async def sub(self, request):
+            return "sub"
+
+    client = muffin.TestClient(app, base_url="http://example.com")
+    async with client.lifespan():
+        res = await client.get("/host")
+        assert res.status_code == 200
+        assert await res.text() == "hosted"
+
+        res = await client.get("/sub")
+        assert res.status_code == 404  # sub is restricted to sub.com
+
+    other = muffin.TestClient(app, base_url="http://sub.com")
+    async with other.lifespan():
+        res = await other.get("/sub")
+        assert res.status_code == 200
+        assert await res.text() == "sub"

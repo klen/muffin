@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from asgi_tools import Request
     from asgi_tools.types import TVCallable
     from http_router import Router
-    from http_router.types import TMethods, TMethodsArg
+    from http_router.types import THostsArg, TMethods, TMethodsArg
 
 
 class HandlerMeta(type):
@@ -84,12 +84,19 @@ class Handler(HTTPView, metaclass=HandlerMeta):
     methods: TMethods | None = None
 
     @classmethod
-    def __route__(cls, router: Router, *paths: str, methods: TMethodsArg | None = None, **params):  # type: ignore[override]
+    def __route__(  # type: ignore[override]
+        cls,
+        router: Router,
+        *paths: str,
+        methods: TMethodsArg | None = None,
+        hosts: THostsArg | None = None,
+        **params,
+    ):
         """Check for registered methods."""
-        router.bind(cls, *paths, methods=methods or cls.methods, **params)
+        router.bind(cls, *paths, methods=methods or cls.methods, hosts=hosts, **params)
         for _, method in inspect.getmembers(cls, lambda m: hasattr(m, "__route__")):
-            paths, methods = method.__route__
-            router.bind(cls, *paths, methods=methods, method_name=method.__name__)
+            paths, methods, hosts = method.__route__
+            router.bind(cls, *paths, methods=methods, hosts=hosts, method_name=method.__name__)
 
         return cls
 
@@ -100,13 +107,13 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     @staticmethod
     def route(
-        *paths: str, methods: TMethodsArg | None = None
+        *paths: str, methods: TMethodsArg | None = None, hosts: THostsArg | None = None
     ) -> Callable[[TVCallable], TVCallable]:
         """Mark a method as a route."""
 
         def wrapper(method):
             """Wrap a method."""
-            method.__route__ = paths, methods
+            method.__route__ = paths, methods, hosts
             return method
 
         return wrapper

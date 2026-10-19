@@ -22,7 +22,7 @@ classifiers = [
   "Framework :: AsyncIO",
   "Framework :: Trio",
 ]
-dependencies = ["asgi-tools", "modconfig", "orjson"]
+dependencies = ["asgi-tools>=3.2.0", "modconfig", "orjson"]
 
 [project.optional-dependencies]
 standard = ["gunicorn", "uvicorn[standard]"]

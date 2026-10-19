@@ -42,6 +42,8 @@ class Application(BaseApp):
         "DEBUG": False,
         # Routing options
         "TRIM_LAST_SLASH": True,
+        # Host-based routing options
+        "USE_HOSTS": False,
         # Static files options
         "STATIC_URL_PREFIX": "/static",
         "STATIC_FOLDERS": [],
@@ -95,6 +97,7 @@ class Application(BaseApp):
             trim_last_slash=self.cfg.TRIM_LAST_SLASH,
             static_folders=self.cfg.STATIC_FOLDERS,
             static_url_prefix=self.cfg.STATIC_URL_PREFIX,
+            use_hosts=self.cfg.USE_HOSTS,
         )
 
     def __repr__(self) -> str:
