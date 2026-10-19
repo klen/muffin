@@ -70,7 +70,11 @@ class BasePlugin(ABC):
         return self.__app__
 
     def setup(self, app: Application, *, name: str | None = None, **options) -> Any:
-        """Bind app and update the plugin's configuration."""
+        """Bind app and update the plugin's configuration.
+
+        Precedence (lowest to highest): plugin defaults, application config,
+        options, environment variables.
+        """
         # allow to redefine the name for multi plugins with same type
         self.name = name or getattr(self, "name", "")
         if not self.name:
@@ -80,9 +84,9 @@ class BasePlugin(ABC):
         # Update configuration
         app_cfg = app.cfg
         prefix = f"{self.name}_"
-        self.cfg.update_from_env(prefix=f"{app_cfg.name}_{prefix}")
         self.cfg.update_from_dict(dict(app_cfg), prefix=prefix, exist_only=True)
         self.cfg.update_from_dict(options)
+        self.cfg.update_from_env(prefix=f"{app_cfg.name}_{prefix}")
         if self.cfg.disabled:
             app.logger.warning("Plugin %s is disabled", self.name)
             return False

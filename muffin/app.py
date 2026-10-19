@@ -56,7 +56,7 @@ class Application(BaseApp):
         """Initialize the application.
 
         :param *cfg_mods: modules to import application's config
-        :param **options: Configuration options
+        :param **options: Configuration options (defaults; env vars override them)
 
         """
         self.plugins: dict[str, BasePlugin] = {}
@@ -68,7 +68,7 @@ class Application(BaseApp):
             f"env:{CONFIG_ENV_VARIABLE}",
         )
         self.cfg.update(**options)
-        self.cfg.update_from_env(prefix=f"{ self.cfg.name }_")
+        self.cfg.update_from_env(prefix=f"{self.cfg.name}_")
 
         # Setup CLI
 
@@ -99,14 +99,14 @@ class Application(BaseApp):
 
     def __repr__(self) -> str:
         """Human readable representation."""
-        return f"<muffin.Application: { self.cfg.name }>"
+        return f"<muffin.Application: {self.cfg.name}>"
 
     async def __call__(self, scope: TASGIScope, receive: TASGIReceive, send: TASGISend):
         """Support background tasks."""
         await self.lifespan(scope, receive, send)
         bgtasks = BACKGROUND_TASKS.get()
         if bgtasks is not None:
-            await aio_wait(*bgtasks)
+            await aio_wait(*(_run_bg(task) for task in bgtasks))
             BACKGROUND_TASKS.set(None)
 
     def import_submodules(self, *submodules: str, silent: bool = False, **kwargs):
@@ -134,7 +134,14 @@ class Application(BaseApp):
                 return import_submodules(package_name, *submodules, silent=silent, **kwargs)
 
     def run_after_response(self, *tasks: Awaitable):
-        """Await the given awaitable after the response is completed.
+        """Schedule awaitables to run after the response is sent.
+
+        The response is sent first, then the tasks run to completion before the
+        request cycle ends. A task that raises is logged and does not affect the
+        already-sent response.
+
+        Call it only from a request handler. Scheduling from a background task
+        has no effect: "after the response" has already passed by then.
 
         .. code-block:: python
 
@@ -142,20 +149,14 @@ class Application(BaseApp):
 
             app = Application()
 
-            @app.task
-            def send_email(email, message):
+            async def send_email(email, message):
                 # send email here
-                pass
+                ...
 
             @app.route('/send')
             async def send(request):
-
-            # Schedule any awaitable for later execution
-            app.run_after_response(send_email('user@email.com', 'Hello from Muffin!'))
-
-            # Return response to a client immediately
-            # The task will be executed after the response is sent
-            return "OK"
+                app.run_after_response(send_email('user@email.com', 'Hello!'))
+                return 'OK'
 
         """
         scheduled = set(BACKGROUND_TASKS.get() or [])
@@ -166,3 +167,11 @@ class Application(BaseApp):
             scheduled.add(task)
 
         BACKGROUND_TASKS.set(scheduled)
+
+
+async def _run_bg(task: Awaitable[Any]) -> None:
+    """Run a background task; log its failure instead of crashing the response cycle."""
+    try:
+        await task
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Background task failed: %s", exc)

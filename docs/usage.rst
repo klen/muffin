@@ -209,6 +209,10 @@ Schedule background tasks after response is sent:
         app.run_after_response(background_task("task"))
         return "Scheduled"
 
+The response is sent first, then the tasks run to completion. A task that
+raises is logged and does not affect the response. Call ``run_after_response``
+only from a request handler: scheduling from a background task has no effect.
+
 Debug Mode
 ----------
 

@@ -269,3 +269,20 @@ async def test_run_after(app, client):
     assert res.status_code == 200
     collected = {await results.get() for _ in range(3)}
     assert collected == {"bg1", "bg2", "bg3"}
+
+
+async def test_run_after_failure_does_not_break_response(app, client):
+    @app.route("/background-error")
+    async def background_error(request):
+        async def fail():
+            raise RuntimeError("bg boom")
+
+        app.run_after_response(fail())
+        return "OK"
+
+    with mock.patch("muffin.app.logger.exception") as log_exc:
+        res = await client.get("/background-error")
+        assert res.status_code == 200
+        assert await res.text() == "OK"
+
+    log_exc.assert_called_once()

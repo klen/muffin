@@ -38,6 +38,13 @@ async def test_plugin_config_from_env(monkeypatch):
     assert plugin.cfg.option == 33  # from env
 
 
+async def test_plugin_env_overrides_options(monkeypatch):
+    app = Application()
+    monkeypatch.setenv("MUFFIN_PLUGIN_OPTION", "33")
+    plugin = ConfigPlugin(app, option=22)
+    assert plugin.cfg.option == 33  # env wins over explicit options
+
+
 async def test_plugin_config_from_options():
     app = Application("tests.config_fixture")
     plugin = ConfigPlugin(app, option=22)

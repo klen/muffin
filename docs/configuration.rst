@@ -111,22 +111,22 @@ For example, for app name ``muffin`` and plugin name ``plugin``:
    plugin = Plugin(app)
    assert plugin.cfg.option == 33
 
-Plugin option precedence is:
+Plugin option precedence (lowest to highest) is:
 
 1. Plugin defaults
-2. Plugin environment variables
-3. Application config values with ``{PLUGIN_NAME}_`` prefix
-4. Plugin kwargs passed to ``Plugin(app, ...)``
+2. Application config values with ``{PLUGIN_NAME}_`` prefix
+3. Plugin kwargs passed to ``Plugin(app, ...)``
+4. Plugin environment variables
 
 Configuration precedence
 ------------------------
 
-The order in which configuration values are read is:
+The order in which configuration values are read (lowest to highest) is:
 
-  1.	Defaults
-	2.	Python config modules
-	3.	Environment variables
-	4.	Keyword arguments passed to Application
+1. Defaults
+2. Python config modules
+3. Keyword arguments passed to Application
+4. Environment variables
 
 Logging configuration
 ---------------------
