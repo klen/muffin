@@ -878,7 +878,7 @@ wheels = [
 
 [[package]]
 name = "muffin"
-version = "3.0.0"
+version = "3.0.1"
 source = { editable = "." }
 default-groups = ["dev", "docs"]
 dependencies = [
