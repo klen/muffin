@@ -10,7 +10,7 @@
 ## Verification order used by CI
 
 - Match CI locally: `uv run ruff check` -> `uv run pyrefly check` -> `uv run pytest tests`.
-- CI uses Python `3.10`-`3.14` (`.github/workflows/tests.yml`).
+- CI uses Python `3.11`-`3.15` (`.github/workflows/tests.yml`).
 
 ## Repo shape and real entrypoints
 
