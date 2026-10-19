@@ -237,7 +237,7 @@ class Manager:
             choices_actions.extend(sorted_actions)
             self.subparsers.metavar = "{" + ",".join(a.dest for a in sorted_actions) + "}"
 
-        ns, _ = self.parser.parse_known_args(args or sys.argv[1:])
+        ns = self.parser.parse_args(args or sys.argv[1:])
         kwargs = dict(ns._get_kwargs())
 
         command_name = kwargs.pop("subparser")

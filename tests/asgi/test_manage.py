@@ -59,6 +59,18 @@ def test_manage(app, capsys, monkeypatch):
     assert "hello sam\n" == out
 
 
+def test_manage_rejects_unknown_option(app, capsys):
+    @app.manage
+    def hello(user_name, *, lower=False):
+        pass
+
+    with pytest.raises(SystemExit):
+        app.manage.run(*"hello Mike --lowr".split())
+
+    _, err = capsys.readouterr()
+    assert "unrecognized arguments" in err
+
+
 def test_manage_async(app, cmd_aiolib):
 
     start = mock.MagicMock()
