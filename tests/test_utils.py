@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 from unittest import mock
 
+import muffin
 import muffin.utils
 
 
@@ -67,3 +68,24 @@ def test_import_submodules_prefix_prevents_shadow_import(tmp_path):
         if "tests" in sys.modules and sys.modules["tests"].__name__ == "tests":
             if getattr(sys.modules["tests"], "SENTINEL", None) == "wrong":
                 sys.modules.pop("tests", None)
+
+
+def test_application_import_submodules_from_function(tmp_path):
+    """Application.import_submodules resolves the package from a function's module."""
+    pkg_dir = tmp_path / "_apppkg"
+    pkg_dir.mkdir()
+    (pkg_dir / "__init__.py").write_text("def setup(app):\n    return app.import_submodules()\n")
+    (pkg_dir / "submod.py").write_text("VALUE = 42\n")
+
+    sys.path.insert(0, str(tmp_path))
+    try:
+        import _apppkg  # noqa: PLC0415
+
+        app = muffin.Application()
+        result = _apppkg.setup(app)
+        assert "submod" in result
+        assert result["submod"].VALUE == 42
+    finally:
+        sys.path.remove(str(tmp_path))
+        sys.modules.pop("_apppkg", None)
+        sys.modules.pop("_apppkg.submod", None)

@@ -133,7 +133,7 @@ class Application(BaseApp):
         if curframe:
             parent_frame = curframe.f_back
             if parent_frame:
-                package_name = parent_frame.f_locals["__name__"]
+                package_name = parent_frame.f_globals["__name__"]
                 return import_submodules(package_name, *submodules, silent=silent, **kwargs)
 
     def run_after_response(self, *tasks: Awaitable):
