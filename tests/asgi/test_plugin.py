@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 
 from muffin import Application, TestClient
-from muffin.plugins import BasePlugin
+from muffin.plugins import BasePlugin, PluginNotInstalledError
 
 
 class ConfigPlugin(BasePlugin):
@@ -55,6 +55,19 @@ async def test_plugin_config_from_options():
 async def test_base_plugin_requires_name(app):
     with pytest.raises(TypeError):
         BasePlugin(app)
+
+
+async def test_disabled_plugin_raises_on_app_access():
+    class Disabled(BasePlugin):
+        name = "disabled"
+        defaults: ClassVar = {"disabled": True}
+
+    app = Application()
+    plugin = Disabled(app)
+    assert "disabled" not in app.plugins
+
+    with pytest.raises(PluginNotInstalledError):
+        _ = plugin.app
 
 
 async def test_plugin_setup_registers_and_applies_config():
