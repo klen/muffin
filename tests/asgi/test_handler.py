@@ -7,6 +7,8 @@ async def test_handler(app, client):
 
     @app.route("/handler", "/handler/{res}")
     class Index(Handler):
+        methods = ("get", "post")
+
         async def get(self, request):
             return dict(request.path_params) or "ok"
 
@@ -82,3 +84,18 @@ async def test_deffered(app, client):
     res = await client.post("/resource/custom")
     assert res.status_code == 200
     assert await res.text() == "Resource Custom is here"
+
+
+def test_handler_methods_are_explicit_or_inherited():
+    class Parent(Handler):
+        methods = ("get",)
+
+        async def get(self, request):
+            return "parent"
+
+    class Child(Parent):
+        async def post(self, request):
+            return "child"
+
+    assert Parent.methods == {"GET"}
+    assert Child.methods == {"GET"}  # inherited; post is not auto-registered

@@ -5,7 +5,7 @@ from __future__ import annotations
 import inspect
 from typing import TYPE_CHECKING, Any, Awaitable, Callable, cast
 
-from asgi_tools.view import HTTP_METHODS, HTTPView
+from asgi_tools.view import HTTPView
 
 from muffin.errors import AsyncRequiredError
 
@@ -23,14 +23,12 @@ class HandlerMeta(type):
         """Prepare a Handler Class."""
         cls = cast("type[Handler]", super().__new__(mcs, name, bases, params))
 
-        # Ensure that the class methods are exist and iterable
-        if not cls.methods:
-            cls.methods = [method for method in HTTP_METHODS if method.lower() in cls.__dict__]
+        # Normalize methods: explicit or inherited, no auto-detection.
+        methods = cls.methods
+        if isinstance(methods, str):
+            methods = [methods]
 
-        elif isinstance(cls.methods, str):
-            cls.methods = [cls.methods]
-
-        cls.methods = {method.upper() for method in cls.methods}
+        cls.methods = {method.upper() for method in methods or []}
         for m in cls.methods:
             method = getattr(cls, m.lower(), None)
             if method and not inspect.iscoroutinefunction(method):
@@ -42,10 +40,15 @@ class HandlerMeta(type):
 class Handler(HTTPView, metaclass=HandlerMeta):
     """Class-based view pattern for handling HTTP method dispatching.
 
+    Methods must be set explicitly (``methods``) or inherited from a parent
+    class. There is no automatic detection: defining ``async def get`` does not
+    register ``GET`` on its own.
+
     .. code-block:: python
 
         @app.route('/hello', '/hello/{name}')
         class HelloHandler(Handler):
+            methods = ['get', 'post']
 
             async def get(self, request):
                 name = request.patch_params.get('name') or 'all'
