@@ -63,7 +63,8 @@ async def test_disabled_plugin_raises_on_app_access():
         defaults: ClassVar = {"disabled": True}
 
     app = Application()
-    plugin = Disabled(app)
+    plugin = Disabled()
+    assert plugin.setup(app) is False
     assert "disabled" not in app.plugins
 
     with pytest.raises(PluginNotInstalledError):
@@ -94,7 +95,7 @@ async def test_plugin_setup_registers_and_applies_config():
     assert plugin.cfg.debug is False
 
     app = Application("muffin", DEBUG=True, PLUGIN_DEBUG=True)
-    plugin.setup(app, option=43)
+    assert plugin.setup(app, option=43) is True
     assert plugin.app is app
     assert app.plugins["plugin"] is plugin
 
