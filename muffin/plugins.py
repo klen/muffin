@@ -69,7 +69,7 @@ class BasePlugin(ABC):
 
         return self.__app__
 
-    def setup(self, app: Application, *, name: str | None = None, **options) -> None:
+    def setup(self, app: Application, *, name: str | None = None, **options) -> bool:
         """Bind app and update the plugin's configuration.
 
         Precedence (lowest to highest): plugin defaults, application config,
@@ -89,7 +89,7 @@ class BasePlugin(ABC):
         self.cfg.update_from_env(prefix=f"{app_cfg.name}_{prefix}")
         if self.cfg.disabled:
             app.logger.warning("Plugin %s is disabled", self.name)
-            return
+            return False
 
         app.plugins[self.name] = self
         self.__app__ = app
@@ -100,6 +100,8 @@ class BasePlugin(ABC):
 
         app.on_startup(self.startup)
         app.on_shutdown(self.shutdown)
+
+        return True
 
     async def startup(self):  # noqa: B027
         """Startup the plugin."""
