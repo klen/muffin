@@ -52,8 +52,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.0.1" />
-    <meta name="docbuild:last-update" content="Oct 19, 2026"/>
+  <meta name="docsearch:version" content="3.0.2" />
+    <meta name="docbuild:last-update" content="Oct 27, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -433,7 +433,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.0.1
+    Version: 3.0.2
 </div></div>
     </div>
   
@@ -800,14 +800,14 @@ send event messages to the client</p></li>
 <dt class="sig sig-object py" id="muffin.Request.headers">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">CIMultiDict</span></em><a class="headerlink" href="#muffin.Request.headers" title="Link to this definition">#</a></dt>
 <dd><p>A lazy property that parses the current scope’s headers, decodes them as strings and
-returns case-insensitive multi-dict <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.CIMultiDict" title="(in multidict v7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.CIMultiDict</span></code></a>.</p>
+returns case-insensitive multi-dict <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.CIMultiDict" title="(in multidict v7.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.CIMultiDict</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
 
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;content-type&#39;</span><span class="p">]</span>
 <span class="k">assert</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;authorization&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>See <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#module-multidict" title="(in multidict v7.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">multidict</span></code></a> documentation for futher reference.</p>
+<p>See <a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#module-multidict" title="(in multidict v7.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">multidict</span></code></a> documentation for futher reference.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -838,7 +838,7 @@ media options, with the media type under the <code class="docutils literal notra
 <dt class="sig sig-object py" id="muffin.Request.query">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MultiDictProxy</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#muffin.Request.query" title="Link to this definition">#</a></dt>
 <dd><p>A lazy property that parse the current query string and returns it as a
-<a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.MultiDict" title="(in multidict v7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code></a>.</p>
+<a class="reference external" href="https://multidict.aio-libs.org/en/stable/multidict/#multidict.MultiDict" title="(in multidict v7.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py property">
