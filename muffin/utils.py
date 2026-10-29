@@ -36,6 +36,8 @@ AIOLIB = threading.local()
 AIOLIB.current = None
 AIOLIBS: dict[str, ModuleType] = {}
 
+AIOLIBS["asyncio"] = asyncio
+
 with suppress(ImportError):
     import curio
 
@@ -45,8 +47,6 @@ with suppress(ImportError):
     import trio
 
     AIOLIBS["trio"] = trio
-
-AIOLIBS["asyncio"] = asyncio
 
 TV = TypeVar("TV")
 

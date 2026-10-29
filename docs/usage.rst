@@ -149,9 +149,13 @@ Custom error handler:
 
 .. code-block:: python
 
-    @app.on_error(404)
-    async def not_found(request, error):
-        return "Custom 404 Page"
+    from muffin import ResponseError
+
+    @app.on_error(ResponseError)
+    async def on_error(request, error):
+        if error.status_code == 404:
+            return ResponseError.NOT_FOUND("Custom 404 Page")
+        return error
 
 Middlewares
 -----------

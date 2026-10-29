@@ -31,7 +31,11 @@ class HandlerMeta(type):
         cls.methods = {method.upper() for method in methods or []}
         for m in cls.methods:
             method = getattr(cls, m.lower(), None)
-            if method and not inspect.iscoroutinefunction(method):
+            if method is None:
+                raise TypeError(  # noqa: TRY003
+                    f"Handler {name} declares method {m} but has no {m.lower()} implementation"
+                )
+            if not inspect.iscoroutinefunction(method):
                 raise AsyncRequiredError(method)
 
         return cls

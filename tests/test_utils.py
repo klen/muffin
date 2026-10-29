@@ -9,6 +9,11 @@ import muffin.utils
 from muffin.errors import InvalidAppError
 
 
+def test_aio_lib_defaults_to_asyncio(monkeypatch):
+    monkeypatch.delenv("MUFFIN_AIOLIB", raising=False)
+    assert muffin.utils.aio_lib() == "asyncio"
+
+
 def test_import_submodules_uses_prefix():
     """import_submodules passes prefix to iter_modules for namespaced imports."""
     pkg = mock.MagicMock()

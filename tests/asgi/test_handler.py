@@ -102,6 +102,16 @@ def test_handler_methods_are_explicit_or_inherited():
     assert Child.methods == {"GET"}  # inherited; post is not auto-registered
 
 
+def test_handler_declared_method_requires_implementation():
+    with pytest.raises(TypeError, match="declares method DELETE but has no delete implementation"):
+
+        class Broken(Handler):
+            methods = ("get", "delete")
+
+            async def get(self, request):
+                return "ok"
+
+
 async def test_handler_host_routing():
     app = muffin.Application(USE_HOSTS=True)
 

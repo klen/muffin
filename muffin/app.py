@@ -144,7 +144,9 @@ class Application(BaseApp):
         already-sent response.
 
         Call it only from a request handler. Scheduling from a background task
-        has no effect: "after the response" has already passed by then.
+        has no effect: "after the response" has already passed by then, so the
+        task is never awaited and its coroutine raises a RuntimeWarning when it
+        is garbage-collected.
 
         .. code-block:: python
 
