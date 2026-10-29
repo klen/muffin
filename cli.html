@@ -52,7 +52,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.0.4" />
+  <meta name="docsearch:version" content="3.1.0" />
     <meta name="docbuild:last-update" content="Oct 29, 2026"/>
   
     
@@ -433,7 +433,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.0.4
+    Version: 3.1.0
 </div></div>
     </div>
   
@@ -525,8 +525,8 @@
 </section>
 <section id="write-a-custom-command">
 <h2>Write a custom command<a class="headerlink" href="#write-a-custom-command" title="Link to this heading">#</a></h2>
-<p>Define your own commands using <code class="xref py py-meth docutils literal notranslate"><span class="pre">app.manage.command()</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">manage</span><span class="o">.</span><span class="n">command</span>
+<p>Define your own commands using <code class="xref py py-meth docutils literal notranslate"><span class="pre">app.manage()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">manage</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Say hello to someone.</span>
 

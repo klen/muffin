@@ -52,7 +52,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.0.4" />
+  <meta name="docsearch:version" content="3.1.0" />
     <meta name="docbuild:last-update" content="Oct 29, 2026"/>
   
     
@@ -433,7 +433,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.0.4
+    Version: 3.1.0
 </div></div>
     </div>
   
@@ -618,9 +618,13 @@
 </pre></div>
 </div>
 <p>Custom error handler:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">not_found</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s2">&quot;Custom 404 Page&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseError</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="n">ResponseError</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">(</span><span class="s2">&quot;Custom 404 Page&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">error</span>
 </pre></div>
 </div>
 </section>

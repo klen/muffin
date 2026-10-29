@@ -45,11 +45,11 @@ Example:
 Write a custom command
 -----------------------
 
-Define your own commands using :meth:`app.manage.command`:
+Define your own commands using :meth:`app.manage`:
 
 .. code-block:: python
 
-    @app.manage.command
+    @app.manage
     async def hello(name, upper=False):
         """Say hello to someone.
 

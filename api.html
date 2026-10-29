@@ -52,7 +52,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.0.4" />
+  <meta name="docsearch:version" content="3.1.0" />
     <meta name="docbuild:last-update" content="Oct 29, 2026"/>
   
     
@@ -433,7 +433,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.0.4
+    Version: 3.1.0
 </div></div>
     </div>
   
@@ -537,7 +537,9 @@
 request cycle ends. A task that raises is logged and does not affect the
 already-sent response.</p>
 <p>Call it only from a request handler. Scheduling from a background task
-has no effect: “after the response” has already passed by then.</p>
+has no effect: “after the response” has already passed by then, so the
+task is never awaited and its coroutine raises a RuntimeWarning when it
+is garbage-collected.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
