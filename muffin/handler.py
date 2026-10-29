@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from asgi_tools import Request
     from asgi_tools.types import TVCallable
     from http_router import Router
-    from http_router.types import THostsArg, TMethods, TMethodsArg
+    from http_router.types import THostsArg, TMethodsArg
 
 
 class HandlerMeta(type):
@@ -81,7 +81,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     """
 
-    methods: TMethods | None = None
+    methods: TMethodsArg | None = None
 
     @classmethod
     def __route__(  # type: ignore[override]
