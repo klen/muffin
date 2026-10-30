@@ -17,12 +17,17 @@ Table of Contents
 .. toctree::
     :maxdepth: 2
 
+    walkthrough
     usage
     configuration
+    async
+    errors
+    streaming
     cli
     testing
     api
     deploy
+    upgrading
 
 .. toctree::
     :maxdepth: 1

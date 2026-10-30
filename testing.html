@@ -52,7 +52,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.2.0" />
+  <meta name="docsearch:version" content="3.2.1" />
     <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
@@ -142,6 +142,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -156,22 +163,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="cli.html">
-    CLI integration
-  </a>
-</li>
-
-
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#" aria-current="page">
-    Testing
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="api.html">
-    API
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
   </a>
 </li>
 
@@ -184,8 +184,43 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="cli.html">
+    CLI integration
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#" aria-current="page">
+    Testing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -306,6 +341,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -315,6 +357,27 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="configuration.html">
     Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
   </a>
 </li>
 
@@ -343,6 +406,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -433,7 +503,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.2.0
+    Version: 3.2.1
 </div></div>
     </div>
   
@@ -491,76 +561,155 @@
                   
   <section id="testing">
 <h1>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h1>
-<p>Muffin provides a built-in test client for testing your application.</p>
+<p>Muffin ships a test client and a pytest plugin, so an application can be tested
+without a server.</p>
 <section id="testclient">
 <h2>TestClient<a class="headerlink" href="#testclient" title="Link to this heading">#</a></h2>
-<p>Use <a class="reference internal" href="api.html#muffin.TestClient" title="muffin.TestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestClient</span></code></a> to test HTTP requests:</p>
-<p><strong>Example application code:</strong></p>
+<p><a class="reference internal" href="api.html#muffin.TestClient" title="muffin.TestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestClient</span></code></a> is the ASGI test client from <code class="docutils literal notranslate"><span class="pre">asgi-tools</span></code>. It
+builds ASGI messages directly and never opens a socket.</p>
+<p>Application code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="s2">&quot;OK&quot;</span>
 </pre></div>
 </div>
-<p><strong>Tests:</strong></p>
+<p>Test:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
-<span class="k">assert</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;OK&#39;</span>
+<span class="k">assert</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;OK&quot;</span>
 </pre></div>
 </div>
-</section>
-<section id="websocket-testing">
-<h2>WebSocket Testing<a class="headerlink" href="#websocket-testing" title="Link to this heading">#</a></h2>
-<p>You can also test WebSocket routes:</p>
+<p>The client keeps cookies between requests, so a login flow can be tested in
+order. Supported method shortcuts (<code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">post</span></code>, <code class="docutils literal notranslate"><span class="pre">put</span></code>, <code class="docutils literal notranslate"><span class="pre">patch</span></code>,
+<code class="docutils literal notranslate"><span class="pre">delete</span></code>, and any other method name) accept the arguments of <code class="docutils literal notranslate"><span class="pre">request</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">&quot;/login&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;secret&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/search&quot;</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="s2">&quot;muffin&quot;</span><span class="p">})</span>
+<span class="k">assert</span> <span class="p">(</span><span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;found&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Useful arguments: <code class="docutils literal notranslate"><span class="pre">query</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code> (bytes, text or a dict; uploaded files make
+it multipart), <code class="docutils literal notranslate"><span class="pre">json</span></code>, <code class="docutils literal notranslate"><span class="pre">headers</span></code>, <code class="docutils literal notranslate"><span class="pre">cookies</span></code> and <code class="docutils literal notranslate"><span class="pre">follow_redirect</span></code>
+(<code class="docutils literal notranslate"><span class="pre">True</span></code> by default). The response exposes <code class="docutils literal notranslate"><span class="pre">status_code</span></code>, <code class="docutils literal notranslate"><span class="pre">headers</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cookies</span></code> and the awaitable <code class="docutils literal notranslate"><span class="pre">body()</span></code>, <code class="docutils literal notranslate"><span class="pre">text()</span></code> and <code class="docutils literal notranslate"><span class="pre">json()</span></code>.</p>
+<p>Lifespan events do not run implicitly. Wrap the calls that need them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">lifespan</span><span class="p">():</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>WebSocket routes are tested with <code class="docutils literal notranslate"><span class="pre">websocket()</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">ResponseWebSocket</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/ws&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/ws&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">socket</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">async</span> <span class="k">with</span> <span class="n">ResponseWebSocket</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="k">as</span> <span class="n">ws</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="s1">&#39;ping&#39;</span><span class="p">:</span>
-            <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;pong&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="s2">&quot;ping&quot;</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;pong&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Test WebSockets:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-
-<span class="k">async</span> <span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">websocket</span><span class="p">(</span><span class="s1">&#39;/ws&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ws</span><span class="p">:</span>
-    <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;ping&#39;</span><span class="p">)</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">msg</span> <span class="o">==</span> <span class="s1">&#39;pong&#39;</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">websocket</span><span class="p">(</span><span class="s2">&quot;/ws&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ws</span><span class="p">:</span>
+    <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;ping&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;pong&quot;</span>
 </pre></div>
 </div>
-<p>Check the TestClient API Reference: <a class="reference internal" href="api.html#muffin.TestClient" title="muffin.TestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestClient</span></code></a></p>
 </section>
 <section id="pytest-integration">
-<h2>Pytest Integration<a class="headerlink" href="#pytest-integration" title="Link to this heading">#</a></h2>
-<p>Muffin provides fixtures for integration with pytest.</p>
-<p><strong>Setup:</strong></p>
-<p>Set the module path to your Muffin application in your pytest configuration file or use the <code class="docutils literal notranslate"><span class="pre">--muffin-app</span></code> command-line option:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pytest<span class="w"> </span>-xs<span class="w"> </span>--muffin-app<span class="w"> </span>example
+<h2>Pytest integration<a class="headerlink" href="#pytest-integration" title="Link to this heading">#</a></h2>
+<p>The pytest plugin is enabled by the <code class="docutils literal notranslate"><span class="pre">muffin.pytest</span></code> entry point, so installing
+Muffin is enough. Point pytest at your application with a config entry or the
+<code class="docutils literal notranslate"><span class="pre">--muffin-app</span></code> option:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># pyproject.toml or pytest.ini</span>
+<span class="na">muffin_app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;example&quot;</span>
 </pre></div>
 </div>
-<p>After this, the following fixtures will be available in your tests:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pytest<span class="w"> </span>--muffin-app<span class="w"> </span>example
+</pre></div>
+</div>
+<p>A configuration module can be pinned the same way, with <code class="docutils literal notranslate"><span class="pre">muffin_config</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--muffin-config</span></code>; it sets <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code> before the app is imported.</p>
+<p>Available fixtures:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">app</span></code> – your Muffin application</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">client</span></code> – a <a class="reference internal" href="api.html#muffin.TestClient" title="muffin.TestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestClient</span></code></a> instance</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">app</span></code>: the application, with lifespan started and plugin <code class="docutils literal notranslate"><span class="pre">startup</span></code> hooks
+awaited, so plugin clients are ready</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">client</span></code>: a <a class="reference internal" href="api.html#muffin.TestClient" title="muffin.TestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestClient</span></code></a> bound to <code class="docutils literal notranslate"><span class="pre">app</span></code></p></li>
 </ul>
+<p>Async tests need an async runner. Muffin’s <code class="docutils literal notranslate"><span class="pre">app</span></code> fixture itself depends on the
+<code class="docutils literal notranslate"><span class="pre">aiolib</span></code> fixture, so the suite needs <a class="reference external" href="https://github.com/klen/pytest-aio">pytest-aio</a>. With it installed, async tests and async
+fixtures are wrapped automatically; no markers are needed. Parametrizing
+<code class="docutils literal notranslate"><span class="pre">aiolib</span></code> is how one suite runs on asyncio, trio and curio:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;asyncio&quot;</span><span class="p">,</span> <span class="s2">&quot;trio&quot;</span><span class="p">,</span> <span class="s2">&quot;curio&quot;</span><span class="p">],</span>
+    <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aiolib</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">param</span>
+</pre></div>
+</div>
+</section>
+<section id="per-test-applications">
+<h2>Per-test applications<a class="headerlink" href="#per-test-applications" title="Link to this heading">#</a></h2>
+<p>The plugin’s <code class="docutils literal notranslate"><span class="pre">app</span></code> fixture is session-scoped, which is fast but leaks state
+between tests: a row created in one test is still there in the next. For tests
+that write, define a function-scoped fixture in <code class="docutils literal notranslate"><span class="pre">conftest.py</span></code>; it overrides the
+plugin’s fixture of the same name:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">app</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setenv</span><span class="p">(</span><span class="s2">&quot;MUFFIN_DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>     <span class="c1"># before the app is imported</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">example</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span> <span class="k">as</span> <span class="n">example_app</span>
+    <span class="k">return</span> <span class="n">example_app</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Environment variables must be set before the application is imported, so import
+it inside the fixture, not at module import time. To test with a config module,
+set <code class="docutils literal notranslate"><span class="pre">MUFFIN_CONFIG</span></code> the same way.</p>
+</section>
+<section id="testing-error-handlers-and-streams">
+<h2>Testing error handlers and streams<a class="headerlink" href="#testing-error-handlers-and-streams" title="Link to this heading">#</a></h2>
+<p>Error handlers are tested like routes: they only need a request that fails.
+Streams and SSE are read to the end by the client, so one <code class="docutils literal notranslate"><span class="pre">await</span></code> is enough:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_custom_404</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/nope&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+    <span class="k">assert</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Custom 404 Page&quot;</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_sse</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/events&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;text/event-stream&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;event: tick&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If you get the warning: <code class="docutils literal notranslate"><span class="pre">PytestCollectionWarning:</span> <span class="pre">cannot</span> <span class="pre">collect</span> <span class="pre">test</span> <span class="pre">class</span> <span class="pre">'ASGITestClient'</span></code>,
-change the TestClient import to: <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">muffin</span> <span class="pre">import</span> <span class="pre">TestClient</span> <span class="pre">as</span> <span class="pre">Client</span></code></p>
+<p>If pytest warns <code class="docutils literal notranslate"><span class="pre">cannot</span> <span class="pre">collect</span> <span class="pre">test</span> <span class="pre">class</span> <span class="pre">'ASGITestClient'</span></code>, rename the
+import in that module: <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">muffin</span> <span class="pre">import</span> <span class="pre">TestClient</span> <span class="pre">as</span> <span class="pre">Client</span></code>. The client
+is not a test class, but its name matches pytest’s collection pattern.</p>
 </div>
 </section>
 </section>
@@ -613,8 +762,9 @@ change the TestClient import to: <code class="docutils literal notranslate"><spa
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testclient">TestClient</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#websocket-testing">WebSocket Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-integration">Pytest Integration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-integration">Pytest integration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-test-applications">Per-test applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-error-handlers-and-streams">Testing error handlers and streams</a></li>
 </ul>
   </nav></div>
 

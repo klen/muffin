@@ -14,21 +14,7 @@ Application
 Middleware
 ~~~~~~~~~~
 
-Register external ASGI middleware:
-
-.. code-block:: python
-
-    from muffin import Application
-    from sentry_asgi import SentryMiddleware
-
-    app = Application()
-
-    app.middleware(SentryMiddleware)
-
-    # or wrap directly
-    app = SentryMiddleware(app)
-
-Register internal (application-level) middleware:
+A coroutine middleware receives the app callable and the raw ASGI arguments:
 
 .. code-block:: python
 
@@ -40,11 +26,29 @@ Register internal (application-level) middleware:
     async def simple_md(app, request, receive, send):
         try:
             response = await app(request, receive, send)
-            response.headers['x-simple-md'] = 'passed'
+            response.headers["x-simple-md"] = "passed"
             return response
         except RuntimeError:
-            return ResponseHTML('Middleware Exception')
+            return ResponseHTML("Middleware Exception")
 
+Anything else passed to ``app.middleware()`` is treated as ASGI middleware and
+bound to the lifespan, which is what most third-party ASGI packages expect:
+
+.. code-block:: python
+
+    from sentry_asgi import SentryMiddleware
+
+    app.middleware(SentryMiddleware)
+
+See :doc:`usage` for the request/response details.
+
+Plugins
+-------
+
+.. autoclass:: muffin.plugins.BasePlugin
+   :members: setup, startup, shutdown, restart, conftest
+
+The plugin contract is described in :doc:`plugins`.
 
 Class-Based Handlers
 --------------------
@@ -58,31 +62,16 @@ Request
    :members:
    :undoc-members:
 
-Example usage:
+A request carries the parsed URL, headers, cookies and path parameters:
 
 .. code-block:: python
 
-    @app.route('/')
-    async def home(request):
-        return f"{request.method} {request.url.path}"
+    @app.route('/hello/{name}')
+    async def hello(request):
+        return f"{request.method} {request.url.path} {request.path_params['name']}"
 
-Properties:
-
-- :attr:`query` – Query parameters (MultiDict)
-- :attr:`headers` – HTTP headers (CIMultiDict)
-- :attr:`cookies` – Cookies dictionary
-- :attr:`charset` – Request encoding
-- :attr:`content_type` – Content-Type header
-- :attr:`url` – Full URL object
-
-Methods:
-
-- :meth:`stream` – Stream body in chunks
-- :meth:`body` – Return body as bytes
-- :meth:`text` – Return body decoded as text
-- :meth:`form` – Parse form data (multipart/form-data or application/x-www-form-urlencoded)
-- :meth:`json` – Parse body as JSON
-- :meth:`data` – Smart parser: returns JSON, form or text depending on Content-Type
+The body is read once, with one of the awaitable parsers (``stream``, ``body``,
+``text``, ``json``, ``form``, ``data``); :doc:`usage` covers which to use.
 
 Responses
 ---------

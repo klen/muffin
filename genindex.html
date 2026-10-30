@@ -49,7 +49,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.2.0" />
+  <meta name="docsearch:version" content="3.2.1" />
     <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
@@ -139,6 +139,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -153,22 +160,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="cli.html">
-    CLI integration
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="testing.html">
-    Testing
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="api.html">
-    API
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
   </a>
 </li>
 
@@ -181,8 +181,43 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="cli.html">
+    CLI integration
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="testing.html">
+    Testing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -301,6 +336,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -310,6 +352,27 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="configuration.html">
     Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
   </a>
 </li>
 
@@ -338,6 +401,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -421,7 +491,7 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.2.0
+    Version: 3.2.1
 </div></div>
     </div>
   
@@ -457,7 +527,8 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
@@ -467,6 +538,7 @@
  | <a href="#J"><strong>J</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -474,16 +546,36 @@
  | <a href="#U"><strong>U</strong></a>
  
 </div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="errors.html#muffin.errors.AsyncRequiredError.__init__">__init__() (muffin.errors.AsyncRequiredError method)</a>
+
+      <ul>
+        <li><a href="errors.html#muffin.errors.InvalidAppError.__init__">(muffin.errors.InvalidAppError method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#muffin.Application">Application (class in muffin)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="errors.html#muffin.errors.AsyncRequiredError">AsyncRequiredError (class in muffin.errors)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#muffin.plugins.BasePlugin">BasePlugin (class in muffin.plugins)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#muffin.Request.body">body() (muffin.Request method)</a>
 </li>
@@ -495,10 +587,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#muffin.Request.charset">charset (muffin.Request property)</a>
 </li>
-      <li><a href="api.html#muffin.Request.content_type">content_type (muffin.Request property)</a>
+      <li><a href="api.html#muffin.plugins.BasePlugin.conftest">conftest() (muffin.plugins.BasePlugin method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#muffin.Request.content_type">content_type (muffin.Request property)</a>
+</li>
       <li><a href="api.html#muffin.Request.cookies">cookies (muffin.Request property)</a>
 
       <ul>
@@ -546,6 +640,10 @@
       <li><a href="api.html#muffin.Application.import_submodules">import_submodules() (muffin.Application method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="errors.html#muffin.errors.InvalidAppError">InvalidAppError (class in muffin.errors)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="J">J</h2>
@@ -579,6 +677,8 @@
         <li><a href="api.html#module-muffin">module</a>
 </li>
       </ul></li>
+      <li><a href="errors.html#muffin.errors.MuffinError">MuffinError (class in muffin.errors)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -592,6 +692,18 @@
       <li><a href="api.html#muffin.Application.on_shutdown">on_shutdown() (muffin.Application method)</a>
 </li>
       <li><a href="api.html#muffin.Application.on_startup">on_startup() (muffin.Application method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="plugins.html#muffin.plugins.PluginError">PluginError (class in muffin.plugins)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="plugins.html#muffin.plugins.PluginNotInstalledError">PluginNotInstalledError (class in muffin.plugins)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -633,6 +745,8 @@
 </li>
       <li><a href="api.html#muffin.ResponseWebSocket">ResponseWebSocket (class in muffin)</a>
 </li>
+      <li><a href="api.html#muffin.plugins.BasePlugin.restart">restart() (muffin.plugins.BasePlugin method)</a>
+</li>
       <li><a href="api.html#muffin.Application.route">route() (muffin.Application method)</a>
 </li>
       <li><a href="api.html#muffin.Application.run_after_response">run_after_response() (muffin.Application method)</a>
@@ -645,9 +759,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#muffin.Request.scope">scope (muffin.Request attribute)</a>
 </li>
+      <li><a href="api.html#muffin.Request.send">send (muffin.Request attribute)</a>
+</li>
+      <li><a href="api.html#muffin.plugins.BasePlugin.setup">setup() (muffin.plugins.BasePlugin method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#muffin.Request.send">send (muffin.Request attribute)</a>
+      <li><a href="api.html#muffin.plugins.BasePlugin.shutdown">shutdown() (muffin.plugins.BasePlugin method)</a>
+</li>
+      <li><a href="api.html#muffin.plugins.BasePlugin.startup">startup() (muffin.plugins.BasePlugin method)</a>
 </li>
       <li><a href="api.html#muffin.Request.stream">stream() (muffin.Request method)</a>
 </li>

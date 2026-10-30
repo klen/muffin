@@ -47,11 +47,11 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="next" title="Walkthrough" href="walkthrough.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.2.0" />
+  <meta name="docsearch:version" content="3.2.1" />
     <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
@@ -141,6 +141,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -155,22 +162,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="cli.html">
-    CLI integration
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="testing.html">
-    Testing
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="api.html">
-    API
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
   </a>
 </li>
 
@@ -183,8 +183,43 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="cli.html">
+    CLI integration
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="testing.html">
+    Testing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -307,6 +342,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -316,6 +358,27 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="configuration.html">
     Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
   </a>
 </li>
 
@@ -344,6 +407,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -427,7 +497,7 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.2.0
+    Version: 3.2.1
 </div></div>
     </div>
   
@@ -523,42 +593,78 @@
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="walkthrough.html">Walkthrough</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="walkthrough.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="walkthrough.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="walkthrough.html#storage">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="walkthrough.html#routes-and-templates">Routes and templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="walkthrough.html#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="walkthrough.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="walkthrough.html#running-it">Running it</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#quickstart">Quickstart</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#request-object">Request Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#request">Request</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#routing">Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#static-files">Static Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#redirects-and-errors">Redirects and Errors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#middlewares">Middlewares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#middleware">Middleware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#nested-applications">Nested Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#host-based-routing">Host-Based Routing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#run-tasks-in-background">Run Tasks in Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#startup-and-shutdown">Startup and Shutdown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#run-tasks-after-the-response">Run Tasks After the Response</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#debug-mode">Debug Mode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#about-responses">About Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#return-values">Return Values</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#basic-usage">Basic usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-application-options">Default Application Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-application-options">Default application options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#plugin-configuration-from-environment">Plugin configuration from environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-precedence">Configuration precedence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#logging-configuration">Logging configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#plugin-configuration">Plugin configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#logging">Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="async.html">Async libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="async.html#selecting-a-backend">Selecting a backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async.html#running-coroutines-from-sync-code">Running coroutines from sync code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async.html#one-process-one-backend">One process, one backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async.html#writing-backend-agnostic-code">Writing backend-agnostic code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async.html#uvloop">uvloop</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#responses-as-exceptions">Responses as exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#exception-handlers">Exception handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#unhandled-exceptions">Unhandled exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#muffin-s-own-exceptions">Muffin’s own exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#errors-from-asgi-middleware">Errors from ASGI middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Streaming, SSE and WebSockets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#streams">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#server-sent-events">Server-Sent Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#files">Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#websockets">WebSockets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#testing-streams">Testing streams</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI integration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#built-in-commands">Built-in commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#write-a-custom-command">Write a custom command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#custom-commands">Custom commands</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="testing.html#testclient">TestClient</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing.html#websocket-testing">WebSocket Testing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="testing.html#pytest-integration">Pytest Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#pytest-integration">Pytest integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#per-test-applications">Per-test applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#testing-error-handlers-and-streams">Testing error handlers and streams</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#application">Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#plugins">Plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#class-based-handlers">Class-Based Handlers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#request">Request</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#responses">Responses</a></li>
@@ -567,7 +673,20 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="deploy.html">Deployment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="deploy.html#deploying-with-docker">Deploying with Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#ways-to-run-it">Ways to run it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html#safety">Safety</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deploy.html#deploying-behind-nginx">Deploying behind NGINX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrading</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#python-support">Python support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#async-backend-is-a-choice">Async backend is a choice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#handler-methods">Handler methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#plugin-options-and-environment">Plugin options and environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#disabled-plugins">Disabled plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#forms">Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#background-tasks-and-cli">Background tasks and CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#checking-an-upgrade">Checking an upgrade</a></li>
 </ul>
 </li>
 </ul>
@@ -575,6 +694,10 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html#writing-a-plugin">Writing a plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html#what-setup-does">What <code class="docutils literal notranslate"><span class="pre">setup()</span></code> does</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html#errors">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html#publishing-a-plugin">Publishing a plugin</a></li>
 </ul>
 </div>
 </section>
@@ -614,11 +737,11 @@
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="usage.html"
+       href="walkthrough.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Usage</p>
+        <p class="prev-next-title">Walkthrough</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

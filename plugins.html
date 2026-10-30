@@ -47,11 +47,11 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Deployment" href="deploy.html" />
+    <link rel="prev" title="Upgrading" href="upgrading.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.2.0" />
+  <meta name="docsearch:version" content="3.2.1" />
     <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
@@ -141,6 +141,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -155,22 +162,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="cli.html">
-    CLI integration
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="testing.html">
-    Testing
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="api.html">
-    API
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
   </a>
 </li>
 
@@ -183,8 +183,43 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="cli.html">
+    CLI integration
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="testing.html">
+    Testing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -305,6 +340,13 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     Usage
   </a>
@@ -314,6 +356,27 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="configuration.html">
     Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
   </a>
 </li>
 
@@ -342,6 +405,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -432,7 +502,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.2.0
+    Version: 3.2.1
 </div></div>
     </div>
   
@@ -510,6 +580,107 @@
 </ul>
 <p>See each repo for usage and installation instructions.</p>
 </section>
+<section id="writing-a-plugin">
+<h1>Writing a plugin<a class="headerlink" href="#writing-a-plugin" title="Link to this heading">#</a></h1>
+<p>A plugin is a class derived from <a class="reference internal" href="api.html#muffin.plugins.BasePlugin" title="muffin.plugins.BasePlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">muffin.plugins.BasePlugin</span></code></a>. It gets a
+configuration of its own, access to the application, and hooks that run with the
+application lifespan:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePlugin</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Plugin</span><span class="p">(</span><span class="n">BasePlugin</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;mailer&quot;</span>                                  <span class="c1"># config prefix and app.plugins key</span>
+    <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;disabled&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">}</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">startup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">subject</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">subject</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Register it with the application:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plugin</span> <span class="o">=</span> <span class="n">Plugin</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">plugin</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Plugin(app)</span></code> binds the plugin, configures it, registers it in <code class="docutils literal notranslate"><span class="pre">app.plugins</span></code>
+and hooks <code class="docutils literal notranslate"><span class="pre">startup</span></code>/<code class="docutils literal notranslate"><span class="pre">shutdown</span></code> into the application lifespan. Binding is
+skipped, with a warning in the log, when the resolved config has <code class="docutils literal notranslate"><span class="pre">disabled</span></code>
+set. Pass <code class="docutils literal notranslate"><span class="pre">name=</span></code> to register a second instance of the same plugin type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">primary</span> <span class="o">=</span> <span class="n">Plugin</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mailer_primary&quot;</span><span class="p">)</span>
+<span class="n">secondary</span> <span class="o">=</span> <span class="n">Plugin</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mailer_secondary&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Options are resolved in this order: <code class="docutils literal notranslate"><span class="pre">defaults</span></code>, application config keys with
+the <code class="docutils literal notranslate"><span class="pre">{name}_</span></code> prefix, keyword arguments, then environment variables
+<code class="docutils literal notranslate"><span class="pre">{APP_NAME}_{NAME}_{OPTION}</span></code>. Details are in <a class="reference internal" href="configuration.html"><span class="doc">Configuration</span></a>.</p>
+<p>A plugin may also provide request middleware by setting <code class="docutils literal notranslate"><span class="pre">middleware</span></code> to a
+callable; it is registered with <code class="docutils literal notranslate"><span class="pre">app.middleware</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Plugin</span><span class="p">(</span><span class="n">BasePlugin</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;timing&quot;</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;x-powered-by&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;muffin&quot;</span>
+        <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>The plugin is usable outside a request, for example in CLI commands or tests:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">plugin</span><span class="p">:</span>                     <span class="c1"># calls startup/shutdown</span>
+    <span class="k">await</span> <span class="n">plugin</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+
+<span class="k">await</span> <span class="n">plugin</span><span class="o">.</span><span class="n">restart</span><span class="p">()</span>                 <span class="c1"># shutdown, then startup again</span>
+</pre></div>
+</div>
+<p>Tests get plugin startup for free: the pytest <code class="docutils literal notranslate"><span class="pre">app</span></code> fixture runs the
+application lifespan, which awaits every plugin’s <code class="docutils literal notranslate"><span class="pre">startup</span></code> before yielding
+the application. See <a class="reference internal" href="testing.html"><span class="doc">Testing</span></a>.</p>
+</section>
+<section id="what-setup-does">
+<h1>What <code class="docutils literal notranslate"><span class="pre">setup()</span></code> does<a class="headerlink" href="#what-setup-does" title="Link to this heading">#</a></h1>
+<p>Binding is done by <code class="docutils literal notranslate"><span class="pre">setup(app,</span> <span class="pre">**options)</span></code>, which is what <code class="docutils literal notranslate"><span class="pre">Plugin(app)</span></code> calls.
+It returns <code class="docutils literal notranslate"><span class="pre">True</span></code> when the plugin is registered and <code class="docutils literal notranslate"><span class="pre">False</span></code> when the resolved
+configuration disables it. On a disabled plugin nothing is attached: it is not in
+<code class="docutils literal notranslate"><span class="pre">app.plugins</span></code>, its lifespan hooks are not registered, and touching <code class="docutils literal notranslate"><span class="pre">plugin.app</span></code>
+raises <a class="reference internal" href="#muffin.plugins.PluginNotInstalledError" title="muffin.plugins.PluginNotInstalledError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PluginNotInstalledError</span></code></a>. Code that may run with a
+disabled plugin should check the return value or <code class="docutils literal notranslate"><span class="pre">app.plugins</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">setup()</span></code> also accepts <code class="docutils literal notranslate"><span class="pre">name=</span></code> to register a second instance of the same
+plugin type, which is how a project uses one plugin twice (two databases, two
+mailers).</p>
+</section>
+<section id="errors">
+<h1>Errors<a class="headerlink" href="#errors" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="muffin.plugins.PluginError">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.plugins.</span></span><span class="sig-name descname"><span class="pre">PluginError</span></span><a class="headerlink" href="#muffin.plugins.PluginError" title="Link to this definition">#</a></dt>
+<dd><p>Base exception for plugin errors (public API for external plugins).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="muffin.plugins.PluginNotInstalledError">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muffin.plugins.</span></span><span class="sig-name descname"><span class="pre">PluginNotInstalledError</span></span><a class="headerlink" href="#muffin.plugins.PluginNotInstalledError" title="Link to this definition">#</a></dt>
+<dd><p>Raised when a plugin is not installed.</p>
+</dd></dl>
+
+<p>Both live in <code class="docutils literal notranslate"><span class="pre">muffin.plugins</span></code>. <code class="docutils literal notranslate"><span class="pre">PluginError</span></code> is the base class for plugin
+failures, so plugin code can raise it instead of inventing a hierarchy;
+<code class="docutils literal notranslate"><span class="pre">PluginNotInstalledError</span></code> is a <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code> for the programming error of
+using a plugin that was never bound.</p>
+</section>
+<section id="publishing-a-plugin">
+<h1>Publishing a plugin<a class="headerlink" href="#publishing-a-plugin" title="Link to this heading">#</a></h1>
+<p>A plugin is a normal Python package. Keep the conventions the ecosystem uses:
+name the distribution <code class="docutils literal notranslate"><span class="pre">muffin-&lt;name&gt;</span></code>, expose <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> from the package root,
+let <code class="docutils literal notranslate"><span class="pre">Plugin(app)</span></code> work with no extra calls, and make configuration overridable
+from <code class="docutils literal notranslate"><span class="pre">{APP}_{PLUGIN}_*</span></code> environment variables by reading <code class="docutils literal notranslate"><span class="pre">self.cfg</span></code> instead of
+os.environ. A plugin’s own tests can use the pytest <code class="docutils literal notranslate"><span class="pre">app</span></code> fixture from the host
+application, or instantiate the plugin in a test application directly.</p>
+</section>
 
 
                 </article>
@@ -522,12 +693,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="deploy.html"
+       href="upgrading.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Deployment</p>
+        <p class="prev-next-title">Upgrading</p>
       </div>
     </a>
 </div>
@@ -540,6 +711,27 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plugins</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-a-plugin">Writing a plugin</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#what-setup-does">What <code class="docutils literal notranslate"><span class="pre">setup()</span></code> does</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#errors">Errors</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.plugins.PluginError"><code class="docutils literal notranslate"><span class="pre">PluginError</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#muffin.plugins.PluginNotInstalledError"><code class="docutils literal notranslate"><span class="pre">PluginNotInstalledError</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#publishing-a-plugin">Publishing a plugin</a></li>
+</ul>
+
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

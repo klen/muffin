@@ -48,11 +48,11 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Configuration" href="configuration.html" />
-    <link rel="prev" title="Welcome to Muffin’s documentation!" href="index.html" />
+    <link rel="prev" title="Walkthrough" href="walkthrough.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.2.0" />
+  <meta name="docsearch:version" content="3.2.1" />
     <meta name="docbuild:last-update" content="Oct 30, 2026"/>
   
     
@@ -141,6 +141,13 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#" aria-current="page">
     Usage
@@ -156,22 +163,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="cli.html">
-    CLI integration
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="testing.html">
-    Testing
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="api.html">
-    API
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
   </a>
 </li>
 
@@ -184,8 +184,43 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="cli.html">
+    CLI integration
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="testing.html">
+    Testing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -305,6 +340,13 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="walkthrough.html">
+    Walkthrough
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#" aria-current="page">
     Usage
@@ -315,6 +357,27 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="configuration.html">
     Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="async.html">
+    Async libraries
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="errors.html">
+    Errors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="streaming.html">
+    Streaming, SSE and WebSockets
   </a>
 </li>
 
@@ -343,6 +406,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="deploy.html">
     Deployment
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="upgrading.html">
+    Upgrading
   </a>
 </li>
 
@@ -433,7 +503,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.2.0
+    Version: 3.2.1
 </div></div>
     </div>
   
@@ -502,125 +572,131 @@
     <span class="k">return</span> <span class="s2">&quot;&lt;p&gt;Hello, World!&lt;/p&gt;&quot;</span>
 </pre></div>
 </div>
-<p>Save this as <code class="file docutils literal notranslate"><span class="pre">hello.py</span></code>.</p>
-<p>Run with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uvicorn<span class="w"> </span>hello:app
+<p>Save it as <code class="file docutils literal notranslate"><span class="pre">hello.py</span></code> and run it with an ASGI server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uvicorn<span class="w"> </span>hello:app<span class="w"> </span>--reload
 </pre></div>
 </div>
-<p>Visit <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> to see your greeting.</p>
+<p>Open <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a>. The view returns a string, and Muffin sends it as
+an HTML response. Application options (name, debug, static files, logging) are
+described in <a class="reference internal" href="configuration.html"><span class="doc">Configuration</span></a>.</p>
 </section>
-<section id="request-object">
-<h2>Request Object<a class="headerlink" href="#request-object" title="Link to this heading">#</a></h2>
-<p>Every view receives a <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> object:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<section id="request">
+<h2>Request<a class="headerlink" href="#request" title="Link to this heading">#</a></h2>
+<p>A view is a coroutine that receives a <a class="reference internal" href="api.html#muffin.Request" title="muffin.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="s1">&#39;admin&#39;</span><span class="p">:</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="s2">&quot;admin&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Welcome, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;Invalid credentials&quot;</span>
 </pre></div>
 </div>
-<p>Query parameters:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Cookies:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>File uploads:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
-<span class="n">file</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span>
-<span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<p>Everything the server already parsed is an attribute: <code class="docutils literal notranslate"><span class="pre">request.method</span></code>,
+<code class="docutils literal notranslate"><span class="pre">request.url</span></code>, <code class="docutils literal notranslate"><span class="pre">request.query</span></code>, <code class="docutils literal notranslate"><span class="pre">request.headers</span></code>, <code class="docutils literal notranslate"><span class="pre">request.cookies</span></code> and
+<code class="docutils literal notranslate"><span class="pre">request.path_params</span></code>.</p>
+<p>The body is read with an awaitable parser. Pick one: the body is consumed by the
+first reader.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">request.body()</span></code>: raw bytes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">request.text()</span></code>: decoded text</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">request.json()</span></code>: parsed JSON</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">request.form()</span></code>: <code class="docutils literal notranslate"><span class="pre">multipart/form-data</span></code> or urlencoded form</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">request.data()</span></code>: JSON, form or text, chosen by <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code></p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">search</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+
+<span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+<span class="n">upload</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+<span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">upload</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="routing">
 <h2>Routing<a class="headerlink" href="#routing" title="Link to this heading">#</a></h2>
-<p>Define routes:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;Index Page&#39;</span>
+    <span class="k">return</span> <span class="s2">&quot;Index Page&quot;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/users&quot;</span><span class="p">,</span> <span class="s2">&quot;/users/</span><span class="si">{username}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">user</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello, </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;guest&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>Dynamic routes:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/user/</span><span class="si">{username}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">user_profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span>
-</pre></div>
-</div>
-<p>Type converters:</p>
+<p>Pass several paths and <code class="docutils literal notranslate"><span class="pre">methods</span></code> to one handler when they share the
+implementation. Without <code class="docutils literal notranslate"><span class="pre">methods</span></code> the handler accepts every method.
+A trailing slash is ignored unless <code class="docutils literal notranslate"><span class="pre">TRIM_LAST_SLASH</span></code> is disabled.</p>
+<p>Path parameters support type converters:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
-<td><p>(default) accepts any text without a slash</p></td>
+<td><p>(default) any text without a slash</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
-<td><p>accepts positive integers</p></td>
+<td><p>digits, converted to <code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
-<td><p>accepts positive floating point values</p></td>
+<td><p>digits with an optional fraction</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">path</span></code></p></td>
-<td><p>like string but also accepts slashes</p></td>
+<td><p>like <code class="docutils literal notranslate"><span class="pre">str</span></code> but also accepts slashes</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">uuid</span></code></p></td>
-<td><p>accepts UUID strings</p></td>
+<td><p>UUID string, converted to <code class="docutils literal notranslate"><span class="pre">uuid.UUID</span></code></p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/post/{post_id:int}&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/post/{post_id:int}&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">post_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s1">&#39;post_id&#39;</span><span class="p">]</span>
+    <span class="n">post_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_params</span><span class="p">[</span><span class="s2">&quot;post_id&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Post #</span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>Regex routes:</p>
+<p>Compiled regular expressions work as paths too. The pattern is matched from the
+beginning of the path, so anchor it if you need an exact match:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/item/(a|b|c)/&#39;</span><span class="p">))</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/item/(a|b|c)/$&quot;</span><span class="p">))</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">item</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
 </pre></div>
 </div>
+<p>Class-based handlers are described in <a class="reference internal" href="api.html"><span class="doc">API</span></a>.</p>
 </section>
 <section id="static-files">
 <h2>Static Files<a class="headerlink" href="#static-files" title="Link to this heading">#</a></h2>
-<p>Configure static files:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">static_url_prefix</span><span class="o">=</span><span class="s1">&#39;/assets&#39;</span><span class="p">,</span> <span class="n">static_folders</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;static&#39;</span><span class="p">])</span>
+<p>Static files are served by the application itself, which is fine for development
+and for deployments where a proxy serves them directly; see <a class="reference internal" href="deploy.html"><span class="doc">Deployment</span></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">STATIC_FOLDERS</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;static&quot;</span><span class="p">],</span> <span class="n">STATIC_URL_PREFIX</span><span class="o">=</span><span class="s2">&quot;/assets&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Files are served at <cite>/assets/{file}</cite>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/assets/logo.png</span></code> is now served from <code class="docutils literal notranslate"><span class="pre">static/logo.png</span></code>. Put static handling
+in the options, not in <code class="docutils literal notranslate"><span class="pre">__init__</span></code> arguments other than the configuration ones;
+see <a class="reference internal" href="configuration.html"><span class="doc">Configuration</span></a>.</p>
 </section>
 <section id="redirects-and-errors">
 <h2>Redirects and Errors<a class="headerlink" href="#redirects-and-errors" title="Link to this heading">#</a></h2>
-<p>Redirect example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseRedirect</span>
+<p>Both redirects and errors are responses, so they can be returned or raised:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseError</span><span class="p">,</span> <span class="n">ResponseRedirect</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">ResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Raise HTTP errors:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseError</span>
+    <span class="k">raise</span> <span class="n">ResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">)</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/secure&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/secure&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">secure</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth&quot;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">UNAUTHORIZED</span><span class="p">()</span>
     <span class="k">return</span> <span class="s2">&quot;Secret data&quot;</span>
 </pre></div>
 </div>
-<p>Custom error handler:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseError</span>
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="n">ResponseError</span><span class="p">)</span>
+<p><code class="docutils literal notranslate"><span class="pre">ResponseError</span></code> gives a constructor for every HTTP status: <code class="docutils literal notranslate"><span class="pre">BAD_REQUEST()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">NOT_FOUND()</span></code>, <code class="docutils literal notranslate"><span class="pre">BAD_GATEWAY()</span></code> and so on.</p>
+<p>Handle exceptions with a handler. It receives the request and the exception, and
+whatever it returns is sent as the response:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_error</span><span class="p">(</span><span class="n">ResponseError</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">(</span><span class="s2">&quot;Custom 404 Page&quot;</span><span class="p">)</span>
@@ -628,107 +704,146 @@
 </pre></div>
 </div>
 </section>
-<section id="middlewares">
-<h2>Middlewares<a class="headerlink" href="#middlewares" title="Link to this heading">#</a></h2>
-<p>External ASGI middleware:</p>
+<section id="middleware">
+<h2>Middleware<a class="headerlink" href="#middleware" title="Link to this heading">#</a></h2>
+<p>A coroutine middleware wraps request handling. It receives the app callable
+(further routing) and the raw ASGI arguments, so it can touch both the request
+and the parsed response:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">timing</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;x-custom-md&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;passed&quot;</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">app(request,</span> <span class="pre">receive,</span> <span class="pre">send)</span></code> returns a <a class="reference internal" href="api.html#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>, or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+for websockets where the handler writes directly.</p>
+<p>Middleware runs in registration order, outermost first: the first registered
+coroutine sees the request first and the response last. Pass
+<code class="docutils literal notranslate"><span class="pre">insert_first=True</span></code> to put a middleware in front of the ones already registered,
+which is what error reporting and timing wrappers usually want:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="n">timing</span><span class="p">,</span> <span class="n">insert_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Anything else passed to <code class="docutils literal notranslate"><span class="pre">app.middleware()</span></code> is treated as ASGI middleware and
+bound to the application’s lifespan:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentry_asgi</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentryMiddleware</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="n">SentryMiddleware</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Internal middleware:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span>
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">simple_md</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-custom-md&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;passed&#39;</span>
-    <span class="k">return</span> <span class="n">response</span>
-</pre></div>
-</div>
+<p>Plugin middleware is appended when the plugin is bound, so it runs inside any
+middleware registered before the plugin. Read the plugin docs when the order
+matters.</p>
 </section>
 <section id="nested-applications">
 <h2>Nested Applications<a class="headerlink" href="#nested-applications" title="Link to this heading">#</a></h2>
-<p>Mount sub-applications for modular design:</p>
+<p>An application can be mounted under a prefix:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">subapp</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
 
-<span class="nd">@subapp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/route&#39;</span><span class="p">)</span>
+<span class="nd">@subapp</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/route&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">subroute</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="s2">&quot;From subapp&quot;</span>
 
-<span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/sub&#39;</span><span class="p">)(</span><span class="n">subapp</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/sub&quot;</span><span class="p">)(</span><span class="n">subapp</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Accessing <cite>/sub/route</cite> calls the sub-application route.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/sub/route</span></code> is now handled by <code class="docutils literal notranslate"><span class="pre">subapp</span></code>; its views see the trimmed path.</p>
 </section>
 <section id="host-based-routing">
 <h2>Host-Based Routing<a class="headerlink" href="#host-based-routing" title="Link to this heading">#</a></h2>
-<p>Restrict routes to specific hosts. Enable host matching on the application
-and pass <code class="docutils literal notranslate"><span class="pre">hosts</span></code> to routes:</p>
+<p>Host matching is off by default. Turn it on and pass <code class="docutils literal notranslate"><span class="pre">hosts</span></code> to the routes
+that need it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">USE_HOSTS</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;example.com&#39;</span><span class="p">])</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;example.com&quot;</span><span class="p">])</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="s2">&quot;example.com only&quot;</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fallback</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="s2">&quot;any host&quot;</span>
 </pre></div>
 </div>
-<p>Requests are matched against the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header, lowercased and without the
-port. A route with <code class="docutils literal notranslate"><span class="pre">hosts</span></code> only matches the listed hosts; a request whose
-host matches nothing returns 404.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Host</span></code> header is compared lowercased and without the port. A route with
+<code class="docutils literal notranslate"><span class="pre">hosts</span></code> only matches the listed hosts, so a request with an unknown host falls
+through to the routes without <code class="docutils literal notranslate"><span class="pre">hosts</span></code> and otherwise ends with a 404.</p>
 </section>
-<section id="run-tasks-in-background">
-<h2>Run Tasks in Background<a class="headerlink" href="#run-tasks-in-background" title="Link to this heading">#</a></h2>
-<p>Schedule background tasks after response is sent:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<section id="startup-and-shutdown">
+<h2>Startup and Shutdown<a class="headerlink" href="#startup-and-shutdown" title="Link to this heading">#</a></h2>
+<p>Handlers registered with <code class="docutils literal notranslate"><span class="pre">on_startup</span></code> and <code class="docutils literal notranslate"><span class="pre">on_shutdown</span></code> run once per
+application lifespan, before the first request and after the last one:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">on_startup</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">():</span>
+    <span class="k">await</span> <span class="n">pool</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">background_task</span><span class="p">(</span><span class="n">param</span><span class="p">):</span>
-    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Done: </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">on_shutdown</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">():</span>
+    <span class="k">await</span> <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Plugins use the same hooks, so plugin resources are ready when views run.</p>
+</section>
+<section id="run-tasks-after-the-response">
+<h2>Run Tasks After the Response<a class="headerlink" href="#run-tasks-after-the-response" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">run_after_response</span></code> schedules awaitables that run once the response has been
+sent: sending an email, writing a log entry, invalidating a cache:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_email</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">mailer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">)</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/bg&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">bg</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">run_after_response</span><span class="p">(</span><span class="n">background_task</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">))</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/signup&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">signup</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run_after_response</span><span class="p">(</span><span class="n">send_email</span><span class="p">(</span><span class="s2">&quot;user@example.com&quot;</span><span class="p">))</span>
     <span class="k">return</span> <span class="s2">&quot;Scheduled&quot;</span>
 </pre></div>
 </div>
-<p>The response is sent first, then the tasks run to completion. A task that
-raises is logged and does not affect the response. Call <code class="docutils literal notranslate"><span class="pre">run_after_response</span></code>
-only from a request handler: scheduling from a background task has no effect.</p>
+<p>Tasks run to completion before the request cycle ends. A failing task is logged
+and does not change the response. Call it from a view only: scheduling from
+inside a background task has no effect, because the response has already gone.</p>
 </section>
 <section id="debug-mode">
 <h2>Debug Mode<a class="headerlink" href="#debug-mode" title="Link to this heading">#</a></h2>
-<p>Enable debug mode for detailed error output:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">DEBUG</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This prints tracebacks to console during development.</p>
+<p>Debug mode prints tracebacks to the console and lets exceptions propagate
+instead of returning a 500 page.</p>
 </section>
-<section id="about-responses">
-<h2>About Responses<a class="headerlink" href="#about-responses" title="Link to this heading">#</a></h2>
-<p>Return values from views are automatically converted:</p>
+<section id="return-values">
+<h2>Return Values<a class="headerlink" href="#return-values" title="Link to this heading">#</a></h2>
+<p>A view can return a response object or plain data; Muffin converts the rest:</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="api.html#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> is returned as-is</p></li>
-<li><p><cite>str</cite> → HTML response</p></li>
-<li><p><cite>dict</cite>, <cite>list</cite>, <cite>bool</cite>, <cite>None</cite> → JSON response</p></li>
-<li><p><cite>(status, content)</cite> tuple → overrides status</p></li>
-<li><p><cite>(status, content, headers)</cite> tuple → adds headers</p></li>
+<li><p><a class="reference internal" href="api.html#muffin.Response" title="muffin.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> is used as is</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">bytes</span></code>: HTML response</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>: JSON response</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">content)</span></code>: the status code is overridden</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(status,</span> <span class="pre">headers,</span> <span class="pre">content)</span></code>: status and headers are applied</p></li>
 </ol>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/json&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/json&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">json_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">}</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/html&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/html&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">html_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;&lt;h1&gt;Hello&lt;/h1&gt;&#39;</span>
+    <span class="k">return</span> <span class="s2">&quot;&lt;h1&gt;Hello&lt;/h1&gt;&quot;</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/tuple&#39;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tuple_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">201</span><span class="p">,</span> <span class="s1">&#39;Created&#39;</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/created&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">created</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">201</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Location&quot;</span><span class="p">:</span> <span class="s2">&quot;/items/1&quot;</span><span class="p">},</span> <span class="s2">&quot;Created&quot;</span>
 </pre></div>
 </div>
+<p>Returning a full response, when content type or cookies matter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">muffin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/text&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">text</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="s2">&quot;plain text&quot;</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/plain&quot;</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xyz&quot;</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>All response classes are listed in <a class="reference internal" href="api.html"><span class="doc">API</span></a>.</p>
 </section>
 </section>
 
@@ -743,12 +858,12 @@ only from a request handler: scheduling from a background task has no effect.</p
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="walkthrough.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Welcome to Muffin’s documentation!</p>
+        <p class="prev-next-title">Walkthrough</p>
       </div>
     </a>
     <a class="right-next"
@@ -780,16 +895,17 @@ only from a request handler: scheduling from a background task has no effect.</p
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-object">Request Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request">Request</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#routing">Routing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-files">Static Files</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redirects-and-errors">Redirects and Errors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#middlewares">Middlewares</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#middleware">Middleware</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-applications">Nested Applications</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#host-based-routing">Host-Based Routing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-tasks-in-background">Run Tasks in Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#startup-and-shutdown">Startup and Shutdown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-tasks-after-the-response">Run Tasks After the Response</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-mode">Debug Mode</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-responses">About Responses</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-values">Return Values</a></li>
 </ul>
   </nav></div>
 
