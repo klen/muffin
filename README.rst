@@ -32,7 +32,7 @@ Key Features
 ------------
 
 - ASGI_ compatible
-- Competitive performance ([Benchmarks](http://klen.github.io/py-frameworks-bench/))
+- Competitive performance (`Benchmarks <http://klen.github.io/py-frameworks-bench/>`_)
 - Supports Asyncio_, Trio_, and Curio_
 - Multiple response types: text, HTML, JSON, streams, files, SSE, WebSockets
 - First-class plugin system for templating, databases, auth, and more
@@ -100,18 +100,21 @@ Plugins
 
 Muffin has a rich ecosystem of plugins:
 
-- [`muffin-jinja2`](https://github.com/klen/muffin-jinja2) – Jinja2 templates (asyncio/trio/curio)
-- [`muffin-session`](https://github.com/klen/muffin-session) – Signed cookie-based HTTP sessions
-- [`muffin-oauth`](https://github.com/klen/muffin-oauth) – OAuth integration
-- [`muffin-sentry`](https://github.com/klen/muffin-sentry) – Sentry error tracking
-- [`muffin-peewee`](https://github.com/klen/muffin-peewee-aio) – Peewee ORM integration
-- [`muffin-babel`](https://github.com/klen/muffin-babel) – i18n support
-- [`muffin-databases`](https://github.com/klen/muffin-databases) – SQL database support
-- [`muffin-mongo`](https://github.com/klen/muffin-mongo) – MongoDB integration
-- [`muffin-rest`](https://github.com/klen/muffin-rest) – REST API utilities
-- [`muffin-redis`](https://github.com/klen/muffin-redis) – Redis integration
-- [`muffin-admin`](https://github.com/klen/muffin-admin) – Auto-generated admin UI
-- [`muffin-prometheus`](https://github.com/klen/muffin-prometheus) – Prometheus metrics exporter
+- `muffin-jinja2 <https://github.com/klen/muffin-jinja2>`_ -- Jinja2 templates (asyncio/trio/curio)
+- `muffin-session <https://github.com/klen/muffin-session>`_ -- Signed cookie-based HTTP sessions
+- `muffin-oauth <https://github.com/klen/muffin-oauth>`_ -- OAuth1/OAuth2 integration
+- `muffin-sentry <https://github.com/klen/muffin-sentry>`_ -- Sentry error tracking
+- `muffin-peewee-aio <https://github.com/klen/muffin-peewee-aio>`_ -- Peewee ORM integration with async support
+- `muffin-babel <https://github.com/klen/muffin-babel>`_ -- Localization with Babel
+- `muffin-databases <https://github.com/klen/muffin-databases>`_ -- Async support for a range of databases
+- `muffin-mongo <https://github.com/klen/muffin-mongo>`_ -- MongoDB integration
+- `muffin-redis <https://github.com/klen/muffin-redis>`_ -- Redis integration
+- `muffin-rest <https://github.com/klen/muffin-rest>`_ -- REST helpers
+- `muffin-apiclient <https://github.com/klen/muffin-apiclient>`_ -- Support for external APIs
+- `muffin-grpc <https://github.com/klen/muffin-grpc>`_ -- GRPC support
+- `muffin-kafka <https://github.com/klen/muffin-kafka>`_ -- Kafka integration
+- `muffin-admin <https://github.com/klen/muffin-admin>`_ -- Admin interface
+- `muffin-prometheus <https://github.com/klen/muffin-prometheus>`_ -- Prometheus metrics exporter
 
 See each repo for usage and installation instructions.
 
@@ -129,11 +132,6 @@ Bug tracker
 
 Found a bug or have a feature request? Please open an issue at:
 https://github.com/klen/muffin/issues
-
-Contributing
-------------
-
-Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/klen/muffin/blob/develop/CONTRIBUTING.md) for guidelines.
 
 License
 -------
