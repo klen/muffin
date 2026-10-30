@@ -3,13 +3,15 @@
 
 **Muffin** – fast, lightweight, and asynchronous ASGI_ web framework for Python 3.11+.
 
+**Documentation:** https://klen.github.io/muffin
+
 .. image:: https://github.com/klen/muffin/workflows/tests/badge.svg
     :target: https://github.com/klen/muffin/actions
     :alt: Tests Status
 
 .. image:: https://github.com/klen/muffin/workflows/docs/badge.svg
     :target: https://klen.github.io/muffin
-    :alt: Documentation Status
+    :alt: Documentation
 
 .. image:: https://img.shields.io/pypi/v/muffin
     :target: https://pypi.org/project/muffin/
