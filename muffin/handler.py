@@ -46,7 +46,9 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     Methods must be set explicitly (``methods``) or inherited from a parent
     class. There is no automatic detection: defining ``async def get`` does not
-    register ``GET`` on its own.
+    register ``GET`` on its own. A handler without ``methods`` reaches every
+    request, and methods it does not implement end in a logged 500 instead of
+    ``405``, so declare them.
 
     .. code-block:: python
 
@@ -55,12 +57,12 @@ class Handler(HTTPView, metaclass=HandlerMeta):
             methods = ['get', 'post']
 
             async def get(self, request):
-                name = request.patch_params.get('name') or 'all'
+                name = request.path_params.get('name') or 'all'
                 return f"GET: Hello {name}"
 
             async def post(self, request):
-                name = request.patch_params.get('name') or 'all'
-                return "POST: Hello f{name}"
+                name = request.path_params.get('name') or 'all'
+                return f"POST: Hello {name}"
 
             @Handler.route('/hello/custom')
             async def custom(self, request):
