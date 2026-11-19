@@ -19,7 +19,9 @@ if TYPE_CHECKING:
 class HandlerMeta(type):
     """Prepare handlers."""
 
-    def __new__(mcs: type[HandlerMeta], name: str, bases: tuple[type], params: dict[str, Any]):
+    def __new__(
+        mcs: type[HandlerMeta], name: str, bases: tuple[type, ...], params: dict[str, Any]
+    ) -> "type[Handler]":
         """Prepare a Handler Class."""
         cls = cast("type[Handler]", super().__new__(mcs, name, bases, params))
 
@@ -106,7 +108,9 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
         return cls
 
-    def __call__(self, request: Request, *, method_name: str | None = None, **_) -> Awaitable:
+    def __call__(
+        self, request: Request, *, method_name: str | None = None, **_: Any
+    ) -> Awaitable[Any]:
         """Dispatch the given request by HTTP method."""
         method = getattr(self, method_name or request.method.lower())
         return method(request)
@@ -117,9 +121,9 @@ class Handler(HTTPView, metaclass=HandlerMeta):
     ) -> Callable[[TVCallable], TVCallable]:
         """Mark a method as a route."""
 
-        def wrapper(method):
+        def wrapper(method: TVCallable) -> TVCallable:
             """Wrap a method."""
-            method.__route__ = paths, methods, hosts
+            setattr(method, "__route__", (paths, methods, hosts))  # noqa: B010
             return method
 
         return wrapper

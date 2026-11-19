@@ -9,21 +9,19 @@ if TYPE_CHECKING:
 
 
 class MuffinError(ASGIError):
-
     """Base class for Muffin Errors."""
 
 
 class AsyncRequiredError(TypeError):
-
     """Raised when an async function is required."""
 
     def __init__(self, func: Callable):
         """Initialize the exception."""
-        super().__init__(f"Function {func.__qualname__} has to be async")
+        name = getattr(func, "__qualname__", func)
+        super().__init__(f"Function {name} has to be async")
 
 
 class InvalidAppError(ImportError):
-
     """Raised when an application is not found."""
 
     def __init__(self, name: str):

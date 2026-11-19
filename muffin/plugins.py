@@ -5,13 +5,15 @@ from __future__ import annotations
 from abc import ABC
 from contextlib import asynccontextmanager
 from inspect import iscoroutinefunction
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, Mapping, Self
+from typing import TYPE_CHECKING, Any, AsyncGenerator, ClassVar, Mapping, Self
 
 from modconfig import Config
 
 from muffin.errors import MuffinError
 
 if TYPE_CHECKING:
+    from types import TracebackType
+
     from muffin.app import Application
 
 
@@ -31,10 +33,10 @@ class BasePlugin(ABC):
     # Plugin options with default values
     defaults: ClassVar[Mapping[str, Any]] = {"disabled": False}
 
-    # Optional middleware method
-    middleware: Callable[..., Any] | None = None
+    # Optional middleware method; typed Any because plugins override it with a method
+    middleware: Any = None
 
-    def __init__(self, app: Application | None = None, **options):
+    def __init__(self, app: Application | None = None, **options: Any) -> None:
         """Save application and create he plugin's configuration."""
 
         self.cfg = Config(
@@ -57,7 +59,12 @@ class BasePlugin(ABC):
             await self.startup()
         return self
 
-    async def __aexit__(self, exc_type, exc, tb):
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
+    ) -> None:
         if iscoroutinefunction(self.shutdown):
             await self.shutdown()
 
@@ -69,7 +76,7 @@ class BasePlugin(ABC):
 
         return self.__app__
 
-    def setup(self, app: Application, *, name: str | None = None, **options) -> bool:
+    def setup(self, app: Application, *, name: str | None = None, **options: Any) -> bool:
         """Bind app and update the plugin's configuration.
 
         Precedence (lowest to highest): plugin defaults, application config,
@@ -103,18 +110,18 @@ class BasePlugin(ABC):
 
         return True
 
-    async def startup(self):  # noqa: B027
+    async def startup(self) -> None:  # noqa: B027
         """Startup the plugin."""
 
-    async def shutdown(self):  # noqa: B027
+    async def shutdown(self) -> None:  # noqa: B027
         """Shutdown the plugin."""
 
-    async def restart(self):
+    async def restart(self) -> None:
         """Restart the plugin."""
         await self.shutdown()
         await self.startup()
 
     @asynccontextmanager
-    async def conftest(self):
+    async def conftest(self) -> AsyncGenerator[Self, None]:
         """Return a context manager for pytest conftest.py."""
         yield self

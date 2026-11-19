@@ -12,8 +12,10 @@ from importlib import metadata
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
+    Any,
     AsyncContextManager,
     Callable,
+    Sequence,
     get_args,
     get_origin,
     overload,
@@ -76,7 +78,7 @@ class Manager:
             )
 
         self.subparsers = self.parser.add_subparsers(dest="subparser")
-        self.commands: dict[str, Callable] = {}
+        self.commands: dict[str, Callable[..., Any]] = {}
 
         self.shell(
             getattr(
@@ -136,10 +138,12 @@ class Manager:
         self, *, name: str | None = None, lifespan: bool = False
     ) -> Callable[["TVCallable"], "TVCallable"]: ...
 
-    def __call__(self, fn=None, *, name: str | None = None, lifespan=False):  # noqa: C901
+    def __call__(  # noqa: C901
+        self, fn: Any = None, *, name: str | None = None, lifespan: bool = False
+    ) -> Any:
         """Register a command."""
 
-        def wrapper(fn):
+        def wrapper(fn: Any) -> Any:
             if not inspect.iscoroutinefunction(fn) and lifespan:
                 raise AsyncRequiredError(fn)
 
@@ -220,7 +224,7 @@ class Manager:
 
         return wrapper
 
-    def run(self, *args: str, prog: str | None = None):
+    def run(self, *args: str, prog: str | None = None) -> None:
         """Parse the arguments and run a command."""
         if prog:
             self.parser.prog = prog
@@ -263,7 +267,12 @@ class Manager:
         aio_run(run_fn, ctx, fn, args=pargs, kwargs=kwargs)
 
 
-async def run_fn(ctx, fn, args=(), kwargs={}):  # noqa: B006
+async def run_fn(
+    ctx: AsyncContextManager[Any],
+    fn: Callable[..., Any],
+    args: Sequence[Any] = (),
+    kwargs: dict[str, Any] = {},  # noqa: B006
+) -> None:
     """Run the given function with the given async context."""
     async with ctx:
         res = fn(*args, **kwargs)
@@ -301,7 +310,7 @@ def cli():
     sys.exit(0)
 
 
-def _normalize_type(param):
+def _normalize_type(param: inspect.Parameter) -> type:
     annotation, default = param.annotation, param.default
     if annotation is not param.empty:
         origin = get_origin(annotation)

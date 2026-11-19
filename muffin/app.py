@@ -6,7 +6,7 @@ import logging
 from contextvars import ContextVar
 from inspect import currentframe, isawaitable
 from logging.config import dictConfig
-from typing import TYPE_CHECKING, Any, Final, Mapping
+from typing import TYPE_CHECKING, Any, ClassVar, Final, Mapping
 
 from asgi_tools import App as BaseApp
 from asgi_tools._compat import aio_wait
@@ -33,7 +33,7 @@ class Application(BaseApp):
     """The Muffin Application."""
 
     # Default configuration values
-    defaults: Mapping[str, Any] = {
+    defaults: ClassVar[Mapping[str, Any]] = {
         # The application's name
         "NAME": "muffin",
         # Path to configuration module
@@ -54,7 +54,7 @@ class Application(BaseApp):
         "LOG_CONFIG": None,
     }
 
-    def __init__(self, *cfg_mods: str | ModuleType, **options):
+    def __init__(self, *cfg_mods: str | ModuleType, **options: Any) -> None:
         """Initialize the application.
 
         :param *cfg_mods: modules to import application's config
@@ -104,7 +104,7 @@ class Application(BaseApp):
         """Human readable representation."""
         return f"<muffin.Application: {self.cfg.name}>"
 
-    async def __call__(self, scope: TASGIScope, receive: TASGIReceive, send: TASGISend):
+    async def __call__(self, scope: TASGIScope, receive: TASGIReceive, send: TASGISend) -> None:
         """Support background tasks."""
         await self.lifespan(scope, receive, send)
         bgtasks = BACKGROUND_TASKS.get()
@@ -112,7 +112,9 @@ class Application(BaseApp):
             await aio_wait(*(_run_bg(task) for task in bgtasks))
             BACKGROUND_TASKS.set(None)
 
-    def import_submodules(self, *submodules: str, silent: bool = False, **kwargs):
+    def import_submodules(
+        self, *submodules: str, silent: bool = False, **kwargs: Any
+    ) -> dict[str, ModuleType] | None:
         """Automatically import submodules.
 
         .. code-block:: python
@@ -136,7 +138,7 @@ class Application(BaseApp):
                 package_name = parent_frame.f_globals["__name__"]
                 return import_submodules(package_name, *submodules, silent=silent, **kwargs)
 
-    def run_after_response(self, *tasks: Awaitable):
+    def run_after_response(self, *tasks: Awaitable[Any]) -> None:
         """Schedule awaitables to run after the response is sent.
 
         The response is sent first, then the tasks run to completion before the

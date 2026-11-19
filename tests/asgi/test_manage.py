@@ -19,7 +19,7 @@ def test_command(app):
         :param name: help for name
         """
 
-    parser = cmd1.parser  # type: ignore[]
+    parser = cmd1.parser
     assert parser
     assert parser.description == "Custom description."
     assert parser._actions[1].help == "help for name"
@@ -30,7 +30,7 @@ def test_command(app):
     def cmd2(*names, lower=False):
         pass
 
-    ns = cmd2.parser.parse_args(["test"])  # type: ignore[]
+    ns = cmd2.parser.parse_args(["test"])
     assert dict(ns._get_kwargs()) == {"names": ["test"], "lower": False}
 
 
@@ -117,7 +117,7 @@ def test_command_bool_true_and_list_defaults(app):
     def command(*, enabled=True, tags=["base"]):  # noqa: B006
         pass
 
-    ns = command.parser.parse_args("--no-enabled --tags extra".split())  # type: ignore[]
+    ns = command.parser.parse_args("--no-enabled --tags extra".split())
     assert dict(ns._get_kwargs()) == {
         "enabled": False,
         "tags": ["base", "extra"],

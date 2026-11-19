@@ -61,7 +61,7 @@ def test_import_submodules_prefix_prevents_shadow_import(tmp_path):
     sys.path.insert(0, str(tmp_path))
 
     # Also import the package itself so it lands in sys.modules.
-    import _testpkg  # noqa: PLC0415
+    import _testpkg  # noqa: PLC0415  # type: ignore
 
     try:
         result = muffin.utils.import_submodules("_testpkg", "tests")
@@ -87,7 +87,7 @@ def test_application_import_submodules_from_function(tmp_path):
 
     sys.path.insert(0, str(tmp_path))
     try:
-        import _apppkg  # noqa: PLC0415
+        import _apppkg  # noqa: PLC0415  # type: ignore
 
         app = muffin.Application()
         result = _apppkg.setup(app)

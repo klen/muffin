@@ -10,7 +10,7 @@ import sys
 import threading
 from contextlib import suppress
 from logging import getLogger
-from typing import TYPE_CHECKING, Callable, Coroutine, Iterable, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Collection, Coroutine, TypeVar
 
 from asgi_tools.utils import is_awaitable, to_awaitable
 from sniffio import current_async_library
@@ -66,7 +66,7 @@ def aio_lib() -> str:
     return "asyncio"
 
 
-def aio_run(corofn: Callable[..., Coroutine[None, None, TV]], *args, **kwargs) -> TV:
+def aio_run(corofn: Callable[..., Coroutine[None, None, TV]], *args: Any, **kwargs: Any) -> TV:
     """Run the given coroutine with current async library."""
     AIOLIB.current = aiolib = AIOLIB.current or aio_lib()
     if aiolib == "asyncio":
@@ -76,7 +76,7 @@ def aio_run(corofn: Callable[..., Coroutine[None, None, TV]], *args, **kwargs) -
 
 
 def import_submodules(
-    package_name: str, *module_names: str, silent: bool = False, exclude: Iterable[str] = ()
+    package_name: str, *module_names: str, silent: bool = False, exclude: Collection[str] = ()
 ) -> dict[str, ModuleType]:
     """Import all submodules by the given package name."""
     package = sys.modules[package_name]

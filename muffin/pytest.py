@@ -14,10 +14,12 @@ from muffin.constants import CONFIG_ENV_VARIABLE
 from muffin.utils import import_app
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator
+
     from muffin.app import Application
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser: pytest.Parser) -> None:
     """Append pytest options for testing Muffin apps."""
     parser.addini("muffin_app", "Set path to muffin application")
     parser.addoption(
@@ -34,7 +36,9 @@ def pytest_addoption(parser):
     )
 
 
-def pytest_load_initial_conftests(early_config, parser, args):
+def pytest_load_initial_conftests(
+    early_config: pytest.Config, parser: pytest.Parser, args: list[str]
+) -> None:
     """Prepare to loading Muffin application."""
 
     options = parser.parse_known_args(args)
@@ -46,20 +50,25 @@ def pytest_load_initial_conftests(early_config, parser, args):
 
     # Initialize application
     app_ = options.muffin_app or early_config.getini("muffin_app")
-    early_config.app = app_
+    setattr(early_config, "app", app_)  # noqa: B010
 
 
 @pytest.fixture(scope="session")
-async def app(pytestconfig, request, aiolib):  # noqa: ARG001
+async def app(
+    pytestconfig: pytest.Config,
+    request: pytest.FixtureRequest,  # noqa: ARG001
+    aiolib: str,  # noqa: ARG001
+) -> AsyncGenerator[Application, None]:
     """Load an application, run lifespan events, prepare plugins."""
-    if not pytestconfig.app:
+    app_path = getattr(pytestconfig, "app", None)
+    if not app_path:
         logging.warning(  # noqa: LOG015
             "Improperly configured. Please set ``muffin_app`` in your pytest config. "
             "Or use ``--muffin-app`` command option.",
         )
         return
 
-    muffin_app = import_app(pytestconfig.app)
+    muffin_app = import_app(app_path)
     msg = f"Setup application '{muffin_app.cfg.name}'"
     if muffin_app.cfg.config:
         msg += f"with config '{muffin_app.cfg.config}'"
@@ -71,7 +80,7 @@ async def app(pytestconfig, request, aiolib):  # noqa: ARG001
 
 
 @asynccontextmanager
-async def lifecycle(app: Application):
+async def lifecycle(app: Application) -> AsyncGenerator[Application, None]:
     """Setup plugins and run lifespan events."""
 
     plugins = list(app.plugins.values())
@@ -86,6 +95,6 @@ async def lifecycle(app: Application):
 
 
 @pytest.fixture
-def client(app):
+def client(app: Application) -> ASGITestClient:
     """Generate a test client for the app."""
     return ASGITestClient(app)
