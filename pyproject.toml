@@ -4,7 +4,7 @@ version = "3.3.0"
 description = "Muffin is a fast, simple and asyncronous web-framework for Python 3 (asyncio, trio, curio)"
 authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
 requires-python = ">=3.11"
-readme = "README.rst"
+readme = "README.md"
 license = "MIT"
 keywords = ["asgi", "web", "web framework", "asyncio", "trio", "curio"]
 classifiers = [
@@ -51,7 +51,7 @@ dev = [
   "ipdb",
   "uvicorn",
 ]
-docs = ["sphinx", "pydata-sphinx-theme", "sphinx-copybutton"]
+docs = ["sphinx", "pydata-sphinx-theme", "sphinx-copybutton", "myst-parser"]
 
 [tool.uv]
 default-groups = ["dev", "docs"]
