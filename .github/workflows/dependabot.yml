@@ -59,12 +59,10 @@ jobs:
             echo "PR #$pr is not marked for auto-merge (major); skipping."
             exit 0
           fi
-          # Notification jobs are not a merge gate: `notify` reports to Slack and can
-          # break independently of the code.
           jobs=$(gh api "repos/$REPO/actions/runs/$RUN_ID/jobs?per_page=100" \
-            --jq '[.jobs[] | select(.name != "notify") | .conclusion] | unique | join(",")')
+            --jq '[.jobs[].conclusion] | unique | join(",")')
           if [ "$jobs" != "success" ]; then
-            echo "Test jobs did not pass ($jobs); not merging."
+            echo "Jobs did not pass ($jobs); not merging."
             exit 0
           fi
           gh pr merge "$pr" --repo "$REPO" --squash --match-head-commit "$SHA"
