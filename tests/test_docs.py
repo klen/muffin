@@ -8,8 +8,13 @@ DOCS = ROOT / "docs"
 
 def test_readme_includes():
     """docs/plugins.rst and docs/index.rst include slices of the README."""
-    readme = (ROOT / "README.rst").read_text()
-    for marker in (".. _description:", ".. _plugins:", ".. _benchmarks:", ".. _links:"):
+    readme = (ROOT / "README.md").read_text()
+    for marker in (
+        "<!-- description -->",
+        "<!-- plugins -->",
+        "<!-- benchmarks -->",
+        "<!-- links -->",
+    ):
         assert marker in readme, f"README lost the include marker {marker!r}"
 
 
