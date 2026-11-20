@@ -40,13 +40,13 @@ jobs:
     if: >-
       github.event_name == 'workflow_run'
       && github.event.workflow_run.event == 'pull_request'
-      && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Merge marked dependabot PR for the tested commit
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
           SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           pr=$(gh api "repos/$REPO/commits/$SHA/pulls" \
@@ -57,6 +57,14 @@ jobs:
           fi
           if ! gh pr view "$pr" --repo "$REPO" --json labels --jq '.labels[].name' | grep -qx automerge; then
             echo "PR #$pr is not marked for auto-merge (major); skipping."
+            exit 0
+          fi
+          # Notification jobs are not a merge gate: `notify` reports to Slack and can
+          # break independently of the code.
+          jobs=$(gh api "repos/$REPO/actions/runs/$RUN_ID/jobs?per_page=100" \
+            --jq '[.jobs[] | select(.name != "notify") | .conclusion] | unique | join(",")')
+          if [ "$jobs" != "success" ]; then
+            echo "Test jobs did not pass ($jobs); not merging."
             exit 0
           fi
           gh pr merge "$pr" --repo "$REPO" --squash --match-head-commit "$SHA"
