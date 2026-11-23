@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from asgi_tools import ASGIError
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from typing import Any, Callable
 
 
 class MuffinError(ASGIError):
@@ -15,7 +15,7 @@ class MuffinError(ASGIError):
 class AsyncRequiredError(TypeError):
     """Raised when an async function is required."""
 
-    def __init__(self, func: Callable):
+    def __init__(self, func: Callable[..., Any]):
         """Initialize the exception."""
         name = getattr(func, "__qualname__", func)
         super().__init__(f"Function {name} has to be async")

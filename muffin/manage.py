@@ -250,7 +250,7 @@ class Manager:
             self.parser.print_help()
             sys.exit(1)
 
-        pargs = []
+        pargs: list[Any] = []
         sig = inspect.signature(fn)
         for name, param in sig.parameters.items():
             if param.kind == param.VAR_POSITIONAL:
@@ -259,7 +259,7 @@ class Manager:
         if not inspect.iscoroutinefunction(fn):
             return fn(*pargs, **kwargs)
 
-        ctx: AsyncContextManager = AsyncExitStack()
+        ctx: AsyncContextManager[Any] = AsyncExitStack()
         if getattr(fn, "lifespan", False):
             ctx = self.app.lifespan
 

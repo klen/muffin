@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import inspect
-from typing import TYPE_CHECKING, Any, Awaitable, Callable, cast
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, ClassVar, cast
 
 from asgi_tools.view import HTTPView
 
@@ -89,7 +89,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
 
     """
 
-    methods: TMethodsArg | None = None
+    methods: ClassVar[TMethodsArg | None] = None
 
     @classmethod
     def __route__(  # type: ignore[override]
@@ -98,7 +98,7 @@ class Handler(HTTPView, metaclass=HandlerMeta):
         *paths: str,
         methods: TMethodsArg | None = None,
         hosts: THostsArg | None = None,
-        **params,
+        **params: Any,
     ):
         """Check for registered methods."""
         router.bind(cls, *paths, methods=methods or cls.methods, hosts=hosts, **params)

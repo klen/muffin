@@ -43,7 +43,7 @@ class BasePlugin(ABC):
             config_config={"update_from_env": False},
             **dict({"disabled": False}, **self.defaults),
         )
-        self.__app__ = None
+        self.__app__: Application | None = None
 
         if app is not None:
             self.setup(app, **options)
