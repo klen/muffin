@@ -52,7 +52,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="3.4.1" />
+  <meta name="docsearch:version" content="3.5.0" />
     <meta name="docbuild:last-update" content="Nov 23, 2026"/>
   
     
@@ -503,7 +503,7 @@
   <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
         <div class="sidebar-primary-item"><div class="sidebar-message pl-3">
-    Version: 3.4.1
+    Version: 3.5.0
 </div></div>
     </div>
   
@@ -665,6 +665,33 @@ want when the command needs plugin connections:</p>
 <p>Uncaught exceptions from a command are logged and turn into a non-zero exit
 code, so commands are safe to use in scripts.</p>
 </section>
+<section id="shell-completion">
+<h2>Shell completion<a class="headerlink" href="#shell-completion" title="Link to this heading">#</a></h2>
+<p>Completion needs the optional <a class="reference external" href="https://kislyuk.github.io/argcomplete/">argcomplete</a>
+dependency:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;muffin[completion]&#39;</span>
+</pre></div>
+</div>
+<p>Register the <code class="docutils literal notranslate"><span class="pre">muffin</span></code> command in your shell, for example in <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>register-python-argcomplete<span class="w"> </span>muffin<span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>For zsh (<code class="docutils literal notranslate"><span class="pre">compinit</span></code> must be loaded) and fish:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>~/.zshrc
+<span class="gp">$ </span>autoload<span class="w"> </span>-U<span class="w"> </span>bashcompinit<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>bashcompinit
+<span class="gp">$ </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>register-python-argcomplete<span class="w"> </span>muffin<span class="k">)</span><span class="s2">&quot;</span>
+
+<span class="gp"># </span>~/.config/fish/config.fish
+<span class="gp">$ </span>register-python-argcomplete<span class="w"> </span>--shell<span class="w"> </span>fish<span class="w"> </span>muffin<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nb">source</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">muffin</span> <span class="pre">your.module</span> <span class="pre">&lt;TAB&gt;</span></code> then lists the registered commands and <code class="docutils literal notranslate"><span class="pre">muffin</span>
+<span class="pre">your.module</span> <span class="pre">a-command</span> <span class="pre">--&lt;TAB&gt;</span></code> lists the options of that command, choices
+included (<code class="docutils literal notranslate"><span class="pre">--aiolib</span></code>). The application is imported to discover its commands on
+every Tab, so completion follows the code you have checked out, and a heavy
+application import makes the Tab slow. The application path itself is typed by
+hand: <code class="docutils literal notranslate"><span class="pre">muffin</span> <span class="pre">&lt;TAB&gt;</span></code> offers nothing.</p>
+</section>
 </section>
 
 
@@ -720,6 +747,7 @@ code, so commands are safe to use in scripts.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-commands">Custom commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shell-completion">Shell completion</a></li>
 </ul>
   </nav></div>
 
