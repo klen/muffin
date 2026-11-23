@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-23
+
+- Shell completion for the CLI: install `muffin[completion]` and register `muffin` with argcomplete.
+
 ## 2026-10-29
 
 - asyncio is now the default async library; curio and trio run only when selected via `--aiolib` or `MUFFIN_AIOLIB`.

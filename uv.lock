@@ -55,6 +55,15 @@ wheels = [
 ]
 
 [[package]]
+name = "argcomplete"
+version = "3.8.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/0d/ca63f1b8b706c70590d0a4acc9c3c94ea8ed4dd9c83b4f7af195868abe76/argcomplete-3.8.0.tar.gz", hash = "sha256:0114d634013e11ac92cc329b3a7d886c3506e98ddc7bb23c99b1782aacc8b8bd", size = 82835, upload-time = "2026-11-22T04:11:04.043Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bb/4e/13adf25ba197e8b9abf9d99836e5346560b6467d9aa9cace98dddabd5450/argcomplete-3.8.0-py3-none-any.whl", hash = "sha256:1fcc7b143e22a22b04629773a40751fb78976bc9cc0912f1fef6c70b51b48ef9", size = 45456, upload-time = "2026-11-22T04:11:02.931Z" },
+]
+
+[[package]]
 name = "asgi-tools"
 version = "3.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -939,6 +948,9 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+completion = [
+    { name = "argcomplete" },
+]
 standard = [
     { name = "gunicorn" },
     { name = "uvicorn", extra = ["standard"] },
@@ -947,6 +959,7 @@ standard = [
 [package.dev-dependencies]
 dev = [
     { name = "aiofile" },
+    { name = "argcomplete" },
     { name = "ipdb" },
     { name = "pre-commit" },
     { name = "pyrefly" },
@@ -966,17 +979,19 @@ docs = [
 
 [package.metadata]
 requires-dist = [
+    { name = "argcomplete", marker = "extra == 'completion'", specifier = ">=3.8.0" },
     { name = "asgi-tools", specifier = ">=3.2.0" },
     { name = "gunicorn", marker = "extra == 'standard'" },
     { name = "modconfig" },
     { name = "orjson" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'standard'" },
 ]
-provides-extras = ["standard"]
+provides-extras = ["standard", "completion"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "aiofile" },
+    { name = "argcomplete", specifier = ">=3.8.0" },
     { name = "ipdb" },
     { name = "pre-commit" },
     { name = "pyrefly", specifier = ">=0.52.0" },

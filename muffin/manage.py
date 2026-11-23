@@ -6,6 +6,7 @@ import inspect
 import logging
 import os
 import re
+import shlex
 import sys
 from contextlib import AsyncExitStack, suppress
 from importlib import metadata
@@ -283,7 +284,11 @@ async def run_fn(
 def cli():
     """Define main CLI endpoint."""
     sys.path.insert(0, Path.cwd().as_posix())
-    logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
+    completing = "_ARGCOMPLETE" in os.environ
+    logging.basicConfig(
+        level=logging.ERROR if completing else logging.INFO,
+        handlers=[logging.StreamHandler()],
+    )
 
     parser = argparse.ArgumentParser(description="Manage Application", add_help=False)
     parser.add_argument("app", metavar="app", type=str, help="Application module path")
@@ -298,8 +303,12 @@ def cli():
         app.logger.info("Application is loaded: %s", app.cfg.name)
 
     except ImportError as exc:
-        logging.error("Failed to import application: %s", exc)
+        if not completing:  # the app path is only half-typed while completing
+            logging.error("Failed to import application: %s", exc)
         sys.exit(1)
+
+    if completing:
+        complete(app, args_.app)
 
     try:
         app.manage.run(*subargs_, prog="muffin %s" % args_.app)
@@ -308,6 +317,24 @@ def cli():
         sys.exit(1)
 
     sys.exit(0)
+
+
+def complete(app: "Application", app_path: str) -> None:
+    """Print completion candidates for the current command line (argcomplete)."""
+    try:
+        import argcomplete  # noqa: PLC0415
+    except ImportError:
+        logging.error("Shell completion requires the extra: pip install 'muffin[completion]'")
+        sys.exit(1)
+
+    # The Manager's parser has no `muffin <app>` part, while argcomplete takes the line from the
+    # environment and drops one leading word as the program name. Let it be the app path.
+    # The offset also covers `--config ...` in front of the app.
+    words = shlex.split(os.environ.get("COMP_LINE", ""))
+    if app_path in words:
+        os.environ["_ARGCOMPLETE"] = str(words.index(app_path) + 1)
+
+    argcomplete.autocomplete(app.manage.parser)
 
 
 def _normalize_type(param: inspect.Parameter) -> type:

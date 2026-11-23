@@ -122,3 +122,37 @@ want when the command needs plugin connections:
 
 Uncaught exceptions from a command are logged and turn into a non-zero exit
 code, so commands are safe to use in scripts.
+
+Shell completion
+----------------
+
+Completion needs the optional `argcomplete <https://kislyuk.github.io/argcomplete/>`_
+dependency:
+
+.. code-block:: console
+
+    $ pip install 'muffin[completion]'
+
+Register the ``muffin`` command in your shell, for example in ``~/.bashrc``:
+
+.. code-block:: console
+
+    $ eval "$(register-python-argcomplete muffin)"
+
+For zsh (``compinit`` must be loaded) and fish:
+
+.. code-block:: console
+
+    # ~/.zshrc
+    $ autoload -U bashcompinit && bashcompinit
+    $ eval "$(register-python-argcomplete muffin)"
+
+    # ~/.config/fish/config.fish
+    $ register-python-argcomplete --shell fish muffin | source
+
+``muffin your.module <TAB>`` then lists the registered commands and ``muffin
+your.module a-command --<TAB>`` lists the options of that command, choices
+included (``--aiolib``). The application is imported to discover its commands on
+every Tab, so completion follows the code you have checked out, and a heavy
+application import makes the Tab slow. The application path itself is typed by
+hand: ``muffin <TAB>`` offers nothing.

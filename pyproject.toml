@@ -27,6 +27,9 @@ dependencies = ["asgi-tools>=3.2.0", "modconfig", "orjson"]
 
 [project.optional-dependencies]
 standard = ["gunicorn", "uvicorn[standard]"]
+completion = [
+    "argcomplete>=3.8.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/klen/muffin"
@@ -50,6 +53,7 @@ dev = [
   "pyrefly>=0.52.0",
   "ipdb",
   "uvicorn",
+  "argcomplete>=3.8.0",
 ]
 docs = ["sphinx", "pydata-sphinx-theme", "sphinx-copybutton", "myst-parser"]
 
