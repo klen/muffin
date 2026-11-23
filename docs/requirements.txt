@@ -1,3 +1,4 @@
 sphinx-copybutton
 pydata-sphinx-theme
+myst-parser
 git+https://github.com/klen/muffin
