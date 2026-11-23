@@ -5,7 +5,7 @@ default_install_hook_types: [commit-msg, pre-commit, pre-push]
 
 repos:
   - repo: https://github.com/qoomon/git-conventional-commits
-    rev: "v2.7.2"
+    rev: "v2.9.0"
     hooks:
       - id: conventional-commits
         args: ["-c", ".git-commits.yaml"]
@@ -44,14 +44,14 @@ repos:
         stages: ["pre-commit"]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.2
+    rev: 0.13.9
     hooks:
       - id: uv-lock
         args: ["--check"]
         stages: ["pre-commit"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.0"
+    rev: "v0.17.6"
     hooks:
       # Run the linter.
       - id: ruff-check
@@ -63,7 +63,7 @@ repos:
         stages: ["pre-commit"]
 
   - repo: https://github.com/facebook/pyrefly-pre-commit
-    rev: 0.52.0 # Note: this is the version of the pre-commit hook, NOT the pyrefly version used for type checking
+    rev: 1.5.0 # Note: this is the version of the pre-commit hook, NOT the pyrefly version used for type checking
     hooks:
       - id: pyrefly-check
         name: pyrefly check
