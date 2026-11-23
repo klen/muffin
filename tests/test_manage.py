@@ -42,3 +42,18 @@ def test_options():
     assert "--host" in complete("muffin tests run --ho")
     # The app path is not the first word
     assert "--host" in complete("muffin --config tests.config_fixture tests run --ho")
+
+
+def test_help():
+    """The commands are listed once."""
+    res = subprocess.run(
+        [sys.executable, "-c", "from muffin.manage import cli; cli()", "tests", "--help"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    out = res.stdout + res.stderr
+    usage = next(line for line in out.splitlines() if line.startswith("usage:"))
+    assert "command ..." in usage
+    assert "{run,shell}" not in out

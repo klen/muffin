@@ -79,7 +79,7 @@ class Manager:
                 help="Select an asyncio library to run commands.",
             )
 
-        self.subparsers = self.parser.add_subparsers(dest="subparser")
+        self.subparsers = self.parser.add_subparsers(dest="subparser", metavar="command")
         self.commands: dict[str, Callable[..., Any]] = {}
 
         self.shell(
@@ -237,7 +237,6 @@ class Manager:
             sorted_actions = sorted(choices_actions, key=lambda a: a.dest)
             choices_actions.clear()
             choices_actions.extend(sorted_actions)
-            self.subparsers.metavar = "{" + ",".join(a.dest for a in sorted_actions) + "}"
 
         ns = self.parser.parse_args(args or sys.argv[1:])
         kwargs = dict(ns._get_kwargs())
