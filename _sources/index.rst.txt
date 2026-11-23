@@ -1,15 +1,17 @@
 Welcome to Muffin's documentation!
 ==================================
 
-Fast, lightweight, asynchronous ASGI_ web framework for Python.
+Fast, lightweight, asynchronous ASGI web framework for Python.
 
-.. include:: ../README.rst
-    :start-after: .. _description:
-    :end-before: .. _plugins:
+.. include:: ../README.md
+    :parser: myst_parser.sphinx_
+    :start-after: <!-- description -->
+    :end-before: <!-- plugins -->
 
-.. include:: ../README.rst
-    :start-after: .. _benchmarks:
-    :end-before: .. _links:
+.. include:: ../README.md
+    :parser: myst_parser.sphinx_
+    :start-after: <!-- benchmarks -->
+    :end-before: <!-- links -->
 
 Table of Contents
 -----------------
@@ -36,5 +38,6 @@ Table of Contents
 
 .. _links:
 
-.. include:: ../README.rst
-    :start-after: .. _links:
+.. include:: ../README.md
+    :parser: myst_parser.sphinx_
+    :start-after: <!-- links -->

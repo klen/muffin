@@ -1,6 +1,7 @@
-.. include:: ../README.rst
-    :start-after: .. _plugins:
-    :end-before: .. _benchmarks:
+.. include:: ../README.md
+    :parser: myst_parser.sphinx_
+    :start-after: <!-- plugins -->
+    :end-before: <!-- benchmarks -->
 
 Writing a plugin
 ----------------
