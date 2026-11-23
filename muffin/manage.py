@@ -8,6 +8,7 @@ import os
 import re
 import shlex
 import sys
+import warnings
 from contextlib import AsyncExitStack, suppress
 from importlib import metadata
 from pathlib import Path
@@ -285,16 +286,19 @@ def cli():
     """Define main CLI endpoint."""
     sys.path.insert(0, Path.cwd().as_posix())
     completing = "_ARGCOMPLETE" in os.environ
-    logging.basicConfig(
-        level=logging.ERROR if completing else logging.INFO,
-        handlers=[logging.StreamHandler()],
-    )
+    logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
+    if completing:
+        # A Tab re-imports the application: keep its warnings and logs away from the prompt
+        warnings.simplefilter("ignore")
+        logging.disable(logging.WARNING)
 
     parser = argparse.ArgumentParser(description="Manage Application", add_help=False)
     parser.add_argument("app", metavar="app", type=str, help="Application module path")
     parser.add_argument("--config", type=str, help="Path to configuration.")
     parser.add_argument("--version", action="version", version=VERSION)
-    args_, subargs_ = parser.parse_known_args(sys.argv[1:])
+    # The shell runs us without arguments: the line comes through the environment
+    argv = shlex.split(os.environ.get("COMP_LINE", ""))[1:] if completing else sys.argv[1:]
+    args_, subargs_ = parser.parse_known_args(argv)
     if args_.config:
         os.environ[CONFIG_ENV_VARIABLE] = args_.config
 

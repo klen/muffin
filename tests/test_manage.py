@@ -17,8 +17,8 @@ def complete(line: str) -> set[str]:
     """Run the CLI the way the shell does and return the completion candidates."""
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / "completions"
-        subprocess.run(  # noqa: S603
-            [sys.executable, "-c", "from muffin.manage import cli; cli()", *line.split()[1:]],
+        subprocess.run(
+            [sys.executable, "-c", "from muffin.manage import cli; cli()"],
             cwd=ROOT,
             env={
                 **os.environ,

@@ -110,6 +110,7 @@ ignore = [
   "PLR",
   "PLW",
   "PTH",
+  "S603",
   "SIM",
   "RET504",
   "T20",
