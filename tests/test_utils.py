@@ -106,6 +106,7 @@ def test_import_app_by_name_and_fallback(tmp_path):
         assert muffin.utils.import_app("_appmod") == "APP"
         assert muffin.utils.import_app("_appmod:app") == "APP"
         assert muffin.utils.import_app("_appmod:application") == "APPLICATION"
+        assert muffin.utils.import_app("_appmod/") == "APP"
     finally:
         sys.path.remove(str(tmp_path))
         sys.modules.pop("_appmod", None)

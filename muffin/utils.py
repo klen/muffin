@@ -103,6 +103,8 @@ def import_submodules(
 def import_app(app_uri: str, *, reload: bool = False) -> Application:
     """Import application by the given string (python.path.to.module:app_name)."""
     mod_name, _, app_name = app_uri.partition(":")
+    # Accept paths bash completion produces: ``package/app/`` -> ``package.app``
+    mod_name = mod_name.strip("./").replace("/", ".")
     mod = importlib.import_module(mod_name)
     if reload:
         importlib.reload(mod)
